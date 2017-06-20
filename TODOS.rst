@@ -22,6 +22,7 @@ Must haves
     - Improve documentation.
     - Dynamic serializer for Document models.
     - Add more tests.
+    - Think of making more-like-this a functional filter.
     + Make more-like-this shortcut more generic.
 
 Should haves

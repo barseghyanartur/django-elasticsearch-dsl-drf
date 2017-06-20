@@ -49,6 +49,9 @@ class BookDocumentView(BaseDocumentViewSet):
                 LOOKUP_QUERY_IN,
             ],
         },
+        'title': {
+            'field': 'title.raw',
+        },
         'publisher': {
             'field': 'publisher.raw',
         },

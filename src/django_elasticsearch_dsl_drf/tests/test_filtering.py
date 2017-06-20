@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import unittest
+import uuid
 
 from django.core.management import call_command
 
@@ -13,48 +14,80 @@ from rest_framework import status
 from books import constants
 import factories
 
-from .base import BaseTestCase
+from .base import BaseRestFrameworkTestCase
 
 if DJANGO_GTE_1_10:
     from django.urls import reverse
 else:
     from django.core.urlresolvers import reverse
 
+__title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering'
+__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
+__copyright__ = '2016-2017 Artur Barseghyan'
+__license__ = 'GPL 2.0/LGPL 2.1'
+__all__ = (
+    'TestFiltering',
+)
+
 
 @pytest.mark.django_db
-class TestFiltering(BaseTestCase):
+class TestFiltering(BaseRestFrameworkTestCase):
     """Test filtering."""
 
     pytestmark = pytest.mark.django_db
 
-    def setUp(self):
-        self.published_count = 10
-        self.published = factories.BookWithUniqueTitleFactory.create_batch(
-            self.published_count,
+    @classmethod
+    def setUpClass(cls):
+        """Set up."""
+        cls.published_count = 10
+        cls.published = factories.BookFactory.create_batch(
+            cls.published_count,
             **{
                 'state': constants.BOOK_PUBLISHING_STATUS_PUBLISHED,
             }
         )
 
-        self.in_progress_count = 10
-        self.in_progress = factories.BookWithUniqueTitleFactory.create_batch(
-            self.in_progress_count,
+        cls.in_progress_count = 10
+        cls.in_progress = factories.BookFactory.create_batch(
+            cls.in_progress_count,
             **{
                 'state': constants.BOOK_PUBLISHING_STATUS_IN_PROGRESS,
             }
         )
 
-        self.all_count = self.published_count + self.in_progress_count
+        cls.prefix_count = 2
+        cls.prefix = 'DelusionalInsanity'
+        cls.prefixed = factories.BookFactory.create_batch(
+            cls.prefix_count,
+            **{
+
+                'title': '{} {}'.format(cls.prefix, uuid.uuid4()),
+                'state': constants.BOOK_PUBLISHING_STATUS_REJECTED
+            }
+        )
+
+        cls.all_count = (
+            cls.published_count +
+            cls.in_progress_count +
+            cls.prefix_count
+        )
+
+        cls.base_url = reverse('bookdocument-list', kwargs={})
         call_command('search_index', '--rebuild', '-f')
 
-    def _filter_by_field(self, field_name, filter_value):
-        """Filter by field."""
+    def _field_filter_term(self, field_name, filter_value):
+        """Field filter term.
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags=children
+        """
         self.authenticate()
 
-        url = reverse('bookdocument-list', kwargs={})
+        url = self.base_url[:]
         data = {}
 
-        # Should contain 20 results
+        # Should contain 22 results
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), self.all_count)
@@ -70,11 +103,69 @@ class TestFiltering(BaseTestCase):
             self.published_count
         )
 
-    def test_filter_by_field(self):
-        """Filter by field."""
-        return self._filter_by_field(
+    def test_field_filter_term(self):
+        """Field filter term."""
+        return self._field_filter_term(
             'state',
             constants.BOOK_PUBLISHING_STATUS_PUBLISHED
+        )
+
+    def _field_filter_range(self, field_name, lower_id, upper_id, count):
+        """Field filter range.
+
+        Example:
+
+            http://localhost:8000/api/users/?age__range=16|67
+        """
+        url = self.base_url[:]
+        data = {}
+        response = self.client.get(
+            url + '?{}__range={}|{}'.format(field_name, lower_id, upper_id),
+            data
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(response.data['results']),
+            count
+        )
+
+    def test_field_filter_range(self):
+        """Field filter range."""
+        lower_id = self.published[0].id
+        upper_id = self.published[-1].id
+        return self._field_filter_range(
+            'id',
+            lower_id,
+            upper_id,
+            self.published_count
+        )
+
+    def _field_filter_prefix(self, field_name, prefix, count):
+        """Field filter prefix.
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__prefix=bio
+        """
+        url = self.base_url[:]
+        data = {}
+        response = self.client.get(
+            url + '?{}__prefix={}'.format(field_name, prefix),
+            data
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(response.data['results']),
+            count
+        )
+
+    def test_filter_prefix(self):
+        """Test filter prefix."""
+        return self._field_filter_prefix(
+            'title',
+            self.prefix,
+            self.prefix_count
         )
 
 

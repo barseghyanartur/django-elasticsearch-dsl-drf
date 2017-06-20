@@ -13,36 +13,45 @@ from rest_framework import status
 from books import constants
 import factories
 
-from .base import BaseTestCase
+from .base import BaseRestFrameworkTestCase
 
 if DJANGO_GTE_1_10:
     from django.urls import reverse
 else:
     from django.core.urlresolvers import reverse
 
+__title__ = 'django_elasticsearch_dsl_drf.tests.test_search'
+__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
+__copyright__ = '2016-2017 Artur Barseghyan'
+__license__ = 'GPL 2.0/LGPL 2.1'
+__all__ = (
+    'TestSearch',
+)
+
 
 @pytest.mark.django_db
-class TestSearch(BaseTestCase):
+class TestSearch(BaseRestFrameworkTestCase):
     """Test search."""
 
     pytestmark = pytest.mark.django_db
 
-    def setUp(self):
-        self.special_count = 10
-        self.special = factories.BookWithUniqueTitleFactory.create_batch(
-            self.special_count,
+    @classmethod
+    def setUp(cls):
+        cls.special_count = 10
+        cls.special = factories.BookWithUniqueTitleFactory.create_batch(
+            cls.special_count,
             **{
                 'summary': 'Delusional Insanity, fine art photography',
                 'state': constants.BOOK_PUBLISHING_STATUS_PUBLISHED,
             }
         )
 
-        self.lorem_count = 10
-        self.lorem = factories.BookWithUniqueTitleFactory.create_batch(
-            self.lorem_count
+        cls.lorem_count = 10
+        cls.lorem = factories.BookWithUniqueTitleFactory.create_batch(
+            cls.lorem_count
         )
 
-        self.all_count = self.special_count + self.lorem_count
+        cls.all_count = cls.special_count + cls.lorem_count
         call_command('search_index', '--rebuild', '-f')
 
     def _search_by_field(self, field_name, search_term):

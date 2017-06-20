@@ -12,22 +12,31 @@ from rest_framework import status
 
 import factories
 
-from .base import BaseTestCase
+from .base import BaseRestFrameworkTestCase
 
 if DJANGO_GTE_1_10:
     from django.urls import reverse
 else:
     from django.core.urlresolvers import reverse
 
+__title__ = 'django_elasticsearch_dsl_drf.tests.test_ordering'
+__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
+__copyright__ = '2016-2017 Artur Barseghyan'
+__license__ = 'GPL 2.0/LGPL 2.1'
+__all__ = (
+    'TestOrdering',
+)
+
 
 @pytest.mark.django_db
-class TestOrdering(BaseTestCase):
+class TestOrdering(BaseRestFrameworkTestCase):
     """Test ordering."""
 
     pytestmark = pytest.mark.django_db
 
-    def setUp(self):
-        self.books = factories.BookWithUniqueTitleFactory.create_batch(20)
+    @classmethod
+    def setUpClass(cls):
+        cls.books = factories.BookWithUniqueTitleFactory.create_batch(20)
 
         call_command('search_index', '--rebuild', '-f')
 

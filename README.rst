@@ -14,12 +14,14 @@ document models.
 
 Prerequisites
 =============
+
 - Django 1.8, 1.9, 1.10 and 1.11.
 - Python 2.7, 3.4, 3.5, 3.6
 - Elasticsearch 2.x, 5.x
 
 Dependencies
 ============
+
 - django-elasticsearch-dsl
 - djangorestframework
 
@@ -52,6 +54,7 @@ Installation
 
 Usage examples
 ==============
+
 See the `example project
 <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/tree/master/examples/simple>`_
 for sample models/views/serializers.
@@ -67,6 +70,7 @@ for sample models/views/serializers.
 
 Basic Django REST framework integration example
 -----------------------------------------------
+
 Sample basic example models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -212,14 +216,6 @@ search_indexes/views.py:
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.constants import (
-        LOOKUP_FILTER_TERMS,
-        LOOKUP_FILTER_RANGE,
-        LOOKUP_FILTER_PREFIX,
-        LOOKUP_FILTER_WILDCARD,
-        LOOKUP_QUERY_IN,
-        LOOKUP_QUERY_EXCLUDE,
-    )
     from django_elasticsearch_dsl_drf.filter_backends import (
         FilteringFilterBackend,
         OrderingFilterBackend,
@@ -691,6 +687,7 @@ and filtering actions described below.
 
 Sample queries
 ^^^^^^^^^^^^^^
+
 Search
 ++++++
 Query param name reserved for search is ``search``. Make sure your models and
@@ -740,6 +737,7 @@ fields add multiple ``search`` query params and field names separated with
 
 Filtering
 +++++++++
+
 Let's assume we have a number of Book documents with the tags (education,
 politics, economy, biology, climate, environment, internet, technology).
 
@@ -804,6 +802,7 @@ should match both "technology" and "biology".
 
 Ordering
 ++++++++
+
 The ``-`` prefix means ordering should be descending.
 
 **Order documents by field (ascending)**
@@ -834,8 +833,10 @@ the example below, documents would be ordered first by field
 
 Various handy helpers
 ---------------------
+
 More like this
 ~~~~~~~~~~~~~~
+
 To get more-like-this results on a random registered model, do as follows:
 
 .. code-block:: python
@@ -850,6 +851,7 @@ To get more-like-this results on a random registered model, do as follows:
 
 Testing
 =======
+
 Project is covered with tests.
 
 To test with all supported Python/Django versions type:
@@ -891,6 +893,7 @@ install the test requirements:
 
 Writing documentation
 =====================
+
 Keep the following hierarchy.
 
 .. code-block:: text
@@ -919,12 +922,15 @@ Keep the following hierarchy.
 
 License
 =======
+
 GPL 2.0/LGPL 2.1
 
 Support
 =======
+
 For any issues contact me at the e-mail given in the `Author`_ section.
 
 Author
 ======
+
 Artur Barseghyan <artur.barseghyan@gmail.com>

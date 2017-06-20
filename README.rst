@@ -286,7 +286,7 @@ Let's assume we have a number of Book items with fields ``title``,
 **Search in all fields**
 
 Search in all fields (``name``, ``address``, ``city``, ``state_province`` and
-``country``) for word "reilly"
+``country``) for word "reilly".
 
 .. code-block:: text
 
@@ -338,7 +338,7 @@ Filter documents by field (``city``) "yerevan".
 
 **Filter documents by multiple states**
 
-Filter documents by ``city`` "yerevan" and "groningen"
+Filter documents by ``city`` "Yerevan" and "Groningen".
 
 .. code-block:: text
 

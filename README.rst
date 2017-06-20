@@ -67,12 +67,12 @@ for sample models/views/serializers.
 - `views
   <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/views.py>`_
 
-Basic example
--------------
-Sample models
-~~~~~~~~~~~~~
+Basic Django REST framework integration example
+-----------------------------------------------
+Sample basic example models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**books/models.py**
+books/models.py:
 
 .. code-block:: python
 
@@ -95,10 +95,10 @@ Sample models
             return self.name
 
 
-Sample document
-~~~~~~~~~~~~~~~
+Sample basic example document
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**search_indexes/documents/publisher.py**
+search_indexes/documents/publisher.py:
 
 .. code-block:: python
 
@@ -171,10 +171,10 @@ Sample document
             model = Publisher  # The model associate with this DocType
 
 
-Sample serializer
-~~~~~~~~~~~~~~~~~
+Sample basic example serializer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**search_indexes/serializers.py**
+search_indexes/serializers.py:
 
 .. code-block:: python
 
@@ -207,11 +207,10 @@ Sample serializer
             )
             read_only_fields = fields
 
-Sample view
-~~~~~~~~~~~
+Sample basic example view
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**search_indexes/views.py**
-
+search_indexes/views.py:
 
 .. code-block:: python
 
@@ -271,13 +270,13 @@ Sample view
         # Specify default ordering
         ordering = ('id', 'name',)
 
-Advanced example
-----------------
+Advanced Django REST framework integration example
+--------------------------------------------------
 
-Sample models
-~~~~~~~~~~~~~
+Sample advanced example models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**books/models.py**
+books/models.py:
 
 .. code-block:: python
 
@@ -403,10 +402,10 @@ Sample models
             """
             return json.dumps([tag.title for tag in self.tags.all()])
 
-Sample document
-~~~~~~~~~~~~~~~
+Sample advanced example document
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**search_indexes/documents/book.py**
+search_indexes/documents/book.py:
 
 .. code-block:: python
 
@@ -518,10 +517,10 @@ Sample document
 
             model = Book  # The model associate with this DocType
 
-Sample serializer
-~~~~~~~~~~~~~~~~~
+Sample advanced example serializer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**search_indexes/serializers.py**
+search_indexes/serializers.py:
 
 .. code-block:: python
 
@@ -595,10 +594,10 @@ Sample serializer
             """Get tags."""
             return json.loads(obj.tags)
 
-Sample view
-~~~~~~~~~~~
+Sample advanced example view
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**search_indexes/views.py**
+search_indexes/views.py:
 
 .. code-block:: python
 
@@ -834,6 +833,8 @@ the example below, documents would be ordered first by field `publication_date`
 
     http://127.0.0.1:8080/search/books/?search=title|lorem&ordering=-publication_date,ordering=price
 
+
+
 Testing
 =======
 Project is covered with tests.
@@ -874,6 +875,22 @@ install the test requirements:
 .. code-block:: sh
 
     pip install -r examples/requirements/test.txt
+
+Various handy helpers
+---------------------
+More like this
+~~~~~~~~~~~~~~
+To get more-like-this results on a random registered model, do as follows:
+
+.. code-block:: python
+
+    from django_elasticsearch_dsl_drf.helpers import more_like_this
+    from books.models import Book
+    book = Book.objects.first()
+    similar_books = more_like_this(
+        book,
+        ['title', 'description', 'summary']
+    )
 
 Writing documentation
 =====================

@@ -15,6 +15,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.1.1
+-----
+2017-06-20
+
+- Fixes in `more_like_this` helper.
+- Tiny documentation improvements.
+
 0.1
 ---
 2017-06-19

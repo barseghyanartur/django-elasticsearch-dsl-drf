@@ -45,17 +45,29 @@ def get_index_and_mapping_for_model(model):
         )
 
 
-def more_like_this(obj, min_term_freq=1, max_query_terms=12):
+def more_like_this(obj, fields, min_term_freq=1, max_query_terms=12):
     """More like this.
 
     :param obj: Django model instance for which similar objects shall be found.
+    :param fields: Fields to search in.
     :param min_term_freq:
     :param max_query_terms:
     :type obj: Instance of `django.db.models.Model` (sub-classed) model.
+    :type fields: list
     :type min_term_freq: int
     :type max_query_terms: int
     :return: List of objects.
     :rtype: elasticsearch_dsl.search.Search
+
+    Example:
+
+    >>> from django_elasticsearch_dsl_drf.helpers import more_like_this
+    >>> from books.models import Book
+    >>> book = Book.objects.first()
+    >>> similar_books = more_like_this(
+    >>>     book,
+    >>>     ['title', 'description', 'summary']
+    >>> )
     """
     _index, _mapping = get_index_and_mapping_for_model(obj._meta.model)
     if _index is None:
@@ -66,7 +78,7 @@ def more_like_this(obj, min_term_freq=1, max_query_terms=12):
 
     return _search.query(
         MoreLikeThis(
-            fields=['title', 'content', 'summary'],
+            fields=fields,
             like={
                 '_id': "{}".format(obj.pk),
                 '_index': "{}".format(_index),

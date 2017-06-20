@@ -698,7 +698,7 @@ documents do not have it as a field or attribute.
 
 Multiple search terms are joined with ``OR``.
 
-Let's assume we have a number of Book items with fields ``title`,
+Let's assume we have a number of Book items with fields ``title``,
 ``description`` and ``summary``.
 
 **Search in all fields**

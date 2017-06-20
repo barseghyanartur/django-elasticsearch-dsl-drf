@@ -264,6 +264,158 @@ search_indexes/views.py:
         # Specify default ordering
         ordering = ('id', 'name',)
 
+
+Usage simple example
+~~~~~~~~~~~~~~~~~~~~
+Considering samples above, you should be able to perform the search, sorting
+and filtering actions described below.
+
+Sample queries
+^^^^^^^^^^^^^^
+
+Search
+++++++
+Query param name reserved for search is ``search``. Make sure your models and
+documents do not have it as a field or attribute.
+
+Multiple search terms are joined with ``OR``.
+
+Let's assume we have a number of Book items with fields ``title``,
+``description`` and ``summary``.
+
+**Search in all fields**
+
+Search in all fields (``name``, ``address``, ``city``, ``state_province`` and
+``country``) for word "reilly"
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?search=reilly
+
+**Search in specific field**
+
+In order to search in specific field (``name``) for term "reilly", add
+the field name separated with ``|`` to the search term.
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?search=name|reilly
+
+**Search for multiple terms**
+
+In order to search for multiple terms "reilly", "bloomsbury" add
+multiple ``search`` query params.
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?search=reilly&search=bloomsbury
+
+**Search for multiple terms in specific fields**
+
+In order to search for multiple terms "reilly", "bloomsbury" in specific
+fields add multiple ``search`` query params and field names separated with
+``|`` to each of the search terms.
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?search=name|reilly&search=city|london
+
+Filtering
++++++++++
+
+Let's assume we have a number of Publisher documents with in cities (Yerevan,
+Groningen, Amsterdam, London).
+
+Multiple filter terms are joined with ``AND``.
+
+**Filter documents by single field**
+
+Filter documents by field (``city``) "yerevan".
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?city=yerevan
+
+**Filter documents by multiple states**
+
+Filter documents by ``city`` "yerevan" and "groningen"
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?city__in=yerevan|groningen
+
+**Filter document by a single field**
+
+Filter documents by (field ``country``) "Armenia".
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?country=armenia
+
+**Filter documents by multiple fields**
+
+Filter documents by multiple fields (field ``city``) "Yerevan" and "Amsterdam"
+with use of functional ``in`` query filter.
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?city__in=yerevan|amsterdam
+
+You can achieve the same effect by specifying multiple tags (``city``)
+"Yerevan" and "Amsterdam". Note, that in this case multiple filter terms are
+joined with ``OR``.
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?city=yerevan&city=amsterdam
+
+If you want the same as above, but joined with ``AND``, add ``__term`` to each
+lookup.
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?city__term=education&city__term=economy
+
+**Filter documents by a word part of a single field**
+
+Filter documents by a part word part in single field (``city``). Word part
+should match both "ondon".
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?city__wildcard=*ondon
+
+Ordering
+++++++++
+
+The ``-`` prefix means ordering should be descending.
+
+**Order documents by field (ascending)**
+
+Filter documents by field ``city`` (ascending).
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?search=country|armenia&ordering=city
+
+**Order documents by field (descending)**
+
+Filter documents by field ``country`` (descending).
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?ordering=country
+
+**Order documents by multiple fields**
+
+If you want to order by multiple fields, use multiple ordering query params. In
+the example below, documents would be ordered first by field
+``country`` (descending), then by field ``city`` (ascending).
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?ordering=-country&ordering=city
+
 Advanced Django REST framework integration example
 --------------------------------------------------
 
@@ -680,8 +832,8 @@ search_indexes/views.py:
         # Specify default ordering
         ordering = ('id', 'title',)
 
-Usage
-~~~~~
+Usage advanced example
+~~~~~~~~~~~~~~~~~~~~~~
 Considering samples above, you should be able to perform the search, sorting
 and filtering actions described below.
 
@@ -829,7 +981,7 @@ the example below, documents would be ordered first by field
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/books/?search=title|lorem&ordering=-publication_date,ordering=price
+    http://127.0.0.1:8080/search/books/?search=title|lorem&ordering=-publication_date&ordering=price
 
 Various handy helpers
 ---------------------

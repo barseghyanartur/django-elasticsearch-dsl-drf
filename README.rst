@@ -34,7 +34,7 @@ Installation
 
         pip install django-elasticsearch-dsl-drf
 
-Or latest stable version from GitHub:
+    Or latest stable version from GitHub:
 
     .. code-block:: sh
 

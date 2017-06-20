@@ -11,6 +11,7 @@ Must haves
 ==========
 .. code-block:: text
 
+    - Make more-like-this shortcut more generic.
     - Full support of all optional params of each native ElasticSearch filter,
       such as `flags` on `regexp`.
     - Implement `regexp`, `fuzzy`, `type` and `ids` native filters.

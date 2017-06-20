@@ -19,7 +19,7 @@ are used for versioning (schema follows below):
 -----
 2017-06-21
 
-- Added tests for `more_like_this` helper, `range` filter and `prefix filter`.
+- Added tests for `more_like_this` helper, `range` filter and `prefix` filter.
 - Minor documentation improvements.
 
 0.1.2

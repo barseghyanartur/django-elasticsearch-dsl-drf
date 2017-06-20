@@ -693,45 +693,46 @@ Sample queries
 ^^^^^^^^^^^^^^
 Search
 ++++++
-Query param name reserved for search is `search`. Make sure your models and
+Query param name reserved for search is ``search``. Make sure your models and
 documents do not have it as a field or attribute.
 
-Multiple search terms are joined with `OR`.
+Multiple search terms are joined with ``OR``.
 
-Let's assume we have a number of Book items with fields `title`, `description`
-and `summary`.
+Let's assume we have a number of Book items with fields ``title`,
+``description`` and ``summary``.
 
-Search in all fields
-********************
-Search in all fields (`title`, `summary` and `content`) for word "education"
+**Search in all fields**
+
+Search in all fields (``title``, ``summary`` and ``content``) for word
+"education"
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?search=education
 
-Search in specific field
-************************
-In order to search in specific field (`title`) for term "education", add
-the field name separated with `|` to the search term.
+**Search in specific field**
+
+In order to search in specific field (``title``) for term "education", add
+the field name separated with ``|`` to the search term.
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?search=title|education
 
-Search for multiple terms
-*************************
+**Search for multiple terms**
+
 In order to search for multiple terms "education", "technology" add
-multiple `search` query params.
+multiple ``search`` query params.
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?search=education&search=technology
 
-Search for multiple terms in specific fields
-********************************************
+**Search for multiple terms in specific fields**
+
 In order to search for multiple terms "education", "technology" in specific
-fields add multiple `search` query params and field names separated with `|`
-to each of the search terms.
+fields add multiple ``search`` query params and field names separated with
+``|`` to each of the search terms.
 
 .. code-block:: text
 
@@ -742,60 +743,60 @@ Filtering
 Let's assume we have a number of Book documents with the tags (education,
 politics, economy, biology, climate, environment, internet, technology).
 
-Multiple filter terms are joined with `AND`.
+Multiple filter terms are joined with ``AND``.
 
-Filter documents by state
-*************************
-Filter documents by `state` "published".
+**Filter documents by state**
+
+Filter documents by ``state`` "published".
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?state=published
 
-Filter documents by multiple states
-***********************************
-Filter documents by `states` "published" and "in_progress"
+**Filter documents by multiple states**
+
+Filter documents by ``states`` "published" and "in_progress"
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?state__in=published|in_progress
 
-Filter document by a single tag
-*******************************
-Filter documents by tag "education".
+**Filter document by a single field**
+
+Filter documents by (field ``tag``) "education".
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?tag=education
 
-Filter documents by multiple tags
-*********************************
-Filter documents by multiple tags (`tags`) "education" and "economy" with use of
-functional `in` query filter.
+**Filter documents by multiple fields**
+
+Filter documents by multiple fields (field ``tags``) "education" and "economy"
+with use of functional ``in`` query filter.
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?tags__in=education|economy
 
-You can achieve the same effect by specifying multiple tags (`tags`)
+You can achieve the same effect by specifying multiple tags (``tags``)
 "education" and "economy". Note, that in this case multiple filter terms are
-joined with `OR`.
+joined with ``OR``.
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?tags=education&tags=economy
 
-If you want the same as above, but joined with `AND`, add `__term` to each
+If you want the same as above, but joined with ``AND``, add ``__term`` to each
 lookup.
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?tags__term=education&tags__term=economy
 
-Filter documents by a word part of a single tag
-***********************************************
-Filter documents by a part word part in single tag (`tags`). Word part should
-match both "technology" and "biology".
+**Filter documents by a word part of a single field**
+
+Filter documents by a part word part in single field (``tags``). Word part
+should match both "technology" and "biology".
 
 .. code-block:: text
 
@@ -803,35 +804,49 @@ match both "technology" and "biology".
 
 Ordering
 ++++++++
-The `-` prefix means ordering should be descending.
+The ``-`` prefix means ordering should be descending.
 
-Order documents by field (ascending)
-************************************
-Filter documents by field `price` (ascending).
+**Order documents by field (ascending)**
+
+Filter documents by field ``price`` (ascending).
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?search=title|lorem&ordering=price
 
-Order documents by field (descending)
-*************************************
-Filter documents by field `price` (descending).
+**Order documents by field (descending)**
+
+Filter documents by field ``price`` (descending).
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?search=title|lorem&ordering=-price
 
-Order documents by multiple fields
-**********************************
+**Order documents by multiple fields**
+
 If you want to order by multiple fields, use multiple ordering query params. In
-the example below, documents would be ordered first by field `publication_date`
-(descending), then by field `price` (ascending).
+the example below, documents would be ordered first by field
+``publication_date`` (descending), then by field ``price`` (ascending).
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?search=title|lorem&ordering=-publication_date,ordering=price
 
+Various handy helpers
+---------------------
+More like this
+~~~~~~~~~~~~~~
+To get more-like-this results on a random registered model, do as follows:
 
+.. code-block:: python
+
+    from django_elasticsearch_dsl_drf.helpers import more_like_this
+    from books.models import Book
+    book = Book.objects.first()
+    similar_books = more_like_this(
+        book,
+        ['title', 'description', 'summary']
+    )
 
 Testing
 =======
@@ -873,22 +888,6 @@ install the test requirements:
 .. code-block:: sh
 
     pip install -r examples/requirements/test.txt
-
-Various handy helpers
----------------------
-More like this
-~~~~~~~~~~~~~~
-To get more-like-this results on a random registered model, do as follows:
-
-.. code-block:: python
-
-    from django_elasticsearch_dsl_drf.helpers import more_like_this
-    from books.models import Book
-    book = Book.objects.first()
-    similar_books = more_like_this(
-        book,
-        ['title', 'description', 'summary']
-    )
 
 Writing documentation
 =====================

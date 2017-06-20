@@ -3,7 +3,8 @@ from __future__ import absolute_import
 import unittest
 
 from django.core.management import call_command
-from django.urls import reverse
+
+from nine.versions import DJANGO_GTE_1_10
 
 import pytest
 
@@ -12,6 +13,11 @@ from rest_framework import status
 import factories
 
 from .base import BaseTestCase
+
+if DJANGO_GTE_1_10:
+    from django.urls import reverse
+else:
+    from django.core.urlresolvers import reverse
 
 
 @pytest.mark.django_db

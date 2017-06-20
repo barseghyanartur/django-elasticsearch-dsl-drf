@@ -1,5 +1,9 @@
 from .base import *  # NOQA
 
+DEV = False
+DEBUG = False
+DEBUG_TOOLBAR = False
+DEBUG_TOOLBAR_PANELS = {}
 
 DATABASES = {
     'default': {

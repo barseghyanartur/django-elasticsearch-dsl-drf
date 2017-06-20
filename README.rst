@@ -703,7 +703,7 @@ Let's assume we have a number of Book items with fields ``title`,
 
 **Search in all fields**
 
-Search in all fields (``title``, ``summary`` and ``content``) for word
+Search in all fields (``title``, ``description`` and ``summary``) for word
 "education"
 
 .. code-block:: text

@@ -1,0 +1,36 @@
+
+                <li{% if home_is_active %} class="menu-text"{% endif %}>
+                    <a href="/"{% if home_is_active %} class="button"{% endif %}>Home</a>
+                </li>
+
+                <li{% if books_authors_is_active %} class="menu-text"{% endif %}>
+                    <a href="{% url 'exercises.authors' %}"{% if books_authors_is_active %} class="button"{% endif %}>Authors</a>
+                </li>
+
+                <li{% if books_authors_json_is_active %} class="menu-text"{% endif %}>
+                    <a href="{% url 'exercises.authors_json' %}"{% if books_authors_json_is_active %} class="button"{% endif %}>Authors (JSON)</a>
+                </li>
+
+                <li{% if books_books_is_active %} class="menu-text"{% endif %}>
+                    <a href="{% url 'exercises.books' %}"{% if books_books_is_active %} class="button"{% endif %}>Books</a>
+                </li>
+
+                <li{% if books_publishers_is_active %} class="menu-text"{% endif %}>
+                    <a href="{% url 'exercises.publishers' %}"{% if books_publishers_is_active %} class="button"{% endif %}>Publishers</a>
+                </li>
+
+                <li{% if books_create_authors_is_active %} class="menu-text"{% endif %}>
+                    <a href="{% url 'exercises.create_authors' %}"{% if books_create_authors_is_active %} class="button"{% endif %}>Create authors</a>
+                </li>
+
+                <li{% if books_add_authors_to_book_is_active %} class="menu-text"{% endif %}>
+                    <a href="{% url 'exercises.add_authors_to_book' %}"{% if books_add_authors_to_book_is_active %} class="button"{% endif %}>Add authors to book</a>
+                </li>
+
+                <li{% if books_publisher_ids_is_active %} class="menu-text"{% endif %}>
+                    <a href="{% url 'exercises.publisher_ids' %}"{% if books_publisher_ids_is_active %} class="button"{% endif %}>Publisher IDs</a>
+                </li>
+
+                <li{% if books_update_books_is_active %} class="menu-text"{% endif %}>
+                    <a href="{% url 'exercises.update_books' %}"{% if books_update_books_is_active %} class="button"{% endif %}>Update books</a>
+                </li>

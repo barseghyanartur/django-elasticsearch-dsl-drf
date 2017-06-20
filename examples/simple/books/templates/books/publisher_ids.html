@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block meta-title %}Publisher IDs{% endblock %}
+
+{% block nav-menu-items %}
+    {% with True as books_publisher_ids_is_active %}
+        {% include "snippets/menu_items.html" %}
+    {% endwith %}
+{% endblock nav-menu-items %}
+
+{% block main-content %}
+    <h2>Publisher IDs</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Publisher ID</th>
+        </tr>
+        </thead>
+        {% for publisher_id in object_list %}
+            <tr>
+                <td>{{ publisher_id }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+{% block sidebar-content %}{% endblock sidebar-content %}

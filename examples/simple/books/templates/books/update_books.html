@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block meta-title %}Update books{% endblock %}
+
+{% block nav-menu-items %}
+    {% with True as books_update_books_is_active %}
+        {% include "snippets/menu_items.html" %}
+    {% endwith %}
+{% endblock nav-menu-items %}
+
+{% block main-content %}
+    <h2>Update books</h2>
+    <p>Number of books updated: {{ number_of_books_updated }}</p>
+{% endblock %}
+{% block sidebar-content %}{% endblock sidebar-content %}

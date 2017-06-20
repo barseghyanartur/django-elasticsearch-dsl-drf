@@ -1,0 +1,19 @@
+
+Documentation
+=============
+Contents:
+
+.. contents:: Table of Contents
+
+.. toctree::
+   :maxdepth: 20
+
+   ormex
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

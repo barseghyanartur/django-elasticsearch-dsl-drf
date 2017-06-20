@@ -1,0 +1,5 @@
+[run]
+omit =
+    src/django_elasticsearch_dsl_drf/tests/*
+    example/simple/settings/*
+    example/simple/wsgi.py

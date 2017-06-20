@@ -1,0 +1,2 @@
+-r django_1_10.txt
+-r test.txt

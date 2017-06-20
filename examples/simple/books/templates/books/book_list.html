@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block meta-title %}Books{% endblock %}
+
+{% block nav-menu-items %}
+    {% with True as books_books_is_active %}
+        {% include "snippets/menu_items.html" %}
+    {% endwith %}
+{% endblock nav-menu-items %}
+
+{% block main-content %}
+    <h2>Books</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Book</th>
+            <th>Authors</th>
+            <th>Publisher</th>
+            <th>Number of pages</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        {% for book in object_list %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{% for author in book.authors.all %}{{ author.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                <td>{{ book.publisher.name }}</td>
+                <td>{{ book.pages }}</td>
+                <td>{{ book.price }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+{% block sidebar-content %}{% endblock sidebar-content %}

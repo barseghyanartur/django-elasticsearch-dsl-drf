@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block meta-title %}Authors{% endblock %}
+
+{% block nav-menu-items %}
+    {% with True as books_authors_is_active %}
+        {% include "snippets/menu_items.html" %}
+    {% endwith %}
+{% endblock nav-menu-items %}
+
+{% block main-content %}
+    <h2>Authors</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Salutation</th>
+            <th>Name</th>
+            <th>E-mail</th>
+        </tr>
+        </thead>
+        {% for author in object_list %}
+            <tr>
+                <td>{{ author.salutation }}</td>
+                <td>{{ author.name }}</td>
+                <td>{{ author.email }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+{% block sidebar-content %}{% endblock sidebar-content %}

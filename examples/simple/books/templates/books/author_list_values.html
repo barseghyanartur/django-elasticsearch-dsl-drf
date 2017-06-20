@@ -1,0 +1,8 @@
+{% extends "books/author_list.html" %}
+{% block meta-title %}Authors (values){% endblock %}
+
+{% block nav-menu-items %}
+    {% with True as books_authors_values_is_active %}
+        {% include "snippets/menu_items.html" %}
+    {% endwith %}
+{% endblock nav-menu-items %}

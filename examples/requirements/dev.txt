@@ -1,0 +1,4 @@
+-r django_1_11.txt
+-r debug.txt
+-r docs.txt
+-r code_style.txt

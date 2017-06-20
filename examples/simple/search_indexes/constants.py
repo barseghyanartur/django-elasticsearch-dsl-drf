@@ -1,0 +1,12 @@
+__all__ = (
+    'INDEX_NAMES',
+    'BOOK_INDEX_NAME',
+    'PUBLISHER_INDEX_NAME',
+)
+
+BOOK_INDEX_NAME = 'book'
+PUBLISHER_INDEX_NAME = 'publisher'
+INDEX_NAMES = [
+    BOOK_INDEX_NAME,
+    PUBLISHER_INDEX_NAME,
+]

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block meta-title %}Authors (values with counts){% endblock %}
+
+{% block nav-menu-items %}
+    {% with True as books_authors_values_with_counts_is_active %}
+        {% include "snippets/menu_items.html" %}
+    {% endwith %}
+{% endblock nav-menu-items %}
+
+{% block main-content %}
+    <h2>Authors</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Salutation</th>
+            <th>Name</th>
+            <th>E-mail</th>
+            <th>Number of books</th>
+            <th>First book published on</th>
+            <th>Last book published on</th>
+            <th>Lowest book price</th>
+            <th>Highest book price</th>
+            <th>Average book price</th>
+            <th>Average number of pages per book</th>
+            <th>Number of books sold</th>
+            <th>Total amount earned</th>
+        </tr>
+        </thead>
+        {% for author in object_list %}
+            <tr>
+                <td>{{ author.salutation }}</td>
+                <td>{{ author.name }}</td>
+                <td>{{ author.email }}</td>
+                <td>{{ author.number_of_books }}</td>
+                <td>{{ author.first_book_published_on|date }}</td>
+                <td>{{ author.last_book_published_on|date }}</td>
+                <td>{{ author.lowest_book_price|floatformat:2 }}</td>
+                <td>{{ author.highest_book_price|floatformat:2 }}</td>
+                <td>{{ author.average_book_price|floatformat:2 }}</td>
+                <td>{{ author.average_number_of_pages_per_book|floatformat:0 }}</td>
+                <td>{{ author.number_of_books_sold }}</td>
+                <td>{{ author.total_amount_earned|intcomma }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+{% block sidebar-content %}{% endblock sidebar-content %}

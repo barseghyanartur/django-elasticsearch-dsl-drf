@@ -1,0 +1,2 @@
+rst2pdf
+sphinx

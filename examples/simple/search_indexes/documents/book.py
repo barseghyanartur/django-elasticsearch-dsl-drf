@@ -7,9 +7,9 @@ from ..constants import BOOK_INDEX_NAME
 
 __all__ = ('BookDocument',)
 
-# Name of the ElasticSearch index
+# Name of the Elasticsearch index
 BOOK_INDEX = Index(BOOK_INDEX_NAME)
-# See ElasticSearch Indices API reference for available settings
+# See Elasticsearch Indices API reference for available settings
 BOOK_INDEX.settings(
     number_of_shards=1,
     number_of_replicas=1
@@ -26,7 +26,7 @@ html_strip = analyzer(
 
 @BOOK_INDEX.doc_type
 class BookDocument(DocType):
-    """Book ElasticSearch document."""
+    """Book Elasticsearch document."""
 
     # In different parts of the code different fields are used. There are
     # a couple of use cases: (1) more-like-this functionality, where `title`,

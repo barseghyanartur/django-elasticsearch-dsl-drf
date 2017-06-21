@@ -1,6 +1,6 @@
-Install ElasticSearch
+Install Elasticsearch
 =====================
-Install ElasticSearch 2.x
+Install Elasticsearch 2.x
 -------------------------
 (1) First, update your package index.
 

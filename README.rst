@@ -34,7 +34,7 @@ Installation
 
         pip install django-elasticsearch-dsl-drf
 
-    Or latest stable version from GitHub:
+    or latest stable version from GitHub:
 
     .. code-block:: sh
 
@@ -48,7 +48,7 @@ Installation
         INSTALLED_APPS = (
             # ...
             'rest_framework',  # REST framework
-            'django_elasticsearch_dsl',  # ElasticSearch integration
+            'django_elasticsearch_dsl',  # Elasticsearch integration
             # ...
         )
 
@@ -96,7 +96,6 @@ books/models.py:
         def __str__(self):
             return self.name
 
-
 Sample basic example document
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -109,9 +108,9 @@ search_indexes/documents/publisher.py:
 
     from books.models import Publisher
 
-    # Name of the ElasticSearch index
+    # Name of the Elasticsearch index
     PUBLISHER_INDEX = Index('publisher')
-    # See ElasticSearch Indices API reference for available settings
+    # See Elasticsearch Indices API reference for available settings
     PUBLISHER_INDEX.settings(
         number_of_shards=1,
         number_of_replicas=1
@@ -120,7 +119,7 @@ search_indexes/documents/publisher.py:
 
     @PUBLISHER_INDEX.doc_type
     class PublisherDocument(DocType):
-        """Publisher ElasticSearch document."""
+        """Publisher Elasticsearch document."""
 
         id = fields.IntegerField(attr='id')
 
@@ -198,7 +197,7 @@ search_indexes/serializers.py:
         class Meta(object):
             """Meta options."""
 
-            fields = read_only_fields = (
+            fields = (
                 'id',
                 'name',
                 'address',
@@ -292,7 +291,7 @@ Search in all fields (``name``, ``address``, ``city``, ``state_province`` and
 
     http://127.0.0.1:8080/search/publisher/?search=reilly
 
-**Search in specific field**
+**Search a single term on specific field**
 
 In order to search in specific field (``name``) for term "reilly", add
 the field name separated with ``|`` to the search term.
@@ -336,7 +335,7 @@ Filter documents by field (``city``) "yerevan".
 
     http://127.0.0.1:8080/search/publisher/?city=yerevan
 
-**Filter documents by multiple states**
+**Filter documents by multiple fields**
 
 Filter documents by ``city`` "Yerevan" and "Groningen".
 
@@ -361,7 +360,7 @@ with use of functional ``in`` query filter.
 
     http://127.0.0.1:8080/search/publisher/?city__in=yerevan|amsterdam
 
-You can achieve the same effect by specifying multiple tags (``city``)
+You can achieve the same effect by specifying multiple filters (``city``)
 "Yerevan" and "Amsterdam". Note, that in this case multiple filter terms are
 joined with ``OR``.
 
@@ -378,8 +377,7 @@ lookup.
 
 **Filter documents by a word part of a single field**
 
-Filter documents by a part word part in single field (``city``). Word part
-should match both "ondon".
+Filter documents by a part word part in single field (``city``) "ondon".
 
 .. code-block:: text
 
@@ -404,13 +402,13 @@ Filter documents by field ``country`` (descending).
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/publisher/?ordering=country
+    http://127.0.0.1:8080/search/publisher/?ordering=-country
 
 **Order documents by multiple fields**
 
 If you want to order by multiple fields, use multiple ordering query params. In
-the example below, documents would be ordered first by field
-``country`` (descending), then by field ``city`` (ascending).
+the example below, documents would be ordered first by field ``country``
+(descending), then by field ``city`` (ascending).
 
 .. code-block:: text
 
@@ -535,7 +533,7 @@ books/models.py:
         def publisher_indexing(self):
             """Publisher for indexing.
 
-            Used in ElasticSearch indexing.
+            Used in Elasticsearch indexing.
             """
             if self.publisher is not None:
                 return self.publisher.name
@@ -544,7 +542,7 @@ books/models.py:
         def tags_indexing(self):
             """Tags for indexing.
 
-            Used in ElasticSearch indexing.
+            Used in Elasticsearch indexing.
             """
             return json.dumps([tag.title for tag in self.tags.all()])
 
@@ -560,9 +558,9 @@ search_indexes/documents/book.py:
 
     from books.models import Book
 
-    # Name of the ElasticSearch index
+    # Name of the Elasticsearch index
     BOOK_INDEX = Index('book')
-    # See ElasticSearch Indices API reference for available settings
+    # See Elasticsearch Indices API reference for available settings
     BOOK_INDEX.settings(
         number_of_shards=1,
         number_of_replicas=1
@@ -579,7 +577,7 @@ search_indexes/documents/book.py:
 
     @BOOK_INDEX.doc_type
     class BookDocument(DocType):
-        """Book ElasticSearch document."""
+        """Book Elasticsearch document."""
 
         id = fields.IntegerField(attr='id')
 
@@ -721,20 +719,7 @@ search_indexes/serializers.py:
                 'stock_count',
                 'tags',
             )
-            read_only_fields = (
-                'id',
-                'title',
-                'description',
-                'summary',
-                'publisher',
-                'publication_date',
-                'state',
-                'isbn',
-                'price',
-                'pages',
-                'stock_count',
-                'tags',
-            )
+            read_only_fields = fields
 
         def get_tags(self, obj):
             """Get tags."""
@@ -853,13 +838,13 @@ Let's assume we have a number of Book items with fields ``title``,
 **Search in all fields**
 
 Search in all fields (``title``, ``description`` and ``summary``) for word
-"education"
+"education".
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?search=education
 
-**Search in specific field**
+**Search a single term on specific field**
 
 In order to search in specific field (``title``) for term "education", add
 the field name separated with ``|`` to the search term.
@@ -877,7 +862,7 @@ multiple ``search`` query params.
 
     http://127.0.0.1:8080/search/books/?search=education&search=technology
 
-**Search for multiple terms in specific fields**
+**Search for multiple terms on specific fields**
 
 In order to search for multiple terms "education", "technology" in specific
 fields add multiple ``search`` query params and field names separated with
@@ -895,17 +880,17 @@ politics, economy, biology, climate, environment, internet, technology).
 
 Multiple filter terms are joined with ``AND``.
 
-**Filter documents by state**
+**Filter documents by field**
 
-Filter documents by ``state`` "published".
+Filter documents by field (``state``) "published".
 
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?state=published
 
-**Filter documents by multiple states**
+**Filter documents by multiple fields**
 
-Filter documents by ``states`` "published" and "in_progress"
+Filter documents by field (``states``) "published" and "in_progress".
 
 .. code-block:: text
 
@@ -928,7 +913,7 @@ with use of functional ``in`` query filter.
 
     http://127.0.0.1:8080/search/books/?tags__in=education|economy
 
-You can achieve the same effect by specifying multiple tags (``tags``)
+You can achieve the same effect by specifying multiple fields (``tags``)
 "education" and "economy". Note, that in this case multiple filter terms are
 joined with ``OR``.
 

@@ -30,7 +30,7 @@ __all__ = ('FilteringFilterBackend',)
 
 
 class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
-    """Filtering filter backend for ElasticSearch.
+    """Filtering filter backend for Elasticsearch.
 
     Example:
 

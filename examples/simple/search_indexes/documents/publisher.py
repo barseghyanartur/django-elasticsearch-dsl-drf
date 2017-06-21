@@ -4,9 +4,9 @@ from books.models import Publisher
 
 from ..constants import PUBLISHER_INDEX_NAME
 
-# Name of the ElasticSearch index
+# Name of the Elasticsearch index
 PUBLISHER_INDEX = Index(PUBLISHER_INDEX_NAME)
-# See ElasticSearch Indices API reference for available settings
+# See Elasticsearch Indices API reference for available settings
 PUBLISHER_INDEX.settings(
     number_of_shards=1,
     number_of_replicas=1
@@ -15,7 +15,7 @@ PUBLISHER_INDEX.settings(
 
 @PUBLISHER_INDEX.doc_type
 class PublisherDocument(DocType):
-    """Publisher ElasticSearch document."""
+    """Publisher Elasticsearch document."""
 
     id = fields.IntegerField(attr='id')
 

@@ -5,7 +5,7 @@ Vagrant file for testing.
 Versions
 ~~~~~~~~
 - Java 8
-- ElasticSearch 2.x
+- Elasticsearch 2.x
 
 Installation
 ~~~~~~~~~~~~
@@ -56,10 +56,10 @@ To shut down:
 
     vagrant suspend
 
-Browsing ElasticSearch indexes
+Browsing Elasticsearch indexes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A `head <https://github.com/mobz/elasticsearch-head>`_ plugin to browse
-ElasticSearch indexes has been installed.
+Elasticsearch indexes has been installed.
 
 Just open the following link in your browser:
 

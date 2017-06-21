@@ -288,8 +288,7 @@ texinfo_documents = [
    u'django-elasticsearch-dsl-drf Documentation',
    u'Artur Barseghyan <artur.barseghyan@gmail.com>',
    'django-elasticsearch-dsl-drf',
-   "Filters and handy add-ons to bootstrap integration of ElasticSearch with "
-   "Django.",
+   "Integrate Elasticsearch DSL with Django REST framework.",
    'Miscellaneous'),
 ]
 

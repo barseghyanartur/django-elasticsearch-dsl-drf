@@ -56,20 +56,7 @@ class BookDocumentSerializer(serializers.Serializer):
             'stock_count',
             'tags',
         )
-        read_only_fields = (
-            'id',
-            'title',
-            'description',
-            'summary',
-            'publisher',
-            'publication_date',
-            'state',
-            'isbn',
-            'price',
-            'pages',
-            'stock_count',
-            'tags',
-        )
+        read_only_fields = fields
 
     # def get_id(self, obj):
     #     """Get id."""
@@ -94,7 +81,7 @@ class PublisherDocumentSerializer(serializers.Serializer):
     class Meta(object):
         """Meta options."""
 
-        fields = read_only_fields = (
+        fields = (
             'id',
             'name',
             'address',

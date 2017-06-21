@@ -15,7 +15,7 @@ __all__ = ('SearchFilterBackend',)
 
 
 class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
-    """Search filter backend for ElasticSearch.
+    """Search filter backend for Elasticsearch.
 
     Example:
 

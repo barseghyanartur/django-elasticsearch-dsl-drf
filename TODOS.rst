@@ -11,7 +11,7 @@ Must haves
 ==========
 .. code-block:: text
 
-    - Full support of all optional params of each native ElasticSearch filter,
+    - Full support of all optional params of each native Elasticsearch filter,
       such as `flags` on `regexp`.
     - Implement `regexp`, `fuzzy`, `type` and `ids` native filters.
     - Implement `contains`, `gt`, `gte`, `lt`, `lte`, `endswith` functional

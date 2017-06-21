@@ -106,7 +106,7 @@ class Book(models.Model):
     def publisher_indexing(self):
         """Publisher for indexing.
 
-        Used in ElasticSearch indexing.
+        Used in Elasticsearch indexing.
         """
         if self.publisher is not None:
             return self.publisher.name
@@ -115,7 +115,7 @@ class Book(models.Model):
     def tags_indexing(self):
         """Tags for indexing.
 
-        Used in ElasticSearch indexing.
+        Used in Elasticsearch indexing.
         """
         return json.dumps([tag.title for tag in self.tags.all()])
 

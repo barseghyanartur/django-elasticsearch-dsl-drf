@@ -239,7 +239,7 @@ INSTALLED_APPS = [
 
     # Third party apps
     'rest_framework',  # REST framework
-    'django_elasticsearch_dsl',  # ElasticSearch integration
+    'django_elasticsearch_dsl',  # Elasticsearch integration
 
     # This app
     'django_elasticsearch_dsl_drf',
@@ -260,7 +260,7 @@ REST_FRAMEWORK = {
     'ORDERING_PARAM': 'ordering',
 }
 
-# ElasticSearch configuration
+# Elasticsearch configuration
 ELASTICSEARCH_DSL = {
     'default': {
         'hosts': 'localhost:9200'

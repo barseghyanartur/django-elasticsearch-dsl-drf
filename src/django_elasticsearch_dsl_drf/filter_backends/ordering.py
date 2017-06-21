@@ -11,7 +11,7 @@ __all__ = ('OrderingFilterBackend',)
 
 
 class OrderingFilterBackend(BaseFilterBackend):
-    """Ordering filter backend for ElasticSearch.
+    """Ordering filter backend for Elasticsearch.
 
     Example:
 

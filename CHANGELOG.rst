@@ -19,13 +19,14 @@ are used for versioning (schema follows below):
 -----
 2017-06-22
 
+- Added tests for `in`, `term` and `terms` filters.
 - Minor documentation fixes.
 
 0.1.3
 -----
 2017-06-21
 
-- Added tests for `more_like_this` helper, `range` filter and `prefix` filter.
+- Added tests for `more_like_this` helper, `range` and `prefix` filters.
 - Minor documentation improvements.
 
 0.1.2

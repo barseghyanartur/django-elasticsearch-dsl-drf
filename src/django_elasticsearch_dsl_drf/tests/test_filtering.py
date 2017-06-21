@@ -39,6 +39,9 @@ class TestFiltering(BaseRestFrameworkTestCase):
     @classmethod
     def setUpClass(cls):
         """Set up."""
+        # Counts are primarily taken into consideration. Don't create Book
+        # objects without `state`. If you don't know which state to use, use
+        # ``constants.BOOK_PUBLISHING_STATUS_REJECTED``.
         cls.published_count = 10
         cls.published = factories.BookFactory.create_batch(
             cls.published_count,
@@ -62,17 +65,27 @@ class TestFiltering(BaseRestFrameworkTestCase):
             **{
 
                 'title': '{} {}'.format(cls.prefix, uuid.uuid4()),
-                'state': constants.BOOK_PUBLISHING_STATUS_REJECTED
+                'state': constants.BOOK_PUBLISHING_STATUS_REJECTED,
+            }
+        )
+
+        cls.no_tags_count = 5
+        cls.no_tags = factories.BookWithoutTagsFactory.create_batch(
+            cls.no_tags_count,
+            **{
+                'state': constants.BOOK_PUBLISHING_STATUS_REJECTED,
             }
         )
 
         cls.all_count = (
             cls.published_count +
             cls.in_progress_count +
-            cls.prefix_count
+            cls.prefix_count +
+            cls.no_tags_count
         )
 
         cls.base_url = reverse('bookdocument-list', kwargs={})
+        cls.base_publisher_url = reverse('publisherdocument-list', kwargs={})
         call_command('search_index', '--rebuild', '-f')
 
     def _field_filter_term(self, field_name, filter_value):
@@ -107,6 +120,13 @@ class TestFiltering(BaseRestFrameworkTestCase):
         """Field filter term."""
         return self._field_filter_term(
             'state',
+            constants.BOOK_PUBLISHING_STATUS_PUBLISHED
+        )
+
+    def test_field_filter_term_explicit(self):
+        """Field filter term."""
+        return self._field_filter_term(
+            'state__term',
             constants.BOOK_PUBLISHING_STATUS_PUBLISHED
         )
 
@@ -160,13 +180,124 @@ class TestFiltering(BaseRestFrameworkTestCase):
             count
         )
 
-    def test_filter_prefix(self):
+    def test_field_filter_prefix(self):
         """Test filter prefix."""
         return self._field_filter_prefix(
             'title',
             self.prefix,
             self.prefix_count
         )
+
+    def _field_filter_in(self, field_name, in_values, count):
+        """Field filter in.
+
+        Example:
+
+            http://localhost:8000/api/articles/?id__in=1|2|3
+        """
+        url = self.base_url[:]
+        data = {}
+        response = self.client.get(
+            url + '?{}__in={}'.format(field_name, '|'.join(in_values)),
+            data
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(response.data['results']),
+            count
+        )
+
+    def test_field_filter_in(self):
+        """Test filter in."""
+        return self._field_filter_in(
+            'id',
+            [str(__b.id) for __b in self.prefixed],
+            self.prefix_count
+        )
+
+    def _field_filter_terms_list(self, field_name, in_values, count):
+        """Field filter terms.
+
+        Example:
+
+            http://localhost:8000/api/articles/?id=1&id=2&id=3
+        """
+        url = self.base_url[:]
+        data = {}
+        url_parts = ['{}={}'.format(field_name, val) for val in in_values]
+        response = self.client.get(
+            url + '?{}'.format('&'.join(url_parts)),
+            data
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(response.data['results']),
+            count
+        )
+
+    def test_field_filter_terms_list(self):
+        """Test filter terms."""
+        return self._field_filter_terms_list(
+            'id',
+            [str(__b.id) for __b in self.prefixed],
+            self.prefix_count
+        )
+
+    def _field_filter_terms_string(self, field_name, in_values, count):
+        """Field filter terms.
+
+        Example:
+
+            http://localhost:8000/api/articles/?id__terms=1|2|3
+        """
+        url = self.base_url[:]
+        data = {}
+        response = self.client.get(
+            url + '?{}={}'.format(field_name, in_values),
+            data
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(response.data['results']),
+            count
+        )
+
+    def test_field_filter_terms_string(self):
+        """Test filter terms."""
+        return self._field_filter_terms_string(
+            'id__terms',
+            '|'.join([str(__b.id) for __b in self.prefixed]),
+            self.prefix_count
+        )
+
+    def _field_filter_exists(self, field_name, count):
+        """Field filter exists.
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__exists=true
+        """
+        url = self.base_publisher_url[:]
+        data = {}
+        response = self.client.get(
+            url + '?{}=true'.format(field_name),
+            data
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(response.data['results']),
+            count
+        )
+
+    # def test_field_filter_exists(self):
+    #     """Test filter exists."""
+    #     return self._field_filter_exists(
+    #         'tags__exists',
+    #         self.all_count - self.no_tags_count
+    #     )
 
 
 if __name__ == '__main__':

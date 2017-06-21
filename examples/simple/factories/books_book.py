@@ -23,6 +23,7 @@ from .books_tag import LimitedTagFactory
 
 __all__ = (
     'BookFactory',
+    'BookWithoutTagsFactory',
     'BookWithUniqueTitleFactory',
     'SingleBookFactory',
 )
@@ -116,3 +117,12 @@ class SingleBookFactory(BaseBookFactory):
             # Create a single `Author` object.
             author = SingleAuthorFactory()
             obj.authors.add(author)
+
+
+class BookWithoutTagsFactory(BaseBookFactory):
+    """Book without tags factory."""
+
+    @post_generation
+    def tags(obj, created, extracted, **kwargs):
+        """Dummy."""
+

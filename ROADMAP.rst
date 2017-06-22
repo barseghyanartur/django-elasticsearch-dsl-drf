@@ -14,4 +14,10 @@ yyyy-mm-dd (future)
 ---
 yyyy-mm-dd (future)
 
-Dynamic serializer for Document models.
+- Dynamic serializer for Document models.
+
+0.4
+---
+yyyy-mm-dd (future)
+
+- Add support for geo spatial search/filtering/ordering.

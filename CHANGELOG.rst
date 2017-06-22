@@ -19,7 +19,8 @@ are used for versioning (schema follows below):
 -----
 2017-06-dd (not yet released)
 
-- Added tests for `wildcard` and `exclude` filters.
+- Added tests for `wildcard` and `exclude` filters. Improved `range` filter
+  tests.
 
 0.1.4
 -----

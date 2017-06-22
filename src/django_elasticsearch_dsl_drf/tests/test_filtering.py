@@ -154,33 +154,35 @@ class TestFiltering(BaseRestFrameworkTestCase):
             constants.BOOK_PUBLISHING_STATUS_PUBLISHED
         )
 
-    def _field_filter_range(self, field_name, lower_id, upper_id, count):
+    def test_field_filter_range(self):
         """Field filter range.
 
         Example:
 
             http://localhost:8000/api/users/?age__range=16|67
         """
-        url = self.base_url[:]
-        data = {}
-        response = self.client.get(
-            url + '?{}__range={}|{}'.format(field_name, lower_id, upper_id),
-            data
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(response.data['results']),
-            count
-        )
-
-    def test_field_filter_range(self):
-        """Field filter range."""
         lower_id = self.published[0].id
         upper_id = self.published[-1].id
-        return self._field_filter_range(
-            'id',
-            lower_id,
-            upper_id,
+        value = '{}|{}'.format(lower_id, upper_id)
+        return self._field_filter_value(
+            'id__range',
+            value,
+            self.published_count
+        )
+
+    def test_field_filter_range_with_boost(self):
+        """Field filter range.
+
+        Example:
+
+            http://localhost:8000/api/users/?age__range=16|67|2.0
+        """
+        lower_id = self.published[0].id
+        upper_id = self.published[-1].id
+        value = '{}|{}|{}'.format(lower_id, upper_id, '2.0')
+        return self._field_filter_value(
+            'id__range',
+            value,
             self.published_count
         )
 

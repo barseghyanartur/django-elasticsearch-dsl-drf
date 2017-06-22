@@ -10,7 +10,7 @@ from rest_framework.filters import BaseFilterBackend
 import six
 from six import string_types
 
-from ..constants import (
+from ...constants import (
     TRUE_VALUES,
     FALSE_VALUES,
     ALL_LOOKUP_FILTERS_AND_QUERIES,
@@ -19,16 +19,21 @@ from ..constants import (
     LOOKUP_FILTER_TERMS,
     LOOKUP_FILTER_EXISTS,
     LOOKUP_FILTER_WILDCARD,
+    # LOOKUP_FILTER_IDS,
     LOOKUP_QUERY_CONTAINS,
     LOOKUP_QUERY_IN,
+    LOOKUP_QUERY_GT,
+    LOOKUP_QUERY_GTE,
+    LOOKUP_QUERY_LT,
+    LOOKUP_QUERY_LTE,
     LOOKUP_QUERY_STARTSWITH,
     LOOKUP_QUERY_ENDSWITH,
     LOOKUP_QUERY_ISNULL,
     LOOKUP_QUERY_EXCLUDE,
 )
-from .mixins import FilterBackendMixin
+from ..mixins import FilterBackendMixin
 
-__title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering'
+__title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering.common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2016-2017 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
@@ -126,6 +131,32 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
             params['boost'] = __values[2]
         elif __len_values == 2:
             params['lte'] = __values[1]
+
+        return params
+
+    @classmethod
+    def get_gte_lte_params(cls, value, lookup):
+        """Get params for `gte`, `gt`, `lte` and `lt` query.
+
+        :param value:
+        :param lookup:
+        :type value: str
+        :type lookup: str
+        :return: Params to be used in `range` query.
+        :rtype: dict
+        """
+        __values = cls.split_lookup_value(value, maxsplit=2)
+        __len_values = len(__values)
+
+        if __len_values == 0:
+            return {}
+
+        params = {
+            lookup: __values[0]
+        }
+
+        if __len_values == 2:
+            params['boost'] = __values[1]
 
         return params
 
@@ -312,6 +343,78 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         return queryset
 
     @classmethod
+    def apply_query_gt(cls, queryset, options, value):
+        """Apply `gt` functional query.
+
+        :param queryset: Original queryset.
+        :param options: Filter options.
+        :param value: value to filter on.
+        :type queryset: elasticsearch_dsl.search.Search
+        :type options: dict
+        :type value: str
+        :return: Modified queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        return queryset.filter(
+            'range',
+            **{options['field']: cls.get_gte_lte_params(value, 'gt')}
+        )
+
+    @classmethod
+    def apply_query_gte(cls, queryset, options, value):
+        """Apply `gte` functional query.
+
+        :param queryset: Original queryset.
+        :param options: Filter options.
+        :param value: value to filter on.
+        :type queryset: elasticsearch_dsl.search.Search
+        :type options: dict
+        :type value: str
+        :return: Modified queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        return queryset.filter(
+            'range',
+            **{options['field']: cls.get_gte_lte_params(value, 'gte')}
+        )
+
+    @classmethod
+    def apply_query_lt(cls, queryset, options, value):
+        """Apply `lt` functional query.
+
+        :param queryset: Original queryset.
+        :param options: Filter options.
+        :param value: value to filter on.
+        :type queryset: elasticsearch_dsl.search.Search
+        :type options: dict
+        :type value: str
+        :return: Modified queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        return queryset.filter(
+            'range',
+            **{options['field']: cls.get_gte_lte_params(value, 'lt')}
+        )
+
+    @classmethod
+    def apply_query_lte(cls, queryset, options, value):
+        """Apply `lte` functional query.
+
+        :param queryset: Original queryset.
+        :param options: Filter options.
+        :param value: value to filter on.
+        :type queryset: elasticsearch_dsl.search.Search
+        :type options: dict
+        :type value: str
+        :return: Modified queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        return queryset.filter(
+            'range',
+            **{options['field']: cls.get_gte_lte_params(value, 'lte')}
+        )
+
+    @classmethod
     def apply_query_isnull(cls, queryset, options, value):
         """Apply `isnull` functional query.
 
@@ -407,6 +510,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                 'field',
                                 field_name
                             ),
+                            'type': view.mapping
                         }
         return filter_query_params
 
@@ -423,7 +527,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         filter_query_params = self.get_filter_query_params(request, view)
-
+        # import ipdb; ipdb.set_trace()
         for options in filter_query_params.values():
             # When no specific lookup given, in case of multiple values
             # we apply `terms` filter by default and proceed to the next
@@ -480,6 +584,30 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                     queryset = self.apply_query_in(queryset,
                                                    options,
                                                    value)
+
+                # `gt` functional query lookup
+                elif options['lookup'] == LOOKUP_QUERY_GT:
+                    queryset = self.apply_query_gt(queryset,
+                                                   options,
+                                                   value)
+
+                # `gte` functional query lookup
+                elif options['lookup'] == LOOKUP_QUERY_GTE:
+                    queryset = self.apply_query_gte(queryset,
+                                                    options,
+                                                    value)
+
+                # `lt` functional query lookup
+                elif options['lookup'] == LOOKUP_QUERY_LT:
+                    queryset = self.apply_query_lt(queryset,
+                                                   options,
+                                                   value)
+
+                # `lte` functional query lookup
+                elif options['lookup'] == LOOKUP_QUERY_LTE:
+                    queryset = self.apply_query_lte(queryset,
+                                                    options,
+                                                    value)
 
                 # `endswith` filter lookup
                 elif options['lookup'] == LOOKUP_QUERY_ENDSWITH:

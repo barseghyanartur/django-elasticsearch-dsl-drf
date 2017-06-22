@@ -13,9 +13,6 @@ Must haves
 
     - Full support of all optional params of each native Elasticsearch filter,
       such as ``flags`` on ``regexp``.
-    - Implement ``regexp``, ``fuzzy``, ``type`` and ``ids`` native filters.
-    - Implement ``contains``, ``gt``, ``gte``, ``lt``, ``lte``, ``endswith``
-      functional filters.
     - Support ``mode`` argument in the ``OrderingFilterBackend``.
     - Support facets.
     - Think of making more-like-this a functional filter.
@@ -28,8 +25,13 @@ Must haves
     + Add tests for ``exists`` filter.
     + Add tests for ``prefix`` filter.
     + Add tests for ``wildcard`` filter.
+    + Add tests for ``ids`` filter.
     + Add tests for ``contains`` filter.
     + Add tests for ``in`` filter.
+    + Add tests for ``gt`` filter.
+    + Add tests for ``gte`` filter.
+    + Add tests for ``lt`` filter.
+    + Add tests for ``lte`` filter.
     + Add tests for ``startswith`` filter.
     + Add tests for ``endswith`` filter.
     + Add tests for ``isnull`` filter.
@@ -43,13 +45,13 @@ Must haves
     - Implement ``regexp`` filter.
     - Implement ``fuzzy`` filter.
     - Implement ``type`` filter.
-    - Implement ``ids`` filter.
-    - Implement ``contains`` filter.
+    + Implement ``ids`` filter.
+    + Implement ``contains`` filter.
     + Implement ``in`` filter.
-    - Implement ``gt`` filter.
-    - Implement ``gte`` filter.
-    - Implement ``lt`` filter.
-    - Implement ``lte`` filter.
+    + Implement ``gt`` filter.
+    + Implement ``gte`` filter.
+    + Implement ``lt`` filter.
+    + Implement ``lte`` filter.
     + Implement ``contains`` filter.
     + Implement ``startswith`` filter.
     + Implement ``endswith`` filter.

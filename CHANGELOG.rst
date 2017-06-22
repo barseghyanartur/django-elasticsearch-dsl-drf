@@ -15,6 +15,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.1.6
+-----
+2017-07-23
+
+- Implemented ``gt`, ``gte``, ``lt`` and ``lte`` functional query lookups.
+- Implemented ``ids`` native filter lookup.
+
 0.1.5
 -----
 2017-06-22

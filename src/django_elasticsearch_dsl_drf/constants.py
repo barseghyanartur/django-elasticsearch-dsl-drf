@@ -19,6 +19,7 @@ __all__ = (
     'LOOKUP_FILTER_EXISTS',
     'LOOKUP_FILTER_PREFIX',
     'LOOKUP_FILTER_WILDCARD',
+    'LOOKUP_FILTER_IDS',
     'LOOKUP_QUERY_CONTAINS',
     'LOOKUP_QUERY_IN',
     'LOOKUP_QUERY_STARTSWITH',
@@ -167,9 +168,12 @@ LOOKUP_FILTER_FUZZY = 'fuzzy'
 # query-dsl-type-query.html
 LOOKUP_FILTER_TYPE = 'type'
 
-# TODO: Implement
 # Filters documents that only have the provided ids. Note, this query uses the
 # `_uid` field.
+# Example: {"query": {"ids": {"type": "book_document",
+#                             "values": ["68", "64", "58"]}}}
+# Example: http://localhost:8000/api/articles/?ids=68|64|58
+# Example: http://localhost:8000/api/articles/?ids=68&ids=64&ids=58
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/
 # query-dsl-ids-query.html
 LOOKUP_FILTER_IDS = 'ids'
@@ -189,20 +193,24 @@ LOOKUP_QUERY_CONTAINS = 'contains'
 # Example: http://localhost:8000/api/articles/?tags__in=children|python
 LOOKUP_QUERY_IN = 'in'
 
-# TODO: Implement
 # A single value
+# Example: http://localhost:8000/api/articles/?id__gt=1
+# Example: http://localhost:8000/api/articles/?id__gt=1|2.0
 LOOKUP_QUERY_GT = 'gt'
 
-# TODO: Implement
 # A single value
+# Example: http://localhost:8000/api/articles/?id__gte=1
+# Example: http://localhost:8000/api/articles/?id__gte=1|2.0
 LOOKUP_QUERY_GTE = 'gte'
 
-# TODO: Implement
 # A single value
+# Example: http://localhost:8000/api/articles/?id__lt=1
+# Example: http://localhost:8000/api/articles/?id__lt=1|2.0
 LOOKUP_QUERY_LT = 'lt'
 
-# TODO: Implement
 # A single value
+# Example: http://localhost:8000/api/articles/?id__lte=1
+# Example: http://localhost:8000/api/articles/?id__lte=1|2.0
 LOOKUP_QUERY_LTE = 'lte'
 
 # A single value. Alias of `prefix`.
@@ -236,16 +244,18 @@ ALL_LOOKUP_FILTERS_AND_QUERIES = (
     LOOKUP_FILTER_EXISTS,
     LOOKUP_FILTER_PREFIX,
     LOOKUP_FILTER_WILDCARD,
-    LOOKUP_FILTER_REGEXP,
+    # LOOKUP_FILTER_REGEXP,
     # LOOKUP_FILTER_FUZZY,
+    # LOOKUP_FILTER_TYPE,
+    LOOKUP_FILTER_IDS,
 
     # Functional
     LOOKUP_QUERY_CONTAINS,
     LOOKUP_QUERY_IN,
-    # LOOKUP_QUERY_GT,
-    # LOOKUP_QUERY_GTE,
-    # LOOKUP_QUERY_LT,
-    # LOOKUP_QUERY_LTE,
+    LOOKUP_QUERY_GT,
+    LOOKUP_QUERY_GTE,
+    LOOKUP_QUERY_LT,
+    LOOKUP_QUERY_LTE,
     LOOKUP_QUERY_STARTSWITH,
     LOOKUP_QUERY_ENDSWITH,
     LOOKUP_QUERY_ISNULL,

@@ -6,7 +6,7 @@ Road-map/upcoming releases.
 ---
 yyyy-mm-dd (future)
 
-- Support facets.
+- Support aggregations (facets).
 - Awesome documentation.
 - All filters (mentioned in the ``constants`` module) implemented.
 

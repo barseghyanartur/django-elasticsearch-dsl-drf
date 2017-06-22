@@ -372,6 +372,133 @@ class TestFiltering(BaseRestFrameworkTestCase):
             self.published_count
         )
 
+    def _field_filter_gte_lte(self, field_name, value, lookup, boost=None):
+        """Field filter gt/gte/lt/lte.
+
+        Example:
+
+            http://localhost:8000/api/users/?id__gt=10
+            http://localhost:8000/api/users/?id__gte=10
+            http://localhost:8000/api/users/?id__lt=10
+            http://localhost:8000/api/users/?id__lte=10
+        """
+        url = self.base_url[:]
+        data = {}
+
+        if boost is not None:
+            url += '?{}__{}={}|{}'.format(field_name, lookup, value, boost)
+        else:
+            url += '?{}__{}={}'.format(field_name, lookup, value)
+
+        response = self.client.get(
+            url,
+            data
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        __mapping = {
+            'gt': self.assertGreater,
+            'gte': self.assertGreaterEqual,
+            'lt': self.assertLess,
+            'lte': self.assertLessEqual,
+        }
+        __func = __mapping.get(lookup)
+
+        if callable(__func):
+            for obj in response.data['results']:
+                __func(
+                    obj['id'],
+                    value
+                )
+
+    def test_field_filter_gt(self):
+        """Field filter gt.
+
+        Example:
+
+            http://localhost:8000/api/users/?id__gt=10
+        :return:
+        """
+        return self._field_filter_gte_lte('id', self.in_progress[0].id, 'gt')
+
+    def test_field_filter_gt_with_boost(self):
+        """Field filter gt with boost.
+
+        Example:
+
+            http://localhost:8000/api/users/?id__gt=10|2.0
+        :return:
+        """
+        # TODO: check boost value
+        return self._field_filter_gte_lte(
+            'id',
+            self.in_progress[0].id,
+            'gt',
+            '2.0'
+        )
+
+    def test_field_filter_gte(self):
+        """Field filter gte.
+
+        Example:
+
+            http://localhost:8000/api/users/?id__gte=10
+        :return:
+        """
+        return self._field_filter_gte_lte('id', self.in_progress[0].id, 'gte')
+
+    def test_field_filter_lt(self):
+        """Field filter lt.
+
+        Example:
+
+            http://localhost:8000/api/users/?id__lt=10
+        :return:
+        """
+        return self._field_filter_gte_lte('id', self.in_progress[0].id, 'lt')
+
+    def test_field_filter_lt_with_boost(self):
+        """Field filter lt with boost.
+
+        Example:
+
+            http://localhost:8000/api/users/?id__lt=10|2.0
+        :return:
+        """
+        # TODO: check boost value
+        return self._field_filter_gte_lte(
+            'id',
+            self.in_progress[0].id,
+            'lt',
+            '2.0'
+        )
+
+    def test_field_filter_lte(self):
+        """Field filter lte.
+
+        Example:
+
+            http://localhost:8000/api/users/?id__lte=10
+        :return:
+        """
+        return self._field_filter_gte_lte('id', self.in_progress[0].id, 'lte')
+
+    def test_ids_filter(self):
+        """Test ids filter.
+
+        Example:
+
+            http://localhost:8000/api/articles/?ids=68|64|58
+            http://localhost:8000/api/articles/?ids=68&ids=64&ids=58
+        """
+        __ids = [str(__obj.id) for __obj in self.published]
+        return self._field_filter_value(
+            'ids',
+            '|'.join(__ids),
+            self.published_count
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

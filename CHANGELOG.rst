@@ -15,6 +15,12 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.1.5
+-----
+2017-06-dd (not yet released)
+
+- Added tests for `wildcard` and `exclude` filters.
+
 0.1.4
 -----
 2017-06-22

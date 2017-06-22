@@ -88,6 +88,30 @@ class TestFiltering(BaseRestFrameworkTestCase):
         cls.base_publisher_url = reverse('publisherdocument-list', kwargs={})
         call_command('search_index', '--rebuild', '-f')
 
+    def _field_filter_value(self, field_name, value, count):
+        """Field filter value.
+
+        Usage example:
+
+            >>> self._field_filter_value(
+            >>>     'title__wildcard',
+            >>>     self.prefix[3:-3],
+            >>>     self.prefix_count
+            >>> )
+        """
+        url = self.base_url[:]
+        data = {}
+        response = self.client.get(
+            url + '?{}={}'.format(field_name, value),
+            data
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(response.data['results']),
+            count
+        )
+
     def _field_filter_term(self, field_name, filter_value):
         """Field filter term.
 
@@ -160,59 +184,29 @@ class TestFiltering(BaseRestFrameworkTestCase):
             self.published_count
         )
 
-    def _field_filter_prefix(self, field_name, prefix, count):
-        """Field filter prefix.
+    def test_field_filter_prefix(self):
+        """Test filter prefix.
 
         Example:
 
             http://localhost:8000/api/articles/?tags__prefix=bio
         """
-        url = self.base_url[:]
-        data = {}
-        response = self.client.get(
-            url + '?{}__prefix={}'.format(field_name, prefix),
-            data
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(response.data['results']),
-            count
-        )
-
-    def test_field_filter_prefix(self):
-        """Test filter prefix."""
-        return self._field_filter_prefix(
-            'title',
+        return self._field_filter_value(
+            'title__prefix',
             self.prefix,
             self.prefix_count
         )
 
-    def _field_filter_in(self, field_name, in_values, count):
-        """Field filter in.
+    def test_field_filter_in(self):
+        """Test filter in.
 
         Example:
 
             http://localhost:8000/api/articles/?id__in=1|2|3
         """
-        url = self.base_url[:]
-        data = {}
-        response = self.client.get(
-            url + '?{}__in={}'.format(field_name, '|'.join(in_values)),
-            data
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(response.data['results']),
-            count
-        )
-
-    def test_field_filter_in(self):
-        """Test filter in."""
-        return self._field_filter_in(
-            'id',
-            [str(__b.id) for __b in self.prefixed],
+        return self._field_filter_value(
+            'id__in',
+            '|'.join([str(__b.id) for __b in self.prefixed]),
             self.prefix_count
         )
 
@@ -245,29 +239,14 @@ class TestFiltering(BaseRestFrameworkTestCase):
             self.prefix_count
         )
 
-    def _field_filter_terms_string(self, field_name, in_values, count):
-        """Field filter terms.
+    def test_field_filter_terms_string(self):
+        """Test filter terms.
 
         Example:
 
             http://localhost:8000/api/articles/?id__terms=1|2|3
         """
-        url = self.base_url[:]
-        data = {}
-        response = self.client.get(
-            url + '?{}={}'.format(field_name, in_values),
-            data
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(response.data['results']),
-            count
-        )
-
-    def test_field_filter_terms_string(self):
-        """Test filter terms."""
-        return self._field_filter_terms_string(
+        return self._field_filter_value(
             'id__terms',
             '|'.join([str(__b.id) for __b in self.prefixed]),
             self.prefix_count
@@ -298,6 +277,32 @@ class TestFiltering(BaseRestFrameworkTestCase):
     #         'tags__exists',
     #         self.all_count - self.no_tags_count
     #     )
+
+    def test_field_filter_wildcard(self):
+        """Test filter wildcard.
+
+        Example:
+
+            http://localhost:8000/api/articles/?title__wildcard=*elusional*
+        """
+        return self._field_filter_value(
+            'title__wildcard',
+            '*{}*'.format(self.prefix[1:6]),
+            self.prefix_count
+        )
+
+    def test_field_filter_exclude(self):
+        """Test filter exclude.
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__exclude=children
+        """
+        return self._field_filter_value(
+            'state__exclude',
+            constants.BOOK_PUBLISHING_STATUS_PUBLISHED,
+            self.all_count - self.published_count
+        )
 
 
 if __name__ == '__main__':

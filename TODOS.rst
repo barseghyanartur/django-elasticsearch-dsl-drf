@@ -27,11 +27,11 @@ Must haves
     + Add tests for `range` filter.
     - Add tests for `exists` filter.
     + Add tests for `prefix` filter.
-    - Add tests for `wildcard` filter.
+    + Add tests for `wildcard` filter.
     + Add tests for `in` filter.
     + Add tests for `startswith` filter.
     - Add tests for `isnull` filter.
-    - Add tests for `exclude` filter.
+    + Add tests for `exclude` filter.
     + Implement `term` filter.
     + Implement `terms` filter.
     + Implement `range` filter.

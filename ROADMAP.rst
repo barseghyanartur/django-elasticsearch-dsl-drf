@@ -7,17 +7,11 @@ Road-map/upcoming releases.
 yyyy-mm-dd (future)
 
 - Support facets.
-- Improved documentation.
-  filters.
+- Awesome documentation.
+- All filters (mentioned in the ``constants`` module) implemented.
 
 0.3
 ---
 yyyy-mm-dd (future)
 
 Dynamic serializer for Document models.
-
-0.4
----
-yyyy-mm-dd (future)
-
-- Implemented `contains`, `gt`, `gte`, `lt`, `lte`, `endswith` functional

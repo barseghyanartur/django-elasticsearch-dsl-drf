@@ -196,21 +196,29 @@ LOOKUP_QUERY_IN = 'in'
 # A single value
 # Example: http://localhost:8000/api/articles/?id__gt=1
 # Example: http://localhost:8000/api/articles/?id__gt=1|2.0
+# https://www.elastic.co/guide/en/elasticsearch/reference/1.6/
+# query-dsl-range-filter.html
 LOOKUP_QUERY_GT = 'gt'
 
 # A single value
 # Example: http://localhost:8000/api/articles/?id__gte=1
 # Example: http://localhost:8000/api/articles/?id__gte=1|2.0
+# https://www.elastic.co/guide/en/elasticsearch/reference/1.6/
+# query-dsl-range-filter.html
 LOOKUP_QUERY_GTE = 'gte'
 
 # A single value
 # Example: http://localhost:8000/api/articles/?id__lt=1
 # Example: http://localhost:8000/api/articles/?id__lt=1|2.0
+# https://www.elastic.co/guide/en/elasticsearch/reference/1.6/
+# query-dsl-range-filter.html
 LOOKUP_QUERY_LT = 'lt'
 
 # A single value
 # Example: http://localhost:8000/api/articles/?id__lte=1
 # Example: http://localhost:8000/api/articles/?id__lte=1|2.0
+# https://www.elastic.co/guide/en/elasticsearch/reference/1.6/
+# query-dsl-range-filter.html
 LOOKUP_QUERY_LTE = 'lte'
 
 # A single value. Alias of `prefix`.

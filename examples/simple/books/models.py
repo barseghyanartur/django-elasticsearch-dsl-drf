@@ -119,6 +119,14 @@ class Book(models.Model):
         """
         return json.dumps([tag.title for tag in self.tags.all()])
 
+    @property
+    def null_field_indexing(self):
+        """null_field for indexing.
+
+        Used in Elasticsearch indexing/tests of `isnull` functional filter.
+        """
+        return None
+
 
 @python_2_unicode_compatible
 class Order(models.Model):

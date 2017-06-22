@@ -1,3 +1,7 @@
+"""
+Filtering backend.
+"""
+
 import operator
 
 from elasticsearch_dsl.query import Q
@@ -15,8 +19,10 @@ from ..constants import (
     LOOKUP_FILTER_TERMS,
     LOOKUP_FILTER_EXISTS,
     LOOKUP_FILTER_WILDCARD,
+    LOOKUP_QUERY_CONTAINS,
     LOOKUP_QUERY_IN,
     LOOKUP_QUERY_STARTSWITH,
+    LOOKUP_QUERY_ENDSWITH,
     LOOKUP_QUERY_ISNULL,
     LOOKUP_QUERY_EXCLUDE,
 )
@@ -245,6 +251,40 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         )
 
     @classmethod
+    def apply_query_contains(cls, queryset, options, value):
+        """Apply `contains` filter.
+
+        :param queryset: Original queryset.
+        :param options: Filter options.
+        :param value: value to filter on.
+        :type queryset: elasticsearch_dsl.search.Search
+        :type options: dict
+        :type value: str
+        :return: Modified queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        return queryset.query(
+            Q('wildcard', **{options['field']: '*{}*'.format(value)})
+        )
+
+    @classmethod
+    def apply_query_endswith(cls, queryset, options, value):
+        """Apply `endswith` filter.
+
+        :param queryset: Original queryset.
+        :param options: Filter options.
+        :param value: value to filter on.
+        :type queryset: elasticsearch_dsl.search.Search
+        :type options: dict
+        :type value: str
+        :return: Modified queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        return queryset.query(
+            Q('wildcard', **{options['field']: '*{}'.format(value)})
+        )
+
+    @classmethod
     def apply_query_in(cls, queryset, options, value):
         """Apply `in` functional query.
 
@@ -429,11 +469,23 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                                          options,
                                                          value)
 
+                # `contains` filter lookup
+                elif options['lookup'] == LOOKUP_QUERY_CONTAINS:
+                    queryset = self.apply_query_contains(queryset,
+                                                         options,
+                                                         value)
+
                 # `in` functional query lookup
                 elif options['lookup'] == LOOKUP_QUERY_IN:
                     queryset = self.apply_query_in(queryset,
                                                    options,
                                                    value)
+
+                # `endswith` filter lookup
+                elif options['lookup'] == LOOKUP_QUERY_ENDSWITH:
+                    queryset = self.apply_query_endswith(queryset,
+                                                         options,
+                                                         value)
 
                 # `isnull` functional query lookup
                 elif options['lookup'] == LOOKUP_QUERY_ISNULL:

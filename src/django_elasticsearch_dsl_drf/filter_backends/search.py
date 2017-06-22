@@ -1,3 +1,7 @@
+"""
+Search backend.
+"""
+
 import operator
 import six
 

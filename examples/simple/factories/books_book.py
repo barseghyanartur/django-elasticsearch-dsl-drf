@@ -23,6 +23,8 @@ from .books_tag import LimitedTagFactory
 
 __all__ = (
     'BookFactory',
+    'BookWithoutOrdersFactory',
+    'BookWithoutTagsAndOrdersFactory',
     'BookWithoutTagsFactory',
     'BookWithUniqueTitleFactory',
     'SingleBookFactory',
@@ -126,3 +128,22 @@ class BookWithoutTagsFactory(BaseBookFactory):
     def tags(obj, created, extracted, **kwargs):
         """Dummy."""
 
+
+class BookWithoutOrdersFactory(BaseBookFactory):
+    """Book without orders factory."""
+
+    @post_generation
+    def orders(obj, created, extracted, **kwargs):
+        """Dummy."""
+
+
+class BookWithoutTagsAndOrdersFactory(BaseBookFactory):
+    """Book without tags and orders factory."""
+
+    @post_generation
+    def tags(obj, created, extracted, **kwargs):
+        """Dummy."""
+
+    @post_generation
+    def orders(obj, created, extracted, **kwargs):
+        """Dummy."""

@@ -1,3 +1,7 @@
+"""
+Ordering backend.
+"""
+
 from six import string_types
 
 from rest_framework.filters import BaseFilterBackend
@@ -43,24 +47,25 @@ class OrderingFilterBackend(BaseFilterBackend):
 
     ordering_param = api_settings.ORDERING_PARAM
 
-    @classmethod
-    def prepare_ordering_fields(cls, view):
-        """Prepare ordering fields.
-
-        :param view: View.
-        :type view: rest_framework.viewsets.ReadOnlyModelViewSet
-        :return: Ordering options.
-        :rtype: dict
-        """
-        ordering_fields = view.ordering_fields
-        for field, options in ordering_fields.items():
-            if options is None or isinstance(options, string_types):
-                ordering_fields[field] = {
-                    'field': options or field
-                }
-            elif 'field' not in ordering_fields[field]:
-                ordering_fields[field]['field'] = field
-        return ordering_fields
+    # TODO: Either use or remove.
+    # @classmethod
+    # def prepare_ordering_fields(cls, view):
+    #     """Prepare ordering fields.
+    #
+    #     :param view: View.
+    #     :type view: rest_framework.viewsets.ReadOnlyModelViewSet
+    #     :return: Ordering options.
+    #     :rtype: dict
+    #     """
+    #     ordering_fields = view.ordering_fields
+    #     for field, options in ordering_fields.items():
+    #         if options is None or isinstance(options, string_types):
+    #             ordering_fields[field] = {
+    #                 'field': options or field
+    #             }
+    #         elif 'field' not in ordering_fields[field]:
+    #             ordering_fields[field]['field'] = field
+    #     return ordering_fields
 
     def get_ordering_query_params(self, request, view):
         """Get ordering query params.

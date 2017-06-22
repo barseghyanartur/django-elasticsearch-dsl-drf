@@ -1,3 +1,7 @@
+"""
+Base ViewSets.
+"""
+
 from elasticsearch_dsl import Search
 from elasticsearch_dsl.connections import connections
 

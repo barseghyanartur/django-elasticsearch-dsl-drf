@@ -19,8 +19,10 @@ __all__ = (
     'LOOKUP_FILTER_EXISTS',
     'LOOKUP_FILTER_PREFIX',
     'LOOKUP_FILTER_WILDCARD',
+    'LOOKUP_QUERY_CONTAINS',
     'LOOKUP_QUERY_IN',
     'LOOKUP_QUERY_STARTSWITH',
+    'LOOKUP_QUERY_ENDSWITH',
     'LOOKUP_QUERY_ISNULL',
     'LOOKUP_QUERY_EXCLUDE',
     'ALL_LOOKUP_FILTERS_AND_QUERIES',
@@ -179,8 +181,8 @@ LOOKUP_FILTER_IDS = 'ids'
 # to use. Inspired by Django's ORM lookups and other sources.
 # https://docs.djangoproject.com/en/1.11/ref/models/querysets/#id4
 
-# TODO: Implement
 # A single value
+# http://localhost:8000/api/articles/?state__endswith=lishe
 LOOKUP_QUERY_CONTAINS = 'contains'
 
 # Multiple values.
@@ -207,9 +209,9 @@ LOOKUP_QUERY_LTE = 'lte'
 # Example: http://localhost:8000/api/articles/?tags__startswith=chil
 LOOKUP_QUERY_STARTSWITH = 'startswith'
 
-# TODO: Implement
 # A single value
 # Example: http://localhost:8000/api/articles/?tags__endswith=dren
+# Example: http://localhost:8000/api/articles/?state__endswith=lished
 LOOKUP_QUERY_ENDSWITH = 'endswith'
 
 # A single value
@@ -238,14 +240,14 @@ ALL_LOOKUP_FILTERS_AND_QUERIES = (
     # LOOKUP_FILTER_FUZZY,
 
     # Functional
-    # LOOKUP_QUERY_CONTAINS,
+    LOOKUP_QUERY_CONTAINS,
     LOOKUP_QUERY_IN,
     # LOOKUP_QUERY_GT,
     # LOOKUP_QUERY_GTE,
     # LOOKUP_QUERY_LT,
     # LOOKUP_QUERY_LTE,
     LOOKUP_QUERY_STARTSWITH,
-    # LOOKUP_QUERY_ENDSWITH,
+    LOOKUP_QUERY_ENDSWITH,
     LOOKUP_QUERY_ISNULL,
     LOOKUP_QUERY_EXCLUDE,
 )

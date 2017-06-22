@@ -1,3 +1,7 @@
+"""
+Test ordering backend.
+"""
+
 from __future__ import absolute_import
 
 import unittest
@@ -36,11 +40,12 @@ class TestOrdering(BaseRestFrameworkTestCase):
 
     @classmethod
     def setUpClass(cls):
+        """Set up class."""
         cls.books = factories.BookWithUniqueTitleFactory.create_batch(20)
 
         call_command('search_index', '--rebuild', '-f')
 
-    def _order_by_field(self, field_name):
+    def _order_by_field(self, field_name, check_ordering=True):
         """Order by field."""
         self.authenticate()
 
@@ -58,18 +63,24 @@ class TestOrdering(BaseRestFrameworkTestCase):
         )
         self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
 
-        item_count = len(filtered_response.data['results'])
+        if check_ordering:
+            item_count = len(filtered_response.data['results'])
 
-        for counter, item in enumerate(filtered_response.data['results']):
-            if (counter > 1) and (counter < item_count + 1):
-                self.assertGreater(
-                    filtered_response.data['results'][counter-1]['id'],
-                    filtered_response.data['results'][counter]['id']
-                )
+            for counter, item in enumerate(filtered_response.data['results']):
+                if (counter > 1) and (counter < item_count + 1):
+                    self.assertGreater(
+                        filtered_response.data['results'][counter-1]['id'],
+                        filtered_response.data['results'][counter]['id']
+                    )
 
     def test_order_by_field(self):
         """Order by field."""
         return self._order_by_field('-id')
+
+    def test_order_by_non_existent_field(self):
+        """Order by non-existent field."""
+        return self._order_by_field('another_non_existent_field',
+                                    check_ordering=False)
 
 
 if __name__ == '__main__':

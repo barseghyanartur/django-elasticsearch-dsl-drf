@@ -1,3 +1,7 @@
+"""
+Helpers.
+"""
+
 from django_elasticsearch_dsl.registries import registry
 
 from elasticsearch_dsl import Search
@@ -45,29 +49,41 @@ def get_index_and_mapping_for_model(model):
         )
 
 
-def more_like_this(obj, fields, min_term_freq=1, max_query_terms=12):
+def more_like_this(obj,
+                   fields,
+                   max_query_terms=25,
+                   min_term_freq=2,
+                   min_doc_freq=5,
+                   max_doc_freq=0):
     """More like this.
+
+    https://www.elastic.co/guide/en/elasticsearch/reference/current/
+    query-dsl-mlt-query.html
 
     :param obj: Django model instance for which similar objects shall be found.
     :param fields: Fields to search in.
-    :param min_term_freq:
     :param max_query_terms:
+    :param min_term_freq:
+    :param min_doc_freq:
+    :param max_doc_freq:
     :type obj: Instance of `django.db.models.Model` (sub-classed) model.
     :type fields: list
-    :type min_term_freq: int
     :type max_query_terms: int
+    :type min_term_freq: int
+    :type min_doc_freq: int
+    :type max_doc_freq: int
     :return: List of objects.
     :rtype: elasticsearch_dsl.search.Search
 
     Example:
 
-    >>> from django_elasticsearch_dsl_drf.helpers import more_like_this
-    >>> from books.models import Book
-    >>> book = Book.objects.first()
-    >>> similar_books = more_like_this(
-    >>>     book,
-    >>>     ['title', 'description', 'summary']
-    >>> )
+        >>> from django_elasticsearch_dsl_drf.helpers import more_like_this
+        >>> from books.models import Book
+        >>> book = Book.objects.first()
+        >>> similar_books = more_like_this(
+        >>>     book,
+        >>>     ['title', 'description', 'summary']
+        >>> )
     """
     _index, _mapping = get_index_and_mapping_for_model(obj._meta.model)
     if _index is None:
@@ -84,7 +100,9 @@ def more_like_this(obj, fields, min_term_freq=1, max_query_terms=12):
                 '_index': "{}".format(_index),
                 '_type': "{}".format(_mapping)
             },
-            min_term_freq=min_term_freq,
             max_query_terms=max_query_terms,
+            min_term_freq=min_term_freq,
+            min_doc_freq=min_doc_freq,
+            max_doc_freq=max_doc_freq,
         )
     )

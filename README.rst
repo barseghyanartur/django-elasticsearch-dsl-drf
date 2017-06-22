@@ -52,6 +52,49 @@ Installation
             # ...
         )
 
+Supported lookups
+=================
+* Features/issues marked with plus (+) are implemented/solved.
+* Features/issues marked with minus (-) are yet to be implemented.
+
+Native
+------
+
+The following native (to Elasticsearch) filters/lookups are implemented:
+
+.. code-block:: text
+
+    + ``term``
+    + ``terms``
+    + ``range``
+    + ``exists``
+    + ``prefix``
+    + ``wildcard``
+    - ``regexp``
+    - ``fuzzy``
+    - ``type``
+    - ``ids``
+
+Functional
+----------
+
+The following functional (non-native to Elasticsearch, but common in Django)
+filters/lookups are implemented:
+
+.. code-block:: text
+
+    + ``contains``
+    + ``in``
+    - ``gt``
+    - ``gte``
+    - ``lt``
+    - ``lte``
+    + ``contains``
+    + ``startswith``
+    + ``endswith``
+    + ``isnull``
+    + ``exclude``
+
 Usage examples
 ==============
 
@@ -1013,7 +1056,7 @@ To run a single test in your working environment type:
 
 .. code-block:: sh
 
-    ./runtests.py src/django_elasticsearch_dsl_drf/tests/test_ordering.py
+    ./runtests.py src/django_elasticsearch_dsl_drf/tests/test_filtering.py
 
 Or:
 

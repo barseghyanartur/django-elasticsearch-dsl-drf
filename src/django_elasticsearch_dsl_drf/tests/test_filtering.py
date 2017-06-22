@@ -1,3 +1,7 @@
+"""
+Test filtering backend.
+"""
+
 from __future__ import absolute_import
 
 import unittest
@@ -254,31 +258,31 @@ class TestFiltering(BaseRestFrameworkTestCase):
             self.prefix_count
         )
 
-    def _field_filter_exists(self, field_name, count):
-        """Field filter exists.
+    def test_field_filter_exists_true(self):
+        """Test filter exists true.
 
         Example:
 
             http://localhost:8000/api/articles/?tags__exists=true
         """
-        url = self.base_publisher_url[:]
-        data = {}
-        response = self.client.get(
-            url + '?{}=true'.format(field_name),
-            data
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(response.data['results']),
-            count
+        return self._field_filter_value(
+            'tags__exists',
+            'true',
+            self.all_count
         )
 
-    # def test_field_filter_exists(self):
-    #     """Test filter exists."""
-    #     return self._field_filter_exists(
-    #         'tags__exists',
-    #         self.all_count - self.no_tags_count
-    #     )
+    def test_field_filter_exists_false(self):
+        """Test filter exists.
+
+        Example:
+
+            http://localhost:8000/api/articles/?non_existent__exists=false
+        """
+        return self._field_filter_value(
+            'non_existent_field__exists',
+            'false',
+            self.all_count
+        )
 
     def test_field_filter_wildcard(self):
         """Test filter wildcard.
@@ -304,6 +308,68 @@ class TestFiltering(BaseRestFrameworkTestCase):
             'state__exclude',
             constants.BOOK_PUBLISHING_STATUS_PUBLISHED,
             self.all_count - self.published_count
+        )
+
+    def test_field_filter_isnull_true(self):
+        """Test filter isnull true.
+
+        Example:
+
+            http://localhost:8000/api/articles/?null_field__isnull=true
+        """
+        self._field_filter_value(
+            'null_field__isnull',
+            'true',
+            self.all_count
+        )
+        self._field_filter_value(
+            'tags__isnull',
+            'true',
+            0
+        )
+
+    def test_field_filter_isnull_false(self):
+        """Test filter isnull true.
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__isnull=false
+        """
+        self._field_filter_value(
+            'null_field__isnull',
+            'false',
+            0
+        )
+        self._field_filter_value(
+            'tags__isnull',
+            'false',
+            self.all_count
+        )
+
+    def test_field_filter_endswith(self):
+        """Test filter endswith.
+
+        Example:
+
+            http://localhost:8000/api/articles/?state__endswith=lished
+        """
+        return self._field_filter_value(
+            'state__endswith',
+            constants.BOOK_PUBLISHING_STATUS_PUBLISHED[4:],
+            self.published_count
+        )
+
+    def test_field_filter_contains(self):
+        """Test filter contains.
+
+        Example:
+
+            http://localhost:8000/api/articles/?state__contains=lishe
+        """
+        return self._field_filter_value(
+            'state__contains',
+            constants.BOOK_PUBLISHING_STATUS_PUBLISHED[4:-2],
+            self.published_count
         )
 
 

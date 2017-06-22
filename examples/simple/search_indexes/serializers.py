@@ -39,6 +39,9 @@ class BookDocumentSerializer(serializers.Serializer):
     stock_count = serializers.IntegerField(read_only=True)
     tags = serializers.SerializerMethodField()
 
+    # Used in testing of `isnull` functional filter.
+    null_field = serializers.CharField(read_only=True)
+
     class Meta(object):
         """Meta options."""
 
@@ -55,6 +58,7 @@ class BookDocumentSerializer(serializers.Serializer):
             'pages',
             'stock_count',
             'tags',
+            'null_field',  # Used in testing of `isnull` functional filter.
         )
         read_only_fields = fields
 

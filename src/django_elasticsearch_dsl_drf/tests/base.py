@@ -1,3 +1,7 @@
+"""
+Base tests.
+"""
+
 import logging
 
 from django.test import TransactionTestCase

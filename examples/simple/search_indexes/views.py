@@ -98,6 +98,10 @@ class BookDocumentView(BaseDocumentViewSet):
                 LOOKUP_QUERY_EXCLUDE,
             ],
         },
+        # This has been added to test `exists` filter.
+        'non_existent_field': 'non_existent_field',
+        # This has been added to test `isnull` filter.
+        'null_field': 'null_field',
     }
     # Define ordering fields
     ordering_fields = {

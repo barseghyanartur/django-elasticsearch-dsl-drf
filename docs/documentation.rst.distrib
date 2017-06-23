@@ -9,6 +9,7 @@ Contents:
    :maxdepth: 20
 
    django_elasticsearch_dsl_drf
+   quick_start
    basic_usage_examples
    advanced_usage_examples
    misc_usage_examples

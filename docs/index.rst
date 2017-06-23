@@ -40,8 +40,8 @@ Installation
 
         pip install https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/archive/stable.tar.gz
 
-(2) Add ``rest_framework`` and ``django_elasticsearch_dsl`` to
-    ``INSTALLED_APPS``:
+(2) Add ``rest_framework``, ``django_elasticsearch_dsl`` and
+    ``django_elasticsearch_dsl_drf`` to ``INSTALLED_APPS``:
 
     .. code-block:: python
 
@@ -49,6 +49,7 @@ Installation
             # ...
             'rest_framework',  # REST framework
             'django_elasticsearch_dsl',  # Elasticsearch integration
+            'django_elasticsearch_dsl_drf',  # This app
             # ...
         )
 
@@ -128,24 +129,40 @@ The following native (to Elasticsearch) filters/lookups are implemented:
 
 term
 ^^^^
+Find documents which contain the exact term specified in the field specified.
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/books/?tags__term=education&tags__term=economy
 
 terms
 ^^^^^
+Find documents which contain any of the exact terms specified in the field
+specified.
 
 range
 ^^^^^
+Find documents where the field specified contains values (dates, numbers, or
+strings) in the range specified.
 
 exists
 ^^^^^^
+Find documents where the field specified contains any non-null value.
 
 prefix
 ^^^^^^
+Find documents where the field specified contains terms which begin with the
+exact prefix specified.
 
 wildcard
 ^^^^^^^^
+Find documents where the field specified contains terms which match the pattern
+specified, where the pattern supports single character wildcards (?) and
+multi-character wildcards (*)
 
 ids
 ^^^
+Find documents with the specified type and IDs.
 
 Functional
 ~~~~~~~~~~
@@ -166,33 +183,44 @@ filters/lookups are implemented:
 
 contains
 ^^^^^^^^
+Case-insensitive containment test.
 
 in
 ^^
+In a given list.
 
 gt
 ^^
+Greater than.
 
 gte
 ^^^
+Greater than or equal to.
 
 lt
 ^^
+Less than.
 
 lte
 ^^^
+Less than or equal to.
 
 startswith
 ^^^^^^^^^^
+Case-sensitive starts-with.
 
 endswith
 ^^^^^^^^
+Case-sensitive ends-with.
 
 isnull
 ^^^^^^
+Takes either True or False.
 
 exclude
 ^^^^^^^
+Returns a new query set of containing objects that do not match the given
+lookup parameters.
 
 Usage examples
 ==============
@@ -304,3 +332,26 @@ Author
 ======
 
 Artur Barseghyan <artur.barseghyan@gmail.com>
+
+Documentation
+=============
+Contents:
+
+.. contents:: Table of Contents
+
+.. toctree::
+   :maxdepth: 20
+
+   django_elasticsearch_dsl_drf
+   quick_start
+   basic_usage_examples
+   advanced_usage_examples
+   misc_usage_examples
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

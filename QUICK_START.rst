@@ -522,7 +522,11 @@ needed to be serialized and leave it further to the dynamic serializer.
         class Meta(object):
             """Meta options."""
 
+            # Specify the correspondent document class
             document = BookDocument
+
+            # List the serializer fields. Note, that the order of the fields
+            # is preserved in the ViewSet.
             fields = (
                 'id',
                 'title',
@@ -569,6 +573,8 @@ Django REST framework.
         class Meta(object):
             """Meta options."""
 
+            # List the serializer fields. Note, that the order of the fields
+            # is preserved in the ViewSet.
             fields = (
                 'id',
                 'title',

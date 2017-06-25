@@ -286,7 +286,8 @@ ba able to fill some data.
 Create database tables
 ----------------------
 
-For now, just run create migrations and create a dozen of database records.
+For now, just run the migrations and create a dozen of database records in
+admin.
 
 .. code-block:: sh
 

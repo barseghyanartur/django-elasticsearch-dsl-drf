@@ -128,22 +128,18 @@ search_indexes/serializers.py:
 
     import json
 
-    from rest_framework import serializers
+    from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 
-    class PublisherDocumentSerializer(serializers.Serializer):
+    class PublisherDocumentSerializer(DocumentSerializer):
         """Serializer for Publisher document."""
-
-        id = serializers.IntegerField(read_only=True)
-        name = serializers.CharField(read_only=True)
-        address = serializers.CharField(read_only=True)
-        city = serializers.CharField(read_only=True)
-        state_province = serializers.CharField(read_only=True)
-        country = serializers.CharField(read_only=True)
-        website = serializers.CharField(read_only=True)
 
         class Meta(object):
             """Meta options."""
 
+            # Note, that since we're using a dynamic serializer,
+            # we only have to declare fields that we want to be shown. If
+            # somehow, dynamic serializer doesn't work for you, either extend
+            # or declare your serializer explicitly.
             fields = (
                 'id',
                 'name',
@@ -153,7 +149,6 @@ search_indexes/serializers.py:
                 'country',
                 'website',
             )
-            read_only_fields = fields
 
 Sample view
 -----------

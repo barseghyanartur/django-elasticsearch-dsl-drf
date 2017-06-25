@@ -527,7 +527,6 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         filter_query_params = self.get_filter_query_params(request, view)
-        # import ipdb; ipdb.set_trace()
         for options in filter_query_params.values():
             # When no specific lookup given, in case of multiple values
             # we apply `terms` filter by default and proceed to the next

@@ -17,6 +17,7 @@ to all of their respectful authors and contributors.
 
 - `snatch <https://github.com/inonit/drf-haystack/blob/master/drf_haystack/query.py>`_
 - `snatch <https://github.com/inonit/drf-haystack/blob/master/drf_haystack/filters.py>`_
+- `snatch <https://github.com/inonit/drf-haystack/blob/master/drf_haystack/serializers.py>`_
 
 **django-elasticsearch**
 

@@ -16,6 +16,7 @@ __all__ = (
     'get_document_for_model',
     'get_index_and_mapping_for_model',
     'more_like_this',
+    'sort_by_list',
 )
 
 
@@ -47,6 +48,22 @@ def get_index_and_mapping_for_model(model):
             document._doc_type.index,
             document._doc_type.mapping.properties.name
         )
+
+
+def sort_by_list(unsorted_dict, sorted_keys):
+    """Sort an OrderedDict by list of sorted keys.
+
+    :param unsorted_dict: Source dictionary.
+    :param sorted_keys: Keys to sort on.
+    :type unsorted_dict: collections.OrderedDict
+    :type sorted_keys: list
+    :return: Sorted dictionary.
+    :rtype: collections.OrderedDict
+    """
+    for key in sorted_keys:
+        unsorted_dict.move_to_end(key)
+
+    return unsorted_dict
 
 
 def more_like_this(obj,

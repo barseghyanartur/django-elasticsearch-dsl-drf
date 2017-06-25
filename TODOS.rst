@@ -18,7 +18,7 @@ Must haves
     - Think of making more-like-this a functional filter.
     - Add support for geo spatial search/filtering/ordering.
     - Improve documentation.
-    - Dynamic serializer for Document models.
+    + Dynamic serializer for Document models.
     + Add tests for ``term`` filter.
     + Add tests for ``terms`` filter.
     + Add tests for ``range`` filter.

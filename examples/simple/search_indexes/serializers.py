@@ -1,6 +1,9 @@
 import json
 
 from rest_framework import serializers
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+
+from .documents import BookDocument
 
 __all__ = (
     'BookDocumentSerializer',
@@ -65,6 +68,37 @@ class BookDocumentSerializer(serializers.Serializer):
     # def get_id(self, obj):
     #     """Get id."""
     #     return int(obj.meta.id)
+
+    def get_tags(self, obj):
+        """Get tags."""
+        return json.loads(obj.tags)
+
+
+class BookDocumentSimpleSerializer(DocumentSerializer):
+    """Serializer for the Book document."""
+
+    tags = serializers.SerializerMethodField()
+
+    class Meta(object):
+        """Meta options."""
+
+        document = BookDocument
+        fields = (
+            'id',
+            'title',
+            'description',
+            'summary',
+            'publisher',
+            'publication_date',
+            'state',
+            'isbn',
+            'price',
+            'pages',
+            'stock_count',
+            'tags',
+            'null_field',  # Used in testing of `isnull` functional filter.
+        )
+        # read_only_fields = fields
 
     def get_tags(self, obj):
         """Get tags."""

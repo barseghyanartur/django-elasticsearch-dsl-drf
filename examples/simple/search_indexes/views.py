@@ -16,7 +16,11 @@ from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
 
 
 from .documents import BookDocument, PublisherDocument
-from .serializers import BookDocumentSerializer, PublisherDocumentSerializer
+from .serializers import (
+    BookDocumentSerializer,
+    BookDocumentSimpleSerializer,
+    PublisherDocumentSerializer,
+)
 
 __all__ = (
     'BookDocumentView',
@@ -28,7 +32,8 @@ class BookDocumentView(BaseDocumentViewSet):
     """The BookDocument view."""
 
     document = BookDocument
-    serializer_class = BookDocumentSerializer
+    # serializer_class = BookDocumentSerializer
+    serializer_class = BookDocumentSimpleSerializer
     lookup_field = 'id'
     filter_backends = [
         FilteringFilterBackend,

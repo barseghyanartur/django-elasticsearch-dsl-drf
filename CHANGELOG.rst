@@ -17,8 +17,9 @@ are used for versioning (schema follows below):
 
 0.1.7
 -----
-2017-07-dd (not yet released)
+2017-07-25
 
+- Dynamic serializer for Documents.
 - Major improvements in documentation.
 
 0.1.6

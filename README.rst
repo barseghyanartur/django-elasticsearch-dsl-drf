@@ -6,7 +6,7 @@ Integrate `django-elasticsearch-dsl
 `Django REST framework <https://pypi.python.org/pypi/djangorestframework>`_ in
 the shortest way possible, with least efforts possible.
 
-Package provides views, filter backends and other handy tools.
+Package provides views, serializers, filter backends and other handy tools.
 
 You are expected to use `django-elasticsearch-dsl
 <https://pypi.python.org/pypi/django-elasticsearch-dsl>`_ for defining your

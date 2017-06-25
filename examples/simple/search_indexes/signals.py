@@ -32,7 +32,7 @@ def update_document(sender, **kwargs):
     if app_label == 'book':
         # If it is `books.Publisher` that is being updated.
         if model_name == 'publisher':
-            instances = instance.genre.all()
+            instances = instance.books.all()
             for _instance in instances:
                 registry.update(_instance)
 
@@ -51,7 +51,7 @@ def delete_document(sender, **kwargs):
     if app_label == 'books':
         # If it is `books.Publisher` that is being updated.
         if model_name == 'publisher':
-            instances = instance.genre.all()
+            instances = instance.books.all()
             for _instance in instances:
                 registry.update(_instance)
                 # registry.delete(_instance, raise_on_error=False)

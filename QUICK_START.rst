@@ -483,3 +483,113 @@ as follows:
     .. code-block:: sh
 
         ./manage.py search_index --populate -f
+
+Sample serializer
+-----------------
+
+At this step we're going to define a serializer to be used in the
+Django REST framework ViewSet.
+
+Content of the ``search_indexes/serializers.py`` file. Additionally, see
+the code comments.
+
+Required imports
+~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    import json
+
+    from rest_framework import serializers
+    from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+
+    from .documents import BookDocument
+
+
+Serializer definition
+~~~~~~~~~~~~~~~~~~~~~
+
+Simplest way to create a serializer, is to just specify which fields are
+needed to be serialized and leave it further to the dynamic serializer.
+
+.. code-block:: python
+
+    class BookDocumentSerializer(DocumentSerializer):
+        """Serializer for the Book document."""
+
+        tags = serializers.SerializerMethodField()
+
+        class Meta(object):
+            """Meta options."""
+
+            document = BookDocument
+            fields = (
+                'id',
+                'title',
+                'description',
+                'summary',
+                'publisher',
+                'publication_date',
+                'state',
+                'isbn',
+                'price',
+                'pages',
+                'stock_count',
+                'tags',
+            )
+
+        def get_tags(self, obj):
+            """Get tags."""
+            return json.loads(obj.tags)
+
+However, if dynamic serializer doesn't work for your or you want to customize
+too many things, you are free to use standard ``Serializer`` class of the
+Django REST framework.
+
+.. code-block:: python
+
+    class BookDocumentSerializer(serializers.Serializer):
+        """Serializer for the Book document."""
+
+        id = serializers.IntegerField(read_only=True)
+
+        title = serializers.CharField(read_only=True)
+        description = serializers.CharField(read_only=True)
+        summary = serializers.CharField(read_only=True)
+
+        publisher = serializers.CharField(read_only=True)
+        publication_date = serializers.DateField(read_only=True)
+        state = serializers.CharField(read_only=True)
+        isbn = serializers.CharField(read_only=True)
+        price = serializers.FloatField(read_only=True)
+        pages = serializers.IntegerField(read_only=True)
+        stock_count = serializers.IntegerField(read_only=True)
+        tags = serializers.SerializerMethodField()
+
+        class Meta(object):
+            """Meta options."""
+
+            fields = (
+                'id',
+                'title',
+                'description',
+                'summary',
+                'publisher',
+                'publication_date',
+                'state',
+                'isbn',
+                'price',
+                'pages',
+                'stock_count',
+                'tags',
+            )
+
+        def get_tags(self, obj):
+            """Get tags."""
+            return json.loads(obj.tags)
+
+ViewSet definition
+------------------
+
+At this step, we're going to define Django REST framework ViewSets.
+

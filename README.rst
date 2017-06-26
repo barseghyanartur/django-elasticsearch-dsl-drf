@@ -47,12 +47,16 @@ Installation
 
         INSTALLED_APPS = (
             # ...
-            'rest_framework',  # REST framework
-            'django_elasticsearch_dsl',  # Elasticsearch integration
-            'django_elasticsearch_dsl_drf',  # This app
+            # REST framework
+            'rest_framework',
+
+            # Django Elasticsearch integration
+            'django_elasticsearch_dsl',
+
+            # Django REST framework Elasticsearch integration (this package)
+            'django_elasticsearch_dsl_drf',
             # ...
         )
-
 
 Quick start
 ===========

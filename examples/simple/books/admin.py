@@ -8,6 +8,7 @@ __all__ = (
     'OrderAdmin',
     'OrderLineAdmin',
     'PublisherAdmin',
+    'TagAdmin',
 )
 
 
@@ -38,6 +39,7 @@ class BookAdmin(admin.ModelAdmin):
 
     list_display = ('title', 'isbn', 'price', 'publication_date')
     search_fields = ('title',)
+    filter_horizontal = ('authors', 'tags',)
 
 
 @admin.register(Author)
@@ -54,3 +56,11 @@ class PublisherAdmin(admin.ModelAdmin):
 
     list_display = ('name',)
     search_fields = ('name',)
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    """Tag admin."""
+
+    list_display = ('title',)
+    search_fields = ('title',)

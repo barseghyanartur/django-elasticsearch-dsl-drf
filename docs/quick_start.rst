@@ -24,9 +24,14 @@ Installation
 
         INSTALLED_APPS = (
             # ...
-            'rest_framework',  # REST framework
-            'django_elasticsearch_dsl',  # Elasticsearch integration
-            'django_elasticsearch_dsl_drf',  # This app
+            # REST framework
+            'rest_framework',
+
+            # Django Elasticsearch integration
+            'django_elasticsearch_dsl',
+
+            # Django REST framework Elasticsearch integration (this package)
+            'django_elasticsearch_dsl_drf',
             # ...
         )
 
@@ -65,7 +70,7 @@ models.
   of authors (``ManyToMany`` relation).
 - `Tag model`_: The tag model. Each book might have unlimited number of
   tags (``ManyToMany`` relation).
-- Book: The book model.
+- `Book model`_: The book model.
 
 To keep things separate, our Django models will reside in the ``books`` app.
 Elasticsearch documents and Django REST framework views will be defined in a
@@ -265,6 +270,7 @@ ba able to fill some data.
 
         list_display = ('title', 'isbn', 'price', 'publication_date')
         search_fields = ('title',)
+        filter_horizontal = ('authors', 'tags',)
 
 
     @admin.register(Author)
@@ -283,11 +289,17 @@ ba able to fill some data.
         search_fields = ('name',)
 
 
+    @admin.register(Tag)
+    class TagAdmin(admin.ModelAdmin):
+        """Tag admin."""
+
+        list_display = ('title',)
+        search_fields = ('title',)
+
 Create database tables
 ----------------------
 
-For now, just run the migrations and create a dozen of database records in
-admin.
+For now, just run the migrations to create the database tables.
 
 .. code-block:: sh
 
@@ -298,7 +310,12 @@ Fill in some data
 -----------------
 
 If you have followed the instructions, you should now be able to log into the
-Django admin and create a dozen of Book/Author/Publisher/Tag objects.
+Django admin and create a dozen of Book/Author/Publisher/Tag records in admin.
+
+- http://localhost:8000/admin/books/publisher/
+- http://localhost:8000/admin/books/author/
+- http://localhost:8000/admin/books/tag/
+- http://localhost:8000/admin/books/book/
 
 Once you've done that, proceed to the next step.
 
@@ -462,13 +479,6 @@ Elasticsearch index/document (Book).
 The excellent ``django-elasticsearch-dsl`` library makes a good job of keeping
 the Book index fresh. It makes use of signals, so whenever the Book model
 is changed, the correspondent BookDocument indexes would be updated.
-However, in case if a Tag, Publisher or Author models change, the Book index
-would not be automatically updated.
-
-In order to keep indexes fresh, you will have to write a couple of simple
-lines of code (using Django's signals). Whenever a change is made to any
-of the Tag, Publisher or Author models, we're going to update the correspondent
-BookDocument index.
 
 To simply run the full sync between Django's database and Elasticsearch, do
 as follows:
@@ -484,6 +494,14 @@ as follows:
     .. code-block:: sh
 
         ./manage.py search_index --populate -f
+
+However, in case if a Tag, Publisher or Author models change, the Book index
+would not be automatically updated.
+
+In order to keep indexes fresh, you will have to write a couple of simple
+lines of code (using Django's signals). Whenever a change is made to any
+of the Tag, Publisher or Author models, we're going to update the correspondent
+BookDocument index.
 
 Sample serializer
 -----------------

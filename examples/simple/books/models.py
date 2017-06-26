@@ -17,6 +17,7 @@ __all__ = (
     'Order',
     'OrderLine',
     'Publisher',
+    'Tag',
 )
 
 

@@ -34,6 +34,6 @@ codebin/
 /build/
 /dist/
 /src/django_elasticsearch_dsl_drf.egg-info
+/src/django_elasticsearch_dsl_drf/filter_backends/aggregations.py
 #/examples/simple/settings/__init__.py
 /examples/simple/settings/local_settings.py
-

@@ -77,6 +77,13 @@ search_indexes/documents/publisher.py:
                 )
             }
         )
+        info = fields.StringField(
+            fields={
+                'raw': fields.StringField(
+                    analyzer='keyword'
+                )
+            }
+        )
         address = fields.StringField(
             fields={
                 'raw': fields.StringField(
@@ -105,13 +112,7 @@ search_indexes/documents/publisher.py:
                 )
             }
         )
-        website = fields.StringField(
-            fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
-            }
-        )
+        website = fields.StringField()
 
         class Meta(object):
             """Meta options."""
@@ -143,6 +144,7 @@ search_indexes/serializers.py:
             fields = (
                 'id',
                 'name',
+                'info',
                 'address',
                 'city',
                 'state_province',
@@ -182,6 +184,7 @@ search_indexes/views.py:
         # Define search fields
         search_fields = (
             'name',
+            'info',
             'address',
             'city',
             'state_province',

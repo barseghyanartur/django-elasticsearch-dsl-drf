@@ -26,6 +26,7 @@ class Publisher(models.Model):
     """Publisher."""
 
     name = models.CharField(max_length=30)
+    info = models.TextField(null=True, blank=True)
     address = models.CharField(max_length=50)
     city = models.CharField(max_length=60)
     state_province = models.CharField(max_length=30)

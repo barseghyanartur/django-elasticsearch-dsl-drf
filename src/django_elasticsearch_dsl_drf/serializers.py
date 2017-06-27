@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+Serializers.
+"""
 
 from __future__ import absolute_import, unicode_literals
 
@@ -17,33 +20,33 @@ from rest_framework.utils.field_mapping import get_field_kwargs
 from rest_framework.fields import (
     BooleanField,
     CharField,
-    ChoiceField,
+    # ChoiceField,
     DateField,
-    DateTimeField,
-    DecimalField,
-    DictField,
-    DurationField,
-    EmailField,
-    Field,
-    FileField,
-    FilePathField,
+    # DateTimeField,
+    # DecimalField,
+    # DictField,
+    # DurationField,
+    # EmailField,
+    # Field,
+    # FileField,
+    # FilePathField,
     FloatField,
-    HiddenField,
-    ImageField,
+    # HiddenField,
+    # ImageField,
     IntegerField,
     IPAddressField,
-    JSONField,
-    ListField,
-    ModelField,
-    MultipleChoiceField,
-    NullBooleanField,
-    ReadOnlyField,
-    RegexField,
-    SerializerMethodField,
-    SlugField,
-    TimeField,
-    URLField,
-    UUIDField,
+    # JSONField,
+    # ListField,
+    # ModelField,
+    # MultipleChoiceField,
+    # NullBooleanField,
+    # ReadOnlyField,
+    # RegexField,
+    # SerializerMethodField,
+    # SlugField,
+    # TimeField,
+    # URLField,
+    # UUIDField,
 )
 
 import six
@@ -227,7 +230,7 @@ class DocumentSerializer(
 
     def get_fields(self):
         """Get the required fields for serializing the result."""
-        fields = self.Meta.fields
+        __fields = self.Meta.fields
         exclude = self.Meta.exclude
         ignore_fields = self.Meta.ignore_fields
         document = self.Meta.document
@@ -248,8 +251,8 @@ class DocumentSerializer(
                 if orig_name in exclude or field_name in exclude:
                     continue
             # When fields to include are decided by `fields`
-            if fields:
-                if orig_name not in fields and field_name not in fields:
+            if __fields:
+                if orig_name not in __fields and field_name not in __fields:
                     continue
 
             # Look up the field attributes on the current index model,
@@ -269,6 +272,6 @@ class DocumentSerializer(
             for field_name in declared_fields:
                 field_mapping[field_name] = declared_fields[field_name]
 
-        field_mapping = sort_by_list(field_mapping, fields)
+        field_mapping = sort_by_list(field_mapping, __fields)
 
         return field_mapping

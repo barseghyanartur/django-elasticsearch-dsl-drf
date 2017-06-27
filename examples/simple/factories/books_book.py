@@ -39,7 +39,7 @@ class BaseBookFactory(DjangoModelFactory):
     publisher = SubFactory('factories.books_publisher.LimitedPublisherFactory')
     publication_date = Faker('date')
     price = Faker('pydecimal', left_digits=2, right_digits=2, positive=True)
-    isbn = Faker('pystr', min_chars=10, max_chars=10)
+    isbn = Faker('isbn13')
     state = FuzzyChoice(dict(BOOK_PUBLISHING_STATUS_CHOICES).keys())
     pages = LazyAttribute(
         lambda __x: random.randint(10, 200)

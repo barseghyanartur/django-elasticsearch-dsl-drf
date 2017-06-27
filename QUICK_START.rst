@@ -2,8 +2,7 @@
 Quick start
 ===========
 
-Perhaps the best way to get acquainted with ``django-elasticsearch-dsl-drf``
-is quick start tutorial.
+The best way to get acquainted with ``django-elasticsearch-dsl-drf``.
 
 See it as a guide of diving into integration of Elasticsearch with Django
 with very low knowledge entry level.
@@ -312,10 +311,12 @@ Fill in some data
 If you have followed the instructions, you should now be able to log into the
 Django admin and create a dozen of Book/Author/Publisher/Tag records in admin.
 
-- http://localhost:8000/admin/books/publisher/
-- http://localhost:8000/admin/books/author/
-- http://localhost:8000/admin/books/tag/
-- http://localhost:8000/admin/books/book/
+.. code-block:: text
+
+    http://localhost:8000/admin/books/publisher/
+    http://localhost:8000/admin/books/author/
+    http://localhost:8000/admin/books/tag/
+    http://localhost:8000/admin/books/book/
 
 Once you've done that, proceed to the next step.
 
@@ -476,6 +477,9 @@ Syncing Django's database with Elasticsearch indexes
 So far, we have a couple of Django models and a single (decentralized)
 Elasticsearch index/document (Book).
 
+Full database sync
+~~~~~~~~~~~~~~~~~~
+
 The excellent ``django-elasticsearch-dsl`` library makes a good job of keeping
 the Book index fresh. It makes use of signals, so whenever the Book model
 is changed, the correspondent BookDocument indexes would be updated.
@@ -498,10 +502,98 @@ as follows:
 However, in case if a Tag, Publisher or Author models change, the Book index
 would not be automatically updated.
 
+Sample partial sync (using custom signals)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 In order to keep indexes fresh, you will have to write a couple of simple
 lines of code (using Django's signals). Whenever a change is made to any
 of the Tag, Publisher or Author models, we're going to update the correspondent
 BookDocument index.
+
+Required imports
+^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    from django.db.models.signals import post_save, post_delete
+    from django.dispatch import receiver
+
+    from django_elasticsearch_dsl.registries import registry
+
+Update book index on related model change
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    @receiver(post_save)
+    def update_document(sender, **kwargs):
+        """Update document on added/changed records.
+
+        Update Book document index if related `books.Publisher` (`publisher`),
+        `books.Author` (`authors`), `books.Tag` (`tags`) fields have been updated
+        in the database.
+        """
+        app_label = sender._meta.app_label
+        model_name = sender._meta.model_name
+        instance = kwargs['instance']
+
+        if app_label == 'book':
+            # If it is `books.Publisher` that is being updated.
+            if model_name == 'publisher':
+                instances = instance.books.all()
+                for _instance in instances:
+                    registry.update(_instance)
+
+            # If it is `books.Author` that is being updated.
+            if model_name == 'author':
+                instances = instance.books.all()
+                for _instance in instances:
+                    registry.update(_instance)
+
+            # If it is `books.Tag` that is being updated.
+            if model_name == 'tag':
+                instances = instance.books.all()
+                for _instance in instances:
+                    registry.update(_instance)
+
+Update book index on related model removal
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    @receiver(post_delete)
+    def delete_document(sender, **kwargs):
+        """Update document on deleted records.
+
+        Updates Book document from index if related `books.Publisher`
+        (`publisher`), `books.Author` (`authors`), `books.Tag` (`tags`) fields
+        have been removed from database.
+        """
+        app_label = sender._meta.app_label
+        model_name = sender._meta.model_name
+        instance = kwargs['instance']
+
+        if app_label == 'books':
+            # If it is `books.Publisher` that is being updated.
+            if model_name == 'publisher':
+                instances = instance.books.all()
+                for _instance in instances:
+                    registry.update(_instance)
+                    # registry.delete(_instance, raise_on_error=False)
+
+            # If it is `books.Author` that is being updated.
+            if model_name == 'author':
+                instances = instance.books.all()
+                for _instance in instances:
+                    registry.update(_instance)
+                    # registry.delete(_instance, raise_on_error=False)
+
+            # If it is `books.Tag` that is being updated.
+            if model_name == 'tag':
+                instances = instance.books.all()
+                for _instance in instances:
+                    registry.update(_instance)
+                    # registry.delete(_instance, raise_on_error=False)
 
 Sample serializer
 -----------------
@@ -618,3 +710,292 @@ ViewSet definition
 
 At this step, we're going to define Django REST framework ViewSets.
 
+
+Content of the ``search_indexes/views.py`` file. Additionally, see
+the code comments.
+
+Required imports
+~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    from django_elasticsearch_dsl_drf.constants import (
+        LOOKUP_FILTER_TERMS,
+        LOOKUP_FILTER_RANGE,
+        LOOKUP_FILTER_PREFIX,
+        LOOKUP_FILTER_WILDCARD,
+        LOOKUP_QUERY_IN,
+        LOOKUP_QUERY_GT,
+        LOOKUP_QUERY_GTE,
+        LOOKUP_QUERY_LT,
+        LOOKUP_QUERY_LTE,
+        LOOKUP_QUERY_EXCLUDE,
+    )
+    from django_elasticsearch_dsl_drf.filter_backends import (
+        FilteringFilterBackend,
+        IdsFilterBackend,
+        OrderingFilterBackend,
+        SearchFilterBackend,
+    )
+    from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+
+    from .documents import BookDocument, PublisherDocument
+    from .serializers import BookDocumentSerializer
+
+
+ViewSet definition
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    class BookDocumentView(BaseDocumentViewSet):
+        """The BookDocument view."""
+
+        document = BookDocument
+        serializer_class = BookDocumentSerializer
+        lookup_field = 'id'
+        filter_backends = [
+            FilteringFilterBackend,
+            IdsFilterBackend,
+            OrderingFilterBackend,
+            SearchFilterBackend,
+        ]
+        # Define search fields
+        search_fields = (
+            'title',
+            'description',
+            'summary',
+        )
+        # Define filter fields
+        filter_fields = {
+            'id': {
+                'field': 'id',
+                # Note, that we limit the lookups of id field in this example,
+                # to `range`, `in`, `gt`, `gte`, `lt` and `lte` filters.
+                'lookups': [
+                    LOOKUP_FILTER_RANGE,
+                    LOOKUP_QUERY_IN,
+                    LOOKUP_QUERY_GT,
+                    LOOKUP_QUERY_GTE,
+                    LOOKUP_QUERY_LT,
+                    LOOKUP_QUERY_LTE,
+                ],
+            },
+            'title': 'title.raw',
+            'publisher': 'publisher.raw',
+            'publication_date': 'publication_date',
+            'state': 'state.raw',
+            'isbn': 'isbn.raw',
+            'price': {
+                'field': 'price.raw',
+                # Note, that we limit the lookups of `price` field in this
+                # example, to `range`, `gt`, `gte`, `lt` and `lte` filters.
+                'lookups': [
+                    LOOKUP_FILTER_RANGE,
+                    LOOKUP_QUERY_GT,
+                    LOOKUP_QUERY_GTE,
+                    LOOKUP_QUERY_LT,
+                    LOOKUP_QUERY_LTE,
+                ],
+            },
+            'pages': {
+                'field': 'pages',
+                # Note, that we limit the lookups of `pages` field in this
+                # example, to `range`, `gt`, `gte`, `lt` and `lte` filters.
+                'lookups': [
+                    LOOKUP_FILTER_RANGE,
+                    LOOKUP_QUERY_GT,
+                    LOOKUP_QUERY_GTE,
+                    LOOKUP_QUERY_LT,
+                    LOOKUP_QUERY_LTE,
+                ],
+            },
+            'stock_count': {
+                'field': 'stock_count',
+                # Note, that we limit the lookups of `stock_count` field in
+                # this example, to `range`, `gt`, `gte`, `lt` and `lte`
+                # filters.
+                'lookups': [
+                    LOOKUP_FILTER_RANGE,
+                    LOOKUP_QUERY_GT,
+                    LOOKUP_QUERY_GTE,
+                    LOOKUP_QUERY_LT,
+                    LOOKUP_QUERY_LTE,
+                ],
+            },
+            'tags': {
+                'field': 'tags',
+                # Note, that we limit the lookups of `tags` field in
+                # this example, to `terms, `prefix`, `wildcard`, `in` and
+                # `exclude` filters.
+                'lookups': [
+                    LOOKUP_FILTER_TERMS,
+                    LOOKUP_FILTER_PREFIX,
+                    LOOKUP_FILTER_WILDCARD,
+                    LOOKUP_QUERY_IN,
+                    LOOKUP_QUERY_EXCLUDE,
+                ],
+            },
+            'tags.raw': {
+                'field': 'tags.raw',
+                # Note, that we limit the lookups of `tags.raw` field in
+                # this example, to `terms, `prefix`, `wildcard`, `in` and
+                # `exclude` filters.
+                'lookups': [
+                    LOOKUP_FILTER_TERMS,
+                    LOOKUP_FILTER_PREFIX,
+                    LOOKUP_FILTER_WILDCARD,
+                    LOOKUP_QUERY_IN,
+                    LOOKUP_QUERY_EXCLUDE,
+                ],
+            },
+        }
+        # Define ordering fields
+        ordering_fields = {
+            'id': 'id',
+            'title': 'title.raw',
+            'price': 'price.raw',
+            'state': 'state.raw',
+            'publication_date': 'publication_date',
+        }
+        # Specify default ordering
+        ordering = ('id', 'title', 'price',)
+
+URLs
+----
+
+At this step, we're going to define url patterns.
+
+Content of the ``search_indexes/urls.py`` file. Additionally, see
+the code comments.
+
+Required imports
+~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    from django.conf.urls import url, include
+    from rest_framework_extensions.routers import ExtendedDefaultRouter
+
+    from .views import BookDocumentView
+
+
+Router definition
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    router = ExtendedDefaultRouter()
+    books = router.register(r'books',
+                            BookDocumentView,
+                            base_name='bookdocument')
+
+URL patterns
+~~~~~~~~~~~~
+
+.. code-block:: python
+
+    urlpatterns = [
+        url(r'^', include(router.urls)),
+    ]
+
+Check what you've done so far
+-----------------------------
+
+At this point, you are one step away from a working example of integrating
+Elasticsearch DSL with Django.
+
+URLs
+~~~~
+
+If you didn't add the urls of the ``search_indexes`` example application to
+your project's global url patterns, make sure to do it now.
+
+.. code-block:: python
+
+    from django.conf.urls import include, url
+    from search_indexes import urls as search_index_urls
+
+    urlpatterns = [
+        # ...
+        # Search URLs
+        url(r'^search/', include(search_index_urls)),
+        # ...
+    ]
+
+Test in browser
+~~~~~~~~~~~~~~~
+
+Open the following URL in your browser.
+
+.. code-block:: text
+
+    http://localhost:8000/search/books/
+
+Perform a number of lookups:
+
+.. code-block:: text
+
+    http://localhost:8001/search/books/?ids=54|55|56
+    http://localhost:8001/search/books/?summary__contains=photography
+    http://localhost:8001/search/books/?tags__contains=ython
+    http://localhost:8001/search/books/?state=published
+    http://localhost:8001/search/books/?pages__gt=10&pages__lt=30
+
+Development and debugging
+=========================
+
+Looking for profiling tools for Elasticsearch?
+
+Try `django-elasticsearch-debug-toolbar
+<https://pypi.python.org/pypi/django-elasticsearch-debug-toolbar/>`_
+package. It's implemented as a panel for the well known
+`Django Debug Toolbar <https://pypi.python.org/pypi/django-debug-toolbar>`_
+and gives you full insights on what's happening on the side of Elasticsearch.
+
+Installation
+------------
+
+.. code-block:: sh
+
+    pip install django-debug-toolbar
+    pip install django-elasticsearch-debug-toolbar
+
+Configuration
+-------------
+
+Change your development settings in the following way:
+
+.. code-block:: python
+
+    MIDDLEWARE_CLASSES += (
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+        'debug_toolbar_force.middleware.ForceDebugToolbarMiddleware',
+    )
+
+    INSTALLED_APPS += (
+        'debug_toolbar',
+        'elastic_panel',
+    )
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False,
+    }
+
+    DEBUG_TOOLBAR_PANELS = (
+        # Defaults
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+        # Additional
+        'elastic_panel.panel.ElasticDebugPanel',
+    )

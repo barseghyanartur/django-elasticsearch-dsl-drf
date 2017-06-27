@@ -53,6 +53,7 @@ books/models.py:
         """Publisher."""
 
         name = models.CharField(max_length=30)
+        info = models.TextField(null=True, blank=True)
         address = models.CharField(max_length=50)
         city = models.CharField(max_length=60)
         state_province = models.CharField(max_length=30)
@@ -379,13 +380,9 @@ search_indexes/views.py:
                     LOOKUP_QUERY_IN,
                 ],
             },
-            'publisher': {
-                'field': 'publisher.raw',
-            },
+            'publisher': 'publisher.raw',
             'publication_date': 'publication_date',
-            'isbn': {
-                'field': 'isbn.raw',
-            },
+            'isbn': 'isbn.raw',
             'tags': {
                 'field': 'tags',
                 'lookups': [

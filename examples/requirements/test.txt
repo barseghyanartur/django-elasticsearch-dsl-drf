@@ -1,4 +1,4 @@
-Faker
+Faker==0.7.17
 py==1.4.31
 pytest==3.0.2
 factory_boy==2.7.0

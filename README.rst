@@ -70,6 +70,7 @@ with very low knowledge entry level.
 
 Search
 ======
+
 Query param name reserved for search is ``search``. Make sure your models and
 documents do not have it as a field or attribute.
 

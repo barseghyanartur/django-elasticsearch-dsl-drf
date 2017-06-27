@@ -1,12 +1,16 @@
 """
 Helpers.
 """
+from collections import OrderedDict
 
 from django_elasticsearch_dsl.registries import registry
 
 from elasticsearch_dsl import Search
 from elasticsearch_dsl.connections import connections
 from elasticsearch_dsl.query import MoreLikeThis
+
+from six import PY3
+
 
 __title__ = 'django_elasticsearch_dsl_drf.helpers'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -60,10 +64,22 @@ def sort_by_list(unsorted_dict, sorted_keys):
     :return: Sorted dictionary.
     :rtype: collections.OrderedDict
     """
-    for key in sorted_keys:
-        unsorted_dict.move_to_end(key)
+    __unsorted_dict_keys = [__key for __key in unsorted_dict.keys()]
+    __sorted_keys = (
+        tuple(sorted_keys) + tuple(
+            set(__unsorted_dict_keys) - set(sorted_keys)
+        )
+    )
+    if PY3:
+        for key in __sorted_keys:
+            unsorted_dict.move_to_end(key)
 
-    return unsorted_dict
+        return unsorted_dict
+    else:
+        sorted_dict = OrderedDict(
+            (key, unsorted_dict[key]) for key in __sorted_keys
+        )
+        return sorted_dict
 
 
 def more_like_this(obj,

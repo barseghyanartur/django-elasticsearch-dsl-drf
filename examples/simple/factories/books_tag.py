@@ -17,7 +17,7 @@ class BaseTagFactory(DjangoModelFactory):
 
     # Although the ``max_length`` of the of the ``title`` field of the
     # ``Tag`` model is set to 255, for usability we set this one to 20.
-    title = Faker('text', max_nb_chars=20)
+    title = Faker('catch_phrase')
 
     class Meta(object):
         """Meta class."""

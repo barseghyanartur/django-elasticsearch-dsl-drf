@@ -4,6 +4,10 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_PREFIX,
     LOOKUP_FILTER_WILDCARD,
     LOOKUP_QUERY_IN,
+    LOOKUP_QUERY_GT,
+    LOOKUP_QUERY_GTE,
+    LOOKUP_QUERY_LT,
+    LOOKUP_QUERY_LTE,
     LOOKUP_QUERY_EXCLUDE,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
@@ -57,16 +61,10 @@ class BookDocumentView(BaseDocumentViewSet):
             ],
         },
         'title': 'title.raw',
-        'publisher': {
-            'field': 'publisher.raw',
-        },
+        'publisher': 'publisher.raw',
         'publication_date': 'publication_date',
-        'state': {
-            'field': 'state.raw',
-        },
-        'isbn': {
-            'field': 'isbn.raw',
-        },
+        'state': 'state.raw',
+        'isbn': 'isbn.raw',
         'price': {
             'field': 'price.raw',
             'lookups': [
@@ -74,15 +72,23 @@ class BookDocumentView(BaseDocumentViewSet):
             ],
         },
         'pages': {
-            'field': 'pages.raw',
+            'field': 'pages',
             'lookups': [
                 LOOKUP_FILTER_RANGE,
+                LOOKUP_QUERY_GT,
+                LOOKUP_QUERY_GTE,
+                LOOKUP_QUERY_LT,
+                LOOKUP_QUERY_LTE,
             ],
         },
         'stock_count': {
-            'field': 'stock_count.raw',
+            'field': 'stock_count',
             'lookups': [
                 LOOKUP_FILTER_RANGE,
+                LOOKUP_QUERY_GT,
+                LOOKUP_QUERY_GTE,
+                LOOKUP_QUERY_LT,
+                LOOKUP_QUERY_LTE,
             ],
         },
         'tags': {
@@ -136,6 +142,7 @@ class PublisherDocumentView(BaseDocumentViewSet):
     # Define search fields
     search_fields = (
         'name',
+        'info',
         'address',
         'city',
         'state_province',

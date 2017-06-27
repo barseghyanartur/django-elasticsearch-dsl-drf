@@ -14,7 +14,7 @@ Must haves
     - Full support of all optional params of each native Elasticsearch filter,
       such as ``flags`` on ``regexp``.
     - Support ``mode`` argument in the ``OrderingFilterBackend``.
-    - Support facets.
+    - Support aggregations (facets).
     - Think of making more-like-this a functional filter.
     - Add support for geo spatial search/filtering/ordering.
     - Improve documentation.

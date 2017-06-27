@@ -8,20 +8,7 @@ from .documents import BookDocument
 __all__ = (
     'BookDocumentSerializer',
     'PublisherDocumentSerializer',
-    'TagSerializer',
 )
-
-
-class TagSerializer(serializers.Serializer):
-    """Helper serializer for the Tag field of the Book document."""
-
-    title = serializers.CharField()
-
-    class Meta(object):
-        """Meta options."""
-
-        fields = ('title',)
-        read_only_fields = ('title',)
 
 
 class BookDocumentSerializer(serializers.Serializer):
@@ -43,7 +30,9 @@ class BookDocumentSerializer(serializers.Serializer):
     tags = serializers.SerializerMethodField()
 
     # Used in testing of `isnull` functional filter.
-    null_field = serializers.CharField(read_only=True)
+    null_field = serializers.CharField(read_only=True,
+                                       required=False,
+                                       allow_blank=True)
 
     class Meta(object):
         """Meta options."""
@@ -98,7 +87,6 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
             'tags',
             'null_field',  # Used in testing of `isnull` functional filter.
         )
-        # read_only_fields = fields
 
     def get_tags(self, obj):
         """Get tags."""

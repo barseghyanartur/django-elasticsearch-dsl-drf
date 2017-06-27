@@ -26,6 +26,7 @@ class PublisherDocument(DocType):
             )
         }
     )
+    info = fields.StringField()
     address = fields.StringField(
         fields={
             'raw': fields.StringField(
@@ -54,13 +55,7 @@ class PublisherDocument(DocType):
             )
         }
     )
-    website = fields.StringField(
-        fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
-        }
-    )
+    website = fields.StringField()
 
     class Meta(object):
         """Meta options."""

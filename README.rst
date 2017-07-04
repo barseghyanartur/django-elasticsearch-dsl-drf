@@ -22,8 +22,14 @@ Prerequisites
 Dependencies
 ============
 
-- django-elasticsearch-dsl
-- djangorestframework
+- `django-elasticsearch-dsl <https://pypi.python.org/pypi/django-elasticsearch-dsl>`_
+- `djangorestframework <https://pypi.python.org/pypi/djangorestframework>`_
+
+Documentation
+=============
+
+Documentation is available on `Read the Docs
+<http://django-elasticsearch-dsl-drf.readthedocs.io/>`_.
 
 Installation
 ============

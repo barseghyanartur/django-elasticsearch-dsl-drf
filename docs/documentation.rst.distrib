@@ -8,11 +8,12 @@ Contents:
 .. toctree::
    :maxdepth: 20
 
-   django_elasticsearch_dsl_drf
+   index
    quick_start
    basic_usage_examples
    advanced_usage_examples
    misc_usage_examples
+   django_elasticsearch_dsl_drf
 
 Indices and tables
 ==================

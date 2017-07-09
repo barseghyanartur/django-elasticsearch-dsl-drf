@@ -34,7 +34,7 @@ class BaseRestFrameworkTestCase(TransactionTestCase):
 
         cls.client = APIClient()
 
-        # Create genre coordinator.
+        # Create test user.
         cls.user = factories.TestUsernameSuperAdminUserFactory()
 
     def authenticate(self):
@@ -60,5 +60,5 @@ class BaseTestCase(TransactionTestCase):
 
         cls.client = APIClient()
 
-        # Create genre coordinator.
+        # Create test user.
         cls.user = factories.TestUsernameSuperAdminUserFactory()

@@ -2,6 +2,7 @@
 All filter backends.
 """
 
+from .faceted_search import *
 from .filtering import *
 from .ordering import *
 from .search import *

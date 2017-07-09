@@ -1,16 +1,16 @@
 from django.conf.urls import url, include
 from rest_framework_extensions.routers import ExtendedDefaultRouter
 
-from .views import BookDocumentView, PublisherDocumentView
+from .viewsets import BookDocumentViewSet, PublisherDocumentViewSet
 
 __all__ = ('urlpatterns',)
 
 router = ExtendedDefaultRouter()
 books = router.register(r'books',
-                        BookDocumentView,
+                        BookDocumentViewSet,
                         base_name='bookdocument')
 publishers = router.register(r'publishers',
-                             PublisherDocumentView,
+                             PublisherDocumentViewSet,
                              base_name='publisherdocument')
 
 urlpatterns = [

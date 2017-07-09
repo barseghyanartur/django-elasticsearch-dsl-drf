@@ -23,9 +23,9 @@ __all__ = ('BaseDocumentViewSet',)
 
 
 class BaseDocumentViewSet(ReadOnlyModelViewSet):
-    """Base document viewset."""
+    """Base document ViewSet."""
 
-    document_uid_field = "id"
+    document_uid_field = 'id'
     document = None  # Re-define
 
     def __init__(self, *args, **kwargs):

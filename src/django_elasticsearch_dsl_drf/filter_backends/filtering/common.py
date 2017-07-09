@@ -1,5 +1,5 @@
 """
-Filtering backend.
+Common filtering backend.
 """
 
 import operator
@@ -54,7 +54,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>> from django_elasticsearch_dsl_drf.filter_backends import (
         >>>     FilteringFilterBackend
         >>> )
-        >>> from rest_framework.viewsets import ReadOnlyModelViewSet
+        >>> from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
         >>>
         >>> # Local article document definition
         >>> from .documents import ArticleDocument
@@ -62,7 +62,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>> # Local article document serializer
         >>> from .serializers import ArticleDocumentSerializer
         >>>
-        >>> class ArticleDocumentView(ReadOnlyModelViewSet):
+        >>> class ArticleDocumentView(BaseDocumentViewSet):
         >>>
         >>>     document = ArticleDocument
         >>>     serializer_class = ArticleDocumentSerializer

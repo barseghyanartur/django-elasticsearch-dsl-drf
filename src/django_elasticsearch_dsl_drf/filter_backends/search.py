@@ -26,7 +26,7 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>> from django_elasticsearch_dsl_drf.filter_backends import (
         >>>     SearchFilterBackend
         >>> )
-        >>> from rest_framework.viewsets import ReadOnlyModelViewSet
+        >>> from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
         >>>
         >>> # Local article document definition
         >>> from .documents import ArticleDocument
@@ -34,7 +34,7 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>> # Local article document serializer
         >>> from .serializers import ArticleDocumentSerializer
         >>>
-        >>> class ArticleDocumentView(ReadOnlyModelViewSet):
+        >>> class ArticleDocumentView(BaseDocumentViewSet):
         >>>
         >>>     document = ArticleDocument
         >>>     serializer_class = ArticleDocumentSerializer

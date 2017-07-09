@@ -1,5 +1,5 @@
 """
-ids filtering backend.
+Ids filtering backend.
 """
 
 from rest_framework.filters import BaseFilterBackend
@@ -21,7 +21,7 @@ class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>> from django_elasticsearch_dsl_drf.filter_backends import (
         >>>     IdsFilterBackend
         >>> )
-        >>> from rest_framework.viewsets import ReadOnlyModelViewSet
+        >>> from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
         >>>
         >>> # Local article document definition
         >>> from .documents import ArticleDocument
@@ -29,7 +29,7 @@ class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>> # Local article document serializer
         >>> from .serializers import ArticleDocumentSerializer
         >>>
-        >>> class ArticleDocumentView(ReadOnlyModelViewSet):
+        >>> class ArticleDocumentView(BaseDocumentViewSet):
         >>>
         >>>     document = ArticleDocument
         >>>     serializer_class = ArticleDocumentSerializer

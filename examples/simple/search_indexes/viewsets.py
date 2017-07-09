@@ -15,9 +15,11 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     IdsFilterBackend,
     OrderingFilterBackend,
     SearchFilterBackend,
+    FacetedSearchFilterBackend,
 )
 from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
 
+from elasticsearch_dsl import TermsFacet, DateHistogramFacet
 
 from .documents import BookDocument, PublisherDocument
 from .serializers import (
@@ -32,7 +34,7 @@ __all__ = (
 )
 
 
-class BookDocumentView(BaseDocumentViewSet):
+class BookDocumentViewSet(BaseDocumentViewSet):
     """The BookDocument view."""
 
     document = BookDocument
@@ -44,6 +46,7 @@ class BookDocumentView(BaseDocumentViewSet):
         IdsFilterBackend,
         OrderingFilterBackend,
         SearchFilterBackend,
+        FacetedSearchFilterBackend,
     ]
     # Define search fields
     search_fields = (
@@ -126,9 +129,21 @@ class BookDocumentView(BaseDocumentViewSet):
     }
     # Specify default ordering
     ordering = ('id', 'title', 'price',)
+    faceted_search_fields = {
+        'state': 'state.raw',
+        'publisher': 'publisher.raw',
+        'publication_date': {
+            'field': 'publication_date',
+            'facet': DateHistogramFacet,
+            'options': {
+                'interval': 'year',
+            },
+            'enabled': True,
+        }
+    }
 
 
-class PublisherDocumentView(BaseDocumentViewSet):
+class PublisherDocumentViewSet(BaseDocumentViewSet):
     """The PublisherDocument view."""
 
     document = PublisherDocument

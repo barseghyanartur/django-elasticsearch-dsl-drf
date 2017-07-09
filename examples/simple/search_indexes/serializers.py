@@ -3,7 +3,7 @@ import json
 from rest_framework import serializers
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 
-from .documents import BookDocument
+from .documents import BookDocument, PublisherDocument
 
 __all__ = (
     'BookDocumentSerializer',
@@ -53,6 +53,25 @@ class BookDocumentSerializer(serializers.Serializer):
             'null_field',  # Used in testing of `isnull` functional filter.
         )
         read_only_fields = fields
+
+    def create(self, validated_data):
+        """Create.
+
+        Do nothing.
+
+        :param validated_data:
+        :return:
+        """
+
+    def update(self, instance, validated_data):
+        """Update.
+
+        Do nothing.
+
+        :param instance:
+        :param validated_data:
+        :return:
+        """
 
     # def get_id(self, obj):
     #     """Get id."""
@@ -116,4 +135,40 @@ class PublisherDocumentSerializer(serializers.Serializer):
             'country',
             'website',
         )
-        read_only_fields = fields
+
+    def create(self, validated_data):
+        """Create.
+
+        Do nothing.
+
+        :param validated_data:
+        :return:
+        """
+
+    def update(self, instance, validated_data):
+        """Update.
+
+        Do nothing.
+
+        :param instance:
+        :param validated_data:
+        :return:
+        """
+
+
+class PublisherDocumentSimpleSerializer(DocumentSerializer):
+    """Serializer for Publisher document."""
+
+    class Meta(object):
+        """Meta options."""
+
+        document = PublisherDocument
+        fields = (
+            'id',
+            'name',
+            'address',
+            'city',
+            'state_province',
+            'country',
+            'website',
+        )

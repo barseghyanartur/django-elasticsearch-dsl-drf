@@ -88,10 +88,10 @@ class Meta(type):
 
         return cls
 
-    def __setattr__(cls, key, value):
+    def __setattr__(cls, name, value):
         raise AttributeError("Meta class is immutable.")
 
-    def __delattr__(cls, key, value):
+    def __delattr__(cls, name):
         raise AttributeError("Meta class is immutable.")
 
 
@@ -275,3 +275,22 @@ class DocumentSerializer(
         field_mapping = sort_by_list(field_mapping, __fields)
 
         return field_mapping
+
+    def create(self, validated_data):
+        """Create.
+
+        Do nothing.
+
+        :param validated_data:
+        :return:
+        """
+
+    def update(self, instance, validated_data):
+        """Update.
+
+        Do nothing.
+
+        :param instance:
+        :param validated_data:
+        :return:
+        """

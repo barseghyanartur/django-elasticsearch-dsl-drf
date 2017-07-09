@@ -131,14 +131,16 @@ class BookDocumentViewSet(BaseDocumentViewSet):
     ordering = ('id', 'title', 'price',)
     faceted_search_fields = {
         'state': 'state.raw',
-        'publisher': 'publisher.raw',
+        'publisher': {
+            'field': 'publisher.raw',
+            'enabled': True,
+        },
         'publication_date': {
             'field': 'publication_date',
             'facet': DateHistogramFacet,
             'options': {
                 'interval': 'year',
-            },
-            'enabled': True,
+            }
         }
     }
 

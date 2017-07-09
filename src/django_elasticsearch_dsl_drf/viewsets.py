@@ -12,6 +12,7 @@ from elasticsearch_dsl.connections import connections
 
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
+from .pagination import PageNumberPagination
 from .utils import DictionaryProxy
 
 
@@ -27,6 +28,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
 
     document_uid_field = 'id'
     document = None  # Re-define
+    pagination_class = PageNumberPagination
 
     def __init__(self, *args, **kwargs):
         assert self.document is not None

@@ -165,8 +165,8 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
             request
         )
         faceted_search_fields = self.prepare_faceted_search_fields(view)
-        for __field in faceted_search_query_params:
-            if __field in faceted_search_fields:
+        for __field, __options in faceted_search_fields.items():
+            if __field in faceted_search_query_params or __options['enabled']:
                 __facets.update(
                     {
                         __field: faceted_search_fields[__field]['facet'](

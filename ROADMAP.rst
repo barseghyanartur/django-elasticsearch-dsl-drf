@@ -6,15 +6,13 @@ Road-map/upcoming releases.
 ---
 yyyy-mm-dd (future)
 
-- Dynamic serializer for Document models.
+- Support aggregations (facets).
 
 0.3
 ---
-yyyy-mm-dd (future)
 
-- Support aggregations (facets).
-- Awesome documentation.
 - All filters (mentioned in the ``constants`` module) implemented.
+- Awesome documentation.
 
 0.4
 ---

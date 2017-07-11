@@ -42,7 +42,7 @@ DOCS_TRANSFORMATIONS = (
     ),
     (
         ':doc:`Pagination (Page number and limit/offset pagination) '
-        '<advanced_usage_examples>`.',
+        '<advanced_usage_examples>`',
         '`Pagination (Page number and limit/offset pagination) <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
         'advanced_usage_examples.html#pagination'

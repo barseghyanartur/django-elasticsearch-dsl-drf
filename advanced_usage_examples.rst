@@ -763,14 +763,6 @@ the following way:
 
     # ...
 
-    from elasticsearch_dsl import (
-        DateHistogramFacet,
-        RangeFacet,
-        TermsFacet,
-    )
-
-    # ...
-
     class PublisherDocumentViewSet(BaseDocumentViewSet):
         """The PublisherDocument view."""
 

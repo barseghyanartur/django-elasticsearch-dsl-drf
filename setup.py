@@ -2,44 +2,58 @@ import os
 
 from setuptools import find_packages, setup
 
-version = '0.2.2'
+version = '0.2.3'
 
 DOCS_TRANSFORMATIONS = (
     (
         ':doc:`Dynamic serializer for Documents <basic_usage_examples>`',
+        '`Dynamic serializer for Documents <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
-        'basic_usage_examples.html#sample-serializer'.format(version)
+        'basic_usage_examples.html#sample-serializer'
+        '>`_'.format(version)
     ),
     (
         ':doc:`Search filter backend <advanced_usage_examples>`',
+        '`Search filter backend <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
-        'advanced_usage_examples.html#search'.format(version)
+        'advanced_usage_examples.html#search'
+        '>`_'.format(version)
     ),
     (
         ':doc:`Ordering filter backend <advanced_usage_examples>`',
+        '`Ordering filter backend <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
-        'advanced_usage_examples.html#ordering'.format(version)
+        'advanced_usage_examples.html#ordering'
+        '>`_'.format(version)
     ),
     (
         ':doc:`Filtering filter backend <advanced_usage_examples>`',
+        '`Filtering filter backend <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
-        'advanced_usage_examples.html#filtering'.format(version)
+        'advanced_usage_examples.html#filtering'
+        '>`_'.format(version)
     ),
     (
         ':doc:`Faceted search filter backend <advanced_usage_examples>`',
+        '`Faceted search filter backend <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
-        'advanced_usage_examples.html#faceted-search'.format(version)
+        'advanced_usage_examples.html#faceted-search'
+        '>`_'.format(version)
     ),
     (
         ':doc:`Pagination (Page number and limit/offset pagination) '
         '<advanced_usage_examples>`.',
+        '`Pagination (Page number and limit/offset pagination) <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
-        'advanced_usage_examples.html#pagination'.format(version)
+        'advanced_usage_examples.html#pagination'
+        '>`_'.format(version)
     ),
     (
         ':doc:`quick start tutorial <quick_start>`',
+        '`quick start tutorial <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
-        'quick_start.html'.format(version)
+        'quick_start.html'
+        '>`_'.format(version)
     ),
     # # Generic things at the end
     # (':doc:', ''),

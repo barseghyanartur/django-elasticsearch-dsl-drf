@@ -1,13 +1,20 @@
 django\_elasticsearch\_dsl\_drf\.filter\_backends package
 =========================================================
 
+Subpackages
+-----------
+
+.. toctree::
+
+    django_elasticsearch_dsl_drf.filter_backends.filtering
+
 Submodules
 ----------
 
-django\_elasticsearch\_dsl\_drf\.filter\_backends\.filtering module
--------------------------------------------------------------------
+django\_elasticsearch\_dsl\_drf\.filter\_backends\.faceted\_search module
+-------------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.filter_backends.filtering
+.. automodule:: django_elasticsearch_dsl_drf.filter_backends.faceted_search
     :members:
     :undoc-members:
     :show-inheritance:

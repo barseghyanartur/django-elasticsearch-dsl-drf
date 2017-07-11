@@ -36,10 +36,42 @@ django\_elasticsearch\_dsl\_drf\.helpers module
     :undoc-members:
     :show-inheritance:
 
+django\_elasticsearch\_dsl\_drf\.pagination module
+--------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.pagination
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+django\_elasticsearch\_dsl\_drf\.serializers module
+---------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.serializers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+django\_elasticsearch\_dsl\_drf\.utils module
+---------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 django\_elasticsearch\_dsl\_drf\.views module
 ---------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.views
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+django\_elasticsearch\_dsl\_drf\.viewsets module
+------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.viewsets
     :members:
     :undoc-members:
     :show-inheritance:

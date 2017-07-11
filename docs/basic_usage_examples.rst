@@ -1,6 +1,8 @@
-===============================================
+====================
+Basic usage examples
+====================
+
 Basic Django REST framework integration example
-===============================================
 
 See the `example project
 <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/tree/master/examples/simple>`_

@@ -1,6 +1,8 @@
-==================================================
-Advanced Django REST framework integration example
-==================================================
+=======================
+Advanced usage examples
+=======================
+
+Advanced Django REST framework integration examples.
 
 See the `example project
 <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/tree/master/examples/simple>`_
@@ -566,20 +568,127 @@ the example below, documents would be ordered first by field
 
     http://127.0.0.1:8080/search/books/?search=title|lorem&ordering=-publication_date&ordering=price
 
-Various handy helpers
-=====================
-
-More like this
+Faceted search
 --------------
 
-To get more-like-this results on a random registered model, do as follows:
+In order to add faceted search support, we would have to extend our
+view in the following way:
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.helpers import more_like_this
-    from books.models import Book
-    book = Book.objects.first()
-    similar_books = more_like_this(
-        book,
-        ['title', 'description', 'summary']
+    # ...
+
+    from django_elasticsearch_dsl_drf.filter_backends import (
+        # ...
+        FacetedSearchFilterBackend,
     )
+
+    # ...
+
+    from elasticsearch_dsl import (
+        DateHistogramFacet,
+        RangeFacet,
+        TermsFacet,
+    )
+
+    # ...
+
+    class BookDocumentView(BaseDocumentViewSet):
+        """The BookDocument view."""
+
+        # ...
+
+        filter_backends = [
+            # ...
+            FacetedSearchFilterBackend,
+        ]
+
+        # ...
+
+        faceted_search_fields = {
+            'state': 'state.raw',  # By default, TermsFacet is used
+            'publisher': {
+                'field': 'publisher.raw',
+                'facet': TermsFacet,  # But we can define it explicitly
+                'enabled': True,
+            },
+            'publication_date': {
+                'field': 'publication_date',
+                'facet': DateHistogramFacet,
+                'options': {
+                    'interval': 'year',
+                }
+            },
+            'pages_count': {
+                'field': 'pages',
+                'facet': RangeFacet,
+                'options': {
+                    'ranges': [
+                        ("<10", (None, 10)),
+                        ("11-20", (11, 20)),
+                        ("20-50", (20, 50)),
+                        (">50", (50, None)),
+                    ]
+                }
+            },
+        }
+
+        # ...
+
+Note, that none of the facets is enabled by default, unless you
+explicitly specify it to be enabled. That means, that you will have to
+add a query string `facet={facet_field_name}` for each of the facets
+you want to see in results.
+
+In the example below, we show results with faceted `state` and `pages_count`
+facets.
+
+.. code-block:: text
+
+    http://127.0.0.1:8000/search/books/?facet=state&facet=pages_count
+
+Pagination
+----------
+
+Page number pagination
+~~~~~~~~~~~~~~~~~~~~~~
+
+By default, the ``PageNumberPagination`` class is used on all view sets
+which inherit from ``BaseDocumentViewSet``.
+
+Example:
+
+.. code-block:: text
+
+    http://127.0.0.1:8000/search/books/?page=4
+    http://127.0.0.1:8000/search/books/?page=4&page_size=100
+
+Limit/offset pagination
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In order to use a different ``pagination_class``, for instance the
+``LimitOffsetPagination``, specify it explicitly in the view.
+
+.. code-block:: python
+
+    # ...
+
+    from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
+
+    # ...
+
+    class BookDocumentView(BaseDocumentViewSet):
+        """The BookDocument view."""
+
+        # ...
+
+        pagination_class = LimitOffsetPagination
+
+        # ...
+
+Example:
+
+.. code-block:: text
+
+    http://127.0.0.1:8000/search/books/?limit=100
+    http://127.0.0.1:8000/search/books/?offset=400&limit=100

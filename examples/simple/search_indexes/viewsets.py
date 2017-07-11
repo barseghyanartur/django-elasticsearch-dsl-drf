@@ -17,9 +17,15 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     SearchFilterBackend,
     FacetedSearchFilterBackend,
 )
+from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
 from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
 
-from elasticsearch_dsl import TermsFacet, DateHistogramFacet
+from elasticsearch_dsl import (
+    DateHistogramFacet,
+    HistogramFacet,
+    RangeFacet,
+    TermsFacet,
+)
 
 from .documents import BookDocument, PublisherDocument
 from .serializers import (
@@ -141,7 +147,19 @@ class BookDocumentViewSet(BaseDocumentViewSet):
             'options': {
                 'interval': 'year',
             }
-        }
+        },
+        'pages_count': {
+            'field': 'pages',
+            'facet': RangeFacet,
+            'options': {
+                'ranges': [
+                    ("<10", (None, 10)),
+                    ("11-20", (11, 20)),
+                    ("20-50", (20, 50)),
+                    (">50", (50, None)),
+                ]
+            }
+        },
     }
 
 
@@ -156,6 +174,7 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
         OrderingFilterBackend,
         SearchFilterBackend,
     ]
+    pagination_class = LimitOffsetPagination
     # Define search fields
     search_fields = (
         'name',

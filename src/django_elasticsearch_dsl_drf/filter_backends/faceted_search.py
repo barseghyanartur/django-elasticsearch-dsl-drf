@@ -189,6 +189,13 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
         for __field, __facet in iteritems(__facets):
             agg = __facet.get_aggregation()
             agg_filter = Q('match_all')
+
+            # TODO: Implement
+            # for __filter_field, __filter in iteritems(self._filters):
+            #     if __field == __filter_field:
+            #         continue
+            #     agg_filter &= __filter
+
             queryset.aggs.bucket(
                 '_filter_' + __field,
                 'filter',

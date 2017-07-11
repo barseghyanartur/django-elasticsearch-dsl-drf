@@ -17,8 +17,8 @@ Must haves
     - Think of making more-like-this a functional filter.
     - Add support for geo spatial search/filtering/ordering.
     - Improve documentation.
-    - Add information about FacetedSearchFilter, faceted search, pagination.
     - Implement faceted search filtering.
+    + Add information about FacetedSearchFilter, faceted search, pagination.
     + Implement facets/aggregations.
     + Add pagination and faceted search tests.
     + Dynamic serializer for Document models.

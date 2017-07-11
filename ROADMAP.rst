@@ -2,12 +2,6 @@ Roadmap
 =======
 Road-map/upcoming releases.
 
-0.2
----
-yyyy-mm-dd (future)
-
-- Support aggregations (facets).
-
 0.3
 ---
 

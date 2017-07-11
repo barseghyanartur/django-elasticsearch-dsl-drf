@@ -1,9 +1,2 @@
 -r django_1_11.txt
 -r docs.txt
-
-six>=1.9
-django-nine>=0.1.10
-django-elasticsearch-dsl
-elasticsearch-dsl
-elasticsearch
-djangorestframework

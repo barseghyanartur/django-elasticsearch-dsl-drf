@@ -660,6 +660,12 @@ by using a suggester.
 There are three options available here: ``terms``, ``phrase`` and
 ``completion``.
 
+.. note::
+
+    Suggestion functionality is exclusive. Once you have queried the
+    ``SuggesterFilterBackend``, the latter will throw away your current
+    queries and replace them with suggestion queries.
+
 Document definition
 ~~~~~~~~~~~~~~~~~~~
 

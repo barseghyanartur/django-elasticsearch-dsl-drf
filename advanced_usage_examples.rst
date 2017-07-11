@@ -17,6 +17,10 @@ for sample models/views/serializers.
 - `views
   <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/views.py>`_
 
+Contents:
+
+.. contents:: Table of Contents
+
 Example app
 ===========
 
@@ -572,7 +576,7 @@ Faceted search
 --------------
 
 In order to add faceted search support, we would have to extend our
-view in the following way:
+view set in the following way:
 
 .. code-block:: python
 

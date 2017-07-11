@@ -7,6 +7,10 @@ The best way to get acquainted with ``django-elasticsearch-dsl-drf``.
 See it as a guide of diving into integration of Elasticsearch with Django
 with very low knowledge entry level.
 
+Contents:
+
+.. contents:: Table of Contents
+
 Installation
 ============
 

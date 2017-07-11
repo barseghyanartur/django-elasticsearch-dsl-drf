@@ -2,6 +2,10 @@
 Various handy helpers
 =====================
 
+Contents:
+
+.. contents:: Table of Contents
+
 More like this
 ==============
 

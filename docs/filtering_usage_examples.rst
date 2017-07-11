@@ -4,6 +4,10 @@ Filter usage examples
 
 Example usage of filtering backends.
 
+Contents:
+
+.. contents:: Table of Contents
+
 Search
 ======
 

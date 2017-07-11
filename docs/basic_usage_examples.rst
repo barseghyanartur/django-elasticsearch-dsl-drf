@@ -17,6 +17,10 @@ for sample models/views/serializers.
 - `views
   <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/views.py>`_
 
+Contents:
+
+.. contents:: Table of Contents
+
 Example app
 ===========
 

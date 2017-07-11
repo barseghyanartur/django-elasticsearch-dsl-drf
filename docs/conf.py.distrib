@@ -20,8 +20,9 @@ from nine import versions
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 # sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath('../src'))
-sys.path.insert(0, os.path.abspath('../examples'))
+sys.path.insert(0, os.path.abspath(os.path.join('..', 'src')))
+sys.path.insert(0, os.path.abspath(os.path.join('..', 'examples')))
+sys.path.insert(0, os.path.abspath(os.path.join('..', 'examples', 'simple')))
 try:
     import django_elasticsearch_dsl_drf
     from simple import settings as example_settings
@@ -34,6 +35,7 @@ except Exception as e:
     copyright = u'2017, Artur Barseghyan <artur.barseghyan@gmail.com>'
 
 # -- Django configuration ------------------------------------------------------
+import django
 from django.conf import settings
 
 if not settings.configured:
@@ -52,6 +54,7 @@ if not settings.configured:
         'STATICFILES_FINDERS': example_settings.STATICFILES_FINDERS,
         'STATIC_URL': example_settings.STATIC_URL,
         'STATIC_ROOT': example_settings.STATIC_ROOT,
+        'ELASTICSEARCH_DSL': example_settings.ELASTICSEARCH_DSL,
     }
 
     if versions.DJANGO_GTE_1_8:
@@ -66,6 +69,8 @@ if not settings.configured:
 
 
     settings.configure(**configure_kwargs)
+
+django.setup()
 
 # -- General configuration -----------------------------------------------------
 

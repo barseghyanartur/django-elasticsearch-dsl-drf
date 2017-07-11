@@ -42,8 +42,7 @@ Main features and highlights
   ``lte``, ``ids``, ``endswith``, ``contains``, ``wildcard``, ``exists``,
   ``exclude``, ``isnull``, ``range``, ``in``, ``term`` and ``terms``, is implemented.
 - :doc:`Faceted search filter backend <advanced_usage_examples>`.
-- :doc:`Pagination (Page number and limit/offset pagination)
-  <advanced_usage_examples>`.
+- :doc:`Pagination (Page number and limit/offset pagination) <advanced_usage_examples>`.
 
 Installation
 ============

@@ -2,15 +2,58 @@ import os
 
 from setuptools import find_packages, setup
 
+version = '0.2.2'
+
+DOCS_TRANSFORMATIONS = (
+    (
+        ':doc:`Dynamic serializer for Documents <basic_usage_examples>`',
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'basic_usage_examples.html#sample-serializer'.format(version)
+    ),
+    (
+        ':doc:`Search filter backend <advanced_usage_examples>`',
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#search'.format(version)
+    ),
+    (
+        ':doc:`Ordering filter backend <advanced_usage_examples>`',
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#ordering'.format(version)
+    ),
+    (
+        ':doc:`Filtering filter backend <advanced_usage_examples>`',
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#filtering'.format(version)
+    ),
+    (
+        ':doc:`Faceted search filter backend <advanced_usage_examples>`',
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#faceted-search'.format(version)
+    ),
+    (
+        ':doc:`Pagination (Page number and limit/offset pagination) '
+        '<advanced_usage_examples>`.',
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#pagination'.format(version)
+    ),
+    (
+        ':doc:`quick start tutorial <quick_start>`',
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'quick_start.html'.format(version)
+    ),
+    # # Generic things at the end
+    # (':doc:', ''),
+    # ('>`.', '>`_.'),
+    # ('>` ', '>`_ '),
+)
+
 try:
     readme = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
-    readme = readme.replace(':doc:', '')
-    readme = readme.replace('>`.', '>`_.')
-    readme = readme.replace('>` ', '>`_')
+    for __search, __replace in DOCS_TRANSFORMATIONS:
+        readme = readme.replace(__search, __replace)
 except:
     readme = ''
 
-version = '0.2.1'
 
 install_requires = [
     'six>=1.9',
@@ -29,7 +72,7 @@ tests_require = [
     'pytest',
     'pytest-django',
     'pytest-cov',
-    'tox'
+    'tox',
 ]
 
 setup(

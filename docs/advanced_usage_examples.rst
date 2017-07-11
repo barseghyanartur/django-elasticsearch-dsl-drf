@@ -657,7 +657,7 @@ Suggestions
 The suggest feature suggests similar looking terms based on a provided text
 by using a suggester.
 
-There are three options available here: ``terms``, ``phrase`` and
+There are three options available here: ``term``, ``phrase`` and
 ``completion``.
 
 .. note::
@@ -738,8 +738,8 @@ To make use of suggestions, you should properly indexed your documents using
 
             model = Publisher  # The model associate with this DocType
 
-After that the ``name``, ``city``, ``state_province`` and ``country`` fields
-would be available for suggestions feature.
+After that the ``name.suggest``, ``city.suggest``, ``state_province.suggest``
+and ``country.suggest`` fields would be available for suggestions feature.
 
 ViewSet definition
 ~~~~~~~~~~~~~~~~~~

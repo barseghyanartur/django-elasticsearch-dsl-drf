@@ -98,7 +98,9 @@ class PageNumberPagination(pagination.PageNumberPagination):
         """
         if page is None:
             page = self.page
-        return page.facets._d_
+
+        if hasattr(page, 'facets') and hasattr(page.facets, '_d_'):
+            return page.facets._d_
 
     def paginate_queryset(self, queryset, request, view=None):
         """Paginate a queryset.
@@ -136,13 +138,25 @@ class PageNumberPagination(pagination.PageNumberPagination):
         return list(self.page)
 
     def get_paginated_response(self, data):
-        return Response(OrderedDict([
+        """Get paginated response.
+
+        :param data:
+        :return:
+        """
+        __data = [
             ('count', self.page.paginator.count),
             ('next', self.get_next_link()),
             ('previous', self.get_previous_link()),
-            ('facets', self.get_facets()),
+        ]
+        __facets = self.get_facets()
+        if __facets is not None:
+            __data.append(
+                ('facets', __facets),
+            )
+        __data.append(
             ('results', data),
-        ]))
+        )
+        return Response(OrderedDict(__data))
 
 
 class LimitOffsetPagination(pagination.LimitOffsetPagination):
@@ -195,13 +209,27 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
 
         if facets is None:
             return None
-        return facets._d_
+
+        if hasattr(facets, '_d_'):
+            return facets._d_
 
     def get_paginated_response(self, data):
-        return Response(OrderedDict([
+        """Get paginated response.
+
+        :param data:
+        :return:
+        """
+        __data = [
             ('count', self.count),
             ('next', self.get_next_link()),
             ('previous', self.get_previous_link()),
-            ('facets', self.get_facets()),
+        ]
+        __facets = self.get_facets()
+        if __facets is not None:
+            __data.append(
+                ('facets', __facets),
+            )
+        __data.append(
             ('results', data),
-        ]))
+        )
+        return Response(OrderedDict(__data))

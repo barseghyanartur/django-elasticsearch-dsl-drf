@@ -6,6 +6,7 @@ from .faceted_search import *
 from .filtering import *
 from .ordering import *
 from .search import *
+from .suggestions import *
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

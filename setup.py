@@ -4,10 +4,13 @@ from setuptools import find_packages, setup
 
 try:
     readme = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
+    readme = readme.replace(':doc:', '')
+    readme = readme.replace('>`.', '>`_.')
+    readme = readme.replace('>` ', '>`_')
 except:
     readme = ''
 
-version = '0.2'
+version = '0.2.1'
 
 install_requires = [
     'six>=1.9',

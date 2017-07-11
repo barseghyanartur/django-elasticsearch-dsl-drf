@@ -18,7 +18,7 @@ import six
 
 __title__ = 'django_elasticsearch_dsl_drf.pagination'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2016-2017 Artur Barseghyan'
+__copyright__ = '2017 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'LimitOffsetPagination',
@@ -113,6 +113,15 @@ class PageNumberPagination(pagination.PageNumberPagination):
         :param view:
         :return:
         """
+        # Check if there are suggest queries in the queryset,
+        # ``execute_suggest`` method shall be called, instead of the
+        # ``execute`` method and results shall be returned back immediately.
+        # Placing this code at the very start of ``paginate_queryset`` method
+        # saves us unnecessary queries.
+        is_suggest = getattr(queryset, '_suggest', False)
+        if is_suggest:
+            return queryset.execute_suggest().to_dict()
+
         page_size = self.get_page_size(request)
         if not page_size:
             return None
@@ -182,6 +191,15 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         super(LimitOffsetPagination, self).__init__(*args, **kwargs)
 
     def paginate_queryset(self, queryset, request, view=None):
+        # Check if there are suggest queries in the queryset,
+        # ``execute_suggest`` method shall be called, instead of the
+        # ``execute`` method and results shall be returned back immediately.
+        # Placing this code at the very start of ``paginate_queryset`` method
+        # saves us unnecessary queries.
+        is_suggest = getattr(queryset, '_suggest', False)
+        if is_suggest:
+            return queryset.execute_suggest().to_dict()
+
         self.count = _get_count(queryset)
         self.limit = self.get_limit(request)
         if self.limit is None:
@@ -194,6 +212,7 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
 
         if self.count == 0 or self.offset > self.count:
             return []
+
         __queryset = queryset[self.offset:self.offset + self.limit].execute()
         self.facets = getattr(__queryset, 'aggregations', None)
         return list(queryset[self.offset:self.offset + self.limit])

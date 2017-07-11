@@ -43,6 +43,14 @@ django\_elasticsearch\_dsl\_drf\.filter\_backends\.search module
     :undoc-members:
     :show-inheritance:
 
+django\_elasticsearch\_dsl\_drf\.filter\_backends\.suggester module
+-------------------------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.filter_backends.suggester
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

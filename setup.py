@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = '0.2.6'
+version = '0.3'
 
 DOCS_TRANSFORMATIONS = (
     (
@@ -55,10 +55,13 @@ DOCS_TRANSFORMATIONS = (
         'quick_start.html'
         '>`_'.format(version)
     ),
-    # # Generic things at the end
-    # (':doc:', ''),
-    # ('>`.', '>`_.'),
-    # ('>` ', '>`_ '),
+    (
+        ':doc:`Suggester filter backend <advanced_usage_examples>`',
+        '`Suggester filter backend <'
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#suggestions'
+        '>`_'.format(version)
+    ),
 )
 
 try:
@@ -67,7 +70,6 @@ try:
         readme = readme.replace(__search, __replace)
 except:
     readme = ''
-
 
 install_requires = [
     'six>=1.9',

@@ -2,8 +2,6 @@
 Faceted search backend.
 """
 
-import operator
-
 from elasticsearch_dsl import TermsFacet
 from elasticsearch_dsl.query import Q
 
@@ -13,7 +11,7 @@ from six import string_types, iteritems
 
 __title__ = 'django_elasticsearch_dsl_drf.faceted_search'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2016-2017 Artur Barseghyan'
+__copyright__ = '2017 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = ('FacetedSearchFilterBackend',)
 
@@ -39,7 +37,7 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
         >>>
         >>>     document = ArticleDocument
         >>>     serializer_class = ArticleDocumentSerializer
-        >>>     filter_backends = [FacedSearchFilterBackend,]
+        >>>     filter_backends = [FacetedSearchFilterBackend,]
         >>>     faceted_search_fields = {
         >>>         'title': 'title.raw',  # Uses `TermsFacet` by default
         >>>         'state': {

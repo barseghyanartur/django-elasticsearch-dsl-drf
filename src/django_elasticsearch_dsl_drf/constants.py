@@ -1,32 +1,36 @@
 """
 Constants module. Contains Elasticsearch constants, lookup constants,
-functional constants, etc.
+functional constants, suggesters, etc.
 """
 
 __title__ = 'django_elasticsearch_dsl_drf.constants'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2016-2017 Artur Barseghyan'
+__copyright__ = '2017 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
-    'TRUE_VALUES',
+    'ALL_LOOKUP_FILTERS_AND_QUERIES',
+    'ALL_SUGGESTERS',
     'FALSE_VALUES',
-    'SEPARATOR_LOOKUP_FILTER',
-    'SEPARATOR_LOOKUP_VALUE',
-    'SEARCH_QUERY_PARAM',
+    'LOOKUP_FILTER_EXISTS',
+    'LOOKUP_FILTER_IDS',
+    'LOOKUP_FILTER_PREFIX',
+    'LOOKUP_FILTER_RANGE',
     'LOOKUP_FILTER_TERM',
     'LOOKUP_FILTER_TERMS',
-    'LOOKUP_FILTER_RANGE',
-    'LOOKUP_FILTER_EXISTS',
-    'LOOKUP_FILTER_PREFIX',
     'LOOKUP_FILTER_WILDCARD',
-    'LOOKUP_FILTER_IDS',
     'LOOKUP_QUERY_CONTAINS',
-    'LOOKUP_QUERY_IN',
-    'LOOKUP_QUERY_STARTSWITH',
     'LOOKUP_QUERY_ENDSWITH',
-    'LOOKUP_QUERY_ISNULL',
     'LOOKUP_QUERY_EXCLUDE',
-    'ALL_LOOKUP_FILTERS_AND_QUERIES',
+    'LOOKUP_QUERY_IN',
+    'LOOKUP_QUERY_ISNULL',
+    'LOOKUP_QUERY_STARTSWITH',
+    'SEARCH_QUERY_PARAM',
+    'SEPARATOR_LOOKUP_FILTER',
+    'SEPARATOR_LOOKUP_VALUE',
+    'SUGGESTER_COMPLETION',
+    'SUGGESTER_PHRASE',
+    'SUGGESTER_TERM',
+    'TRUE_VALUES',
 )
 
 # ****************************************************************************
@@ -176,6 +180,8 @@ LOOKUP_FILTER_TYPE = 'type'
 # Example: http://localhost:8000/api/articles/?ids=68&ids=64&ids=58
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/
 # query-dsl-ids-query.html
+# TODO: If this is no longer required (since Ids is implemented as a separate
+# filter backend), remove.
 LOOKUP_FILTER_IDS = 'ids'
 
 # ****************************************************************************
@@ -239,6 +245,23 @@ LOOKUP_QUERY_ISNULL = 'isnull'
 LOOKUP_QUERY_EXCLUDE = 'exclude'
 
 # ****************************************************************************
+# *************************** Suggestions filters ****************************
+# ****************************************************************************
+# http://elasticsearch-dsl.readthedocs.io/en/latest/search_dsl.html#suggestions
+
+# The `term` suggester
+# http://127.0.0.1:8000/search/books/?title_suggest__term=Lore
+SUGGESTER_TERM = 'term'
+
+# The `phrase` suggester
+# http://127.0.0.1:8000/search/books/?title_suggest__phrase=Lorem
+SUGGESTER_PHRASE = 'phrase'
+
+# The `completion` suggester
+# http://127.0.0.1:8000/search/books/?title_suggest__completion=Lore
+SUGGESTER_COMPLETION = 'completion'
+
+# ****************************************************************************
 # ******************************* Combinations *******************************
 # ****************************************************************************
 # Combinations of multiple constants.
@@ -268,4 +291,10 @@ ALL_LOOKUP_FILTERS_AND_QUERIES = (
     LOOKUP_QUERY_ENDSWITH,
     LOOKUP_QUERY_ISNULL,
     LOOKUP_QUERY_EXCLUDE,
+)
+
+ALL_SUGGESTERS = (
+    SUGGESTER_TERM,
+    SUGGESTER_PHRASE,
+    SUGGESTER_COMPLETION,
 )

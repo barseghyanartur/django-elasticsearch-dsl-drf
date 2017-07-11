@@ -44,6 +44,7 @@ Main features and highlights
   ``exclude``, ``isnull``, ``range``, ``in``, ``term`` and ``terms`` is
   implemented.
 - :doc:`Faceted search filter backend <advanced_usage_examples>`.
+- :doc:`Suggester filter backend <advanced_usage_examples>`.
 - :doc:`Pagination (Page number and limit/offset pagination) <advanced_usage_examples>`.
 
 Installation

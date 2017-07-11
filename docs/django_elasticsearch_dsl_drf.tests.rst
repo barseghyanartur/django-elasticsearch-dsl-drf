@@ -60,6 +60,14 @@ django\_elasticsearch\_dsl\_drf\.tests\.test\_search module
     :undoc-members:
     :show-inheritance:
 
+django\_elasticsearch\_dsl\_drf\.tests\.test\_suggesters module
+---------------------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.tests.test_suggesters
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 django\_elasticsearch\_dsl\_drf\.tests\.test\_views module
 ----------------------------------------------------------
 

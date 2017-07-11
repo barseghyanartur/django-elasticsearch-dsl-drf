@@ -9,27 +9,31 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_QUERY_LT,
     LOOKUP_QUERY_LTE,
     LOOKUP_QUERY_EXCLUDE,
+    SUGGESTER_TERM,
+    SUGGESTER_PHRASE,
+    SUGGESTER_COMPLETION,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
+    FacetedSearchFilterBackend,
     FilteringFilterBackend,
     IdsFilterBackend,
     OrderingFilterBackend,
     SearchFilterBackend,
-    FacetedSearchFilterBackend,
+    SuggesterFilterBackend,
 )
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
 from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
 
 from elasticsearch_dsl import (
     DateHistogramFacet,
-    HistogramFacet,
+    # HistogramFacet,
     RangeFacet,
-    TermsFacet,
+    # TermsFacet,
 )
 
 from .documents import BookDocument, PublisherDocument
 from .serializers import (
-    BookDocumentSerializer,
+    # BookDocumentSerializer,
     BookDocumentSimpleSerializer,
     PublisherDocumentSerializer,
 )
@@ -173,6 +177,7 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
         FilteringFilterBackend,
         OrderingFilterBackend,
         SearchFilterBackend,
+        SuggesterFilterBackend,
     ]
     pagination_class = LimitOffsetPagination
     # Define search fields
@@ -201,3 +206,33 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
     }
     # Specify default ordering
     ordering = ('id', 'name',)
+
+    # Suggester fields
+    suggester_fields = {
+        'name_suggest': {
+            'field': 'name.suggest',
+            'suggesters': [
+                SUGGESTER_TERM,
+                SUGGESTER_PHRASE,
+                SUGGESTER_COMPLETION,
+            ],
+        },
+        'city_suggest': {
+            'field': 'city.suggest',
+            'suggesters': [
+                SUGGESTER_COMPLETION,
+            ],
+        },
+        'state_province_suggest': {
+            'field': 'state_province.suggest',
+            'suggesters': [
+                SUGGESTER_COMPLETION,
+            ],
+        },
+        'country_suggest': {
+            'field': 'country.suggest',
+            'suggesters': [
+                SUGGESTER_COMPLETION,
+            ],
+        },
+    }

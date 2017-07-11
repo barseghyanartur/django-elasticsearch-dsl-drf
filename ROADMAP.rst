@@ -2,12 +2,6 @@ Roadmap
 =======
 Road-map/upcoming releases.
 
-0.3
----
-yyyy-mm-dd (future)
-
-- Support suggestions (`term`, `phrase` and `completion`).
-
 0.4
 ---
 yyyy-mm-dd (future)

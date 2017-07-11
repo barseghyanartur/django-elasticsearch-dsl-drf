@@ -21,40 +21,40 @@ class PublisherDocument(DocType):
 
     name = fields.StringField(
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
+            'raw': fields.StringField(analyzer='keyword'),
+            'suggest': fields.CompletionField(),
         }
     )
+
     info = fields.StringField()
+
     address = fields.StringField(
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
+            'raw': fields.StringField(analyzer='keyword')
         }
     )
+
     city = fields.StringField(
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
+            'raw': fields.StringField(analyzer='keyword'),
+            'suggest': fields.CompletionField(),
         }
     )
+
     state_province = fields.StringField(
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
+            'raw': fields.StringField(analyzer='keyword'),
+            'suggest': fields.CompletionField(),
         }
     )
+
     country = fields.StringField(
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
+            'raw': fields.StringField(analyzer='keyword'),
+            'suggest': fields.CompletionField(),
         }
     )
+
     website = fields.StringField()
 
     class Meta(object):

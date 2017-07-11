@@ -10,6 +10,9 @@ from django.http import Http404
 from elasticsearch_dsl import Search
 from elasticsearch_dsl.connections import connections
 
+from rest_framework.decorators import list_route
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .pagination import PageNumberPagination
@@ -18,7 +21,7 @@ from .utils import DictionaryProxy
 
 __title__ = 'django_elasticsearch_dsl_drf.viewsets'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2016-2017 Artur Barseghyan'
+__copyright__ = '2017 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = ('BaseDocumentViewSet',)
 
@@ -78,3 +81,16 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
                 )
 
             raise Http404("No result matches the given query.")
+
+    @list_route()
+    def suggest(self, request):
+        """Suggest functionality."""
+        queryset = self.filter_queryset(self.get_queryset())
+        is_suggest = getattr(queryset, '_suggest', False)
+        if not is_suggest:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        page = self.paginate_queryset(queryset)
+        return Response(page)

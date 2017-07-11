@@ -651,6 +651,215 @@ facets.
 
     http://127.0.0.1:8000/search/books/?facet=state&facet=pages_count
 
+Suggestions
+-----------
+
+The suggest feature suggests similar looking terms based on a provided text
+by using a suggester.
+
+There are three options available here: ``terms``, ``phrase`` and
+``completion``.
+
+.. note::
+
+    Suggestion functionality is exclusive. Once you have queried the
+    ``SuggesterFilterBackend``, the latter will throw away your current
+    queries and replace them with suggestion queries.
+
+Document definition
+~~~~~~~~~~~~~~~~~~~
+
+To make use of suggestions, you should properly indexed your documents using
+``fields.CompletionField``.
+
+.. code-block:: python
+
+    from django_elasticsearch_dsl import DocType, Index, fields
+
+    from books.models import Publisher
+
+    from ..constants import PUBLISHER_INDEX_NAME
+
+    # Name of the Elasticsearch index
+    PUBLISHER_INDEX = Index(PUBLISHER_INDEX_NAME)
+    # See Elasticsearch Indices API reference for available settings
+    PUBLISHER_INDEX.settings(
+        number_of_shards=1,
+        number_of_replicas=1
+    )
+
+
+    @PUBLISHER_INDEX.doc_type
+    class PublisherDocument(DocType):
+        """Publisher Elasticsearch document."""
+
+        id = fields.IntegerField(attr='id')
+
+        name = fields.StringField(
+            fields={
+                'raw': fields.StringField(analyzer='keyword'),
+                'suggest': fields.CompletionField(),
+            }
+        )
+
+        info = fields.StringField()
+
+        address = fields.StringField(
+            fields={
+                'raw': fields.StringField(analyzer='keyword')
+            }
+        )
+
+        city = fields.StringField(
+            fields={
+                'raw': fields.StringField(analyzer='keyword'),
+                'suggest': fields.CompletionField(),
+            }
+        )
+
+        state_province = fields.StringField(
+            fields={
+                'raw': fields.StringField(analyzer='keyword'),
+                'suggest': fields.CompletionField(),
+            }
+        )
+
+        country = fields.StringField(
+            fields={
+                'raw': fields.StringField(analyzer='keyword'),
+                'suggest': fields.CompletionField(),
+            }
+        )
+
+        website = fields.StringField()
+
+        class Meta(object):
+            """Meta options."""
+
+            model = Publisher  # The model associate with this DocType
+
+After that the ``name``, ``city``, ``state_province`` and ``country`` fields
+would be available for suggestions feature.
+
+ViewSet definition
+~~~~~~~~~~~~~~~~~~
+
+In order to add suggestions support, we would have to extend our view set in
+the following way:
+
+.. code-block:: python
+
+    # ...
+
+    from django_elasticsearch_dsl_drf.constants import (
+        SUGGESTER_TERM,
+        SUGGESTER_PHRASE,
+        SUGGESTER_COMPLETION,
+    )
+    from django_elasticsearch_dsl_drf.filter_backends import (
+        # ...
+        SuggesterFilterBackend,
+    )
+
+    # ...
+
+    from elasticsearch_dsl import (
+        DateHistogramFacet,
+        RangeFacet,
+        TermsFacet,
+    )
+
+    # ...
+
+    class PublisherDocumentViewSet(BaseDocumentViewSet):
+        """The PublisherDocument view."""
+
+        document = PublisherDocument
+
+        # ...
+
+        filter_backends = [
+            # ...
+            SuggesterFilterBackend,
+        ]
+
+        # ...
+
+        # Suggester fields
+        suggester_fields = {
+            'name_suggest': {
+                'field': 'name.suggest',
+                'suggesters': [
+                    SUGGESTER_TERM,
+                    SUGGESTER_PHRASE,
+                    SUGGESTER_COMPLETION,
+                ],
+            },
+            'city_suggest': {
+                'field': 'city.suggest',
+                'suggesters': [
+                    SUGGESTER_COMPLETION,
+                ],
+            },
+            'state_province_suggest': {
+                'field': 'state_province.suggest',
+                'suggesters': [
+                    SUGGESTER_COMPLETION,
+                ],
+            },
+            'country_suggest': {
+                'field': 'country.suggest',
+                'suggesters': [
+                    SUGGESTER_COMPLETION,
+                ],
+            },
+        }
+
+In the example below, we show suggestion results (auto-completion) for
+``country`` field.
+
+Sample requests/responses
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Once you have extended your view set with ``SuggesterFilterBackend``
+functionality, you can make use of the ``suggest`` custom action of your
+view set.
+
+**Request**
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/publishers/suggest/?country_suggest__completion=Ar
+
+**Response**
+
+.. code-block:: javascript
+
+    {
+        "_shards": {
+            "failed": 0,
+            "successful": 1,
+            "total": 1
+        },
+        "country_suggest__completion": [
+            {
+                "options": [
+                    {
+                        "score": 1.0,
+                        "text": "Armenia"
+                    },
+                    {
+                        "score": 1.0,
+                        "text": "Argentina"
+                    }
+                ],
+                "offset": 0,
+                "length": 2,
+                "text": "Ar"
+            }
+        ]
+    }
+
 Pagination
 ----------
 

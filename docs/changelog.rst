@@ -15,6 +15,12 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.3
+---
+2017-07-11
+
+- Add suggestions support (`term`, `phrase` and `completion`).
+
 0.2.6
 -----
 2017-07-11

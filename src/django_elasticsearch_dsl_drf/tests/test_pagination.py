@@ -1,5 +1,5 @@
 """
-Test ordering backend.
+Test pagination.
 """
 
 from __future__ import absolute_import
@@ -47,7 +47,7 @@ class TestPagination(BaseRestFrameworkTestCase):
         call_command('search_index', '--rebuild', '-f')
 
     def _test_pagination(self):
-        """Order by field."""
+        """Test pagination."""
         self.authenticate()
 
         publishers_url = reverse('publisherdocument-list', kwargs={})
@@ -73,7 +73,7 @@ class TestPagination(BaseRestFrameworkTestCase):
         # TODO: consider totals
 
     def test_pagination(self):
-        """Order by field."""
+        """Test pagination."""
         return self._test_pagination()
 
 

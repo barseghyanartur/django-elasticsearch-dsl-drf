@@ -82,8 +82,7 @@ Quick start
 ===========
 
 Perhaps the easiest way to get acquainted with ``django-elasticsearch-dsl-drf``
-is to read the `quick start tutorial
-<https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/docs/quick_start.rst>`_.
+is to read the :doc:`quick start tutorial <quick_start>`.
 
 See it as a guide of diving into integration of Elasticsearch with Django
 with very low knowledge entry level.

@@ -6,7 +6,8 @@ Integrate `Elasticsearch DSL
 `Django REST framework <https://pypi.python.org/pypi/djangorestframework>`_ in
 the shortest way possible, with least efforts possible.
 
-Package provides views, serializers, filter backends and other handy tools.
+Package provides views, serializers, filter backends, pagination and other
+handy add-ons.
 
 You are expected to use `django-elasticsearch-dsl
 <https://pypi.python.org/pypi/django-elasticsearch-dsl>`_ for defining your
@@ -38,9 +39,10 @@ Main features and highlights
 - :doc:`Search filter backend <advanced_usage_examples>`.
 - :doc:`Ordering filter backend <advanced_usage_examples>`.
 - :doc:`Filtering filter backend <advanced_usage_examples>` (big variety of
-  native- and functional- query lookups, such as ``gt`, ``gte``, ``lt``,
+  native- and functional- query lookups, such as ``gt``, ``gte``, ``lt``,
   ``lte``, ``ids``, ``endswith``, ``contains``, ``wildcard``, ``exists``,
-  ``exclude``, ``isnull``, ``range``, ``in``, ``term`` and ``terms``, is implemented.
+  ``exclude``, ``isnull``, ``range``, ``in``, ``term`` and ``terms`` is
+  implemented.
 - :doc:`Faceted search filter backend <advanced_usage_examples>`.
 - :doc:`Pagination (Page number and limit/offset pagination) <advanced_usage_examples>`.
 

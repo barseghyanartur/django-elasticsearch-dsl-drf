@@ -268,6 +268,12 @@ ELASTICSEARCH_DSL = {
     },
 }
 
+# Name of the Elasticsearch index
+ELASTICSEARCH_INDEX_NAMES = {
+    'search_indexes.documents.book': 'book',
+    'search_indexes.documents.publisher': 'publisher',
+}
+
 LOGIN_URL = '/en/accounts/login/'
 LOGIN_ERROR_URL = '/en/accounts/login/'
 LOGOUT_URL = '/en/accounts/logout/'

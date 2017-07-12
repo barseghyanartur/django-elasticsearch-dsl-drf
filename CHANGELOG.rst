@@ -4,7 +4,7 @@ Release history and notes
 <http://en.wikipedia.org/wiki/Software_versioning#Sequence-based_identifiers>`_
 are used for versioning (schema follows below):
 
-.. code-block:: none
+.. code-block:: text
 
     major.minor[.revision]
 
@@ -14,6 +14,12 @@ are used for versioning (schema follows below):
   release notes carefully before upgrading (for example, when upgrading from
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
+
+0.3.2
+-----
+2017-07-12
+
+- Minor fixes and improvements.
 
 0.3.1
 -----

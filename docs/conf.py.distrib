@@ -55,6 +55,8 @@ if not settings.configured:
         'STATIC_URL': example_settings.STATIC_URL,
         'STATIC_ROOT': example_settings.STATIC_ROOT,
         'ELASTICSEARCH_DSL': example_settings.ELASTICSEARCH_DSL,
+        'ELASTICSEARCH_INDEX_NAMES':
+            example_settings.ELASTICSEARCH_INDEX_NAMES,
     }
 
     if versions.DJANGO_GTE_1_8:
@@ -66,7 +68,6 @@ if not settings.configured:
             'TEMPLATE_DIRS': example_settings.TEMPLATE_DIRS,
             'TEMPLATE_LOADERS': example_settings.TEMPLATE_LOADERS,
         })
-
 
     settings.configure(**configure_kwargs)
 

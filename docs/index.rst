@@ -11,7 +11,7 @@ handy add-ons.
 
 You are expected to use `django-elasticsearch-dsl
 <https://pypi.python.org/pypi/django-elasticsearch-dsl>`_ for defining your
-document models.
+Elasticsearch documents.
 
 Prerequisites
 =============

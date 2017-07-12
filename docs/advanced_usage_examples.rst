@@ -27,7 +27,7 @@ Example app
 Sample models
 -------------
 
-books/models.py:
+*books/models.py*
 
 .. code-block:: python
 
@@ -157,23 +157,66 @@ books/models.py:
 Sample document
 ---------------
 
-search_indexes/documents/book.py:
+Index definition
+~~~~~~~~~~~~~~~~
+
+To separate dev/test/staging/production indexes, the following approach is
+recommended.
+
+Settings
+^^^^^^^^
+
+*settings/base.py*
 
 .. code-block:: python
 
+    # Name of the Elasticsearch index
+    ELASTICSEARCH_INDEX_NAMES = {
+        'search_indexes.documents.book': 'book',
+        'search_indexes.documents.publisher': 'publisher',
+    }
+
+*settings/testing.py*
+
+.. code-block:: python
+
+    # Name of the Elasticsearch index
+    ELASTICSEARCH_INDEX_NAMES = {
+        'search_indexes.documents.book': 'test_book',
+        'search_indexes.documents.publisher': 'test_publisher',
+    }
+
+*settings/production.py*
+
+.. code-block:: python
+
+    # Name of the Elasticsearch index
+    ELASTICSEARCH_INDEX_NAMES = {
+        'search_indexes.documents.book': 'prod_book',
+        'search_indexes.documents.publisher': 'prod_publisher',
+    }
+
+Document index
+^^^^^^^^^^^^^^
+
+*search_indexes/documents/book.py*
+
+.. code-block:: python
+
+    from django.conf import settings
     from django_elasticsearch_dsl import DocType, Index, fields
     from elasticsearch_dsl import analyzer
 
     from books.models import Book
 
     # Name of the Elasticsearch index
-    BOOK_INDEX = Index('book')
+    INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
+
     # See Elasticsearch Indices API reference for available settings
-    BOOK_INDEX.settings(
+    INDEX.settings(
         number_of_shards=1,
         number_of_replicas=1
     )
-
 
     html_strip = analyzer(
         'html_strip',
@@ -183,7 +226,7 @@ search_indexes/documents/book.py:
     )
 
 
-    @BOOK_INDEX.doc_type
+    @INDEX.doc_type
     class BookDocument(DocType):
         """Book Elasticsearch document."""
 
@@ -192,27 +235,21 @@ search_indexes/documents/book.py:
         title = fields.StringField(
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
         description = fields.StringField(
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
         summary = fields.StringField(
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
@@ -220,9 +257,7 @@ search_indexes/documents/book.py:
             attr='publisher_indexing',
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
@@ -231,18 +266,14 @@ search_indexes/documents/book.py:
         state = fields.StringField(
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
         isbn = fields.StringField(
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
@@ -256,10 +287,7 @@ search_indexes/documents/book.py:
             attr='tags_indexing',
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword',
-                    multi=True
-                )
+                'raw': fields.StringField(analyzer='keyword', multi=True),
             },
             multi=True
         )
@@ -272,7 +300,7 @@ search_indexes/documents/book.py:
 Sample serializer
 -----------------
 
-search_indexes/serializers.py:
+*search_indexes/serializers.py*
 
 .. code-block:: python
 
@@ -336,7 +364,7 @@ search_indexes/serializers.py:
 Sample view
 -----------
 
-search_indexes/views.py:
+*search_indexes/viewsets.py*
 
 .. code-block:: python
 
@@ -578,6 +606,8 @@ Faceted search
 In order to add faceted search support, we would have to extend our
 view set in the following way:
 
+*search_indexes/viewsets.py*
+
 .. code-block:: python
 
     # ...
@@ -657,14 +687,21 @@ Suggestions
 The suggest feature suggests similar looking terms based on a provided text
 by using a suggester.
 
+.. note::
+
+    The ``SuggesterFilterBackend`` filter backend can be used in the
+    ``suggest`` custom view action/route only. Usages outside of the are
+    ``suggest`` action/route are restricted.
+
 There are three options available here: ``term``, ``phrase`` and
 ``completion``.
 
 .. note::
 
     Suggestion functionality is exclusive. Once you have queried the
-    ``SuggesterFilterBackend``, the latter will throw away your current
-    queries and replace them with suggestion queries.
+    ``SuggesterFilterBackend``, the latter will transform your current
+    search query into suggestion search query (which is very different).
+    Therefore, always add it as the very last filter backend.
 
 Document definition
 ~~~~~~~~~~~~~~~~~~~
@@ -672,24 +709,27 @@ Document definition
 To make use of suggestions, you should properly indexed your documents using
 ``fields.CompletionField``.
 
+*search_indexes/documents/publisher.py*
+
 .. code-block:: python
+
+    from django.conf import settings
 
     from django_elasticsearch_dsl import DocType, Index, fields
 
     from books.models import Publisher
 
-    from ..constants import PUBLISHER_INDEX_NAME
-
     # Name of the Elasticsearch index
-    PUBLISHER_INDEX = Index(PUBLISHER_INDEX_NAME)
+    INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
+
     # See Elasticsearch Indices API reference for available settings
-    PUBLISHER_INDEX.settings(
+    INDEX.settings(
         number_of_shards=1,
         number_of_replicas=1
     )
 
 
-    @PUBLISHER_INDEX.doc_type
+    @INDEX.doc_type
     class PublisherDocument(DocType):
         """Publisher Elasticsearch document."""
 
@@ -746,6 +786,8 @@ ViewSet definition
 
 In order to add suggestions support, we would have to extend our view set in
 the following way:
+
+*search_indexes/viewsets.py*
 
 .. code-block:: python
 
@@ -873,6 +915,8 @@ Limit/offset pagination
 
 In order to use a different ``pagination_class``, for instance the
 ``LimitOffsetPagination``, specify it explicitly in the view.
+
+*search_indexes/viewsets.py*
 
 .. code-block:: python
 

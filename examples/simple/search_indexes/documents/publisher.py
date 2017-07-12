@@ -1,19 +1,21 @@
+from django.conf import settings
+
 from django_elasticsearch_dsl import DocType, Index, fields
 
 from books.models import Publisher
 
-from ..constants import PUBLISHER_INDEX_NAME
+__all__ = ('PublisherDocument',)
 
-# Name of the Elasticsearch index
-PUBLISHER_INDEX = Index(PUBLISHER_INDEX_NAME)
+INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
+
 # See Elasticsearch Indices API reference for available settings
-PUBLISHER_INDEX.settings(
+INDEX.settings(
     number_of_shards=1,
     number_of_replicas=1
 )
 
 
-@PUBLISHER_INDEX.doc_type
+@INDEX.doc_type
 class PublisherDocument(DocType):
     """Publisher Elasticsearch document."""
 

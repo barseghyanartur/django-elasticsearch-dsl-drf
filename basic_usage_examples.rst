@@ -78,44 +78,32 @@ search_indexes/documents/publisher.py:
 
         name = fields.StringField(
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
         info = fields.StringField(
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
         address = fields.StringField(
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
         city = fields.StringField(
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
         state_province = fields.StringField(
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
         country = fields.StringField(
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
         website = fields.StringField()
@@ -213,7 +201,6 @@ search_indexes/views.py:
         }
         # Specify default ordering
         ordering = ('id', 'name',)
-
 
 Usage example
 -------------

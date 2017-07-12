@@ -1,30 +1,23 @@
+from django.conf import settings
+
 from django_elasticsearch_dsl import DocType, Index, fields
-from elasticsearch_dsl import analyzer
 
 from books.models import Book
 
-from ..constants import BOOK_INDEX_NAME
+from .analyzers import html_strip
 
 __all__ = ('BookDocument',)
 
-# Name of the Elasticsearch index
-BOOK_INDEX = Index(BOOK_INDEX_NAME)
+INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
+
 # See Elasticsearch Indices API reference for available settings
-BOOK_INDEX.settings(
+INDEX.settings(
     number_of_shards=1,
     number_of_replicas=1
 )
 
 
-html_strip = analyzer(
-    'html_strip',
-    tokenizer="standard",
-    filter=["standard", "lowercase", "stop", "snowball"],
-    char_filter=["html_strip"]
-)
-
-
-@BOOK_INDEX.doc_type
+@INDEX.doc_type
 class BookDocument(DocType):
     """Book Elasticsearch document."""
 
@@ -43,27 +36,22 @@ class BookDocument(DocType):
     title = fields.StringField(
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
+            'raw': fields.StringField(analyzer='keyword'),
+            'suggest': fields.CompletionField(),
         }
     )
 
     description = fields.StringField(
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
+            'raw': fields.StringField(analyzer='keyword'),
         }
     )
 
     summary = fields.StringField(
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
+            'raw': fields.StringField(analyzer='keyword'),
         }
     )
 
@@ -76,9 +64,7 @@ class BookDocument(DocType):
         attr='publisher_indexing',
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
+            'raw': fields.StringField(analyzer='keyword'),
         }
     )
 
@@ -89,9 +75,7 @@ class BookDocument(DocType):
     state = fields.StringField(
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
+            'raw': fields.StringField(analyzer='keyword'),
         }
     )
 
@@ -99,9 +83,7 @@ class BookDocument(DocType):
     isbn = fields.StringField(
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword'
-            )
+            'raw': fields.StringField(analyzer='keyword'),
         }
     )
 
@@ -119,17 +101,12 @@ class BookDocument(DocType):
         attr='tags_indexing',
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(
-                analyzer='keyword',
-                multi=True
-            )
+            'raw': fields.StringField(analyzer='keyword', multi=True),
         },
         multi=True
     )
 
-    null_field = fields.StringField(
-        attr='null_field_indexing',
-    )
+    null_field = fields.StringField(attr='null_field_indexing')
 
     class Meta(object):
         """Meta options."""

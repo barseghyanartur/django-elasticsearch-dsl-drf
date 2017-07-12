@@ -18,6 +18,9 @@ Must haves
     - Add support for geo spatial search/filtering/ordering.
     - Improve documentation.
     - Implement faceted search filtering.
+    + Skip suggestions functionality in all actions except the dedicated
+      ``suggest`` action.
+    + Add suggestions support (`term`, `phrase` and `completion`)
     + Add information about FacetedSearchFilter, faceted search, pagination.
     + Implement facets/aggregations.
     + Add pagination and faceted search tests.

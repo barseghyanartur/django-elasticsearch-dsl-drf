@@ -60,7 +60,6 @@ Installation
             },
         }
 
-
 Example app
 ===========
 
@@ -99,6 +98,8 @@ Required imports
 ~~~~~~~~~~~~~~~~
 Imports required for model definition.
 
+*books/models.py*
+
 .. code-block:: python
 
     import json
@@ -111,6 +112,8 @@ Imports required for model definition.
 
 Book statuses
 ~~~~~~~~~~~~~
+
+*books/models.py*
 
 .. code-block:: python
 
@@ -132,6 +135,8 @@ Book statuses
 
 Publisher model
 ~~~~~~~~~~~~~~~
+
+*books/models.py*
 
 .. code-block:: python
 
@@ -157,6 +162,8 @@ Publisher model
 Author model
 ~~~~~~~~~~~~
 
+*books/models.py*
+
 .. code-block:: python
 
     @python_2_unicode_compatible
@@ -179,6 +186,8 @@ Author model
 Tag model
 ~~~~~~~~~
 
+*books/models.py*
+
 .. code-block:: python
 
     class Tag(models.Model):
@@ -197,6 +206,8 @@ Tag model
 
 Book model
 ~~~~~~~~~~
+
+*books/models.py*
 
 .. code-block:: python
 
@@ -259,6 +270,8 @@ Admin classes
 
 This is just trivial. A couple of correspondent admin classes in order to
 ba able to fill some data.
+
+*books/admin.py*
 
 .. code-block:: python
 
@@ -337,10 +350,12 @@ Within an index/type, you can store as many documents as you want. Note that
 although a document physically resides in an index, a document actually must
 be indexed/assigned to a type inside an index.
 
-Simply said, Document in Elasticsearch is similar to Model in Django.
+Simply said, you could see an Elasticsearch index as a database and a document
+as a database table (which makes a Document definition in Elasticsearch DSL
+similar to a Django Model definition).
 
-Often, complicated SQL model structures are flatterned in Elasticsearch
-indexes. Complicated relations are denormalized.
+Often, complex SQL model structures are flatterned in Elasticsearch
+indexes/documents. Nested relations are denormalized.
 
 In our example, all 4 models (``Author``, ``Publisher``, ``Tag``, ``Book``)
 would be flatterned into a single ``BookDocument``, which would hold all
@@ -352,8 +367,11 @@ the code comments.
 Required imports
 ~~~~~~~~~~~~~~~~
 
+*search_indexes/documents/book.py*
+
 .. code-block:: python
 
+    from django.conf import settings
     from django_elasticsearch_dsl import DocType, Index, fields
     from elasticsearch_dsl import analyzer
 
@@ -362,12 +380,54 @@ Required imports
 Index definition
 ~~~~~~~~~~~~~~~~
 
+To separate dev/test/staging/production indexes, the following approach is
+recommended.
+
+Settings
+^^^^^^^^
+
+*settings/base.py*
+
 .. code-block:: python
 
     # Name of the Elasticsearch index
-    BOOK_INDEX = Index('book')
+    ELASTICSEARCH_INDEX_NAMES = {
+        'search_indexes.documents.book': 'book',
+        'search_indexes.documents.publisher': 'publisher',
+    }
+
+*settings/testing.py*
+
+.. code-block:: python
+
+    # Name of the Elasticsearch index
+    ELASTICSEARCH_INDEX_NAMES = {
+        'search_indexes.documents.book': 'test_book',
+        'search_indexes.documents.publisher': 'test_publisher',
+    }
+
+*settings/production.py*
+
+.. code-block:: python
+
+    # Name of the Elasticsearch index
+    ELASTICSEARCH_INDEX_NAMES = {
+        'search_indexes.documents.book': 'prod_book',
+        'search_indexes.documents.publisher': 'prod_publisher',
+    }
+
+Document index
+^^^^^^^^^^^^^^
+
+*search_indexes/documents/books.py*
+
+.. code-block:: python
+
+    # Name of the Elasticsearch index
+    INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
+
     # See Elasticsearch Indices API reference for available settings
-    BOOK_INDEX.settings(
+    INDEX.settings(
         number_of_shards=1,
         number_of_replicas=1
     )
@@ -387,9 +447,11 @@ Custom analyzers
 Document definition
 ~~~~~~~~~~~~~~~~~~~
 
+*search_indexes/documents/book.py*
+
 .. code-block:: python
 
-    @BOOK_INDEX.doc_type
+    @INDEX.doc_type
     class BookDocument(DocType):
         """Book Elasticsearch document."""
 
@@ -398,27 +460,21 @@ Document definition
         title = fields.StringField(
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
         description = fields.StringField(
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
         summary = fields.StringField(
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
@@ -426,9 +482,7 @@ Document definition
             attr='publisher_indexing',
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
@@ -437,18 +491,14 @@ Document definition
         state = fields.StringField(
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
         isbn = fields.StringField(
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword'
-                )
+                'raw': fields.StringField(analyzer='keyword'),
             }
         )
 
@@ -462,10 +512,7 @@ Document definition
             attr='tags_indexing',
             analyzer=html_strip,
             fields={
-                'raw': fields.StringField(
-                    analyzer='keyword',
-                    multi=True
-                )
+                'raw': fields.StringField(analyzer='keyword', multi=True),
             },
             multi=True
         )
@@ -517,6 +564,8 @@ BookDocument index.
 Required imports
 ^^^^^^^^^^^^^^^^
 
+*search_indexes/signals.py*
+
 .. code-block:: python
 
     from django.db.models.signals import post_save, post_delete
@@ -526,6 +575,8 @@ Required imports
 
 Update book index on related model change
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+*search_indexes/signals.py*
 
 .. code-block:: python
 
@@ -562,6 +613,8 @@ Update book index on related model change
 
 Update book index on related model removal
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+*search_indexes/signals.py*
 
 .. code-block:: python
 
@@ -611,6 +664,8 @@ the code comments.
 Required imports
 ~~~~~~~~~~~~~~~~
 
+*search_indexes/serializers.py*
+
 .. code-block:: python
 
     import json
@@ -626,6 +681,8 @@ Serializer definition
 
 Simplest way to create a serializer, is to just specify which fields are
 needed to be serialized and leave it further to the dynamic serializer.
+
+*search_indexes/serializers.py*
 
 .. code-block:: python
 
@@ -664,6 +721,8 @@ needed to be serialized and leave it further to the dynamic serializer.
 However, if dynamic serializer doesn't work for your or you want to customize
 too many things, you are free to use standard ``Serializer`` class of the
 Django REST framework.
+
+*search_indexes/serializers.py*
 
 .. code-block:: python
 
@@ -714,12 +773,13 @@ ViewSet definition
 
 At this step, we're going to define Django REST framework ViewSets.
 
-
-Content of the ``search_indexes/views.py`` file. Additionally, see
+Content of the ``search_indexes/viewsets.py`` file. Additionally, see
 the code comments.
 
 Required imports
 ~~~~~~~~~~~~~~~~
+
+*search_indexes/viewsets.py*
 
 .. code-block:: python
 
@@ -746,9 +806,10 @@ Required imports
     from .documents import BookDocument, PublisherDocument
     from .serializers import BookDocumentSerializer
 
-
 ViewSet definition
 ~~~~~~~~~~~~~~~~~~
+
+*search_indexes/viewsets.py*
 
 .. code-block:: python
 
@@ -876,6 +937,8 @@ the code comments.
 Required imports
 ~~~~~~~~~~~~~~~~
 
+*search_indexes/urls.py*
+
 .. code-block:: python
 
     from django.conf.urls import url, include
@@ -883,9 +946,10 @@ Required imports
 
     from .views import BookDocumentView
 
-
 Router definition
 ~~~~~~~~~~~~~~~~~
+
+*search_indexes/urls.py*
 
 .. code-block:: python
 
@@ -896,6 +960,8 @@ Router definition
 
 URL patterns
 ~~~~~~~~~~~~
+
+*search_indexes/urls.py*
 
 .. code-block:: python
 
@@ -969,6 +1035,8 @@ Configuration
 -------------
 
 Change your development settings in the following way:
+
+*settings/dev.py*
 
 .. code-block:: python
 

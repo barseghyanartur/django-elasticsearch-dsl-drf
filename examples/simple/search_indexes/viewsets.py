@@ -57,6 +57,7 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         OrderingFilterBackend,
         SearchFilterBackend,
         FacetedSearchFilterBackend,
+        SuggesterFilterBackend,
     ]
     # Define search fields
     search_fields = (
@@ -166,6 +167,11 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         },
     }
 
+    # Suggester fields
+    suggester_fields = {
+        'title_suggest': 'title.suggest',
+    }
+
 
 class PublisherDocumentViewSet(BaseDocumentViewSet):
     """The PublisherDocument view."""
@@ -223,12 +229,7 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
                 SUGGESTER_COMPLETION,
             ],
         },
-        'state_province_suggest': {
-            'field': 'state_province.suggest',
-            'suggesters': [
-                SUGGESTER_COMPLETION,
-            ],
-        },
+        'state_province_suggest': 'state_province.suggest',
         'country_suggest': {
             'field': 'country.suggest',
             'suggesters': [

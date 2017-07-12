@@ -91,6 +91,11 @@ __all__ = ('SuggesterFilterBackend',)
 class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
     """Suggester filter backend for Elasticsearch.
 
+    Suggestion functionality is exclusive. Once you have queried the
+    ``SuggesterFilterBackend``, the latter will transform your current
+    search query into suggestion search query (which is very different).
+    Therefore, always add it as the very last filter backend.
+
     Example:
 
         >>> from django_elasticsearch_dsl_drf.constants import (
@@ -113,7 +118,10 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>>
         >>>     document = PublisherDocument
         >>>     serializer_class = PublisherDocumentSerializer
-        >>>     filter_backends = [SuggesterFilterBackend,]
+        >>>     filter_backends = [
+        >>>         # ...
+        >>>         SuggesterFilterBackend,
+        >>>     ]
         >>>     # Suggester fields
         >>>     suggester_fields = {
         >>>         'name_suggest': {
@@ -293,6 +301,12 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Updated queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
+        # The ``SuggesterFilterBackend`` filter backend shall be used in
+        # the ``suggest`` custom view action/route only. Usages outside of the
+        # are ``suggest`` action/route are restricted.
+        if view.action != 'suggest':
+            return queryset
+
         suggester_query_params = self.get_suggester_query_params(request, view)
         for suggester_name, options in suggester_query_params.items():
             # We don't have multiple values here.

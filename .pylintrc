@@ -1,4 +1,4 @@
 [MASTER]
 ignore=
 disable=R,C
-init-hook='import sys; import os; sys.path.append(os.path.abspath("src"))'
+init-hook='import sys; import os; sys.path.append(os.path.abspath("src")); sys.path.append(os.path.abspath("examples")); sys.path.append(os.path.abspath("examples/simple"));'

@@ -100,29 +100,48 @@ class TestSuggesters(BaseRestFrameworkTestCase):
             )
         )
 
+        cls.publishers_url = reverse(
+            'publisherdocument-suggest-list',
+            kwargs={}
+        )
+
+        cls.books = []
+        cls.books.append(
+            factories.BookFactory(
+                title='Aaaaa Bbbb',
+            )
+        )
+        cls.books.append(
+            factories.BookFactory(
+                title='Aaaaa Cccc',
+            )
+        )
+        cls.books.append(
+            factories.BookFactory(
+                title='Aaaaa Dddd',
+            )
+        )
+
+        cls.books += factories.BookFactory.create_batch(
+            10,
+            publisher__name='Oxford University Press',
+            publisher__city='Yerevan',
+            publisher__state_province='Ararat',
+            publisher__country='Ireland',
+        )
+
+        cls.books_url = reverse(
+            'bookdocument-suggest-list',
+            kwargs={}
+        )
+
         call_command('search_index', '--rebuild', '-f')
 
-    def _test_suggesters(self):
+    def _test_suggesters(self, test_data, url):
         """Test suggesters."""
         self.authenticate()
 
-        url = reverse('publisherdocument-suggest-list', kwargs={})
         data = {}
-        test_data = {
-            'name_suggest__completion': {
-                'Ad': ['Addison–Wesley', 'Adis International'],
-                'Atl': ['Atlantic Books', 'Atlas Press'],
-                'Boo': ['Book League of America', 'Book Works', 'Booktrope'],
-            },
-            'country_suggest__completion': {
-                'Arm': ['Armenia'],
-                'Ar': ['Armenia', 'Argentina'],
-                'Bel': ['Belgium', 'Belarus'],
-                'Bur': ['Burkina Faso', 'Burundi'],
-                'Net': ['Netherlands'],
-                'Fra': [],
-            }
-        }
 
         for __suggester_field, __test_cases in test_data.items():
 
@@ -139,15 +158,49 @@ class TestSuggesters(BaseRestFrameworkTestCase):
                     len(__expected_results)
                 )
                 self.assertEqual(
-                    sorted([__o['text']
-                            for __o
-                            in response.data[__suggester_field][0]['options']]),
+                    sorted(
+                        [__o['text']
+                         for __o
+                         in response.data[__suggester_field][0]['options']]
+                    ),
                     sorted(__expected_results)
                 )
 
     def test_suggesters(self):
         """Test suggesters."""
-        return self._test_suggesters()
+        # Testing publishers
+        test_data = {
+            'name_suggest__completion': {
+                'Ad': ['Addison–Wesley', 'Adis International'],
+                'Atl': ['Atlantic Books', 'Atlas Press'],
+                'Boo': ['Book League of America', 'Book Works', 'Booktrope'],
+            },
+            'country_suggest__completion': {
+                'Arm': ['Armenia'],
+                'Ar': ['Armenia', 'Argentina'],
+                'Bel': ['Belgium', 'Belarus'],
+                'Bur': ['Burkina Faso', 'Burundi'],
+                'Net': ['Netherlands'],
+                'Fra': [],
+            }
+        }
+        self._test_suggesters(test_data, self.publishers_url)
+
+        # Testing books
+        test_data = {
+            'title_suggest__completion': {
+                'Aaa': ['Aaaaa Bbbb', 'Aaaaa Cccc', 'Aaaaa Dddd'],
+                'Bbb': [],
+            },
+        }
+        self._test_suggesters(test_data, self.books_url)
+
+    def test_suggesters_no_args_provided(self):
+        """Test suggesters with no args provided."""
+        data = {}
+        # Check if response now is valid
+        response = self.client.get(self.publishers_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 if __name__ == '__main__':

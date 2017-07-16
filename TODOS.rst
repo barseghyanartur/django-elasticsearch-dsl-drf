@@ -74,6 +74,7 @@ Could haves
 ===========
 .. code-block:: text
 
+    - Search in multiple indexes/documents.
 
 Would haves
 ===========

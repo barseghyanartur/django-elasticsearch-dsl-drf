@@ -576,7 +576,7 @@ The ``-`` prefix means ordering should be descending.
 
 **Order documents by field (ascending)**
 
-Filter documents by field ``price`` (ascending).
+Order documents by field ``price`` (ascending).
 
 .. code-block:: text
 
@@ -584,7 +584,7 @@ Filter documents by field ``price`` (ascending).
 
 **Order documents by field (descending)**
 
-Filter documents by field ``price`` (descending).
+Order documents by field ``price`` (descending).
 
 .. code-block:: text
 
@@ -674,8 +674,8 @@ explicitly specify it to be enabled. That means, that you will have to
 add a query string `facet={facet_field_name}` for each of the facets
 you want to see in results.
 
-In the example below, we show results with faceted `state` and `pages_count`
-facets.
+In the example below, we show results with faceted ``state`` and
+``pages_count`` facets.
 
 .. code-block:: text
 

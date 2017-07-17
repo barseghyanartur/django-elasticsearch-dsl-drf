@@ -63,6 +63,12 @@ Installation
 
         pip install https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/archive/stable.tar.gz
 
+    or latest stable version from BitBucket:
+
+    .. code-block:: sh
+
+        pip install https://bitbucket.org/barseghyanartur/django-elasticsearch-dsl-drf/get/stable.tar.gz
+
 (2) Add ``rest_framework``, ``django_elasticsearch_dsl`` and
     ``django_elasticsearch_dsl_drf`` to ``INSTALLED_APPS``:
 

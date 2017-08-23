@@ -80,18 +80,21 @@ class OrderingFilterBackend(BaseFilterBackend):
         # TODO: Support `mode` argument.
         query_params = request.query_params.copy()
         ordering_query_params = query_params.getlist(self.ordering_param, [])
-
+        __ordering_params = []
         # Remove invalid ordering query params
         for query_param in ordering_query_params:
             __key = query_param.lstrip('-')
-            if __key not in view.ordering_fields:
-                ordering_query_params.remove(query_param)
+            __direction = '-' if query_param.startswith('-') else ''
+            if __key in view.ordering_fields:
+                __ordering_params.append(
+                    '{}{}'.format(__direction, view.ordering_fields[__key])
+                )
 
         # If no valid ordering params specified, fall back to `view.ordering`
-        if not ordering_query_params:
+        if not __ordering_params:
             return self.get_default_ordering_params(view)
 
-        return ordering_query_params
+        return __ordering_params
 
     @classmethod
     def get_default_ordering_params(cls, view):

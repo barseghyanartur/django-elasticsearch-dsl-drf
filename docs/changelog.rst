@@ -15,6 +15,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.3.5
+-----
+2017-08-24
+
+- Minor fixes in the ordering backend.
+- Improved tests and coverage.
+
 0.3.4
 -----
 2017-08-23

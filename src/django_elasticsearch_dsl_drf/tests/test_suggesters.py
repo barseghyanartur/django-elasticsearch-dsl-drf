@@ -135,6 +135,31 @@ class TestSuggesters(BaseRestFrameworkTestCase):
             kwargs={}
         )
 
+        cls.authors = []
+        cls.authors.append(
+            factories.AuthorFactory(
+                name='John Doe',
+                salutation='Aaa Bbb',
+            )
+        )
+        cls.authors.append(
+            factories.AuthorFactory(
+                name='Jane Doe',
+                salutation='Aaa Ccc',
+            )
+        )
+        cls.authors.append(
+            factories.AuthorFactory(
+                name='Armen Doe',
+                salutation='Bbb Ccc',
+            )
+        )
+
+        cls.authors_url = reverse(
+            'authordocument-suggest-list',
+            kwargs={}
+        )
+
         call_command('search_index', '--rebuild', '-f')
 
     def _test_suggesters(self, test_data, url):
@@ -194,6 +219,16 @@ class TestSuggesters(BaseRestFrameworkTestCase):
             },
         }
         self._test_suggesters(test_data, self.books_url)
+
+        # Testing authors
+        test_data = {
+            'salutation.suggest__completion': {
+                'Aaa': ['Aaa Bbb', 'Aaa Ccc'],
+                'Bbb': ['Bbb Ccc'],
+                'Hhh': [],
+            },
+        }
+        self._test_suggesters(test_data, self.authors_url)
 
     def test_suggesters_no_args_provided(self):
         """Test suggesters with no args provided."""

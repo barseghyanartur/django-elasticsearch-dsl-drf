@@ -42,24 +42,25 @@ class TestOrdering(BaseRestFrameworkTestCase):
     def setUpClass(cls):
         """Set up class."""
         cls.books = factories.BookWithUniqueTitleFactory.create_batch(20)
+        cls.books_url = reverse('bookdocument-list', kwargs={})
+
+        cls.authors = factories.AuthorWithUniqueNameFactory.create_batch(20)
+        cls.authors_url = reverse('authordocument-list', kwargs={})
 
         call_command('search_index', '--rebuild', '-f')
 
-    def _order_by_field(self, field_name, check_ordering=True):
+    def _order_by_field(self, field_name, url, check_ordering=True):
         """Order by field."""
         self.authenticate()
 
-        url = reverse('bookdocument-list', kwargs={})
         data = {}
 
         # Just a plan field name without ordering information
-        __ascending = True
         __f_name = field_name
         __assert_func = self.assertLess
 
         if field_name.startswith('-'):
             __f_name = field_name[1:]
-            __ascending = False
             __assert_func = self.assertGreater
 
         # Should contain 20 results
@@ -83,25 +84,42 @@ class TestOrdering(BaseRestFrameworkTestCase):
                         filtered_response.data['results'][counter][__f_name]
                     )
 
-    def test_order_by_field_id_ascending(self):
+    def test_book_order_by_field_id_ascending(self):
         """Order by field `id` ascending."""
-        return self._order_by_field('id')
+        return self._order_by_field('id', self.books_url)
 
-    def test_order_by_field_id_descending(self):
+    def test_book_order_by_field_id_descending(self):
         """Order by field `id` descending."""
-        return self._order_by_field('-id')
+        return self._order_by_field('-id', self.books_url)
 
-    def test_order_by_field_title_ascending(self):
-        """Order by field title ascending."""
-        return self._order_by_field('title')
+    def test_book_order_by_field_title_ascending(self):
+        """Order by field `title` ascending."""
+        return self._order_by_field('title', self.books_url)
 
-    def test_order_by_field_title_descending(self):
-        """Order by field title descending."""
-        return self._order_by_field('-title')
+    def test_book_order_by_field_title_descending(self):
+        """Order by field `title` descending."""
+        return self._order_by_field('-title', self.books_url)
 
-    def test_order_by_non_existent_field(self):
+    def test_author_order_by_field_id_ascending(self):
+        """Order by field `name` ascending."""
+        return self._order_by_field('id', self.authors_url)
+
+    def test_author_order_by_field_id_descending(self):
+        """Order by field `id` descending."""
+        return self._order_by_field('-id', self.authors_url)
+
+    def test_author_order_by_field_name_ascending(self):
+        """Order by field `name` ascending."""
+        return self._order_by_field('name', self.authors_url)
+
+    def test_author_order_by_field_name_descending(self):
+        """Order by field `name` descending."""
+        return self._order_by_field('-name', self.authors_url)
+
+    def test_book_order_by_non_existent_field(self):
         """Order by non-existent field."""
         return self._order_by_field('another_non_existent_field',
+                                    self.books_url,
                                     check_ordering=False)
 
 

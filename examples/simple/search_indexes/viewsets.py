@@ -31,17 +31,70 @@ from elasticsearch_dsl import (
     # TermsFacet,
 )
 
-from .documents import BookDocument, PublisherDocument
+from .documents import AuthorDocument, BookDocument, PublisherDocument
 from .serializers import (
-    # BookDocumentSerializer,
+    AuthorDocumentSimpleSerializer,
     BookDocumentSimpleSerializer,
     PublisherDocumentSerializer,
 )
 
 __all__ = (
+    'AuthorDocumentView',
     'BookDocumentView',
     'PublisherDocumentView',
 )
+
+
+class AuthorDocumentViewSet(BaseDocumentViewSet):
+    """The AuthorDocument view."""
+
+    document = AuthorDocument
+    serializer_class = AuthorDocumentSimpleSerializer
+    lookup_field = 'id'
+    filter_backends = [
+        FilteringFilterBackend,
+        OrderingFilterBackend,
+        SearchFilterBackend,
+        SuggesterFilterBackend,
+    ]
+    pagination_class = LimitOffsetPagination
+    # Define search fields
+    search_fields = (
+        'name',
+        'email',
+        'salutation',
+    )
+    # Define filtering fields
+    filter_fields = {
+        'id': None,
+        'name': 'name.raw',
+    }
+    # Define ordering fields
+    ordering_fields = {
+        'id': None,  # 'id',
+        'name': 'name.raw',
+        'email': 'email.raw',
+        'salutation': 'salutation.raw',
+    }
+    # Specify default ordering
+    ordering = 'name'
+
+    # Suggester fields
+    suggester_fields = {
+        'name_suggest': {
+            'field': 'name.suggest',
+            'suggesters': [
+                SUGGESTER_TERM,
+                SUGGESTER_PHRASE,
+                SUGGESTER_COMPLETION,
+            ],
+        },
+        'salutation.suggest': {
+            'suggesters': [
+                SUGGESTER_COMPLETION,
+            ],
+        },
+    }
 
 
 class BookDocumentViewSet(BaseDocumentViewSet):

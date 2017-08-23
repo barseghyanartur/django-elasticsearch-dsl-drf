@@ -8,6 +8,7 @@ from .factory_faker import Faker
 
 __all__ = (
     'PublisherFactory',
+    'PublisherWithUniqueNameFactory',
     'LimitedPublisherFactory',
     'SinglePublisherFactory',
 )
@@ -32,6 +33,15 @@ class BasePublisherFactory(DjangoModelFactory):
 
 class PublisherFactory(BasePublisherFactory):
     """Publisher factory."""
+
+
+class PublisherWithUniqueNameFactory(BasePublisherFactory):
+    """Publisher factory with unique name attribute."""
+
+    class Meta(object):
+        """Meta class."""
+
+        django_get_or_create = ('name',)
 
 
 class LimitedPublisherFactory(BasePublisherFactory):

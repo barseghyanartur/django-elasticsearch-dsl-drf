@@ -50,6 +50,10 @@ class Author(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField()
     headshot = models.ImageField(upload_to='authors', null=True, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    biography = models.TextField(null=True, blank=True)
+    phone_number = models.CharField(max_length=200, null=True, blank=True)
+    website = models.URLField(null=True, blank=True)
 
     class Meta(object):
         """Meta options."""
@@ -58,6 +62,14 @@ class Author(models.Model):
 
     def __str__(self):
         return self.name
+
+    def headshot_indexing(self):
+        """Headshot for indexing.
+
+        Used in Elasticsearch indexing.
+        """
+        if self.headshot:
+            return self.headshot.url
 
 
 class Tag(models.Model):

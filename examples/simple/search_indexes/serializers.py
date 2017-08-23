@@ -3,12 +3,38 @@ import json
 from rest_framework import serializers
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 
-from .documents import BookDocument, PublisherDocument
+from .documents import AuthorDocument, BookDocument, PublisherDocument
 
 __all__ = (
+    'AuthorDocumentSimpleSerializer',
     'BookDocumentSerializer',
+    'BookDocumentSimpleSerializer',
     'PublisherDocumentSerializer',
+    'PublisherDocumentSimpleSerializer',
 )
+
+
+class AuthorDocumentSimpleSerializer(DocumentSerializer):
+    """Serializer for the Author document."""
+
+    class Meta(object):
+        """Meta options."""
+
+        document = AuthorDocument
+        # fields = (
+        #     'id',
+        #     'name',
+        #     'email',
+        #     'salutation',
+        # )
+        exclude = (
+            'headshot',
+        )
+        ignore_fields = (
+            'biography',
+            'phone_number',
+            'website',
+        )
 
 
 class BookDocumentSerializer(serializers.Serializer):

@@ -86,8 +86,9 @@ class OrderingFilterBackend(BaseFilterBackend):
             __key = query_param.lstrip('-')
             __direction = '-' if query_param.startswith('-') else ''
             if __key in view.ordering_fields:
+                __field_name = view.ordering_fields[__key] or __key
                 __ordering_params.append(
-                    '{}{}'.format(__direction, view.ordering_fields[__key])
+                    '{}{}'.format(__direction, __field_name)
                 )
 
         # If no valid ordering params specified, fall back to `view.ordering`

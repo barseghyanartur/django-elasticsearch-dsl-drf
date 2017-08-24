@@ -65,6 +65,7 @@ class BookDocument(DocType):
         analyzer=html_strip,
         fields={
             'raw': fields.StringField(analyzer='keyword'),
+            'suggest': fields.CompletionField(),
         }
     )
 

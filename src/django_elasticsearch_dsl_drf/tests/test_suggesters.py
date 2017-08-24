@@ -109,18 +109,21 @@ class TestSuggesters(BaseRestFrameworkTestCase):
         cls.books.append(
             factories.BookFactory(
                 title='Aaaaa Bbbb',
+                publisher__name='Antares',
                 publisher__country='Armenia',
             )
         )
         cls.books.append(
             factories.BookFactory(
                 title='Aaaaa Cccc',
+                publisher__name='Antares',
                 publisher__country='Armenia',
             )
         )
         cls.books.append(
             factories.BookFactory(
                 title='Aaaaa Dddd',
+                publisher__name='Antares',
                 publisher__country='Armenia',
             )
         )

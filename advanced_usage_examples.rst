@@ -894,6 +894,72 @@ view set.
         ]
     }
 
+You can also have multiple suggesters per request.
+
+**Request**
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/publishers/suggest/?name_suggest__completion=B&country_suggest__completion=Ar
+
+**Response**
+
+.. code-block:: javascript
+
+    {
+        "_shards": {
+            "successful": 1,
+            "total": 1,
+            "failed": 0
+        },
+        "country_suggest__completion": [
+            {
+                "text": "Ar",
+                "options": [
+                    {
+                        "score": 1.0,
+                        "text": "Armenia"
+                    },
+                    {
+                        "score": 1.0,
+                        "text": "Argentina"
+                    }
+                ],
+                "offset": 0,
+                "length": 2
+            }
+        ],
+        "name_suggest__completion": [
+            {
+                "text": "B",
+                "options": [
+                    {
+                        "score": 1.0,
+                        "text": "Book Works"
+                    },
+                    {
+                        "score": 1.0,
+                        "text": "Brumleve LLC"
+                    },
+                    {
+                        "score": 1.0,
+                        "text": "Booktrope"
+                    },
+                    {
+                        "score": 1.0,
+                        "text": "Borman, Post and Wendt"
+                    },
+                    {
+                        "score": 1.0,
+                        "text": "Book League of America"
+                    }
+                ],
+                "offset": 0,
+                "length": 1
+            }
+        ]
+    }
+
 Pagination
 ----------
 

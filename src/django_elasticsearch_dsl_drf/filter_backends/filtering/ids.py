@@ -1,5 +1,29 @@
 """
 Ids filtering backend.
+
+Filters documents that only have the provided ids. Note, this query uses the
+`_uid` field.
+
+Elastic query:
+
+    {
+        "query": {
+            "ids": {
+                "type": "book_document",
+                "values": ["68", "64", "58"]
+            }
+        }
+    }
+
+REST framework request equivalent:
+
+- http://localhost:8000/api/articles/?ids=68|64|58
+- http://localhost:8000/api/articles/?ids=68&ids=64&ids=58
+
+Official Elastic docs:
+
+- https://www.elastic.co/guide/en/elasticsearch/reference/current/
+  query-dsl-ids-query.html
 """
 
 from rest_framework.filters import BaseFilterBackend

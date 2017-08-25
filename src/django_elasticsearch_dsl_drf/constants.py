@@ -14,7 +14,6 @@ __all__ = (
     'EXTENDED_STRING_LOOKUP_FILTERS',
     'FALSE_VALUES',
     'LOOKUP_FILTER_EXISTS',
-    'LOOKUP_FILTER_IDS',
     'LOOKUP_FILTER_PREFIX',
     'LOOKUP_FILTER_RANGE',
     'LOOKUP_FILTER_TERM',
@@ -176,18 +175,6 @@ LOOKUP_FILTER_FUZZY = 'fuzzy'
 # query-dsl-type-query.html
 LOOKUP_FILTER_TYPE = 'type'
 
-# Filters documents that only have the provided ids. Note, this query uses the
-# `_uid` field.
-# Example: {"query": {"ids": {"type": "book_document",
-#                             "values": ["68", "64", "58"]}}}
-# Example: http://localhost:8000/api/articles/?ids=68|64|58
-# Example: http://localhost:8000/api/articles/?ids=68&ids=64&ids=58
-# https://www.elastic.co/guide/en/elasticsearch/reference/current/
-# query-dsl-ids-query.html
-# TODO: If this is no longer required (since Ids is implemented as a separate
-# filter backend), remove.
-LOOKUP_FILTER_IDS = 'ids'
-
 # ****************************************************************************
 # ************************ Functional filters/queries ************************
 # ****************************************************************************
@@ -282,7 +269,6 @@ ALL_LOOKUP_FILTERS_AND_QUERIES = (
     # LOOKUP_FILTER_REGEXP,
     # LOOKUP_FILTER_FUZZY,
     # LOOKUP_FILTER_TYPE,
-    LOOKUP_FILTER_IDS,  # TODO: remove?
 
     # Functional
     LOOKUP_QUERY_CONTAINS,

@@ -40,9 +40,8 @@ Main features and highlights
 - :doc:`Ordering filter backend <advanced_usage_examples>`.
 - :doc:`Filtering filter backend <advanced_usage_examples>` (big variety of
   native- and functional- query lookups, such as ``gt``, ``gte``, ``lt``,
-  ``lte``, ``ids``, ``endswith``, ``contains``, ``wildcard``, ``exists``,
-  ``exclude``, ``isnull``, ``range``, ``in``, ``term`` and ``terms`` is
-  implemented.
+  ``lte``, ``endswith``, ``contains``, ``wildcard``, ``exists``, ``exclude``,
+  ``isnull``, ``range``, ``in``, ``term`` and ``terms`` is implemented.
 - :doc:`Faceted search filter backend <advanced_usage_examples>`.
 - :doc:`Suggester filter backend <advanced_usage_examples>`.
 - :doc:`Pagination (Page number and limit/offset pagination) <advanced_usage_examples>`.

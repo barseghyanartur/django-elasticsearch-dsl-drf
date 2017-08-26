@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from .models import *
+from .models import (
+    Author,
+    Book,
+    Order,
+    OrderLine,
+    Publisher,
+    Tag,
+)
 
 __all__ = (
     'AuthorAdmin',

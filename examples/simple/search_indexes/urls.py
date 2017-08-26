@@ -1,7 +1,11 @@
 from django.conf.urls import url, include
 from rest_framework_extensions.routers import ExtendedDefaultRouter
 
-from .viewsets import AuthorDocumentViewSet, BookDocumentViewSet, PublisherDocumentViewSet
+from .viewsets import (
+    AuthorDocumentViewSet,
+    BookDocumentViewSet,
+    PublisherDocumentViewSet,
+)
 
 __all__ = ('urlpatterns',)
 

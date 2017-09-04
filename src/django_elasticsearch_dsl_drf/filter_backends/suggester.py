@@ -183,9 +183,11 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def apply_suggester_term(cls, suggester_name, queryset, options, value):
         """Apply `term` suggester.
 
+        :param suggester_name:
         :param queryset: Original queryset.
         :param options: Filter options.
         :param value: value to filter on.
+        :type suggester_name: str
         :type queryset: elasticsearch_dsl.search.Search
         :type options: dict
         :type value: str
@@ -202,9 +204,11 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def apply_suggester_phrase(cls, suggester_name, queryset, options, value):
         """Apply `phrase` suggester.
 
+        :param suggester_name:
         :param queryset: Original queryset.
         :param options: Filter options.
         :param value: value to filter on.
+        :type suggester_name: str
         :type queryset: elasticsearch_dsl.search.Search
         :type options: dict
         :type value: str
@@ -225,9 +229,11 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                    value):
         """Apply `completion` suggester.
 
+        :param suggester_name:
         :param queryset: Original queryset.
         :param options: Filter options.
         :param value: value to filter on.
+        :type suggester_name: str
         :type queryset: elasticsearch_dsl.search.Search
         :type options: dict
         :type value: str

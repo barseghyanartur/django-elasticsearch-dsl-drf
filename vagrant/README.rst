@@ -6,6 +6,7 @@ Versions
 ~~~~~~~~
 - Java 8
 - Elasticsearch 2.x
+- Kibana 4.6.x
 
 Installation
 ~~~~~~~~~~~~
@@ -66,3 +67,12 @@ Just open the following link in your browser:
 .. code-block:: text
 
     http://localhost:9200/_plugin/head/
+
+Kibana
+~~~~~~
+
+Just open the following link in your browser:
+
+.. code-block:: text
+
+    http://localhost:5601/

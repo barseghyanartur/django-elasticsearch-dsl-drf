@@ -31,7 +31,23 @@ sudo echo "network.host: 0.0.0.0" >> /etc/elasticsearch/elasticsearch.yml
 #sudo echo "http.port: 9200" >> /etc/elasticsearch/elasticsearch.yml
 
 # Enable CORS
-sudo echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
+#sudo echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
+#sudo echo "http.cors.allow-origin: /https?:\/\/localhost(:[0-9]+)?/" >> /etc/elasticsearch/elasticsearch.yml
+
+# Install Kibana 4.6.x
+echo "Kibana 4.6.x installation"
+echo "deb http://packages.elastic.co/kibana/4.6/debian stable main" | sudo tee -a /etc/apt/sources.list
+sudo apt-get update && sudo apt-get -y install kibana
+
+# Configure Kibana
+echo "Kibana 4.6.x configuration"
+sudo echo "server.host: 0.0.0.0" >> /etc/kibana/kibana.yml
 
 # Start the Elasticsearch
 sudo /etc/init.d/elasticsearch start
+
+# Enable the Kibana service, and start it
+echo "Staring the Kibana service"
+#sudo systemctl daemon-reload
+#sudo systemctl enable kibana
+sudo /etc/init.d/kibana start

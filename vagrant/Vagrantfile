@@ -71,12 +71,12 @@ Vagrant.configure("2") do |config|
   # SHELL
 
   config.vm.provision :shell, path: "bootstrap.sh"
-  #config.vm.provision :shell, path: "update.sh"
   config.vm.network :forwarded_port, host: 9200, guest: 9200
+  config.vm.network :forwarded_port, host: 5601, guest: 5601
   config.vm.provider "virtualbox" do |v|
     v.memory = 2048
     v.cpus = 1
-    v.name = "django-elasticsearch-dsl-drf-elasticsearch-2.x"
+    v.name = "django-elasticsearch-dsl-drf-elasticsearch-2.x-kibana-4.6.x"
   end
 
 end

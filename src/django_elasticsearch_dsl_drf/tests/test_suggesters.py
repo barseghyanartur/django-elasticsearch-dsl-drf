@@ -184,16 +184,17 @@ class TestSuggesters(BaseRestFrameworkTestCase):
                 )
                 self.assertEqual(response.status_code, status.HTTP_200_OK)
                 self.assertIn(__suggester_field, response.data)
+                __unique_options = list(set([
+                    __o['text']
+                    for __o
+                    in response.data[__suggester_field][0]['options']
+                ]))
                 self.assertEqual(
-                    len(response.data[__suggester_field][0]['options']),
+                    len(__unique_options),
                     len(__expected_results)
                 )
                 self.assertEqual(
-                    sorted(
-                        [__o['text']
-                         for __o
-                         in response.data[__suggester_field][0]['options']]
-                    ),
+                    sorted(__unique_options),
                     sorted(__expected_results)
                 )
 

@@ -1,6 +1,7 @@
 from django.conf import settings
 
 from django_elasticsearch_dsl import DocType, Index, fields
+from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
 from books.models import Publisher
 
@@ -21,43 +22,43 @@ class PublisherDocument(DocType):
 
     id = fields.IntegerField(attr='id')
 
-    name = fields.StringField(
+    name = StringField(
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
             'suggest': fields.CompletionField(),
         }
     )
 
-    info = fields.StringField()
+    info = StringField()
 
-    address = fields.StringField(
+    address = StringField(
         fields={
-            'raw': fields.StringField(analyzer='keyword')
+            'raw': KeywordField()
         }
     )
 
-    city = fields.StringField(
+    city = StringField(
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
             'suggest': fields.CompletionField(),
         }
     )
 
-    state_province = fields.StringField(
+    state_province = StringField(
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
             'suggest': fields.CompletionField(),
         }
     )
 
-    country = fields.StringField(
+    country = StringField(
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
             'suggest': fields.CompletionField(),
         }
     )
 
-    website = fields.StringField()
+    website = StringField()
 
     class Meta(object):
         """Meta options."""

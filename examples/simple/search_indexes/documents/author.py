@@ -1,6 +1,7 @@
 from django.conf import settings
 
 from django_elasticsearch_dsl import DocType, Index, fields
+from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
 from books.models import Author
 
@@ -21,35 +22,35 @@ class AuthorDocument(DocType):
 
     id = fields.IntegerField(attr='id')
 
-    name = fields.StringField(
+    name = StringField(
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
             'suggest': fields.CompletionField(),
         }
     )
 
-    salutation = fields.StringField(
+    salutation = StringField(
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
             'suggest': fields.CompletionField(),
         }
     )
 
-    email = fields.StringField(
+    email = StringField(
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
         }
     )
 
     birth_date = fields.DateField()
 
-    biography = fields.StringField()
+    biography = StringField()
 
-    phone_number = fields.StringField()
+    phone_number = StringField()
 
-    website = fields.StringField()
+    website = StringField()
 
-    headshot = fields.StringField(attr='headshot_indexing')
+    headshot = StringField(attr='headshot_indexing')
 
     class Meta(object):
         """Meta options."""

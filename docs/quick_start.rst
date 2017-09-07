@@ -1015,6 +1015,12 @@ Perform a number of lookups:
 Development and debugging
 =========================
 
+Development and debugging
+=========================
+
+Profiling tools
+---------------
+
 Looking for profiling tools for Elasticsearch?
 
 Try `django-elasticsearch-debug-toolbar
@@ -1024,7 +1030,7 @@ package. It's implemented as a panel for the well known
 and gives you full insights on what's happening on the side of Elasticsearch.
 
 Installation
-------------
+~~~~~~~~~~~~
 
 .. code-block:: sh
 
@@ -1032,7 +1038,7 @@ Installation
     pip install django-elasticsearch-debug-toolbar
 
 Configuration
--------------
+~~~~~~~~~~~~~
 
 Change your development settings in the following way:
 
@@ -1071,3 +1077,14 @@ Change your development settings in the following way:
         # Additional
         'elastic_panel.panel.ElasticDebugPanel',
     )
+
+Debugging
+---------
+
+Although (the unbeatable) Kibana is strongly recommended for data analyses,
+there are other good tool worth mentioning. One of them is elasticsearch-head
+`Elasticsearch 2.x <https://github.com/mobz/elasticsearch-head>`_ plugin or a
+correspondent `Chrome extension
+<https://github.com/TravisTX/elasticsearch-head-chrome>`_ of the same plugin.
+You may find it very useful for quick data preview or testing Elasticsearch
+queries.

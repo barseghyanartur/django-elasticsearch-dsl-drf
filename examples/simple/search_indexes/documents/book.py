@@ -1,10 +1,12 @@
 from django.conf import settings
 
 from django_elasticsearch_dsl import DocType, Index, fields
+from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
 from books.models import Book
 
 from .analyzers import html_strip
+
 
 __all__ = ('BookDocument',)
 
@@ -33,25 +35,25 @@ class BookDocument(DocType):
     # *********************** Main data fields for search ****************
     # ********************************************************************
 
-    title = fields.StringField(
+    title = StringField(
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
             'suggest': fields.CompletionField(),
         }
     )
 
-    description = fields.StringField(
+    description = StringField(
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
         }
     )
 
-    summary = fields.StringField(
+    summary = StringField(
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
         }
     )
 
@@ -60,11 +62,11 @@ class BookDocument(DocType):
     # ********************************************************************
 
     # Publisher
-    publisher = fields.StringField(
+    publisher = StringField(
         attr='publisher_indexing',
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
             'suggest': fields.CompletionField(),
         }
     )
@@ -73,18 +75,18 @@ class BookDocument(DocType):
     publication_date = fields.DateField()
 
     # State
-    state = fields.StringField(
+    state = StringField(
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
         }
     )
 
     # ISBN
-    isbn = fields.StringField(
+    isbn = StringField(
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(analyzer='keyword'),
+            'raw': KeywordField(),
         }
     )
 
@@ -98,11 +100,11 @@ class BookDocument(DocType):
     stock_count = fields.IntegerField()
 
     # Tags
-    tags = fields.StringField(
+    tags = StringField(
         attr='tags_indexing',
         analyzer=html_strip,
         fields={
-            'raw': fields.StringField(analyzer='keyword', multi=True),
+            'raw': KeywordField(multi=True),
         },
         multi=True
     )

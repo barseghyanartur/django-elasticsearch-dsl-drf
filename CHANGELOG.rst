@@ -15,6 +15,14 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.3.6
+-----
+2017-09-07
+
+- Fixed suggestions test for Elasticsearch 5.x.
+- Added `compat` module for painless testing of Elastic 2.x to Elastic 5.x
+  transition.
+
 0.3.5
 -----
 2017-08-24

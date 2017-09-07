@@ -19,15 +19,21 @@ __all__ = (
 )
 
 
-def get_elasticsearch_version():
+def get_elasticsearch_version(default=(5, 0, 0)):
     """Get Elasticsearch version.
 
+    :param default: Default value. Mainly added for building the docs
+        when Elasticsearch is not running.
+    :type default: tuple
     :return:
     :rtype: list
     """
-    es = Elasticsearch()
-    version = es.info()['version']['number']
-    return [int(__v) for __v in version.split('.', 2)]
+    try:
+        es = Elasticsearch()
+        version = es.info()['version']['number']
+        return [int(__v) for __v in version.split('.', 2)]
+    except:
+        return default
 
 
 def keyword_field(**kwargs):

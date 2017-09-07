@@ -1015,9 +1015,6 @@ Perform a number of lookups:
 Development and debugging
 =========================
 
-Development and debugging
-=========================
-
 Profiling tools
 ---------------
 

@@ -1079,7 +1079,7 @@ Debugging
 ---------
 
 Although (the unbeatable) Kibana is strongly recommended for data analyses,
-there are other good tool worth mentioning. One of them is elasticsearch-head
+there are other good tools worth mentioning. One of them is elasticsearch-head
 `Elasticsearch 2.x <https://github.com/mobz/elasticsearch-head>`_ plugin or a
 correspondent `Chrome extension
 <https://github.com/TravisTX/elasticsearch-head-chrome>`_ of the same plugin.

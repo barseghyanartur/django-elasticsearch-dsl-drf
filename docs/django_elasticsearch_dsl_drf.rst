@@ -20,6 +20,14 @@ django\_elasticsearch\_dsl\_drf\.apps module
     :undoc-members:
     :show-inheritance:
 
+django\_elasticsearch\_dsl\_drf\.compat module
+----------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.compat
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 django\_elasticsearch\_dsl\_drf\.constants module
 -------------------------------------------------
 

@@ -36,7 +36,8 @@ def get_elasticsearch_version(default=(5, 0, 0)):
         es = Elasticsearch()
         version = es.info()['version']['number']
         return [int(__v) for __v in version.split('.', 2)]
-    except (Exception, ConnectionError,
+    except (Exception,
+            ConnectionError,
             NewConnectionError,
             NameError,
             AttributeError,

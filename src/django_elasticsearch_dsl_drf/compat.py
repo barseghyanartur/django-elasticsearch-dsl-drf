@@ -23,7 +23,7 @@ __all__ = (
 )
 
 
-def get_elasticsearch_version(default=(5, 0, 0)):
+def get_elasticsearch_version(default=(2, 0, 0)):
     """Get Elasticsearch version.
 
     :param default: Default value. Mainly added for building the docs

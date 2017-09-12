@@ -43,7 +43,7 @@ def get_elasticsearch_version(default=(2, 0, 0)):
             AttributeError,
             ValueError,
             TypeError,
-            ConnectionRefusedError):
+            OSError):
         return default
 
 

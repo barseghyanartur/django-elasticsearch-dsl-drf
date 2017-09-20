@@ -4,13 +4,8 @@ helpers for painless (testing of) Elastic 2.x to Elastic 5.x transition. This
 module is not supposed to solve all transition issues for you. Better move to
 Elastic 5.x as soon as possible.
 """
-from urllib3.exceptions import NewConnectionError
 
 from django_elasticsearch_dsl import fields
-
-from elasticsearch import Elasticsearch
-from elasticsearch.exceptions import ConnectionError
-
 
 __title__ = 'django_elasticsearch_dsl_drf.compat'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -33,17 +28,9 @@ def get_elasticsearch_version(default=(2, 0, 0)):
     :rtype: list
     """
     try:
-        es = Elasticsearch()
-        version = es.info()['version']['number']
-        return [int(__v) for __v in version.split('.', 2)]
-    except (Exception,
-            ConnectionError,
-            NewConnectionError,
-            NameError,
-            AttributeError,
-            ValueError,
-            TypeError,
-            OSError):
+        from elasticsearch_dsl import __version__
+        return __version__
+    except ImportError:
         return default
 
 

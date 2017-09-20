@@ -125,6 +125,20 @@ def more_like_this(obj,
     _client = connections.get_connection()
     _search = Search(using=_client, index=_index)
 
+    kwargs = {}
+
+    if max_query_terms is not None:
+        kwargs['max_query_terms'] = max_query_terms
+
+    if min_term_freq is not None:
+        kwargs['min_term_freq'] = min_term_freq
+
+    if min_doc_freq is not None:
+        kwargs['min_doc_freq'] = min_doc_freq
+
+    if max_doc_freq is not None:
+        kwargs['max_doc_freq'] = max_doc_freq
+
     return _search.query(
         MoreLikeThis(
             fields=fields,
@@ -133,9 +147,6 @@ def more_like_this(obj,
                 '_index': "{}".format(_index),
                 '_type': "{}".format(_mapping)
             },
-            max_query_terms=max_query_terms,
-            min_term_freq=min_term_freq,
-            min_doc_freq=min_doc_freq,
-            max_doc_freq=max_doc_freq,
+            **kwargs
         )
     )

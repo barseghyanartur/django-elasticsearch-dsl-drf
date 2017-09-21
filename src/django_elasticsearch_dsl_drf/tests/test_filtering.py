@@ -81,11 +81,32 @@ class TestFiltering(BaseRestFrameworkTestCase):
             }
         )
 
+        cls.geo_origin = factories.BookWithoutTagsFactory.create(
+            **{
+                'state': constants.BOOK_PUBLISHING_STATUS_REJECTED,
+                'lat': 48.8549,
+                'lon': 2.3000,
+            }
+        )
+
+        cls.geo_in_count = 5
+        cls.geo_distance = '1km'
+        cls.geo_in = factories.BookWithoutTagsFactory.create_batch(
+            cls.geo_in_count,
+            **{
+                'state': constants.BOOK_PUBLISHING_STATUS_REJECTED,
+                'lat': 48.8570,
+                'lon': 2.3005,
+            }
+        )
+
         cls.all_count = (
             cls.published_count +
             cls.in_progress_count +
             cls.prefix_count +
-            cls.no_tags_count
+            cls.no_tags_count +
+            cls.geo_in_count +
+            1  # geo_origin
         )
 
         cls.base_url = reverse('bookdocument-list', kwargs={})
@@ -143,6 +164,29 @@ class TestFiltering(BaseRestFrameworkTestCase):
             len(filtered_response.data['results']),
             self.published_count
         )
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_distance(self):
+        """Field filter term.
+
+        Example:
+
+            http://localhost:8000/api/books/?location__geo_distance=1km|48.8549|2.3000
+        """
+        self.authenticate()
+
+        __params = '{}|{}|{}'.format(self.geo_distance,
+                                     self.geo_origin.lat,
+                                     self.geo_origin.lon)
+
+        url = self.base_url[:] + '?{}={}'.format('location__geo_distance',
+                                                 __params)
+
+        data = {}
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Should contain only 6 results
+        self.assertEqual(len(response.data['results']), self.geo_in_count + 1)
 
     def test_field_filter_term(self):
         """Field filter term."""

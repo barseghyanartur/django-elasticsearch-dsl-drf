@@ -108,6 +108,9 @@ class Book(models.Model):
                                   related_name='books',
                                   blank=True)
 
+    lat = models.DecimalField(blank=True, null=True, decimal_places=15, max_digits=19)
+    lon = models.DecimalField(blank=True, null=True, decimal_places=15, max_digits=19)
+
     class Meta(object):
         """Meta options."""
 
@@ -140,6 +143,17 @@ class Book(models.Model):
         Used in Elasticsearch indexing/tests of `isnull` functional filter.
         """
         return None
+
+    @property
+    def location_field_indexing(self):
+        """location for indexing.
+
+        Used in Elasticsearch indexing/tests of `geo_distance` native filter.
+        """
+        return {
+            'lat': self.lat,
+            'lon': self.lon,
+        }
 
 
 @python_2_unicode_compatible

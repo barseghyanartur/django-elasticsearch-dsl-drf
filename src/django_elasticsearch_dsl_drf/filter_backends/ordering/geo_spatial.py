@@ -20,7 +20,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend):
     Example:
 
         >>> from django_elasticsearch_dsl_drf.filter_backends import (
-        >>>     OrderingFilterBackend
+        >>>     GeoSpatialOrderingFilterBackend
         >>> )
         >>> from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
         >>>
@@ -34,13 +34,10 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend):
         >>>
         >>>     document = ArticleDocument
         >>>     serializer_class = ArticleDocumentSerializer
-        >>>     filter_backends = [OrderingFilterBackend,]
-        >>>     ordering_fields = {
-        >>>         'id': 'id',
-        >>>         'title': 'title.raw',
-        >>>         'date_submitted': 'date_submitted',
-        >>>         'state': {
-        >>>             'field': 'state.raw',
+        >>>     filter_backends = [GeoSpatialOrderingFilterBackend,]
+        >>>     geo_spatial_ordering_fields = {
+        >>>         'location': {
+        >>>             'field': 'location',
         >>>         }
         >>>     }
     """
@@ -85,7 +82,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend):
         for query_param in ordering_query_params:
             __key = query_param.lstrip('-')
             __direction = '-' if query_param.startswith('-') else ''
-            if __key in view.ordering_fields:
+            if __key in view.geo_spatial_ordering_fields:
                 __field_name = view.ordering_fields[__key] or __key
                 __ordering_params.append(
                     '{}{}'.format(__direction, __field_name)

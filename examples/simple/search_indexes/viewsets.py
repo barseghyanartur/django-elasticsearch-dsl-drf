@@ -3,6 +3,7 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_RANGE,
     LOOKUP_FILTER_PREFIX,
     LOOKUP_FILTER_WILDCARD,
+    LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_QUERY_IN,
     LOOKUP_QUERY_GT,
     LOOKUP_QUERY_GTE,
@@ -176,6 +177,11 @@ class BookDocumentViewSet(BaseDocumentViewSet):
                 LOOKUP_FILTER_WILDCARD,
                 LOOKUP_QUERY_IN,
                 LOOKUP_QUERY_EXCLUDE,
+            ],
+        },
+        'location': {
+            'lookups': [
+                LOOKUP_FILTER_GEO_DISTANCE,
             ],
         },
         # This has been added to test `exists` filter.

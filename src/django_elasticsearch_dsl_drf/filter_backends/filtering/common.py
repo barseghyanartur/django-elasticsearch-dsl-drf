@@ -19,6 +19,7 @@ from ...constants import (
     LOOKUP_FILTER_TERMS,
     LOOKUP_FILTER_EXISTS,
     LOOKUP_FILTER_WILDCARD,
+    LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_QUERY_CONTAINS,
     LOOKUP_QUERY_IN,
     LOOKUP_QUERY_GT,
@@ -160,6 +161,36 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         return params
 
     @classmethod
+    def get_geo_distance_params(cls, value, field):
+        """Get params for `geo_distance` query
+
+        :param value:
+        :type value: str
+        :return: Params to be used in `geo_distance` query.
+        :rtype: dict
+        """
+        __values = cls.split_lookup_value(value, maxsplit=3)
+        __len_values = len(__values)
+
+        if __len_values < 3:
+            return {}
+
+        params = {
+            'distance': __values[0],
+            field: {
+                'lat': __values[1],
+                'lon': __values[2],
+            }
+        }
+
+        if __len_values == 4:
+            params['distance_type'] = __values[3]
+        else:
+            params['distance_type'] = 'sloppy_arc'
+
+        return params
+
+    @classmethod
     def apply_filter_term(cls, queryset, options, value):
         """Apply `term` filter.
 
@@ -278,6 +309,23 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         """
         return queryset.query(
             Q('wildcard', **{options['field']: value})
+        )
+
+    @classmethod
+    def apply_query_geo_distance(cls, queryset, options, value):
+        """Apply `wildcard` filter.
+
+        :param queryset: Original queryset.
+        :param options: Filter options.
+        :param value: value to filter on.
+        :type queryset: elasticsearch_dsl.search.Search
+        :type options: dict
+        :type value: str
+        :return: Modified queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        return queryset.query(
+            Q('geo_distance', **cls.get_geo_distance_params(value, options['field']))
         )
 
     @classmethod
@@ -570,6 +618,12 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                     queryset = self.apply_query_wildcard(queryset,
                                                          options,
                                                          value)
+
+                # `geo_distance` filter lookup
+                elif options['lookup'] == LOOKUP_FILTER_GEO_DISTANCE:
+                    queryset = self.apply_query_geo_distance(queryset,
+                                                             options,
+                                                             value)
 
                 # `contains` filter lookup
                 elif options['lookup'] == LOOKUP_QUERY_CONTAINS:

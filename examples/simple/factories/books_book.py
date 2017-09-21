@@ -44,6 +44,8 @@ class BaseBookFactory(DjangoModelFactory):
     pages = LazyAttribute(
         lambda __x: random.randint(10, 200)
     )
+    lat = -32.23421
+    lon = 43.23411
 
     class Meta(object):
         """Meta class."""

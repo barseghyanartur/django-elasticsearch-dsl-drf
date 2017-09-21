@@ -175,6 +175,13 @@ LOOKUP_FILTER_FUZZY = 'fuzzy'
 # query-dsl-type-query.html
 LOOKUP_FILTER_TYPE = 'type'
 
+# Draws a circle around the specified location and finds all documents that have a geo-point within that circle
+# The `geo_distance` filter. Accepts three values
+# (distance|lat|lon) separated by `SEPARATOR_LOOKUP_VALUE`.
+# https://www.elastic.co/guide/en/elasticsearch/guide/current/geo-distance.html
+# Example: http://localhost:8000/api/articles/?location__geo_distance=2km|43.53455243|-12.2344243
+LOOKUP_FILTER_GEO_DISTANCE = 'geo_distance'
+
 # ****************************************************************************
 # ************************ Functional filters/queries ************************
 # ****************************************************************************
@@ -266,6 +273,7 @@ ALL_LOOKUP_FILTERS_AND_QUERIES = (
     LOOKUP_FILTER_EXISTS,
     LOOKUP_FILTER_PREFIX,
     LOOKUP_FILTER_WILDCARD,
+    LOOKUP_FILTER_GEO_DISTANCE,
     # LOOKUP_FILTER_REGEXP,
     # LOOKUP_FILTER_FUZZY,
     # LOOKUP_FILTER_TYPE,

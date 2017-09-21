@@ -8,7 +8,7 @@ from rest_framework.filters import BaseFilterBackend
 from six import string_types
 
 from ...constants import (
-    ALL_LOOKUP_FILTERS_AND_QUERIES,
+    ALL_GEO_SPATIAL_LOOKUP_FILTERS_AND_QUERIES,
     LOOKUP_FILTER_GEO_DISTANCE,
 )
 from ..mixins import FilterBackendMixin
@@ -76,7 +76,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
             if 'lookups' not in filter_fields[field]:
                 filter_fields[field]['lookups'] = tuple(
-                    ALL_LOOKUP_FILTERS_AND_QUERIES
+                    ALL_GEO_SPATIAL_LOOKUP_FILTERS_AND_QUERIES
                 )
 
         return filter_fields

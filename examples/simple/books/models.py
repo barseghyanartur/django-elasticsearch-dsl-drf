@@ -108,8 +108,16 @@ class Book(models.Model):
                                   related_name='books',
                                   blank=True)
 
-    lat = models.DecimalField(blank=True, null=True, decimal_places=15, max_digits=19)
-    lon = models.DecimalField(blank=True, null=True, decimal_places=15, max_digits=19)
+    # Lat/log does not make sense for a book. Remove it from here in future
+    # but for testing purposes it's fine.
+    lat = models.DecimalField(blank=True,
+                              null=True,
+                              decimal_places=15,
+                              max_digits=19)
+    lon = models.DecimalField(blank=True,
+                              null=True,
+                              decimal_places=15,
+                              max_digits=19)
 
     class Meta(object):
         """Meta options."""

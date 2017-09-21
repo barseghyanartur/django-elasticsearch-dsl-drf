@@ -33,3 +33,6 @@ to all of their respectful authors and contributors.
 Contributors
 ------------
 Thanks to the following people for their contributions:
+
+- [Jean-David Fiquet](https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/commits?author=id13)
+  for initial work on the ``geo_distance`` lookup filter.

@@ -16,6 +16,7 @@ Must haves
     - Support ``mode`` argument in the ``OrderingFilterBackend``.
     - Think of making more-like-this a functional filter.
     - Add support for geo spatial search/filtering/ordering.
+    - Document geo spatial filtering.
     - Improve documentation.
     - Implement faceted search filtering.
     + Skip suggestions functionality in all actions except the dedicated

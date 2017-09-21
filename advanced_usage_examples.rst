@@ -569,15 +569,6 @@ should match both "technology" and "biology".
 
     http://127.0.0.1:8080/search/books/?tags__wildcard=*logy
 
-**Geo-distance filtering**
-
-Assuming that our Address model has a location, which is ``GeoPointField``,
-filter documents by radius of 2km from the given location.
-
-.. code-block:: text
-
-    http://localhost:8000/search/address/?location__geo_distance=2km|43.53455243|-12.2344243
-
 Ordering
 ^^^^^^^^
 
@@ -689,6 +680,20 @@ In the example below, we show results with faceted ``state`` and
 .. code-block:: text
 
     http://127.0.0.1:8000/search/books/?facet=state&facet=pages_count
+
+Geo-spatial features
+--------------------
+
+Filtering
+~~~~~~~~~
+
+**Geo-distance filtering**
+
+Filter documents by radius of 100000km from the given location.
+
+.. code-block:: text
+
+    http://localhost:8000/search/publishers/?location__geo_distance=100000km|12.04|-63.93
 
 Suggestions
 -----------

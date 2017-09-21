@@ -15,6 +15,15 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.3.12
+------
+2017-09-21
+
+- Added ``geo_distance`` filter. Note, that although functionally the filter
+  would not change its' behaviour, it is likely to be moved to a separate
+  backend (``geo_spatial``). For now use as is.
+- Minor fixes.
+
 0.3.11
 ------
 2017-09-21

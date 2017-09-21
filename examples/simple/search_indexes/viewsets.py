@@ -10,6 +10,7 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_QUERY_LT,
     LOOKUP_QUERY_LTE,
     LOOKUP_QUERY_EXCLUDE,
+    LOOKUP_QUERY_ISNULL,
     SUGGESTER_TERM,
     SUGGESTER_PHRASE,
     SUGGESTER_COMPLETION,
@@ -126,6 +127,11 @@ class BookDocumentViewSet(BaseDocumentViewSet):
             'lookups': [
                 LOOKUP_FILTER_RANGE,
                 LOOKUP_QUERY_IN,
+                LOOKUP_QUERY_GT,
+                LOOKUP_QUERY_GTE,
+                LOOKUP_QUERY_LT,
+                LOOKUP_QUERY_LTE,
+                LOOKUP_FILTER_TERMS,
             ],
         },
         'title': 'title.raw',
@@ -167,6 +173,7 @@ class BookDocumentViewSet(BaseDocumentViewSet):
                 LOOKUP_FILTER_WILDCARD,
                 LOOKUP_QUERY_IN,
                 LOOKUP_QUERY_EXCLUDE,
+                LOOKUP_QUERY_ISNULL,
             ],
         },
         'tags.raw': {

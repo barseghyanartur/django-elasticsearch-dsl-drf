@@ -569,6 +569,15 @@ should match both "technology" and "biology".
 
     http://127.0.0.1:8080/search/books/?tags__wildcard=*logy
 
+**Geo-distance filtering**
+
+Assuming that our Address model has a location, which is ``GeoPointField``,
+filter documents by radius of 2km from the given location.
+
+.. code-block:: text
+
+    http://localhost:8000/search/address/?location__geo_distance=2km|43.53455243|-12.2344243
+
 Ordering
 ^^^^^^^^
 

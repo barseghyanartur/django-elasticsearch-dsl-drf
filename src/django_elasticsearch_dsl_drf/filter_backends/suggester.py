@@ -172,7 +172,7 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
             elif 'field' not in filter_fields[field]:
                 filter_fields[field]['field'] = field
 
-            if 'filters' not in filter_fields[field]:
+            if 'suggesters' not in filter_fields[field]:
                 filter_fields[field]['suggesters'] = tuple(
                     ALL_SUGGESTERS
                 )

@@ -100,7 +100,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
             elif 'field' not in filter_fields[field]:
                 filter_fields[field]['field'] = field
 
-            if 'filters' not in filter_fields[field]:
+            if 'lookups' not in filter_fields[field]:
                 filter_fields[field]['lookups'] = tuple(
                     ALL_LOOKUP_FILTERS_AND_QUERIES
                 )

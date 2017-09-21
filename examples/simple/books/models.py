@@ -32,6 +32,16 @@ class Publisher(models.Model):
     state_province = models.CharField(max_length=30)
     country = models.CharField(max_length=50)
     website = models.URLField()
+    latitude = models.DecimalField(null=True,
+                                   blank=True,
+                                   decimal_places=15,
+                                   max_digits=19,
+                                   default=0)
+    longitude = models.DecimalField(null=True,
+                                    blank=True,
+                                    decimal_places=15,
+                                    max_digits=19,
+                                    default=0)
 
     class Meta(object):
         """Meta options."""
@@ -40,6 +50,17 @@ class Publisher(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def location_field_indexing(self):
+        """Location for indexing.
+
+        Used in Elasticsearch indexing/tests of `geo_distance` native filter.
+        """
+        return {
+            'lat': self.latitude,
+            'lon': self.longitude,
+        }
 
 
 @python_2_unicode_compatible
@@ -108,17 +129,6 @@ class Book(models.Model):
                                   related_name='books',
                                   blank=True)
 
-    # Lat/log does not make sense for a book. Remove it from here in future
-    # but for testing purposes it's fine.
-    lat = models.DecimalField(blank=True,
-                              null=True,
-                              decimal_places=15,
-                              max_digits=19)
-    lon = models.DecimalField(blank=True,
-                              null=True,
-                              decimal_places=15,
-                              max_digits=19)
-
     class Meta(object):
         """Meta options."""
 
@@ -151,17 +161,6 @@ class Book(models.Model):
         Used in Elasticsearch indexing/tests of `isnull` functional filter.
         """
         return None
-
-    @property
-    def location_field_indexing(self):
-        """location for indexing.
-
-        Used in Elasticsearch indexing/tests of `geo_distance` native filter.
-        """
-        return {
-            'lat': self.lat,
-            'lon': self.lon,
-        }
 
 
 @python_2_unicode_compatible

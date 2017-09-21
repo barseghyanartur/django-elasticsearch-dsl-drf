@@ -60,6 +60,9 @@ class PublisherDocument(DocType):
 
     website = StringField()
 
+    # Location
+    location = fields.GeoPointField(attr='location_field_indexing')
+
     class Meta(object):
         """Meta options."""
 

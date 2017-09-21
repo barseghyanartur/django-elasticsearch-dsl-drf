@@ -109,10 +109,6 @@ class BookDocument(DocType):
         multi=True
     )
 
-    # Location
-
-    location = fields.GeoPointField(attr='location_field_indexing')
-
     null_field = fields.StringField(attr='null_field_indexing')
 
     class Meta(object):

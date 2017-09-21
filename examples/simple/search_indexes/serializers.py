@@ -148,6 +148,7 @@ class PublisherDocumentSerializer(serializers.Serializer):
     state_province = serializers.CharField(read_only=True)
     country = serializers.CharField(read_only=True)
     website = serializers.CharField(read_only=True)
+    location = serializers.SerializerMethodField()
 
     class Meta(object):
         """Meta options."""
@@ -181,6 +182,13 @@ class PublisherDocumentSerializer(serializers.Serializer):
         :return:
         """
 
+    def get_location(self, obj):
+        """Represent location value."""
+        try:
+            return obj.location.to_dict()
+        except:
+            return {}
+
 
 class PublisherDocumentSimpleSerializer(DocumentSerializer):
     """Serializer for Publisher document."""
@@ -197,4 +205,5 @@ class PublisherDocumentSimpleSerializer(DocumentSerializer):
             'state_province',
             'country',
             'website',
+            'location',
         )

@@ -23,6 +23,8 @@ class BasePublisherFactory(DjangoModelFactory):
     state_province = Faker('province')
     country = Faker('country')
     website = Faker('url')
+    latitude = -32.23421
+    longitude = 43.23411
 
     class Meta(object):
         """Meta class."""

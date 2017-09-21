@@ -22,6 +22,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     OrderingFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
+    GeoSpatialFilteringFilterBackend,
 )
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
 from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
@@ -186,11 +187,6 @@ class BookDocumentViewSet(BaseDocumentViewSet):
                 LOOKUP_QUERY_EXCLUDE,
             ],
         },
-        'location': {
-            'lookups': [
-                LOOKUP_FILTER_GEO_DISTANCE,
-            ],
-        },
         # This has been added to test `exists` filter.
         'non_existent_field': 'non_existent_field',
         # This has been added to test `isnull` filter.
@@ -263,6 +259,7 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
         OrderingFilterBackend,
         SearchFilterBackend,
         SuggesterFilterBackend,
+        GeoSpatialFilteringFilterBackend,
     ]
     pagination_class = LimitOffsetPagination
     # Define search fields
@@ -282,12 +279,21 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
         'state_province': 'state_province.raw',
         'country': 'country.raw',
     }
+    # Define geo-spatial filtering fields
+    geo_spatial_filter_fields = {
+        'location': {
+            'lookups': [
+                LOOKUP_FILTER_GEO_DISTANCE,
+            ],
+        },
+    }
     # Define ordering fields
     ordering_fields = {
         'id': None,
         'name': None,
         'city': None,
         'country': None,
+        'location': None,
     }
     # Specify default ordering
     ordering = ('id', 'name',)

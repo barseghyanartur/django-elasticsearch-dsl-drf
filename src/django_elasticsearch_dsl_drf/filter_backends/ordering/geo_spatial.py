@@ -1,5 +1,5 @@
 """
-Ordering backend.
+Geo-spatial ordering backend.
 """
 
 from six import string_types
@@ -7,15 +7,15 @@ from six import string_types
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.settings import api_settings
 
-__title__ = 'django_elasticsearch_dsl_drf.filter_backends.ordering'
+__title__ = 'django_elasticsearch_dsl_drf.filter_backends.ordering.common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('OrderingFilterBackend',)
+__all__ = ('GeoSpatialOrderingFilterBackend',)
 
 
-class OrderingFilterBackend(BaseFilterBackend):
-    """Ordering filter backend for Elasticsearch.
+class GeoSpatialOrderingFilterBackend(BaseFilterBackend):
+    """Geo-spatial ordering filter backend for Elasticsearch.
 
     Example:
 

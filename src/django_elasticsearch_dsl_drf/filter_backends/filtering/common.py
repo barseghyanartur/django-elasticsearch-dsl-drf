@@ -325,7 +325,10 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return queryset.query(
-            Q('geo_distance', **cls.get_geo_distance_params(value, options['field']))
+            Q(
+                'geo_distance',
+                **cls.get_geo_distance_params(value, options['field'])
+            )
         )
 
     @classmethod

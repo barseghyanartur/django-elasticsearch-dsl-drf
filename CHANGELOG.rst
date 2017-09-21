@@ -15,6 +15,11 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.3.11
+------
+2017-09-21
+
+- Added ``query`` argument to ``more_like_this`` helper.
 
 0.3.10
 ------

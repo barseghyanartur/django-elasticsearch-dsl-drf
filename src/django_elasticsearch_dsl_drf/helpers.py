@@ -87,7 +87,8 @@ def more_like_this(obj,
                    max_query_terms=25,
                    min_term_freq=2,
                    min_doc_freq=5,
-                   max_doc_freq=0):
+                   max_doc_freq=0,
+                   query=None):
     """More like this.
 
     https://www.elastic.co/guide/en/elasticsearch/reference/current/
@@ -99,12 +100,14 @@ def more_like_this(obj,
     :param min_term_freq:
     :param min_doc_freq:
     :param max_doc_freq:
+    :param query: Q query
     :type obj: Instance of `django.db.models.Model` (sub-classed) model.
     :type fields: list
     :type max_query_terms: int
     :type min_term_freq: int
     :type min_doc_freq: int
     :type max_doc_freq: int
+    :type query: elasticsearch_dsl.query.Q
     :return: List of objects.
     :rtype: elasticsearch_dsl.search.Search
 
@@ -124,6 +127,9 @@ def more_like_this(obj,
 
     _client = connections.get_connection()
     _search = Search(using=_client, index=_index)
+
+    if query is not None:
+        _search = _search.query(query)
 
     kwargs = {}
 

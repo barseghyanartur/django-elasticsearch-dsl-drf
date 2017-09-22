@@ -3,7 +3,12 @@ Geo-spatial ordering backend.
 """
 
 from rest_framework.filters import BaseFilterBackend
-from rest_framework.settings import api_settings
+
+
+from ..mixins import FilterBackendMixin
+from ...constants import (
+    GEO_DISTANCE_ORDERING_PARAM,
+)
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.ordering.common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -12,7 +17,7 @@ __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = ('GeoSpatialOrderingFilterBackend',)
 
 
-class GeoSpatialOrderingFilterBackend(BaseFilterBackend):
+class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
     """Geo-spatial ordering filter backend for Elasticsearch.
 
     Example:
@@ -40,27 +45,46 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend):
         >>>     }
     """
 
-    ordering_param = api_settings.ORDERING_PARAM
+    ordering_param = GEO_DISTANCE_ORDERING_PARAM
 
-    # TODO: Either use or remove.
-    # @classmethod
-    # def prepare_ordering_fields(cls, view):
-    #     """Prepare ordering fields.
-    #
-    #     :param view: View.
-    #     :type view: rest_framework.viewsets.ReadOnlyModelViewSet
-    #     :return: Ordering options.
-    #     :rtype: dict
-    #     """
-    #     ordering_fields = view.ordering_fields
-    #     for field, options in ordering_fields.items():
-    #         if options is None or isinstance(options, string_types):
-    #             ordering_fields[field] = {
-    #                 'field': options or field
-    #             }
-    #         elif 'field' not in ordering_fields[field]:
-    #             ordering_fields[field]['field'] = field
-    #     return ordering_fields
+    @classmethod
+    def get_geo_distance_params(cls, value, field):
+        """Get params for `geo_distance` ordering.
+
+        Example:
+
+            /api/articles/?geo_spatial_ordering=-location|45.3214|-34.3421|km|planes
+
+        :param value:
+        :param field:
+        :type value: str
+        :type field:
+        :return: Params to be used in `geo_distance` query.
+        :rtype: dict
+        """
+        __values = cls.split_lookup_value(value, maxsplit=3)
+        __len_values = len(__values)
+
+        if __len_values < 2:
+            return {}
+
+        params = {
+            field: {
+                'lat': __values[0],
+                'lon': __values[1],
+            }
+        }
+
+        if __len_values > 2:
+            params['unit'] = __values[2]
+        else:
+            params['unit'] = 'm'
+        if __len_values > 3:
+            params['distance_type'] = __values[3]
+        else:
+            params['distance_type'] = 'sloppy_arc'
+
+        return params
 
     def get_ordering_query_params(self, request, view):
         """Get ordering query params.
@@ -78,13 +102,16 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend):
         __ordering_params = []
         # Remove invalid ordering query params
         for query_param in ordering_query_params:
-            __key = query_param.lstrip('-')
-            __direction = '-' if query_param.startswith('-') else ''
+            __key, __value = FilterBackendMixin.split_lookup_value(
+                query_param.lstrip('-'),
+                maxsplit=1,
+            )
+            __direction = 'desc' if query_param.startswith('-') else 'asc'
             if __key in view.geo_spatial_ordering_fields:
                 __field_name = view.ordering_fields[__key] or __key
-                __ordering_params.append(
-                    '{}{}'.format(__direction, __field_name)
-                )
+                __params = self.get_geo_distance_params(__value, __field_name)
+                __params['order'] = __direction
+                __ordering_params.append(__params)
 
         return __ordering_params
 

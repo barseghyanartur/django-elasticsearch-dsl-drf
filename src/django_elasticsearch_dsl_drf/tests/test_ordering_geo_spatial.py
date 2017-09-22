@@ -1,5 +1,5 @@
 """
-Test geo-spatial filtering backend.
+Test geo-spatial ordering filter backend.
 """
 
 from __future__ import absolute_import
@@ -28,13 +28,13 @@ __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
-    'TestFilteringGeoSpatial',
+    'TestOrderingGeoSpatial',
 )
 
 
 @pytest.mark.django_db
 class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
-    """Test filtering geo-spatial."""
+    """Test ordering geo-spatial."""
 
     pytestmark = pytest.mark.django_db
 
@@ -66,12 +66,12 @@ class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
 
     @pytest.mark.webtest
     def test_field_filter_geo_distance(self):
-        """Field filter term.
+        """Field filter geo_distance.
 
         Example:
 
             http://localhost:8000
-            /api/publisher/?geo_distance_ordering=location|48.8549|2.3000|km|plane
+            /api/publisher/?geo_distance_ordering=location|48.85|2.30|km|plane
         """
         self.authenticate()
 

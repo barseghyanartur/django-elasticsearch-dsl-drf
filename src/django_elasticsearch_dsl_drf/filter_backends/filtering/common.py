@@ -161,36 +161,6 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         return params
 
     @classmethod
-    def get_geo_distance_params(cls, value, field):
-        """Get params for `geo_distance` query
-
-        :param value:
-        :type value: str
-        :return: Params to be used in `geo_distance` query.
-        :rtype: dict
-        """
-        __values = cls.split_lookup_value(value, maxsplit=3)
-        __len_values = len(__values)
-
-        if __len_values < 3:
-            return {}
-
-        params = {
-            'distance': __values[0],
-            field: {
-                'lat': __values[1],
-                'lon': __values[2],
-            }
-        }
-
-        if __len_values == 4:
-            params['distance_type'] = __values[3]
-        else:
-            params['distance_type'] = 'sloppy_arc'
-
-        return params
-
-    @classmethod
     def apply_filter_term(cls, queryset, options, value):
         """Apply `term` filter.
 

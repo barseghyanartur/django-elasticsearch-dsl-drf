@@ -25,6 +25,7 @@ __all__ = (
     'LOOKUP_FILTER_GEO_DISTANCE_TO',
     'LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_UPPER',
     'LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER',
+    'LOOKUP_FILTER_GEO_POLYGON',
     'LOOKUP_FILTER_PREFIX',
     'LOOKUP_FILTER_RANGE',
     'LOOKUP_FILTER_TERM',
@@ -291,6 +292,41 @@ LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_UPPER = 'geo_distance_include_upper'
 # Example: http://localhost:8000
 # /api/articles/?location__geo_distance_include_lower=2km|43.53|-12.23
 LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER = 'geo_distance_include_lower'
+
+# Geo Polygon Query
+#
+# A query allowing to include hits that only fall within a polygon of points.
+# Here is an example:
+#
+# GET /_search
+# {
+#     "query": {
+#         "bool" : {
+#             "must" : {
+#                 "match_all" : {}
+#             },
+#             "filter" : {
+#                 "geo_polygon" : {
+#                     "person.location" : {
+#                         "points" : [
+#                         {"lat" : 40, "lon" : -70},
+#                         {"lat" : 30, "lon" : -80},
+#                         {"lat" : 20, "lon" : -90}
+#                         ]
+#                     }
+#                 }
+#             }
+#         }
+#     }
+# }
+#
+# Query options:
+#
+# - _name: Optional name field to identify the filter
+# - validation_method: Set to IGNORE_MALFORMED to accept geo points with
+#   invalid latitude or longitude, COERCE to try and infer correct latitude or
+#   longitude, or STRICT (default is STRICT).
+LOOKUP_FILTER_GEO_POLYGON = 'geo_polygon'
 
 # ****************************************************************************
 # ************************ Functional filters/queries ************************

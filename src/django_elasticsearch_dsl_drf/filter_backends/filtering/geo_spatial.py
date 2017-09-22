@@ -237,7 +237,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     @classmethod
     def apply_query_geo_distance(cls, queryset, options, value):
-        """Apply `wildcard` filter.
+        """Apply `geo_distance` query.
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -257,7 +257,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     @classmethod
     def apply_query_geo_distance_range(cls, queryset, options, value):
-        """Apply `range` filter.
+        """Apply `geo_distance_range` `range` query.
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -275,7 +275,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     @classmethod
     def apply_query_geo_distance_gt(cls, queryset, options, value):
-        """Apply `gt` filter.
+        """Apply `geo_distance_range` `gt` query.
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -293,7 +293,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     @classmethod
     def apply_query_geo_distance_gte(cls, queryset, options, value):
-        """Apply `gte` filter.
+        """Apply `geo_distance_range` `gte` query.
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -311,7 +311,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     @classmethod
     def apply_query_geo_distance_lt(cls, queryset, options, value):
-        """Apply `lt` filter.
+        """Apply `geo_distance_range` `lt` query.
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -329,7 +329,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     @classmethod
     def apply_query_geo_distance_lte(cls, queryset, options, value):
-        """Apply `lte` filter.
+        """Apply `geo_distance_range` `lte` query.
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -412,7 +412,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
             # we follow the normal flow.
             for value in options['values']:
 
-                # `geo_distance` filter lookup
+                # `geo_distance` query lookup
                 if options['lookup'] == LOOKUP_FILTER_GEO_DISTANCE:
                     queryset = self.apply_query_geo_distance(
                         queryset,
@@ -420,7 +420,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                         value
                     )
 
-                # `geo_distance_range` `range` filter lookup
+                # `geo_distance_range` `range` query lookup
                 elif options['lookup'] == LOOKUP_FILTER_GEO_DISTANCE_RANGE:
                     queryset = self.apply_query_geo_distance_range(
                         queryset,
@@ -428,7 +428,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                         value
                     )
 
-                # `geo_distance_range` `gt` filter lookup
+                # `geo_distance_range` `gt` query lookup
                 elif options['lookup'] in (
                         LOOKUP_FILTER_GEO_DISTANCE_GT,
                         LOOKUP_FILTER_GEO_DISTANCE_FROM
@@ -439,7 +439,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                         value
                     )
 
-                # `geo_distance_range` `gte` filter lookup
+                # `geo_distance_range` `gte` query lookup
                 elif options['lookup'] in (
                         LOOKUP_FILTER_GEO_DISTANCE_GTE,
                         LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER
@@ -450,7 +450,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                         value
                     )
 
-                # `geo_distance_range` `lt` filter lookup
+                # `geo_distance_range` `lt` query lookup
                 elif options['lookup'] in (
                         LOOKUP_FILTER_GEO_DISTANCE_LT,
                         LOOKUP_FILTER_GEO_DISTANCE_TO
@@ -461,7 +461,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                         value
                     )
 
-                # `geo_distance_range` `lte` lookup
+                # `geo_distance_range` `lte` query lookup
                 elif options['lookup'] == (
                         LOOKUP_FILTER_GEO_DISTANCE_LTE,
                         LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_UPPER

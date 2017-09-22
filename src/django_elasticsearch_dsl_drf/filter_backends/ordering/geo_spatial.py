@@ -2,8 +2,6 @@
 Geo-spatial ordering backend.
 """
 
-from six import string_types
-
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.settings import api_settings
 
@@ -88,25 +86,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend):
                     '{}{}'.format(__direction, __field_name)
                 )
 
-        # If no valid ordering params specified, fall back to `view.ordering`
-        if not __ordering_params:
-            return self.get_default_ordering_params(view)
-
         return __ordering_params
-
-    @classmethod
-    def get_default_ordering_params(cls, view):
-        """Get the default ordering params for the view.
-
-        :param view: View.
-        :type view: rest_framework.viewsets.ReadOnlyModelViewSet
-        :return: Ordering params to be used for ordering.
-        :rtype: list
-        """
-        ordering = getattr(view, 'ordering', None)
-        if isinstance(ordering, string_types):
-            return [ordering]
-        return ordering
 
     def filter_queryset(self, request, queryset, view):
         """Filter the queryset.

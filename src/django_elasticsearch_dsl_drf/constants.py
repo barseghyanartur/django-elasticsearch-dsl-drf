@@ -215,7 +215,7 @@ LOOKUP_FILTER_TYPE = 'type'
 #         }
 #     }
 #     }
-#from
+#
 # Example: http://localhost:8000
 # /api/articles/?location__geo_distance=2km|43.53455243|-12.2344243
 LOOKUP_FILTER_GEO_DISTANCE = 'geo_distance'

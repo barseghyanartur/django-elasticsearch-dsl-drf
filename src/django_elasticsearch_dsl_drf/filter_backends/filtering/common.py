@@ -312,26 +312,6 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         )
 
     @classmethod
-    def apply_query_geo_distance(cls, queryset, options, value):
-        """Apply `wildcard` filter.
-
-        :param queryset: Original queryset.
-        :param options: Filter options.
-        :param value: value to filter on.
-        :type queryset: elasticsearch_dsl.search.Search
-        :type options: dict
-        :type value: str
-        :return: Modified queryset.
-        :rtype: elasticsearch_dsl.search.Search
-        """
-        return queryset.query(
-            Q(
-                'geo_distance',
-                **cls.get_geo_distance_params(value, options['field'])
-            )
-        )
-
-    @classmethod
     def apply_query_contains(cls, queryset, options, value):
         """Apply `contains` filter.
 
@@ -621,12 +601,6 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                     queryset = self.apply_query_wildcard(queryset,
                                                          options,
                                                          value)
-
-                # `geo_distance` filter lookup
-                elif options['lookup'] == LOOKUP_FILTER_GEO_DISTANCE:
-                    queryset = self.apply_query_geo_distance(queryset,
-                                                             options,
-                                                             value)
 
                 # `contains` filter lookup
                 elif options['lookup'] == LOOKUP_QUERY_CONTAINS:

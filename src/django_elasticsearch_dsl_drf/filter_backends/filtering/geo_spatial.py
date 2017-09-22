@@ -203,9 +203,9 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                                              options,
                                                              value)
 
-                # `geo_distance` filter lookup
-                else:
-                    queryset = self.apply_query_geo_distance(queryset,
-                                                             options,
-                                                             value)
+                # # `geo_distance` filter lookup
+                # else:
+                #     queryset = self.apply_query_geo_distance(queryset,
+                #                                              options,
+                #                                              value)
         return queryset

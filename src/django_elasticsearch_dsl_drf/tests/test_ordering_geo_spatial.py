@@ -1,0 +1,105 @@
+"""
+Test geo-spatial filtering backend.
+"""
+
+from __future__ import absolute_import
+
+import unittest
+
+from django.core.management import call_command
+
+from nine.versions import DJANGO_GTE_1_10
+
+import pytest
+
+from rest_framework import status
+
+import factories
+
+from .base import BaseRestFrameworkTestCase
+
+if DJANGO_GTE_1_10:
+    from django.urls import reverse
+else:
+    from django.core.urlresolvers import reverse
+
+__title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering'
+__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
+__copyright__ = '2017 Artur Barseghyan'
+__license__ = 'GPL 2.0/LGPL 2.1'
+__all__ = (
+    'TestFilteringGeoSpatial',
+)
+
+
+@pytest.mark.django_db
+class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
+    """Test filtering geo-spatial."""
+
+    pytestmark = pytest.mark.django_db
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up."""
+        cls.geo_origin = factories.PublisherFactory.create(
+            **{
+                'latitude': 48.8549,
+                'longitude': 2.3000,
+            }
+        )
+
+        cls.geo_in_count = 5
+        cls.unit = 'km'
+        cls.algo = 'plane'
+        cls.geo_in = []
+        for index in range(cls.geo_in_count):
+            __publisher = factories.PublisherFactory.create(
+                **{
+                    'latitude': 48.8570 + index,
+                    'longitude': 2.3005,
+                }
+            )
+            cls.geo_in.append(__publisher)
+
+        cls.base_publisher_url = reverse('publisherdocument-list', kwargs={})
+        call_command('search_index', '--rebuild', '-f')
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_distance(self):
+        """Field filter term.
+
+        Example:
+
+            http://localhost:8000
+            /api/publisher/?geo_distance_ordering=location|48.8549|2.3000|km|plane
+        """
+        self.authenticate()
+
+        __params = 'location|{}|{}|{}|{}'.format(
+                                     self.geo_origin.latitude,
+                                     self.geo_origin.longitude,
+                                     self.unit,
+                                     self.algo
+        )
+
+        url = self.base_publisher_url[:] + '?{}={}'.format(
+            'geo_distance_ordering',
+            __params
+        )
+
+        data = {}
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Should contain only 6 results
+        self.assertEqual(len(response.data['results']), self.geo_in_count + 1)
+        item_count = len(response.data['results'])
+        for counter, item in enumerate(response.data['results']):
+            if (counter > 1) and (counter < item_count + 1):
+                self.assertLess(
+                    response.data['results'][counter-1]['location']['lat'],
+                    response.data['results'][counter]['location']['lat']
+                )
+
+
+if __name__ == '__main__':
+    unittest.main()

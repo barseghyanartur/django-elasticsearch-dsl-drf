@@ -20,7 +20,9 @@ are used for versioning (schema follows below):
 2017-mm-dd (not yet released)
 
 - ``GeoSpatialFilteringFilterBackend`` filtering backend, supporting
-  ``geo_distance``.
+  ``geo_distance``, ``geo_distance_range``, ``geo_distance_gt``,
+  ``geo_distance_gte``, ``geo_distance_lt`` and ``geo_distance_lte``
+  geo-spatial queries.
 - ``GeoSpatialOrderingFilterBackend`` ordering backend, supporting ?.
 - ``OrderingFilterBackend`` is no longer provides defaults when no ordering is
   given. In order to take care of the defaults include the

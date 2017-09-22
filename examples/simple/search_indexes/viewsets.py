@@ -19,6 +19,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
     IdsFilterBackend,
+    DefaultOrderingFilterBackend,
     OrderingFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
@@ -57,6 +58,7 @@ class AuthorDocumentViewSet(BaseDocumentViewSet):
     filter_backends = [
         FilteringFilterBackend,
         OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
         SearchFilterBackend,
         SuggesterFilterBackend,
     ]
@@ -80,7 +82,7 @@ class AuthorDocumentViewSet(BaseDocumentViewSet):
         'salutation': 'salutation.raw',
     }
     # Specify default ordering
-    ordering = 'name'
+    ordering = 'name.raw'
 
     # Suggester fields
     suggester_fields = {
@@ -111,6 +113,7 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         FilteringFilterBackend,
         IdsFilterBackend,
         OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
         SearchFilterBackend,
         FacetedSearchFilterBackend,
         SuggesterFilterBackend,
@@ -257,6 +260,7 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
     filter_backends = [
         FilteringFilterBackend,
         OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
         SearchFilterBackend,
         SuggesterFilterBackend,
         GeoSpatialFilteringFilterBackend,

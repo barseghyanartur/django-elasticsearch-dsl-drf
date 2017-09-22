@@ -65,6 +65,16 @@ Sample models
         state_province = models.CharField(max_length=30)
         country = models.CharField(max_length=50)
         website = models.URLField()
+        latitude = models.DecimalField(null=True,
+                                   blank=True,
+                                   decimal_places=15,
+                                   max_digits=19,
+                                   default=0)
+        longitude = models.DecimalField(null=True,
+                                        blank=True,
+                                        decimal_places=15,
+                                        max_digits=19,
+                                        default=0)
 
         class Meta(object):
             """Meta options."""
@@ -73,6 +83,17 @@ Sample models
 
         def __str__(self):
             return self.name
+
+        @property
+        def location_field_indexing(self):
+            """Location for indexing.
+
+            Used in Elasticsearch indexing/tests of `geo_distance` native filter.
+            """
+            return {
+                'lat': self.latitude,
+                'lon': self.longitude,
+            }
 
 
     @python_2_unicode_compatible
@@ -379,6 +400,7 @@ Sample view
     from django_elasticsearch_dsl_drf.filter_backends import (
         FilteringFilterBackend,
         OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
         SearchFilterBackend,
     )
     from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
@@ -397,6 +419,7 @@ Sample view
         filter_backends = [
             FilteringFilterBackend,
             OrderingFilterBackend,
+            DefaultOrderingFilterBackend,
             SearchFilterBackend,
         ]
         # Define search fields
@@ -787,6 +810,9 @@ To make use of suggestions, you should properly indexed your documents using
 
         website = fields.StringField()
 
+        # Location
+        location = fields.GeoPointField(attr='location_field_indexing')
+
         class Meta(object):
             """Meta options."""
 
@@ -794,6 +820,50 @@ To make use of suggestions, you should properly indexed your documents using
 
 After that the ``name.suggest``, ``city.suggest``, ``state_province.suggest``
 and ``country.suggest`` fields would be available for suggestions feature.
+
+
+Serializer definition
+---------------------
+
+This is how publisher serializer would look like.
+
+*search_indexes/serializers.py*
+
+.. code-block:: python
+
+    import json
+
+    from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+
+    class PublisherDocumentSerializer(DocumentSerializer):
+        """Serializer for Publisher document."""
+
+        location = serializers.SerializerMethodField()
+
+        class Meta(object):
+            """Meta options."""
+
+            # Note, that since we're using a dynamic serializer,
+            # we only have to declare fields that we want to be shown. If
+            # somehow, dynamic serializer doesn't work for you, either extend
+            # or declare your serializer explicitly.
+            fields = (
+                'id',
+                'name',
+                'info',
+                'address',
+                'city',
+                'state_province',
+                'country',
+                'website',
+            )
+
+        def get_location(self, obj):
+        """Represent location value."""
+        try:
+            return obj.location.to_dict()
+        except:
+            return {}
 
 ViewSet definition
 ~~~~~~~~~~~~~~~~~~
@@ -859,6 +929,15 @@ the following way:
                 'field': 'country.suggest',
                 'suggesters': [
                     SUGGESTER_COMPLETION,
+                ],
+            },
+        }
+
+        # Geo-spatial filtering fields
+        geo_spatial_filter_fields = {
+            'location': {
+                'lookups': [
+                    LOOKUP_FILTER_GEO_DISTANCE,
                 ],
             },
         }

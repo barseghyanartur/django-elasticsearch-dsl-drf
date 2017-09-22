@@ -11,7 +11,10 @@ __title__ = 'django_elasticsearch_dsl_drf.filter_backends.ordering.common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('OrderingFilterBackend',)
+__all__ = (
+    'DefaultOrderingFilterBackend',
+    'OrderingFilterBackend',
+)
 
 
 class OrderingFilterBackend(BaseFilterBackend):
@@ -43,6 +46,7 @@ class OrderingFilterBackend(BaseFilterBackend):
         >>>             'field': 'state.raw',
         >>>         }
         >>>     }
+        >>>     ordering = ('id', 'name',)
     """
 
     ordering_param = api_settings.ORDERING_PARAM
@@ -91,11 +95,113 @@ class OrderingFilterBackend(BaseFilterBackend):
                     '{}{}'.format(__direction, __field_name)
                 )
 
-        # If no valid ordering params specified, fall back to `view.ordering`
-        if not __ordering_params:
-            return self.get_default_ordering_params(view)
+        # This is no longer needed. If you want to have a fallback, make use
+        # of ``DefaultOrderingFilterBackend``.
+        # # If no valid ordering params specified, fall back to `view.ordering`
+        # if not __ordering_params:
+        #     return self.get_default_ordering_params(view)
 
         return __ordering_params
+
+    # @classmethod
+    # def get_default_ordering_params(cls, view):
+    #     """Get the default ordering params for the view.
+    #
+    #     :param view: View.
+    #     :type view: rest_framework.viewsets.ReadOnlyModelViewSet
+    #     :return: Ordering params to be used for ordering.
+    #     :rtype: list
+    #     """
+    #     ordering = getattr(view, 'ordering', None)
+    #     if isinstance(ordering, string_types):
+    #         return [ordering]
+    #     return ordering
+
+    def filter_queryset(self, request, queryset, view):
+        """Filter the queryset.
+
+        :param request: Django REST framework request.
+        :param queryset: Base queryset.
+        :param view: View.
+        :type request: rest_framework.request.Request
+        :type queryset: elasticsearch_dsl.search.Search
+        :type view: rest_framework.viewsets.ReadOnlyModelViewSet
+        :return: Updated queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        ordering_query_params = self.get_ordering_query_params(request, view)
+
+        if ordering_query_params:
+            return queryset.sort(*ordering_query_params)
+
+        return queryset
+
+
+class DefaultOrderingFilterBackend(BaseFilterBackend):
+    """Default ordering filter backend for Elasticsearch.
+
+    Make sure this is your last ordering backend.
+
+    Example:
+
+        >>> from django_elasticsearch_dsl_drf.filter_backends import (
+        >>>     DefaultOrderingFilterBackend,
+        >>>     OrderingFilterBackend
+        >>> )
+        >>> from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+        >>>
+        >>> # Local article document definition
+        >>> from .documents import ArticleDocument
+        >>>
+        >>> # Local article document serializer
+        >>> from .serializers import ArticleDocumentSerializer
+        >>>
+        >>> class ArticleDocumentView(BaseDocumentViewSet):
+        >>>
+        >>>     document = ArticleDocument
+        >>>     serializer_class = ArticleDocumentSerializer
+        >>>     filter_backends = [
+        >>>         DefaultOrderingFilterBackend,
+        >>>         OrderingFilterBackend,
+        >>>     ]
+        >>>     ordering_fields = {
+        >>>         'id': 'id',
+        >>>         'title': 'title.raw',
+        >>>         'date_submitted': 'date_submitted',
+        >>>         'state': {
+        >>>             'field': 'state.raw',
+        >>>         }
+        >>>     }
+        >>>     ordering = 'name'
+    """
+
+    ordering_param = api_settings.ORDERING_PARAM
+
+    def get_ordering_query_params(self, request, view):
+        """Get ordering query params.
+
+        :param request: Django REST framework request.
+        :param view: View.
+        :type request: rest_framework.request.Request
+        :type view: rest_framework.viewsets.ReadOnlyModelViewSet
+        :return: Ordering params to be used for ordering.
+        :rtype: list
+        """
+        query_params = request.query_params.copy()
+        ordering_query_params = query_params.getlist(self.ordering_param, [])
+        ordering_params_present = False
+        # Remove invalid ordering query params
+        for query_param in ordering_query_params:
+            __key = query_param.lstrip('-')
+            if __key in view.ordering_fields:
+                ordering_params_present = True
+                break
+
+        # If no valid ordering params specified, fall back to `view.ordering`
+        if not ordering_params_present:
+            return self.get_default_ordering_params(view)
+
+        return {}
 
     @classmethod
     def get_default_ordering_params(cls, view):

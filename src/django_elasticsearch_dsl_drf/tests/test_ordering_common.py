@@ -50,7 +50,18 @@ class TestOrdering(BaseRestFrameworkTestCase):
         call_command('search_index', '--rebuild', '-f')
 
     def _order_by_field(self, field_name, url, check_ordering=True):
-        """Order by field."""
+        """Order by field.
+
+        For testing the ``OrderingFilterBackend``.
+
+        :param field_name:
+        :param url:
+        :param check_ordering:
+        :type field_name: str
+        :type url: str
+        :type check_ordering: bool
+        :return: None
+        """
         self.authenticate()
 
         data = {}
@@ -84,6 +95,45 @@ class TestOrdering(BaseRestFrameworkTestCase):
                         filtered_response.data['results'][counter][__f_name]
                     )
 
+    def _order_by_default_field(self, field_name, url, check_ordering=True):
+        """Order by default field.
+
+        For testing the ``DefaultOrderingFilterBackend``.
+
+        :param field_name:
+        :param url:
+        :param check_ordering:
+        :type field_name: str
+        :type url: str
+        :type check_ordering: bool
+        :return: None
+        """
+        self.authenticate()
+
+        data = {}
+
+        # Just a plan field name without ordering information
+        __f_name = field_name
+        __assert_func = self.assertLess
+
+        if field_name.startswith('-'):
+            __f_name = field_name[1:]
+            __assert_func = self.assertGreater
+
+        # Should contain 20 results
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        if check_ordering:
+            item_count = len(response.data['results'])
+
+            for counter, item in enumerate(response.data['results']):
+                if (counter > 1) and (counter < item_count + 1):
+                    __assert_func(
+                        response.data['results'][counter-1][__f_name],
+                        response.data['results'][counter][__f_name]
+                    )
+
     def test_book_order_by_field_id_ascending(self):
         """Order by field `id` ascending."""
         return self._order_by_field('id', self.books_url)
@@ -100,6 +150,10 @@ class TestOrdering(BaseRestFrameworkTestCase):
         """Order by field `title` descending."""
         return self._order_by_field('-title', self.books_url)
 
+    def test_book_default_order_by(self):
+        """Book order by default."""
+        return self._order_by_default_field('id', self.books_url)
+
     def test_author_order_by_field_id_ascending(self):
         """Order by field `name` ascending."""
         return self._order_by_field('id', self.authors_url)
@@ -115,6 +169,10 @@ class TestOrdering(BaseRestFrameworkTestCase):
     def test_author_order_by_field_name_descending(self):
         """Order by field `name` descending."""
         return self._order_by_field('-name', self.authors_url)
+
+    def test_author_default_order_by(self):
+        """Author order by default."""
+        return self._order_by_default_field('name', self.authors_url)
 
     def test_book_order_by_non_existent_field(self):
         """Order by non-existent field."""

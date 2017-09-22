@@ -99,7 +99,7 @@ SEPARATOR_LOOKUP_VALUE = '|'
 SEARCH_QUERY_PARAM = 'q'
 
 # Geo distance ordering param
-GEO_DISTANCE_ORDERING_PARAM = 'geo_distance_ordering'
+GEO_DISTANCE_ORDERING_PARAM = 'ordering'
 
 # ****************************************************************************
 # ************************ Native lookup filters/queries *********************

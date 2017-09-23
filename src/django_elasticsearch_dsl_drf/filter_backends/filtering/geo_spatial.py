@@ -38,6 +38,9 @@ from ...constants import (
     LOOKUP_FILTER_GEO_DISTANCE_TO,
     LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_UPPER,
     LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER,
+    LOOKUP_FILTER_GEO_POLYGON,
+    SEPARATOR_LOOKUP_COMPLEX_VALUE,
+    SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE,
 )
 from ..mixins import FilterBackendMixin
 
@@ -144,6 +147,94 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
             params['distance_type'] = 'sloppy_arc'
 
         return params
+
+    @classmethod
+    def get_geo_polygon_params(cls, value, field):
+        """Get params for `geo_polygon` query.
+
+        Example:
+
+            /api/articles/?location__geo_polygon=40,-70|30,-80|20,-90
+
+        Example:
+
+            /api/articles/?location__geo_polygon=40,-70|30,-80|20,-90
+                |_name:myname|validation_method:IGNORE_MALFORMED
+
+        Elasticsearch:
+
+            {
+                "query": {
+                    "bool" : {
+                        "must" : {
+                            "match_all" : {}
+                        },
+                        "filter" : {
+                            "geo_polygon" : {
+                                "person.location" : {
+                                    "points" : [
+                                        {"lat" : 40, "lon" : -70},
+                                        {"lat" : 30, "lon" : -80},
+                                        {"lat" : 20, "lon" : -90}
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        :param value:
+        :param field:
+        :type value: str
+        :type field:
+        :return: Params to be used in `geo_distance` query.
+        :rtype: dict
+        """
+        __values = cls.split_lookup_value(value)
+        __len_values = len(__values)
+
+        if not __len_values:
+            return {}
+
+        __points = []
+        __options = {}
+
+        for __value in __values:
+            if SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE in __value:
+                __lat_lon = __value.split(
+                    SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
+                )
+                if len(__lat_lon) >= 2:
+                    __points.append(
+                        {
+                            'lat': float(__lat_lon[0]),
+                            'lon': float(__lat_lon[1]),
+                        }
+                    )
+
+            elif SEPARATOR_LOOKUP_COMPLEX_VALUE in __value:
+                __opt_name_val = __value.split(
+                    SEPARATOR_LOOKUP_COMPLEX_VALUE
+                )
+                if len(__opt_name_val) >= 2:
+                    if __opt_name_val[0] in ('_name', 'validation_method'):
+                        __options.update(
+                            {
+                                __opt_name_val[0]: __opt_name_val[1]
+                            }
+                        )
+
+        if __points:
+            params = {
+                field: {
+                    'points': __points
+                }
+            }
+            params.update(__options)
+
+            return params
+        return {}
 
     @classmethod
     def get_range_params(cls, value, field):
@@ -345,6 +436,26 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
             **cls.get_gte_lte_params(value, 'lte', options['field'])
         )
 
+    @classmethod
+    def apply_query_geo_polygon(cls, queryset, options, value):
+        """Apply `geo_polygon` query.
+
+        :param queryset: Original queryset.
+        :param options: Filter options.
+        :param value: value to filter on.
+        :type queryset: elasticsearch_dsl.search.Search
+        :type options: dict
+        :type value: str
+        :return: Modified queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        return queryset.query(
+            Q(
+                'geo_polygon',
+                **cls.get_geo_polygon_params(value, options['field'])
+            )
+        )
+
     def get_filter_query_params(self, request, view):
         """Get query params to be filtered on.
 
@@ -462,11 +573,19 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                     )
 
                 # `geo_distance_range` `lte` query lookup
-                elif options['lookup'] == (
+                elif options['lookup'] in (
                         LOOKUP_FILTER_GEO_DISTANCE_LTE,
                         LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_UPPER
                 ):
                     queryset = self.apply_query_geo_distance_lte(
+                        queryset,
+                        options,
+                        value
+                    )
+
+                # `geo_polygon` query lookup
+                elif options['lookup'] == LOOKUP_FILTER_GEO_POLYGON:
+                    queryset = self.apply_query_geo_polygon(
                         queryset,
                         options,
                         value

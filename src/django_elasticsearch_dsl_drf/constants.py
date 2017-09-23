@@ -16,15 +16,15 @@ __all__ = (
     'FALSE_VALUES',
     'LOOKUP_FILTER_EXISTS',
     'LOOKUP_FILTER_GEO_DISTANCE',
-    'LOOKUP_FILTER_GEO_DISTANCE_RANGE',
+    'LOOKUP_FILTER_GEO_DISTANCE_FROM',
     'LOOKUP_FILTER_GEO_DISTANCE_GT',
     'LOOKUP_FILTER_GEO_DISTANCE_GTE',
+    'LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER',
+    'LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_UPPER',
     'LOOKUP_FILTER_GEO_DISTANCE_LT',
     'LOOKUP_FILTER_GEO_DISTANCE_LTE',
-    'LOOKUP_FILTER_GEO_DISTANCE_FROM',
+    'LOOKUP_FILTER_GEO_DISTANCE_RANGE',
     'LOOKUP_FILTER_GEO_DISTANCE_TO',
-    'LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_UPPER',
-    'LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER',
     'LOOKUP_FILTER_GEO_POLYGON',
     'LOOKUP_FILTER_PREFIX',
     'LOOKUP_FILTER_RANGE',
@@ -39,6 +39,8 @@ __all__ = (
     'LOOKUP_QUERY_STARTSWITH',
     'NUMBER_LOOKUP_FILTERS',
     'SEARCH_QUERY_PARAM',
+    'SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE',
+    'SEPARATOR_LOOKUP_COMPLEX_VALUE',
     'SEPARATOR_LOOKUP_FILTER',
     'SEPARATOR_LOOKUP_VALUE',
     'STRING_LOOKUP_FILTERS',
@@ -94,6 +96,11 @@ SEPARATOR_LOOKUP_FILTER = '__'
 # Lookup filter value separator. To be used for `terms` and `range` filters
 # lookups.
 SEPARATOR_LOOKUP_VALUE = '|'
+
+# Lookup filter value complex separator. To be used with geo-spatial features.
+SEPARATOR_LOOKUP_COMPLEX_VALUE = ':'
+
+SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE = ','
 
 # Search query param
 SEARCH_QUERY_PARAM = 'q'
@@ -299,9 +306,8 @@ LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER = 'geo_distance_include_lower'
 # Geo Polygon Query
 #
 # A query allowing to include hits that only fall within a polygon of points.
-# Here is an example:
+# Example:
 #
-# GET /_search
 # {
 #     "query": {
 #         "bool" : {
@@ -324,11 +330,12 @@ LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER = 'geo_distance_include_lower'
 # }
 #
 # Query options:
-#
 # - _name: Optional name field to identify the filter
 # - validation_method: Set to IGNORE_MALFORMED to accept geo points with
 #   invalid latitude or longitude, COERCE to try and infer correct latitude or
 #   longitude, or STRICT (default is STRICT).
+# Example: http://localhost:8000
+# /api/articles/?location__geo_polygon=40,-70|30,-80|20,-90
 LOOKUP_FILTER_GEO_POLYGON = 'geo_polygon'
 
 # ****************************************************************************

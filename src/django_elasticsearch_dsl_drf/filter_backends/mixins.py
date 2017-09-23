@@ -4,7 +4,8 @@ Mixins.
 
 from ..constants import (
     SEPARATOR_LOOKUP_VALUE,
-    SEPARATOR_LOOKUP_FILTER
+    SEPARATOR_LOOKUP_FILTER,
+    SEPARATOR_LOOKUP_COMPLEX_VALUE,
 )
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.mixins'
@@ -42,3 +43,16 @@ class FilterBackendMixin(object):
         :rtype: list
         """
         return value.split(SEPARATOR_LOOKUP_FILTER, maxsplit)
+
+    @classmethod
+    def split_lookup_complex_value(cls, value, maxsplit=-1):
+        """Split lookup complex value.
+
+        :param value: Value to split.
+        :param maxsplit: The `maxsplit` option of `string.split`.
+        :type value: str
+        :type maxsplit: int
+        :return: Lookup filter split into a list.
+        :rtype: list
+        """
+        return value.split(SEPARATOR_LOOKUP_COMPLEX_VALUE, maxsplit)

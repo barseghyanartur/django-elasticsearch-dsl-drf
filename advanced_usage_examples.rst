@@ -623,6 +623,20 @@ the example below, documents would be ordered first by field
 
     http://127.0.0.1:8080/search/books/?search=title|lorem&ordering=-publication_date&ordering=price
 
+Ids filter
+----------
+Filters documents that only have the provided ids.
+
+.. code-block:: text
+
+    http://127.0.0.1:8000/api/articles/?ids=68|64|58
+
+Or, alternatively:
+
+.. code-block:: text
+
+    http://127.0.0.1:8000/api/articles/?ids=68&ids=64&ids=58
+
 Faceted search
 --------------
 

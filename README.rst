@@ -44,13 +44,13 @@ Main features and highlights
   ``isnull``, ``range``, ``in``, ``term`` and ``terms``
   is implemented.
 - :doc:`Geo-spatial filtering filter backend <advanced_usage_examples>` (the
-  following filters implemented: ``geo_distance``).
+  following filters implemented: ``geo_distance``, ``geo_polygon``).
 - :doc:`Geo-spatial ordering filter backend <advanced_usage_examples>` (the
   following filters implemented: ``geo_distance``).
 - :doc:`Faceted search filter backend <advanced_usage_examples>`.
 - :doc:`Suggester filter backend <advanced_usage_examples>`.
 - :doc:`Pagination (Page number and limit/offset pagination) <advanced_usage_examples>`.
-- Ids filter backend.
+- :doc:`Ids filter backend <advanced_usage_examples>`.
 
 Installation
 ============

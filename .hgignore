@@ -19,6 +19,7 @@ syntax: regexp
 ^var/
 ^releases/
 ^demo/
+^codebin/
 ^deploy/
 ^examples/db/
 ^examples/tmp/

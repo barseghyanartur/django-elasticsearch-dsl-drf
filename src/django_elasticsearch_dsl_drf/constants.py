@@ -16,15 +16,6 @@ __all__ = (
     'FALSE_VALUES',
     'LOOKUP_FILTER_EXISTS',
     'LOOKUP_FILTER_GEO_DISTANCE',
-    'LOOKUP_FILTER_GEO_DISTANCE_FROM',
-    'LOOKUP_FILTER_GEO_DISTANCE_GT',
-    'LOOKUP_FILTER_GEO_DISTANCE_GTE',
-    'LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER',
-    'LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_UPPER',
-    'LOOKUP_FILTER_GEO_DISTANCE_LT',
-    'LOOKUP_FILTER_GEO_DISTANCE_LTE',
-    'LOOKUP_FILTER_GEO_DISTANCE_RANGE',
-    'LOOKUP_FILTER_GEO_DISTANCE_TO',
     'LOOKUP_FILTER_GEO_POLYGON',
     'LOOKUP_FILTER_PREFIX',
     'LOOKUP_FILTER_RANGE',
@@ -231,78 +222,6 @@ LOOKUP_FILTER_TYPE = 'type'
 # /api/articles/?location__geo_distance=2km|43.53455243|-12.2344243
 LOOKUP_FILTER_GEO_DISTANCE = 'geo_distance'
 
-# Geo-distance range filters support the same point location parameter and
-# query options as the geo_distance filter. And also support the common
-# parameters for range (lt, lte, gt, gte, from, to, include_upper and
-# include_lower).
-#
-# The geo-distance range filter.
-# Filters documents that exists within a range from a specific point.
-# Example:
-# {
-#     "query": {
-#         "bool" : {
-#             "must" : {
-#                 "match_all" : {}
-#             },
-#             "filter" : {
-#                 "geo_distance_range" : {
-#                     "from" : "200km",
-#                     "to" : "400km",
-#                     "pin.location" : {
-#                         "lat" : 40,
-#                         "lon" : -70
-#                     }
-#                 }
-#             }
-#         }
-#     }
-# }
-#
-# Example: http://localhost:8000
-# /api/articles/?location__geo_distance_range=2km|10km|43.53455243|-12.2344243
-LOOKUP_FILTER_GEO_DISTANCE_RANGE = 'geo_distance_range'
-
-# The geo-distance gt filter.
-# Example: http://localhost:8000
-# /api/articles/?location__geo_distance_gt=2km|43.53455243|-12.2344243
-LOOKUP_FILTER_GEO_DISTANCE_GT = 'geo_distance_gt'
-
-# The geo-distance gte filter.
-# Example: http://localhost:8000
-# /api/articles/?location__geo_distance_gte=2km|43.53455243|-12.2344243
-LOOKUP_FILTER_GEO_DISTANCE_GTE = 'geo_distance_gte'
-
-# The geo-distance lt filter.
-# Example: http://localhost:8000
-# /api/articles/?location__geo_distance_lt=2km|43.53455243|-12.2344243
-LOOKUP_FILTER_GEO_DISTANCE_LT = 'geo_distance_lt'
-
-# The geo-distance lte filter.
-# Example: http://localhost:8000
-# /api/articles/?location__geo_distance_lte=2km|43.53455243|-12.2344243
-LOOKUP_FILTER_GEO_DISTANCE_LTE = 'geo_distance_lte'
-
-# The geo-distance from filter (alias of gt).
-# Example: http://localhost:8000
-# /api/articles/?location__geo_distance_from=2km|43.53455243|-12.2344243
-LOOKUP_FILTER_GEO_DISTANCE_FROM = 'geo_distance_from'
-
-# The geo-distance to filter (alias of lt).
-# Example: http://localhost:8000
-# /api/articles/?location__geo_distance_to=2km|43.53455243|-12.2344243
-LOOKUP_FILTER_GEO_DISTANCE_TO = 'geo_distance_to'
-
-# The geo-distance include_upper filter (alias of lte).
-# Example: http://localhost:8000
-# /api/articles/?location__geo_distance_include_upper=2km|43.53|-12.23
-LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_UPPER = 'geo_distance_include_upper'
-
-# The geo-distance include_lower filter (alias of gte).
-# Example: http://localhost:8000
-# /api/articles/?location__geo_distance_include_lower=2km|43.53|-12.23
-LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER = 'geo_distance_include_lower'
-
 # Geo Polygon Query
 #
 # A query allowing to include hits that only fall within a polygon of points.
@@ -454,15 +373,7 @@ ALL_SUGGESTERS = (
 
 ALL_GEO_SPATIAL_LOOKUP_FILTERS_AND_QUERIES = (
     LOOKUP_FILTER_GEO_DISTANCE,
-    LOOKUP_FILTER_GEO_DISTANCE_RANGE,
-    LOOKUP_FILTER_GEO_DISTANCE_GT,
-    LOOKUP_FILTER_GEO_DISTANCE_GTE,
-    LOOKUP_FILTER_GEO_DISTANCE_LT,
-    LOOKUP_FILTER_GEO_DISTANCE_LTE,
-    LOOKUP_FILTER_GEO_DISTANCE_FROM,
-    LOOKUP_FILTER_GEO_DISTANCE_TO,
-    LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_UPPER,
-    LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER,
+    LOOKUP_FILTER_GEO_POLYGON,
 )
 
 STRING_LOOKUP_FILTERS = [

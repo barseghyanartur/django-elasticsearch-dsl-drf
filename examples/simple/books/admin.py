@@ -61,7 +61,8 @@ class AuthorAdmin(admin.ModelAdmin):
 class PublisherAdmin(admin.ModelAdmin):
     """Publisher admin."""
 
-    list_display = ('name',)
+    list_display = ('name', 'latitude', 'longitude',)
+    list_editable = ('latitude', 'longitude',)
     search_fields = ('name',)
 
 

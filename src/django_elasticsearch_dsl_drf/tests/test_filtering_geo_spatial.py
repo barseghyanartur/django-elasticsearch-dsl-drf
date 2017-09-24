@@ -63,7 +63,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
 
     @pytest.mark.webtest
     def test_field_filter_geo_distance(self):
-        """Field filter term.
+        """Field filter geo-distance.
 
         Example:
 
@@ -86,6 +86,69 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # Should contain only 6 results
         self.assertEqual(len(response.data['results']), self.geo_in_count + 1)
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_polygon(self):
+        """Field filter geo-polygon.
+
+        Example:
+
+            http://localhost:8000/api/articles/
+            ?location__geo_polygon=3.51,-71.46|-47.63,41.64|62.05,29.22
+        """
+        self.authenticate()
+
+        __params = '{},{}|{},{}|{},{}'.format(
+            3.51,
+            -71.46,
+            -47.63,
+            41.64,
+            62.05,
+            29.22,
+        )
+
+        valid_points = [
+            (-23.37, 47.51),
+            (-2.81, 63.15),
+            (15.99, 46.31),
+            (26.54, 42.42),
+        ]
+
+        invalid_points = [
+            (-82.79, 72.34),
+            (54.31, 72.34),
+            (-6.50, 78.42),
+            # (-56.42, 82.78),
+        ]
+        valid_publishers = []
+        invalid_publishers = []
+
+        for __lat, __lon in valid_points:
+            valid_publishers.append(
+                factories.PublisherFactory(
+                    latitude=__lat,
+                    longitude=__lon,
+                )
+            )
+
+        for __lat, __lon in invalid_points:
+            invalid_publishers.append(
+                factories.PublisherFactory(
+                    latitude=__lat,
+                    longitude=__lon,
+                )
+            )
+
+        url = self.base_publisher_url[:] + '?{}={}'.format(
+            'location__geo_polygon',
+            __params
+        )
+
+        data = {}
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Should contain only 4 results
+        self.assertEqual(len(response.data['results']), 4)
 
 
 if __name__ == '__main__':

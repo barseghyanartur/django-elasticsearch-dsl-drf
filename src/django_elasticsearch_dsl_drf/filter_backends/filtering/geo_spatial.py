@@ -342,58 +342,6 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                         value
                     )
 
-                # `geo_distance_range` `range` query lookup
-                elif options['lookup'] == LOOKUP_FILTER_GEO_DISTANCE_RANGE:
-                    queryset = self.apply_query_geo_distance_range(
-                        queryset,
-                        options,
-                        value
-                    )
-
-                # `geo_distance_range` `gt` query lookup
-                elif options['lookup'] in (
-                        LOOKUP_FILTER_GEO_DISTANCE_GT,
-                        LOOKUP_FILTER_GEO_DISTANCE_FROM
-                ):
-                    queryset = self.apply_query_geo_distance_gt(
-                        queryset,
-                        options,
-                        value
-                    )
-
-                # `geo_distance_range` `gte` query lookup
-                elif options['lookup'] in (
-                        LOOKUP_FILTER_GEO_DISTANCE_GTE,
-                        LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_LOWER
-                ):
-                    queryset = self.apply_query_geo_distance_gte(
-                        queryset,
-                        options,
-                        value
-                    )
-
-                # `geo_distance_range` `lt` query lookup
-                elif options['lookup'] in (
-                        LOOKUP_FILTER_GEO_DISTANCE_LT,
-                        LOOKUP_FILTER_GEO_DISTANCE_TO
-                ):
-                    queryset = self.apply_query_geo_distance_lt(
-                        queryset,
-                        options,
-                        value
-                    )
-
-                # `geo_distance_range` `lte` query lookup
-                elif options['lookup'] in (
-                        LOOKUP_FILTER_GEO_DISTANCE_LTE,
-                        LOOKUP_FILTER_GEO_DISTANCE_INCLUDE_UPPER
-                ):
-                    queryset = self.apply_query_geo_distance_lte(
-                        queryset,
-                        options,
-                        value
-                    )
-
                 # `geo_polygon` query lookup
                 elif options['lookup'] == LOOKUP_FILTER_GEO_POLYGON:
                     queryset = self.apply_query_geo_polygon(

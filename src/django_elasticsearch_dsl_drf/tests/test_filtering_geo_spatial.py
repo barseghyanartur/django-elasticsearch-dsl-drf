@@ -88,68 +88,107 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         self.assertEqual(len(response.data['results']), self.geo_in_count + 1)
 
     @pytest.mark.webtest
-    def test_field_filter_geo_polygon(self):
-        """Field filter geo-polygon.
+    def _test_field_filter_geo_polygon(self, points, count, fail_test=False):
+        """Private helper test field filter geo-polygon.
 
         Example:
 
             http://localhost:8000/api/articles/
-            ?location__geo_polygon=3.51,-71.46|-47.63,41.64|62.05,29.22
+            ?location__geo_polygon=3.51,71.46|-47.63,41.64|62.05,29.22
+
+        :param points:
+        :param count:
+        :param fail_test:
+        :type points:
+        :type count:
+        :type fail_test:
+        :return:
+        :rtype:
         """
         self.authenticate()
 
         __params = '{},{}|{},{}|{},{}'.format(
             3.51,
-            -71.46,
+            71.46,
             -47.63,
             41.64,
             62.05,
             29.22,
         )
 
+        # valid_points = [
+        #     (-23.37, 47.51),
+        #     (-2.81, 63.15),
+        #     (15.99, 46.31),
+        #     (26.54, 42.42),
+        # ]
+        #
+        # invalid_points = [
+        #     (-82.79, 72.34),
+        #     (54.31, 72.34),
+        #     (-6.50, 78.42),
+        #     # (-56.42, 82.78),
+        # ]
+        publishers = []
+
+        url = self.base_publisher_url[:] + '?{}={}'.format(
+            'location__geo_polygon',
+            __params
+        )
+        data = {}
+
+        for __lat, __lon in points:
+            publishers.append(
+                factories.PublisherFactory(
+                    latitude=__lat,
+                    longitude=__lon,
+                )
+            )
+
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Should contain only 4 results
+        self.assertEqual(len(response.data['results']), count)
+
+        return publishers
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_polygon(self):
+        """Test field filter geo-polygon.
+
+        :return:
+        """
         valid_points = [
             (-23.37, 47.51),
             (-2.81, 63.15),
             (15.99, 46.31),
             (26.54, 42.42),
         ]
+        call_command('search_index', '--rebuild', '-f')
+        return self._test_field_filter_geo_polygon(
+            valid_points,
+            4,
+            fail_test=False
+        )
 
+    @pytest.mark.webtest
+    def test_field_filter_geo_polygon_fail_test(self):
+        """Test field filter geo-polygon (fail test).
+
+        :return:
+        """
         invalid_points = [
             (-82.79, 72.34),
             (54.31, 72.34),
             (-6.50, 78.42),
             # (-56.42, 82.78),
         ]
-        valid_publishers = []
-        invalid_publishers = []
-
-        for __lat, __lon in valid_points:
-            valid_publishers.append(
-                factories.PublisherFactory(
-                    latitude=__lat,
-                    longitude=__lon,
-                )
-            )
-
-        for __lat, __lon in invalid_points:
-            invalid_publishers.append(
-                factories.PublisherFactory(
-                    latitude=__lat,
-                    longitude=__lon,
-                )
-            )
-
-        url = self.base_publisher_url[:] + '?{}={}'.format(
-            'location__geo_polygon',
-            __params
+        call_command('search_index', '--rebuild', '-f')
+        return self._test_field_filter_geo_polygon(
+            invalid_points,
+            0,
+            fail_test=True
         )
-
-        data = {}
-        response = self.client.get(url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # Should contain only 4 results
-        self.assertEqual(len(response.data['results']), 4)
-
 
 if __name__ == '__main__':
     unittest.main()

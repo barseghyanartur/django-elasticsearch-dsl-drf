@@ -88,7 +88,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         self.assertEqual(len(response.data['results']), self.geo_in_count + 1)
 
     @pytest.mark.webtest
-    def _test_field_filter_geo_polygon(self, points, count, fail_test=False):
+    def _test_field_filter_geo_polygon(self, points, count):
         """Private helper test field filter geo-polygon.
 
         Example:
@@ -98,10 +98,8 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
 
         :param points:
         :param count:
-        :param fail_test:
         :type points:
         :type count:
-        :type fail_test:
         :return:
         :rtype:
         """
@@ -116,19 +114,6 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             29.22,
         )
 
-        # valid_points = [
-        #     (-23.37, 47.51),
-        #     (-2.81, 63.15),
-        #     (15.99, 46.31),
-        #     (26.54, 42.42),
-        # ]
-        #
-        # invalid_points = [
-        #     (-82.79, 72.34),
-        #     (54.31, 72.34),
-        #     (-6.50, 78.42),
-        #     # (-56.42, 82.78),
-        # ]
         publishers = []
 
         url = self.base_publisher_url[:] + '?{}={}'.format(
@@ -147,7 +132,6 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
 
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # Should contain only 4 results
         self.assertEqual(len(response.data['results']), count)
 
         return publishers
@@ -166,9 +150,8 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         ]
         call_command('search_index', '--rebuild', '-f')
         return self._test_field_filter_geo_polygon(
-            valid_points,
-            4,
-            fail_test=False
+            points=valid_points,
+            count=4
         )
 
     @pytest.mark.webtest
@@ -181,14 +164,14 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             (-82.79, 72.34),
             (54.31, 72.34),
             (-6.50, 78.42),
-            # (-56.42, 82.78),
+            (-56.42, 82.78),
         ]
         call_command('search_index', '--rebuild', '-f')
         return self._test_field_filter_geo_polygon(
-            invalid_points,
-            0,
-            fail_test=True
+            points=invalid_points,
+            count=0
         )
+
 
 if __name__ == '__main__':
     unittest.main()

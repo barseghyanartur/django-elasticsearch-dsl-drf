@@ -41,15 +41,15 @@ Main features and highlights
 - :doc:`Filtering filter backend <advanced_usage_examples>` (big variety of
   native- and functional- query lookups, such as ``gt``, ``gte``, ``lt``,
   ``lte``, ``endswith``, ``contains``, ``wildcard``, ``exists``, ``exclude``,
-  ``isnull``, ``range``, ``in``, ``term`` and ``terms``
-  is implemented.
+  ``isnull``, ``range``, ``in``, ``term`` and ``terms`` is implemented.
 - :doc:`Geo-spatial filtering filter backend <advanced_usage_examples>` (the
   following filters implemented: ``geo_distance``, ``geo_polygon``).
 - :doc:`Geo-spatial ordering filter backend <advanced_usage_examples>` (the
   following filters implemented: ``geo_distance``).
 - :doc:`Faceted search filter backend <advanced_usage_examples>`.
 - :doc:`Suggester filter backend <advanced_usage_examples>`.
-- :doc:`Pagination (Page number and limit/offset pagination) <advanced_usage_examples>`.
+- :doc:`Pagination (Page number and limit/offset pagination)
+  <advanced_usage_examples>`.
 - :doc:`Ids filter backend <advanced_usage_examples>`.
 
 Installation

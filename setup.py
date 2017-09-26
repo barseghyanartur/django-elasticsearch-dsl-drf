@@ -34,6 +34,20 @@ DOCS_TRANSFORMATIONS = (
         '>`_'.format(version)
     ),
     (
+        ':doc:`Geo-spatial filtering filter backend <advanced_usage_examples>`',
+        '`Geo-spatial filtering filter backend <'
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#geo-spatial-features'
+        '>`_'.format(version)
+    ),
+    (
+        ':doc:`Geo-spatial ordering filter backend <advanced_usage_examples>`',
+        '`Geo-spatial ordering filter backend <'
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#geo-spatial-features'
+        '>`_'.format(version)
+    ),
+    (
         ':doc:`Faceted search filter backend <advanced_usage_examples>`',
         '`Faceted search filter backend <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
@@ -60,6 +74,13 @@ DOCS_TRANSFORMATIONS = (
         '`Suggester filter backend <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
         'advanced_usage_examples.html#suggestions'
+        '>`_'.format(version)
+    ),
+    (
+        ':doc:`Ids filter backend <advanced_usage_examples>`',
+        '`Ids filter backend <'
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#ids-filter'
         '>`_'.format(version)
     ),
 )

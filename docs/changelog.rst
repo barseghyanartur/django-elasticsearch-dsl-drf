@@ -25,11 +25,18 @@ are used for versioning (schema follows below):
 ---
 2017-09-26
 
+.. note::
+
+    This release contains changes that might be backwards incompatible
+    for your project. Make sure to add the ``DefaultOrderingFilterBackend``
+    everywhere you have used the ``OrderingFilterBackend``, right after the
+    latter.
+
 - ``GeoSpatialFilteringFilterBackend`` filtering backend, supporting
   ``geo_distance`` and ``geo_polygon`` geo-spatial queries.
 - ``GeoSpatialOrderingFilterBackend`` ordering backend, supporting
   ordering of results for ``geo_distance`` filter.
-- ``OrderingFilterBackend`` is no longer provides defaults when no ordering is
+- ``OrderingFilterBackend`` no longer provides defaults when no ordering is
   given. In order to take care of the defaults include the
   ``DefaultOrderingFilterBackend`` in the list of ``filter_backends`` (after
   all other ordering backends).

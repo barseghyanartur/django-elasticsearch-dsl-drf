@@ -15,6 +15,19 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.4
+---
+2017-09-26
+
+- ``GeoSpatialFilteringFilterBackend`` filtering backend, supporting
+  ``geo_distance`` and ``geo_polygon`` geo-spatial queries.
+- ``GeoSpatialOrderingFilterBackend`` ordering backend, supporting
+  ordering of results for ``geo_distance`` filter.
+- ``OrderingFilterBackend`` is no longer provides defaults when no ordering is
+  given. In order to take care of the defaults include the
+  ``DefaultOrderingFilterBackend`` in the list of ``filter_backends`` (after
+  all other ordering backends).
+
 0.3.12
 ------
 2017-09-21

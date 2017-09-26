@@ -2,15 +2,16 @@ Roadmap
 =======
 Road-map/upcoming releases.
 
-0.4
----
-yyyy-mm-dd (future)
-
-- All filters (mentioned in the ``constants`` module) implemented.
-- Awesome documentation.
-
 0.5
 ---
 yyyy-mm-dd (future)
 
-- Add support for geo spatial search/filtering/ordering.
+- Improved geo-spatial search/filtering/ordering support.
+
+0.6
+---
+yyyy-mm-dd (future)
+
+- All filters (mentioned in the ``constants`` module) implemented.
+- Aggregations (also for geo-spatial backends).
+- Awesome documentation.

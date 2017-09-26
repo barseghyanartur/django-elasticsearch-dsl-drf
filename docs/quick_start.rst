@@ -150,6 +150,16 @@ Publisher model
         state_province = models.CharField(max_length=30)
         country = models.CharField(max_length=50)
         website = models.URLField()
+        latitude = models.DecimalField(null=True,
+                                   blank=True,
+                                   decimal_places=15,
+                                   max_digits=19,
+                                   default=0)
+        longitude = models.DecimalField(null=True,
+                                        blank=True,
+                                        decimal_places=15,
+                                        max_digits=19,
+                                        default=0)
 
         class Meta(object):
             """Meta options."""
@@ -158,6 +168,17 @@ Publisher model
 
         def __str__(self):
             return self.name
+
+        @property
+        def location_field_indexing(self):
+            """Location for indexing.
+
+            Used in Elasticsearch indexing/tests of `geo_distance` native filter.
+            """
+            return {
+                'lat': self.latitude,
+                'lon': self.longitude,
+            }
 
 Author model
 ~~~~~~~~~~~~
@@ -799,6 +820,7 @@ Required imports
         FilteringFilterBackend,
         IdsFilterBackend,
         OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
         SearchFilterBackend,
     )
     from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
@@ -823,6 +845,7 @@ ViewSet definition
             FilteringFilterBackend,
             IdsFilterBackend,
             OrderingFilterBackend,
+            DefaultOrderingFilterBackend,
             SearchFilterBackend,
         ]
         # Define search fields

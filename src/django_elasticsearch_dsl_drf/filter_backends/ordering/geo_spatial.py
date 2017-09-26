@@ -53,7 +53,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         Example:
 
-            /api/articles/?geo_spatial_ordering=-location|45.3214|-34.3421|km|planes
+            /api/articles/?ordering=-location|45.3214|-34.3421|km|planes
 
         :param value:
         :param field:
@@ -108,7 +108,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
             )
             __direction = 'desc' if query_param.startswith('-') else 'asc'
             if __key in view.geo_spatial_ordering_fields:
-                __field_name = view.ordering_fields[__key] or __key
+                __field_name = view.geo_spatial_ordering_fields[__key] or __key
                 __params = self.get_geo_distance_params(__value, __field_name)
                 __params['order'] = __direction
                 __ordering_params.append(__params)

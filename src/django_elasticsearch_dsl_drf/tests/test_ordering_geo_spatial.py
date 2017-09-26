@@ -16,6 +16,7 @@ from rest_framework import status
 
 import factories
 
+from ..constants import GEO_DISTANCE_ORDERING_PARAM
 from .base import BaseRestFrameworkTestCase
 
 if DJANGO_GTE_1_10:
@@ -71,7 +72,7 @@ class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
         Example:
 
             http://localhost:8000
-            /api/publisher/?geo_distance_ordering=location|48.85|2.30|km|plane
+            /api/publisher/?ordering=location|48.85|2.30|km|plane
         """
         self.authenticate()
 
@@ -83,7 +84,7 @@ class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
         )
 
         url = self.base_publisher_url[:] + '?{}={}'.format(
-            'geo_distance_ordering',
+            GEO_DISTANCE_ORDERING_PARAM,
             __params
         )
 
@@ -93,6 +94,7 @@ class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
         # Should contain only 6 results
         self.assertEqual(len(response.data['results']), self.geo_in_count + 1)
         item_count = len(response.data['results'])
+
         for counter, item in enumerate(response.data['results']):
             if (counter > 1) and (counter < item_count + 1):
                 self.assertLess(

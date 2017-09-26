@@ -17,16 +17,16 @@ are used for versioning (schema follows below):
 
 0.4
 ---
-2017-mm-dd (not yet released)
+2017-09-26
 
 - ``GeoSpatialFilteringFilterBackend`` filtering backend, supporting
-  ``geo_distance``, ``geo_distance_range``, ``geo_distance_gt``,
-  ``geo_distance_gte``, ``geo_distance_lt`` and ``geo_distance_lte``
-  geo-spatial queries.
-- ``GeoSpatialOrderingFilterBackend`` ordering backend, supporting ?.
+  ``geo_distance`` and ``geo_polygon`` geo-spatial queries.
+- ``GeoSpatialOrderingFilterBackend`` ordering backend, supporting
+  ordering of results for ``geo_distance`` filter.
 - ``OrderingFilterBackend`` is no longer provides defaults when no ordering is
   given. In order to take care of the defaults include the
-  ``DefaultOrderingFilterBackend`` in the list of ``filter_backends``.
+  ``DefaultOrderingFilterBackend`` in the list of ``filter_backends`` (after
+  all other ordering backends).
 
 0.3.12
 ------

@@ -25,6 +25,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     SearchFilterBackend,
     SuggesterFilterBackend,
     GeoSpatialFilteringFilterBackend,
+    GeoSpatialOrderingFilterBackend,
 )
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
 from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
@@ -261,10 +262,11 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
     filter_backends = [
         FilteringFilterBackend,
         OrderingFilterBackend,
-        DefaultOrderingFilterBackend,
         SearchFilterBackend,
-        SuggesterFilterBackend,
         GeoSpatialFilteringFilterBackend,
+        GeoSpatialOrderingFilterBackend,
+        DefaultOrderingFilterBackend,
+        SuggesterFilterBackend,
     ]
     pagination_class = LimitOffsetPagination
     # Define search fields
@@ -299,6 +301,9 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
         'name': None,
         'city': None,
         'country': None,
+    }
+    # Define ordering fields
+    geo_spatial_ordering_fields = {
         'location': None,
     }
     # Specify default ordering

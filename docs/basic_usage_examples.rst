@@ -40,6 +40,16 @@ books/models.py:
         state_province = models.CharField(max_length=30)
         country = models.CharField(max_length=50)
         website = models.URLField()
+        latitude = models.DecimalField(null=True,
+                                   blank=True,
+                                   decimal_places=15,
+                                   max_digits=19,
+                                   default=0)
+        longitude = models.DecimalField(null=True,
+                                        blank=True,
+                                        decimal_places=15,
+                                        max_digits=19,
+                                        default=0)
 
         class Meta(object):
             """Meta options."""
@@ -48,6 +58,17 @@ books/models.py:
 
         def __str__(self):
             return self.name
+
+        @property
+        def location_field_indexing(self):
+            """Location for indexing.
+
+            Used in Elasticsearch indexing/tests of `geo_distance` native filter.
+            """
+            return {
+                'lat': self.latitude,
+                'lon': self.longitude,
+            }
 
 Sample document
 ---------------
@@ -108,6 +129,9 @@ search_indexes/documents/publisher.py:
         )
         website = fields.StringField()
 
+        # Location
+        location = fields.GeoPointField(attr='location_field_indexing')
+
         class Meta(object):
             """Meta options."""
 
@@ -128,6 +152,8 @@ search_indexes/serializers.py:
     class PublisherDocumentSerializer(DocumentSerializer):
         """Serializer for Publisher document."""
 
+        location = serializers.SerializerMethodField()
+
         class Meta(object):
             """Meta options."""
 
@@ -146,6 +172,13 @@ search_indexes/serializers.py:
                 'website',
             )
 
+        def get_location(self, obj):
+        """Represent location value."""
+        try:
+            return obj.location.to_dict()
+        except:
+            return {}
+
 Sample view
 -----------
 
@@ -153,6 +186,9 @@ search_indexes/views.py:
 
 .. code-block:: python
 
+    from django_elasticsearch_dsl_drf.constants import (
+        LOOKUP_FILTER_GEO_DISTANCE,
+    )
     from django_elasticsearch_dsl_drf.filter_backends import (
         FilteringFilterBackend,
         OrderingFilterBackend,
@@ -173,6 +209,7 @@ search_indexes/views.py:
         filter_backends = [
             FilteringFilterBackend,
             OrderingFilterBackend,
+            DefaultOrderingFilterBackend,
             SearchFilterBackend,
         ]
         # Define search fields
@@ -201,6 +238,14 @@ search_indexes/views.py:
         }
         # Specify default ordering
         ordering = ('id', 'name',)
+        # Define geo-spatial filtering fields
+        geo_spatial_filter_fields = {
+            'location': {
+                'lookups': [
+                    LOOKUP_FILTER_GEO_DISTANCE,
+                ],
+            },
+        }
 
 Usage example
 -------------
@@ -320,6 +365,15 @@ Filter documents by a part word part in single field (``city``) "ondon".
 .. code-block:: text
 
     http://127.0.0.1:8080/search/publisher/?city__wildcard=*ondon
+
+
+**Geo-distance filtering**
+
+Filter documents by radius of 100000km from the given location.
+
+.. code-block:: text
+
+    http://127.0.0.1:8000/search/publishers/?location__geo_distance=100000km|12.04|-63.93
 
 Ordering
 ^^^^^^^^

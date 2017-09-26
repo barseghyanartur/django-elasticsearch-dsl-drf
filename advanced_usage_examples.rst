@@ -732,6 +732,23 @@ Filter documents by radius of 100000km from the given location.
 
     http://localhost:8000/search/publishers/?location__geo_distance=100000km|12.04|-63.93
 
+**Geo-polygon filtering**
+
+Filter documents that are located in the given polygon.
+
+.. code-block:: text
+
+    http://localhost:8000/search/publishers/?location__geo_polygon=40,-70|30,-80|20,-90
+
+Ordering
+~~~~~~~~
+
+**Geo-distance ordering**
+
+.. code-block:: text
+
+    http://localhost:8000/search/publishers/?ordering=location|48.85|2.30|km|plane
+
 Suggestions
 -----------
 

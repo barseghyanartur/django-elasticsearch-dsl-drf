@@ -5,6 +5,7 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_WILDCARD,
     LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_FILTER_GEO_POLYGON,
+    LOOKUP_FILTER_GEO_BOUNDING_BOX,
     LOOKUP_QUERY_IN,
     LOOKUP_QUERY_GT,
     LOOKUP_QUERY_GTE,
@@ -290,8 +291,10 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
     geo_spatial_filter_fields = {
         'location': {
             'lookups': [
+                LOOKUP_FILTER_GEO_BOUNDING_BOX,
                 LOOKUP_FILTER_GEO_DISTANCE,
                 LOOKUP_FILTER_GEO_POLYGON,
+
             ],
         },
     }

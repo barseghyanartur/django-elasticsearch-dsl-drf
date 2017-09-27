@@ -15,6 +15,7 @@ __all__ = (
     'EXTENDED_STRING_LOOKUP_FILTERS',
     'FALSE_VALUES',
     'LOOKUP_FILTER_EXISTS',
+    'LOOKUP_FILTER_GEO_BOUNDING_BOX',
     'LOOKUP_FILTER_GEO_DISTANCE',
     'LOOKUP_FILTER_GEO_POLYGON',
     'LOOKUP_FILTER_PREFIX',
@@ -194,9 +195,11 @@ LOOKUP_FILTER_TYPE = 'type'
 
 # Draws a circle around the specified location and finds all documents that
 # have a geo-point within that circle.
+#
 # The `geo_distance` filter. Accepts three values (distance|lat|lon)
 # separated by `SEPARATOR_LOOKUP_VALUE`.
 # https://www.elastic.co/guide/en/elasticsearch/guide/current/geo-distance.html
+#
 # Example:
 #
 # {
@@ -249,13 +252,59 @@ LOOKUP_FILTER_GEO_DISTANCE = 'geo_distance'
 # }
 #
 # Query options:
+#
 # - _name: Optional name field to identify the filter
 # - validation_method: Set to IGNORE_MALFORMED to accept geo points with
 #   invalid latitude or longitude, COERCE to try and infer correct latitude or
 #   longitude, or STRICT (default is STRICT).
+#
 # Example: http://localhost:8000
 # /api/articles/?location__geo_polygon=40,-70|30,-80|20,-90
 LOOKUP_FILTER_GEO_POLYGON = 'geo_polygon'
+
+# Geo Bounding Box Query
+# A query allowing to filter hits based on a point location using a bounding
+# box. Assuming the following indexed document:
+#
+# Example:
+#
+# {
+#     "query": {
+#         "bool" : {
+#             "must" : {
+#                 "match_all" : {}
+#             },
+#             "filter" : {
+#                 "geo_bounding_box" : {
+#                     "location" : {
+#                         "top_left" : {
+#                             "lat" : 40.73,
+#                             "lon" : -74.1
+#                         },
+#                         "bottom_right" : {
+#                             "lat" : 40.01,
+#                             "lon" : -71.12
+#                         }
+#                     }
+#                 }
+#             }
+#         }
+#     }
+# }
+#
+# Query options:
+#
+# - _name: Optional name field to identify the filter
+# - validation_method: Set to IGNORE_MALFORMED to accept geo points with
+#   invalid latitude or longitude, COERCE to try and infer correct latitude or
+#   longitude, or STRICT (default is STRICT).
+# - type: Set to one of indexed or memory to defines whether this filter will
+#   be executed in memory or indexed. See Type below for further details.
+#   Default is memory.
+#
+# Example: http://localhost:8000
+# /api/articles/?location__geo_bounding_box=40.73,-74.1|40.01,-71.12
+LOOKUP_FILTER_GEO_BOUNDING_BOX = 'geo_bounding_box'
 
 # ****************************************************************************
 # ************************ Functional filters/queries ************************
@@ -372,6 +421,7 @@ ALL_SUGGESTERS = (
 )
 
 ALL_GEO_SPATIAL_LOOKUP_FILTERS_AND_QUERIES = (
+    LOOKUP_FILTER_GEO_BOUNDING_BOX,
     LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_FILTER_GEO_POLYGON,
 )

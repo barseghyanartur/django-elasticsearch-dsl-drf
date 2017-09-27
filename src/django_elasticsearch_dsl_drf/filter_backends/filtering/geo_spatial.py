@@ -13,11 +13,12 @@ The queries in this group are:
   are contained by, or do not intersect with the specified geo-shape.
 - geo_bounding_box query: Finds documents with geo-points that fall into
   the specified rectangle.
-- geo_distance query: Finds document with geo-points within the specified
++ geo_distance query: Finds document with geo-points within the specified
   distance of a central point.
 - geo_distance_range query: Like the geo_distance query, but the range
-  starts at a specified distance from the central point.
-- geo_polygon query: Find documents with geo-points within the specified
+  starts at a specified distance from the central point. Note, that this
+  one is deprecated and this isn't implemented.
++ geo_polygon query: Find documents with geo-points within the specified
   polygon.
 """
 
@@ -30,6 +31,7 @@ from ...constants import (
     ALL_GEO_SPATIAL_LOOKUP_FILTERS_AND_QUERIES,
     LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_FILTER_GEO_POLYGON,
+    LOOKUP_FILTER_GEO_BOUNDING_BOX,
     SEPARATOR_LOOKUP_COMPLEX_VALUE,
     SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE,
 )
@@ -228,6 +230,111 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         return {}
 
     @classmethod
+    def get_geo_bounding_box_params(cls, value, field):
+        """Get params for `geo_bounding_box` query.
+
+        Example:
+
+            /api/articles/?location__geo_bounding_box=40.73,-74.1|40.01,-71.12
+
+        Example:
+
+            /api/articles/?location__geo_polygon=40.73,-74.1|40.01,-71.12
+                |_name:myname|validation_method:IGNORE_MALFORMED|type:indexed
+
+        Elasticsearch:
+
+            {
+                "query": {
+                    "bool" : {
+                        "must" : {
+                            "match_all" : {}
+                        },
+                        "filter" : {
+                            "geo_bounding_box" : {
+                                "person.location" : {
+                                    "top_left" : {
+                                        "lat" : 40.73,
+                                        "lon" : -74.1
+                                    },
+                                    "bottom_right" : {
+                                        "lat" : 40.01,
+                                        "lon" : -71.12
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        :param value:
+        :param field:
+        :type value: str
+        :type field:
+        :return: Params to be used in `geo_bounding_box` query.
+        :rtype: dict
+        """
+        __values = cls.split_lookup_value(value)
+        __len_values = len(__values)
+
+        if not __len_values:
+            return {}
+
+        __top_left_points = {}
+        __bottom_right_points = {}
+        __options = {}
+
+        # Top left
+        __lat_lon = __values[0].split(
+            SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
+        )
+        if len(__lat_lon) >= 2:
+            __top_left_points.update({
+                'lat': float(__lat_lon[0]),
+                'lon': float(__lat_lon[1]),
+            })
+
+        # Bottom right
+        __lat_lon = __values[1].split(
+            SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
+        )
+        if len(__lat_lon) >= 2:
+            __bottom_right_points.update({
+                'lat': float(__lat_lon[0]),
+                'lon': float(__lat_lon[1]),
+            })
+
+        # Options
+        for __value in __values[2:]:
+            if SEPARATOR_LOOKUP_COMPLEX_VALUE in __value:
+                __opt_name_val = __value.split(
+                    SEPARATOR_LOOKUP_COMPLEX_VALUE
+                )
+                if len(__opt_name_val) >= 2:
+                    if __opt_name_val[0] in ('_name',
+                                             'validation_method',
+                                             'type'):
+                        __options.update(
+                            {
+                                __opt_name_val[0]: __opt_name_val[1]
+                            }
+                        )
+
+        if not __top_left_points or not __bottom_right_points:
+            return {}
+
+        params = {
+            field: {
+                'top_left': __top_left_points,
+                'bottom_right': __bottom_right_points,
+            }
+        }
+        params.update(__options)
+
+        return params
+
+    @classmethod
     def apply_query_geo_distance(cls, queryset, options, value):
         """Apply `geo_distance` query.
 
@@ -264,6 +371,26 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
             Q(
                 'geo_polygon',
                 **cls.get_geo_polygon_params(value, options['field'])
+            )
+        )
+
+    @classmethod
+    def apply_query_geo_bounding_box(cls, queryset, options, value):
+        """Apply `geo_bounding_box` query.
+
+        :param queryset: Original queryset.
+        :param options: Filter options.
+        :param value: value to filter on.
+        :type queryset: elasticsearch_dsl.search.Search
+        :type options: dict
+        :type value: str
+        :return: Modified queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        return queryset.query(
+            Q(
+                'geo_bounding_box',
+                **cls.get_geo_bounding_box_params(value, options['field'])
             )
         )
 
@@ -345,6 +472,14 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 # `geo_polygon` query lookup
                 elif options['lookup'] == LOOKUP_FILTER_GEO_POLYGON:
                     queryset = self.apply_query_geo_polygon(
+                        queryset,
+                        options,
+                        value
+                    )
+
+                # `geo_bounding_box` query lookup
+                elif options['lookup'] == LOOKUP_FILTER_GEO_BOUNDING_BOX:
+                    queryset = self.apply_query_geo_bounding_box(
                         queryset,
                         options,
                         value

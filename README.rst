@@ -43,7 +43,8 @@ Main features and highlights
   ``lte``, ``endswith``, ``contains``, ``wildcard``, ``exists``, ``exclude``,
   ``isnull``, ``range``, ``in``, ``term`` and ``terms`` is implemented.
 - :doc:`Geo-spatial filtering filter backend <advanced_usage_examples>` (the
-  following filters implemented: ``geo_distance``, ``geo_polygon``).
+  following filters implemented: ``geo_distance``, ``geo_polygon`` and
+  ``geo_bounding_box``).
 - :doc:`Geo-spatial ordering filter backend <advanced_usage_examples>` (the
   following filters implemented: ``geo_distance``).
 - :doc:`Faceted search filter backend <advanced_usage_examples>`.

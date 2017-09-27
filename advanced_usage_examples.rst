@@ -740,6 +740,14 @@ Filter documents that are located in the given polygon.
 
     http://localhost:8000/search/publishers/?location__geo_polygon=40,-70|30,-80|20,-90
 
+**Geo-bounding-box filtering**
+
+Filter documents that are located in the given bounding box.
+
+.. code-block:: text
+
+    http://localhost:8000/search/publishers/?location__geo_bounding_box=44.87,40.07|43.87,41.11
+
 Ordering
 ~~~~~~~~
 

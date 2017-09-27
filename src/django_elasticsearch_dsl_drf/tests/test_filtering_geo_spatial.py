@@ -41,25 +41,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
     @classmethod
     def setUpClass(cls):
         """Set up."""
-        cls.geo_origin = factories.PublisherFactory.create(
-            **{
-                'latitude': 48.8549,
-                'longitude': 2.3000,
-            }
-        )
-
-        cls.geo_in_count = 5
-        cls.geo_distance = '1km'
-        cls.geo_in = factories.PublisherFactory.create_batch(
-            cls.geo_in_count,
-            **{
-                'latitude': 48.8570,
-                'longitude': 2.3005,
-            }
-        )
-
         cls.base_publisher_url = reverse('publisherdocument-list', kwargs={})
-        call_command('search_index', '--rebuild', '-f')
 
     @pytest.mark.webtest
     def test_field_filter_geo_distance(self):
@@ -71,6 +53,25 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             /api/publisher/?location__geo_distance=1km|48.8549|2.3000
         """
         self.authenticate()
+
+        self.geo_origin = factories.PublisherFactory.create(
+            **{
+                'latitude': 48.8549,
+                'longitude': 2.3000,
+            }
+        )
+
+        self.geo_in_count = 5
+        self.geo_distance = '1km'
+        self.geo_in = factories.PublisherFactory.create_batch(
+            self.geo_in_count,
+            **{
+                'latitude': 48.8570,
+                'longitude': 2.3005,
+            }
+        )
+
+        call_command('search_index', '--rebuild', '-f')
 
         __params = '{}|{}|{}'.format(self.geo_distance,
                                      self.geo_origin.latitude,
@@ -168,6 +169,91 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         ]
         call_command('search_index', '--rebuild', '-f')
         return self._test_field_filter_geo_polygon(
+            points=invalid_points,
+            count=0
+        )
+
+    @pytest.mark.webtest
+    def _test_field_filter_geo_bounding_box(self, points, count):
+        """Private helper test field filter geo-bounding-box.
+
+        Example:
+
+            http://localhost:8000/api/articles/
+            ?location__geo_bounding_box=44.87,40.07|43.87,41.11
+
+        :param points:
+        :param count:
+        :type points:
+        :type count:
+        :return:
+        :rtype:
+        """
+        self.authenticate()
+
+        __params = '{},{}|{},{}'.format(
+            44.87,
+            40.07,
+            43.87,
+            41.11,
+        )
+
+        publishers = []
+
+        url = self.base_publisher_url[:] + '?{}={}'.format(
+            'location__geo_bounding_box',
+            __params
+        )
+        data = {}
+
+        for __lat, __lon in points:
+            publishers.append(
+                factories.PublisherFactory(
+                    latitude=__lat,
+                    longitude=__lon,
+                )
+            )
+
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']), count)
+
+        return publishers
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_bounding_box(self):
+        """Test field filter geo-bounding-box.
+
+        :return:
+        """
+        valid_points = [
+            (44.18, 40.86),
+            (44.61, 40.80),
+            (44.32, 40.51),
+            (44.60, 40.40),
+        ]
+        call_command('search_index', '--rebuild', '-f')
+        return self._test_field_filter_geo_bounding_box(
+            points=valid_points,
+            count=4
+        )
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_bounding_box_fail_test(self):
+        """Test field filter geo-bounding-box (fail test).
+
+        :return:
+        """
+        invalid_points = [
+            (-82.79, 72.34),
+            (54.31, 72.34),
+            (-6.50, 78.42),
+            (-56.42, 82.78),
+            (45.20, 39.93),
+            (43.71, 41.29),
+        ]
+        call_command('search_index', '--rebuild', '-f')
+        return self._test_field_filter_geo_bounding_box(
             points=invalid_points,
             count=0
         )

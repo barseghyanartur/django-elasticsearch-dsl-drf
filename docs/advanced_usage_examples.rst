@@ -721,6 +721,11 @@ In the example below, we show results with faceted ``state`` and
 Geo-spatial features
 --------------------
 
+For testing the boundaries the following online services might be helpful:
+
+- `geojson.io <http://geojson.io>`_
+- `Bounding Box Tool <http://boundingbox.klokantech.com>`_
+
 Filtering
 ~~~~~~~~~
 

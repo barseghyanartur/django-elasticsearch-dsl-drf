@@ -173,7 +173,7 @@ Sample models
 
             Used in Elasticsearch indexing.
             """
-            return json.dumps([tag.title for tag in self.tags.all()])
+            return [tag.title for tag in self.tags.all()]
 
 Sample document
 ---------------
@@ -309,6 +309,7 @@ Document index
             analyzer=html_strip,
             fields={
                 'raw': fields.StringField(analyzer='keyword', multi=True),
+                'suggest': fields.CompletionField(multi=True),
             },
             multi=True
         )
@@ -380,7 +381,10 @@ Sample serializer
 
         def get_tags(self, obj):
             """Get tags."""
-            return json.loads(obj.tags)
+            if obj.tags:
+                return list(obj.tags)
+            else:
+                return []
 
 Sample view
 -----------
@@ -865,9 +869,8 @@ To make use of suggestions, you should properly indexed your documents using
 After that the ``name.suggest``, ``city.suggest``, ``state_province.suggest``
 and ``country.suggest`` fields would be available for suggestions feature.
 
-
 Serializer definition
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 This is how publisher serializer would look like.
 
@@ -1093,6 +1096,60 @@ You can also have multiple suggesters per request.
                 ],
                 "offset": 0,
                 "length": 1
+            }
+        ]
+    }
+
+Suggestions on Array/List field
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Suggestions on Array/List fields (typical use case - tags, where Tag model
+would be a many-to-many relation to a Book model) work almost the
+same.
+
+Before checking the `Sample requests/responses`, do have in mind the following:
+
+- ``Book`` (see the `Sample models`_)
+- ``BookSerializer`` (see the `Sample serializer`_)
+- ``BookDocumentView`` (see the `Sample view`_)
+
+Sample requests/responses
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Once you have extended your view set with ``SuggesterFilterBackend``
+functionality, you can make use of the ``suggest`` custom action of your
+view set.
+
+**Request**
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/books/suggest/?tag_suggest__completion=bio
+
+**Response**
+
+.. code-block:: javascript
+
+    {
+        "_shards": {
+            "failed": 0,
+            "successful": 1,
+            "total": 1
+        },
+        "country_suggest__completion": [
+            {
+                "options": [
+                    {
+                        "score": 1.0,
+                        "text": "Biography"
+                    },
+                    {
+                        "score": 1.0,
+                        "text": "Biology"
+                    }
+                ],
+                "offset": 0,
+                "length": 2,
+                "text": "bio"
             }
         ]
     }

@@ -325,7 +325,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase):
         self._field_filter_value(
             'tags__isnull',
             'true',
-            0
+            self.no_tags_count
         )
 
     def test_field_filter_isnull_false(self):
@@ -343,7 +343,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase):
         self._field_filter_value(
             'tags__isnull',
             'false',
-            self.all_count
+            self.all_count - self.no_tags_count
         )
 
     def test_field_filter_endswith(self):

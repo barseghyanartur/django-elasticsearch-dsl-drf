@@ -135,7 +135,10 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
 
     def get_tags(self, obj):
         """Get tags."""
-        return json.loads(obj.tags)
+        if obj.tags:
+            return list(obj.tags)
+        else:
+            return []
 
 
 class PublisherDocumentSerializer(serializers.Serializer):

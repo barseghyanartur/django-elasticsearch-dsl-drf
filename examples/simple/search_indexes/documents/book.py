@@ -105,6 +105,7 @@ class BookDocument(DocType):
         analyzer=html_strip,
         fields={
             'raw': KeywordField(multi=True),
+            'suggest': fields.CompletionField(multi=True),
         },
         multi=True
     )

@@ -251,6 +251,7 @@ class BookDocumentViewSet(BaseDocumentViewSet):
     suggester_fields = {
         'title_suggest': 'title.suggest',
         'publisher_suggest': 'publisher.suggest',
+        'tag_suggest': 'tags.suggest',
     }
 
 

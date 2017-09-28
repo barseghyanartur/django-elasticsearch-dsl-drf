@@ -152,7 +152,7 @@ class Book(models.Model):
 
         Used in Elasticsearch indexing.
         """
-        return json.dumps([tag.title for tag in self.tags.all()])
+        return [tag.title for tag in self.tags.all()]
 
     @property
     def null_field_indexing(self):

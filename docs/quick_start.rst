@@ -284,7 +284,7 @@ Book model
 
             Used in Elasticsearch indexing.
             """
-            return json.dumps([tag.title for tag in self.tags.all()])
+            return [tag.title for tag in self.tags.all()]
 
 Admin classes
 -------------
@@ -534,6 +534,7 @@ Document definition
             analyzer=html_strip,
             fields={
                 'raw': fields.StringField(analyzer='keyword', multi=True),
+                'suggest': fields.CompletionField(multi=True),
             },
             multi=True
         )
@@ -737,7 +738,10 @@ needed to be serialized and leave it further to the dynamic serializer.
 
         def get_tags(self, obj):
             """Get tags."""
-            return json.loads(obj.tags)
+            if obj.tags:
+                return list(obj.tags)
+            else:
+                return []
 
 However, if dynamic serializer doesn't work for your or you want to customize
 too many things, you are free to use standard ``Serializer`` class of the
@@ -787,7 +791,10 @@ Django REST framework.
 
         def get_tags(self, obj):
             """Get tags."""
-            return json.loads(obj.tags)
+            if obj.tags:
+                return list(obj.tags)
+            else:
+                return []
 
 ViewSet definition
 ------------------

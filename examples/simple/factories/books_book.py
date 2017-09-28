@@ -19,7 +19,7 @@ from .books_author import (
 )
 from .books_order import OrderFactory
 from .books_orderline import OrderLineFactory
-from .books_tag import LimitedTagFactory
+from .books_tag import LimitedTagFactory, TagGenreFactory
 
 __all__ = (
     'BookFactory',
@@ -57,7 +57,7 @@ class BaseBookFactory(DjangoModelFactory):
         if created:
             # Create from 1 to 7 ``Tag`` objects.
             amount = random.randint(1, 7)
-            tags = LimitedTagFactory.create_batch(amount, **kwargs)
+            tags = TagGenreFactory.create_batch(amount, **kwargs)
             obj.tags.add(*tags)
 
     @post_generation

@@ -1,13 +1,16 @@
 import random
 
 from factory import DjangoModelFactory, LazyAttribute
+from factory.fuzzy import FuzzyChoice
 
 from books.models import Tag
 
+from .constants import BOOK_GENRES
 from .factory_faker import Faker
 
 __all__ = (
     'TagFactory',
+    'TagGenreFactory',
     'LimitedTagFactory',
 )
 
@@ -29,6 +32,17 @@ class BaseTagFactory(DjangoModelFactory):
 
 class TagFactory(BaseTagFactory):
     """Tag factory."""
+
+
+class TagGenreFactory(BaseTagFactory):
+    """Tag factory consisting of genres."""
+
+    title = FuzzyChoice(BOOK_GENRES)
+
+    class Meta(object):
+        """Meta class."""
+
+        django_get_or_create = ('title',)
 
 
 class LimitedTagFactory(BaseTagFactory):

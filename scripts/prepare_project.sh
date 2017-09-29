@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 cp examples/simple/settings/__init__.example examples/simple/settings/__init__.py
 cp examples/simple/settings/local_settings.example examples/simple/settings/local_settings.py
 

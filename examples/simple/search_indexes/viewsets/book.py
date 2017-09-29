@@ -3,9 +3,6 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_RANGE,
     LOOKUP_FILTER_PREFIX,
     LOOKUP_FILTER_WILDCARD,
-    LOOKUP_FILTER_GEO_DISTANCE,
-    LOOKUP_FILTER_GEO_POLYGON,
-    LOOKUP_FILTER_GEO_BOUNDING_BOX,
     LOOKUP_QUERY_IN,
     LOOKUP_QUERY_GT,
     LOOKUP_QUERY_GTE,
@@ -13,9 +10,6 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_QUERY_LTE,
     LOOKUP_QUERY_EXCLUDE,
     LOOKUP_QUERY_ISNULL,
-    SUGGESTER_TERM,
-    SUGGESTER_PHRASE,
-    SUGGESTER_COMPLETION,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
     FacetedSearchFilterBackend,
@@ -25,84 +19,17 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     OrderingFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
-    GeoSpatialFilteringFilterBackend,
-    GeoSpatialOrderingFilterBackend,
 )
-from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
 from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
 
-from elasticsearch_dsl import (
-    DateHistogramFacet,
-    # HistogramFacet,
-    RangeFacet,
-    # TermsFacet,
-)
+from elasticsearch_dsl import DateHistogramFacet, RangeFacet
 
-from .documents import AuthorDocument, BookDocument, PublisherDocument
-from .serializers import (
-    AuthorDocumentSimpleSerializer,
-    BookDocumentSimpleSerializer,
-    PublisherDocumentSerializer,
-)
+from ..documents import BookDocument
+from ..serializers import BookDocumentSimpleSerializer
 
 __all__ = (
-    'AuthorDocumentView',
     'BookDocumentView',
-    'PublisherDocumentView',
 )
-
-
-class AuthorDocumentViewSet(BaseDocumentViewSet):
-    """The AuthorDocument view."""
-
-    document = AuthorDocument
-    serializer_class = AuthorDocumentSimpleSerializer
-    lookup_field = 'id'
-    filter_backends = [
-        FilteringFilterBackend,
-        OrderingFilterBackend,
-        DefaultOrderingFilterBackend,
-        SearchFilterBackend,
-        SuggesterFilterBackend,
-    ]
-    pagination_class = LimitOffsetPagination
-    # Define search fields
-    search_fields = (
-        'name',
-        'email',
-        'salutation',
-    )
-    # Define filtering fields
-    filter_fields = {
-        'id': None,
-        'name': 'name.raw',
-    }
-    # Define ordering fields
-    ordering_fields = {
-        'id': None,  # 'id',
-        'name': 'name.raw',
-        'email': 'email.raw',
-        'salutation': 'salutation.raw',
-    }
-    # Specify default ordering
-    ordering = 'name.raw'
-
-    # Suggester fields
-    suggester_fields = {
-        'name_suggest': {
-            'field': 'name.suggest',
-            'suggesters': [
-                SUGGESTER_TERM,
-                SUGGESTER_PHRASE,
-                SUGGESTER_COMPLETION,
-            ],
-        },
-        'salutation.suggest': {
-            'suggesters': [
-                SUGGESTER_COMPLETION,
-            ],
-        },
-    }
 
 
 class BookDocumentViewSet(BaseDocumentViewSet):
@@ -252,88 +179,4 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         'title_suggest': 'title.suggest',
         'publisher_suggest': 'publisher.suggest',
         'tag_suggest': 'tags.suggest',
-    }
-
-
-class PublisherDocumentViewSet(BaseDocumentViewSet):
-    """The PublisherDocument view."""
-
-    document = PublisherDocument
-    serializer_class = PublisherDocumentSerializer
-    lookup_field = 'id'
-    filter_backends = [
-        FilteringFilterBackend,
-        OrderingFilterBackend,
-        SearchFilterBackend,
-        GeoSpatialFilteringFilterBackend,
-        GeoSpatialOrderingFilterBackend,
-        DefaultOrderingFilterBackend,
-        SuggesterFilterBackend,
-    ]
-    pagination_class = LimitOffsetPagination
-    # Define search fields
-    search_fields = (
-        'name',
-        'info',
-        'address',
-        'city',
-        'state_province',
-        'country',
-    )
-    # Define filtering fields
-    filter_fields = {
-        'id': None,
-        'name': 'name.raw',
-        'city': 'city.raw',
-        'state_province': 'state_province.raw',
-        'country': 'country.raw',
-    }
-    # Define geo-spatial filtering fields
-    geo_spatial_filter_fields = {
-        'location': {
-            'lookups': [
-                LOOKUP_FILTER_GEO_BOUNDING_BOX,
-                LOOKUP_FILTER_GEO_DISTANCE,
-                LOOKUP_FILTER_GEO_POLYGON,
-
-            ],
-        },
-    }
-    # Define ordering fields
-    ordering_fields = {
-        'id': None,
-        'name': None,
-        'city': None,
-        'country': None,
-    }
-    # Define ordering fields
-    geo_spatial_ordering_fields = {
-        'location': None,
-    }
-    # Specify default ordering
-    ordering = ('id', 'name',)
-
-    # Suggester fields
-    suggester_fields = {
-        'name_suggest': {
-            'field': 'name.suggest',
-            'suggesters': [
-                SUGGESTER_TERM,
-                SUGGESTER_PHRASE,
-                SUGGESTER_COMPLETION,
-            ],
-        },
-        'city_suggest': {
-            'field': 'city.suggest',
-            'suggesters': [
-                SUGGESTER_COMPLETION,
-            ],
-        },
-        'state_province_suggest': 'state_province.suggest',
-        'country_suggest': {
-            'field': 'country.suggest',
-            'suggesters': [
-                SUGGESTER_COMPLETION,
-            ],
-        },
     }

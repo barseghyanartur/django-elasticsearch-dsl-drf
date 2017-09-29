@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 echo 'Compiling messages for django-dummy-thumbnails...'
 cd src/debug_toolbar_force/
 django-admin.py compilemessages -l de

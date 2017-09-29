@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 pip uninstall django-elasticsearch-dsl-drf -y
 rm build -rf
 rm dist -rf

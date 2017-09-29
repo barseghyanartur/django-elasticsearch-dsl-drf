@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 ./scripts/prepare_docs.sh
 
 sphinx-build -n -a -b html docs builddocs

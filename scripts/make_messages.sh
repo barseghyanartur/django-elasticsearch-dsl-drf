@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 echo 'Making messages for django-elasticsearch-dsl-drf...'
 cd src/django_elasticsearch_dsl_drf/
 django-admin.py makemessages -l de

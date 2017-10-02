@@ -17,7 +17,7 @@ are used for versioning (schema follows below):
 
 0.4.4
 -----
-2017-10-02 (not yet released)
+2017-10-02
 
 - Documentation improvements (Elasticsearch suggestions).
 - More tests (term and phrase suggestions).

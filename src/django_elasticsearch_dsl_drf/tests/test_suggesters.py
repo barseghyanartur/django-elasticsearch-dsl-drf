@@ -109,6 +109,10 @@ class TestSuggesters(BaseRestFrameworkTestCase):
         cls.books.append(
             factories.BookFactory(
                 title='Aaaaa Bbbb',
+                summary='`Twas brillig, and the slithy toves '
+                        'Did gyre and gimble in the wabe. '
+                        'All mimsy were the borogoves '
+                        'And the mome raths outgrabe.',
                 publisher__name='Antares',
                 publisher__country='Armenia',
             )
@@ -116,6 +120,10 @@ class TestSuggesters(BaseRestFrameworkTestCase):
         cls.books.append(
             factories.BookFactory(
                 title='Aaaaa Cccc',
+                summary='"Beware the Jabberwock, my son! '
+                        'The jaws that bite, the claws that catch! '
+                        'Beware the Jubjub bird, and shun '
+                        'The frumious Bandersnatch!',
                 publisher__name='Antares',
                 publisher__country='Armenia',
             )
@@ -123,6 +131,10 @@ class TestSuggesters(BaseRestFrameworkTestCase):
         cls.books.append(
             factories.BookFactory(
                 title='Aaaaa Dddd',
+                summary='He took his vorpal sword in his hand,'
+                        'Long time the manxome foe he sought --'
+                        'So rested he by the Tumtum tree,'
+                        'And stood awhile in thought.',
                 publisher__name='Antares',
                 publisher__country='Armenia',
             )
@@ -198,8 +210,8 @@ class TestSuggesters(BaseRestFrameworkTestCase):
                     sorted(__expected_results)
                 )
 
-    def test_suggesters(self):
-        """Test suggesters."""
+    def test_suggesters_completion(self):
+        """Test suggesters completion."""
         # Testing publishers
         test_data = {
             'name_suggest__completion': {
@@ -237,12 +249,36 @@ class TestSuggesters(BaseRestFrameworkTestCase):
         }
         self._test_suggesters(test_data, self.authors_url)
 
-    def test_suggesters_no_args_provided(self):
-        """Test suggesters with no args provided."""
+    def test_suggesters_completion_no_args_provided(self):
+        """Test suggesters completion with no args provided."""
         data = {}
         # Check if response now is valid
         response = self.client.get(self.publishers_url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_suggesters_term(self):
+        """Test suggesters term."""
+        # Testing books
+        test_data = {
+            'summary_suggest__term': {
+                'borogovse': ['borogov'],
+                'Tumtus': ['tumtum'],
+                'Jabberwok': ['jabberwock'],
+                'tovse': ['tove', 'took', 'twas'],
+            },
+        }
+        self._test_suggesters(test_data, self.books_url)
+
+    def test_suggesters_phrase(self):
+        """Test suggesters phrase."""
+        # Testing books
+        test_data = {
+            'summary_suggest__phrase': {
+                'slith tovs': ['slithi tov'],
+                'mimsy boroto': ['mimsi borogov'],
+            },
+        }
+        self._test_suggesters(test_data, self.books_url)
 
 
 if __name__ == '__main__':

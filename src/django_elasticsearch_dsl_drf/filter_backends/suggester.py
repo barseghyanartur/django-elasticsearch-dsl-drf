@@ -338,11 +338,4 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                                                options,
                                                                value)
 
-                # `term` filter lookup
-                else:
-                    queryset = self.apply_suggester_term(suggester_name,
-                                                         queryset,
-                                                         options,
-                                                         value)
-
         return queryset

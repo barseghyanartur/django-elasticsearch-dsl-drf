@@ -179,4 +179,5 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         'title_suggest': 'title.suggest',
         'publisher_suggest': 'publisher.suggest',
         'tag_suggest': 'tags.suggest',
+        'summary_suggest': 'summary',
     }

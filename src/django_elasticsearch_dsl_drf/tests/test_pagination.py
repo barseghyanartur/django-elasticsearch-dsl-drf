@@ -62,15 +62,14 @@ class TestPagination(BaseRestFrameworkTestCase):
             status.HTTP_404_NOT_FOUND
         )
 
-        # TODO: consider totals
-
         valid_page_url = publishers_url + '?limit=5&offset=8'
 
         # Check if response now is valid
         valid_response = self.client.get(valid_page_url, data)
         self.assertEqual(valid_response.status_code, status.HTTP_200_OK)
 
-        # TODO: consider totals
+        # Check totals
+        self.assertEqual(len(valid_response.data['results']), 5)
 
     def test_pagination(self):
         """Test pagination."""

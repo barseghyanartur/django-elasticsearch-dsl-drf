@@ -2,11 +2,19 @@
 All filter backends.
 """
 
-from .faceted_search import *
-from .filtering import *
-from .ordering import *
-from .search import *
-from .suggester import *
+from .faceted_search import FacetedSearchFilterBackend
+from .filtering import (
+    FilteringFilterBackend,
+    GeoSpatialFilteringFilterBackend,
+    IdsFilterBackend,
+)
+from .ordering import (
+    DefaultOrderingFilterBackend,
+    GeoSpatialOrderingFilterBackend,
+    OrderingFilterBackend,
+)
+from .search import SearchFilterBackend
+from .suggester import SuggesterFilterBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

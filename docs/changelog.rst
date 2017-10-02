@@ -15,12 +15,21 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.4.4
+-----
+2017-10-02 (not yet released)
+
+- Documentation improvements (Elasticsearch suggestions).
+- More tests (term and phrase suggestions).
+- Code style fixes.
+
 0.4.3
 -----
 2017-09-28
 
 - Documentation fixes.
 - Fixes in tests.
+- Improved factories.
 
 0.4.2
 -----

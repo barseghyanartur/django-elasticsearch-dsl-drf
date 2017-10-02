@@ -53,7 +53,7 @@ class BookDocument(DocType):
     summary = StringField(
         analyzer=html_strip,
         fields={
-            'raw': KeywordField(),
+            'raw': KeywordField()
         }
     )
 

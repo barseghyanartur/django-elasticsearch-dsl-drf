@@ -54,17 +54,17 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         """
         self.authenticate()
 
-        self.geo_origin = factories.PublisherFactory.create(
+        _geo_origin = factories.PublisherFactory.create(
             **{
                 'latitude': 48.8549,
                 'longitude': 2.3000,
             }
         )
 
-        self.geo_in_count = 5
-        self.geo_distance = '1km'
-        self.geo_in = factories.PublisherFactory.create_batch(
-            self.geo_in_count,
+        _geo_in_count = 5
+        _geo_distance = '1km'
+        _geo_in = factories.PublisherFactory.create_batch(
+            _geo_in_count,
             **{
                 'latitude': 48.8570,
                 'longitude': 2.3005,
@@ -73,9 +73,9 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
 
         call_command('search_index', '--rebuild', '-f')
 
-        __params = '{}|{}|{}'.format(self.geo_distance,
-                                     self.geo_origin.latitude,
-                                     self.geo_origin.longitude)
+        __params = '{}|{}|{}'.format(_geo_distance,
+                                     _geo_origin.latitude,
+                                     _geo_origin.longitude)
 
         url = self.base_publisher_url[:] + '?{}={}'.format(
             'location__geo_distance',
@@ -86,7 +86,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # Should contain only 6 results
-        self.assertEqual(len(response.data['results']), self.geo_in_count + 1)
+        self.assertEqual(len(response.data['results']), _geo_in_count + 1)
 
     @pytest.mark.webtest
     def _test_field_filter_geo_polygon(self, points, count):

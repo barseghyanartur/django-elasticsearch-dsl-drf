@@ -788,8 +788,11 @@ There are three options available here: ``term``, ``phrase`` and
     search query into suggestion search query (which is very different).
     Therefore, always add it as the very last filter backend.
 
+Completion suggesters
+~~~~~~~~~~~~~~~~~~~~~
+
 Document definition
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 To make use of suggestions, you should properly indexed your documents using
 ``fields.CompletionField``.
@@ -870,7 +873,7 @@ After that the ``name.suggest``, ``city.suggest``, ``state_province.suggest``
 and ``country.suggest`` fields would be available for suggestions feature.
 
 Serializer definition
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 This is how publisher serializer would look like.
 
@@ -913,7 +916,7 @@ This is how publisher serializer would look like.
             return {}
 
 ViewSet definition
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 In order to add suggestions support, we would have to extend our view set in
 the following way:
@@ -924,11 +927,7 @@ the following way:
 
     # ...
 
-    from django_elasticsearch_dsl_drf.constants import (
-        SUGGESTER_TERM,
-        SUGGESTER_PHRASE,
-        SUGGESTER_COMPLETION,
-    )
+    from django_elasticsearch_dsl_drf.constants import SUGGESTER_COMPLETION
     from django_elasticsearch_dsl_drf.filter_backends import (
         # ...
         SuggesterFilterBackend,
@@ -955,8 +954,6 @@ the following way:
             'name_suggest': {
                 'field': 'name.suggest',
                 'suggesters': [
-                    SUGGESTER_TERM,
-                    SUGGESTER_PHRASE,
                     SUGGESTER_COMPLETION,
                 ],
             },
@@ -993,7 +990,7 @@ In the example below, we show suggestion results (auto-completion) for
 ``country`` field.
 
 Sample requests/responses
-~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Once you have extended your view set with ``SuggesterFilterBackend``
 functionality, you can make use of the ``suggest`` custom action of your
@@ -1101,7 +1098,7 @@ You can also have multiple suggesters per request.
     }
 
 Suggestions on Array/List field
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Suggestions on Array/List fields (typical use case - tags, where Tag model
 would be a many-to-many relation to a Book model) work almost the
 same.
@@ -1113,7 +1110,7 @@ Before checking the `Sample requests/responses`, do have in mind the following:
 - ``BookDocumentView`` (see the `Sample view`_)
 
 Sample requests/responses
-^^^^^^^^^^^^^^^^^^^^^^^^^
++++++++++++++++++++++++++
 
 Once you have extended your view set with ``SuggesterFilterBackend``
 functionality, you can make use of the ``suggest`` custom action of your
@@ -1152,6 +1149,359 @@ view set.
                 "text": "bio"
             }
         ]
+    }
+
+Term and Phrase suggestions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+While for the ``completion`` suggesters to work the ``CompletionField`` shall
+be used, the ``term`` and ``phrase`` suggesters work on common text fields.
+
+Document definition
+^^^^^^^^^^^^^^^^^^^
+
+*search_indexes/documents/book.py*
+
+.. code-block:: python
+
+    from django.conf import settings
+
+    from django_elasticsearch_dsl import DocType, Index, fields
+
+    from books.models import Book
+
+    # Name of the Elasticsearch index
+    INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
+
+    # See Elasticsearch Indices API reference for available settings
+    INDEX.settings(
+        number_of_shards=1,
+        number_of_replicas=1
+    )
+
+    @INDEX.doc_type
+    class BookDocument(DocType):
+        """Book Elasticsearch document."""
+        # ID
+        id = fields.IntegerField(attr='id')
+
+        title = StringField(
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField(),
+                'suggest': fields.CompletionField(),
+            }
+        )
+
+        description = StringField(
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField(),
+            }
+        )
+
+        summary = StringField(
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField()
+            }
+        )
+
+        # Publisher
+        publisher = StringField(
+            attr='publisher_indexing',
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField(),
+                'suggest': fields.CompletionField(),
+            }
+        )
+
+        # Publication date
+        publication_date = fields.DateField()
+
+        # State
+        state = StringField(
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField(),
+            }
+        )
+
+        # ISBN
+        isbn = StringField(
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField(),
+            }
+        )
+
+        # Price
+        price = fields.FloatField()
+
+        # Pages
+        pages = fields.IntegerField()
+
+        # Stock count
+        stock_count = fields.IntegerField()
+
+        # Tags
+        tags = StringField(
+            attr='tags_indexing',
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField(multi=True),
+                'suggest': fields.CompletionField(multi=True),
+            },
+            multi=True
+        )
+
+        null_field = fields.StringField(attr='null_field_indexing')
+
+        class Meta(object):
+            """Meta options."""
+
+            model = Book  # The model associate with this DocType
+
+ViewSet definition
+^^^^^^^^^^^^^^^^^^
+
+*search_indexes/viewsets.py*
+
+.. code-block:: python
+
+    from django_elasticsearch_dsl_drf.constants import (
+        LOOKUP_FILTER_PREFIX,
+        LOOKUP_FILTER_RANGE,
+        LOOKUP_FILTER_TERMS,
+        LOOKUP_FILTER_WILDCARD,
+        LOOKUP_QUERY_EXCLUDE,
+        LOOKUP_QUERY_GT,
+        LOOKUP_QUERY_GTE,
+        LOOKUP_QUERY_IN,
+        LOOKUP_QUERY_IN,
+        LOOKUP_QUERY_ISNULL,
+        LOOKUP_QUERY_LT,
+        LOOKUP_QUERY_LTE,
+        SUGGESTER_PHRASE,
+        SUGGESTER_TERM,
+    )
+    from django_elasticsearch_dsl_drf.filter_backends import (
+        # ...
+        SuggesterFilterBackend,
+    )
+
+    class BookDocumentViewSet(BaseDocumentViewSet):
+        """The BookDocument view."""
+
+        document = BookDocument
+        # serializer_class = BookDocumentSerializer
+        serializer_class = BookDocumentSimpleSerializer
+        lookup_field = 'id'
+        filter_backends = [
+            FilteringFilterBackend,
+            OrderingFilterBackend,
+            DefaultOrderingFilterBackend,
+            SearchFilterBackend,
+            SuggesterFilterBackend,
+        ]
+        # Define search fields
+        search_fields = (
+            'title',
+            'description',
+            'summary',
+        )
+        # Define filter fields
+        filter_fields = {
+            'id': {
+                'field': 'id',
+                'lookups': [
+                    LOOKUP_FILTER_RANGE,
+                    LOOKUP_QUERY_IN,
+                    LOOKUP_QUERY_GT,
+                    LOOKUP_QUERY_GTE,
+                    LOOKUP_QUERY_LT,
+                    LOOKUP_QUERY_LTE,
+                    LOOKUP_FILTER_TERMS,
+                ],
+            },
+            'title': 'title.raw',
+            'publisher': 'publisher.raw',
+            'publication_date': 'publication_date',
+            'state': 'state.raw',
+            'isbn': 'isbn.raw',
+            'price': {
+                'field': 'price.raw',
+                'lookups': [
+                    LOOKUP_FILTER_RANGE,
+                ],
+            },
+            'pages': {
+                'field': 'pages',
+                'lookups': [
+                    LOOKUP_FILTER_RANGE,
+                    LOOKUP_QUERY_GT,
+                    LOOKUP_QUERY_GTE,
+                    LOOKUP_QUERY_LT,
+                    LOOKUP_QUERY_LTE,
+                ],
+            },
+            'stock_count': {
+                # 'field': 'stock_count',
+                'lookups': [
+                    LOOKUP_FILTER_RANGE,
+                    LOOKUP_QUERY_GT,
+                    LOOKUP_QUERY_GTE,
+                    LOOKUP_QUERY_LT,
+                    LOOKUP_QUERY_LTE,
+                ],
+            },
+            'tags': {
+                'field': 'tags',
+                'lookups': [
+                    LOOKUP_FILTER_TERMS,
+                    LOOKUP_FILTER_PREFIX,
+                    LOOKUP_FILTER_WILDCARD,
+                    LOOKUP_QUERY_IN,
+                    LOOKUP_QUERY_EXCLUDE,
+                    LOOKUP_QUERY_ISNULL,
+                ],
+            },
+            'tags.raw': {
+                'field': 'tags.raw',
+                'lookups': [
+                    LOOKUP_FILTER_TERMS,
+                    LOOKUP_FILTER_PREFIX,
+                    LOOKUP_FILTER_WILDCARD,
+                    LOOKUP_QUERY_IN,
+                    LOOKUP_QUERY_EXCLUDE,
+                ],
+            },
+            # This has been added to test `exists` filter.
+            'non_existent_field': 'non_existent_field',
+            # This has been added to test `isnull` filter.
+            'null_field': 'null_field',
+        }
+        # Define ordering fields
+        ordering_fields = {
+            'id': 'id',
+            'title': 'title.raw',
+            'price': 'price.raw',
+            'state': 'state.raw',
+            'publication_date': 'publication_date',
+        }
+        # Specify default ordering
+        ordering = ('id', 'title', 'price',)
+
+        # Suggester fields
+        suggester_fields = {
+            'title_suggest': 'title.suggest',
+            'publisher_suggest': 'publisher.suggest',
+            'tag_suggest': 'tags.suggest',
+            'summary_suggest': 'summary',
+        }
+
+Sample requests/responses
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Once you have extended your view set with ``SuggesterFilterBackend``
+functionality, you can make use of the ``suggest`` custom action of your
+view set.
+
+Let's considering, that one of our books has the following text in the summary:
+
+.. code-block:: text
+
+    Twas brillig, and the slithy toves
+    Did gyre and gimble in the wabe.
+    All mimsy were the borogoves
+    And the mome raths outgrabe.
+
+    "Beware the Jabberwock, my son!
+    The jaws that bite, the claws that catch!
+    Beware the Jubjub bird, and shun
+    The frumious Bandersnatch!"
+
+    He took his vorpal sword in his hand,
+    Long time the manxome foe he sought --
+    So rested he by the Tumtum tree,
+    And stood awhile in thought.
+
+Term
+++++
+
+**Request**
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/books/suggest/?summary_suggest__term=tovse
+
+**Response**
+
+.. code-block:: javascript
+
+    {
+        "_shards": {
+            "failed": 0,
+            "total": 1,
+            "successful": 1
+        },
+        "summary_suggest__term": [
+            {
+                "text": "tovs",
+                "offset": 0,
+                "options": [
+                    {
+                        "text": "tove",
+                        "score": 0.75,
+                        "freq": 1
+                    },
+                    {
+                        "text": "took",
+                        "score": 0.5,
+                        "freq": 1
+                    },
+                    {
+                        "text": "twas",
+                        "score": 0.5,
+                        "freq": 1
+                    }
+                ],
+                "length": 5
+            }
+        ]
+    }
+
+Phrase
+++++++
+
+**Request**
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/books/suggest/?summary_suggest__phrase=slith%20tovs
+
+**Response**
+
+.. code-block:: javascript
+
+    {
+        "summary_suggest__phrase": [
+            {
+                "text": "slith tovs",
+                "offset": 0,
+                "options": [
+                    {
+                        "text": "slithi tov",
+                        "score": 0.00083028956
+                    }
+                ],
+                "length": 10
+            }
+        ],
+        "_shards": {
+            "failed": 0,
+            "total": 1,
+            "successful": 1
+        }
     }
 
 Pagination

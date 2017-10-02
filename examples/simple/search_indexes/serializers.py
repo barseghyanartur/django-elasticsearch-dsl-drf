@@ -189,7 +189,7 @@ class PublisherDocumentSerializer(serializers.Serializer):
         """Represent location value."""
         try:
             return obj.location.to_dict()
-        except:
+        except Exception:
             return {}
 
 

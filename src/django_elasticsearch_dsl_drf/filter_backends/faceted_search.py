@@ -176,7 +176,7 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
         return __facets
 
     def aggregate(self, request, queryset, view):
-        """
+        """Aggregate.
 
         :param request:
         :param queryset:

@@ -794,8 +794,8 @@ Completion suggesters
 Document definition
 ^^^^^^^^^^^^^^^^^^^
 
-To make use of suggestions, you should properly indexed your documents using
-``fields.CompletionField``.
+To make use of suggestions, you should properly index relevant fields of your
+documents using ``fields.CompletionField``.
 
 *search_indexes/documents/publisher.py*
 

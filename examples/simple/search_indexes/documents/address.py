@@ -71,14 +71,15 @@ class AddressDocument(DocType):
             ),
             'info': StringField(analyzer=html_strip),
             'location': fields.GeoPointField(attr='location_field_indexing'),
-            # 'country': fields.ObjectField(
-            #     propertries={
-            #         'name': StringField(analyzer=html_strip),
-            #         'location': fields.GeoPointField(
-            #             attr='location_field_indexing'
-            #         )
-            #     }
-            # )
+            'country': fields.ObjectField(
+                properties={
+                    'name': StringField(analyzer=html_strip),
+                    'info': StringField(analyzer=html_strip),
+                    'location': fields.GeoPointField(
+                        attr='location_field_indexing'
+                    )
+                }
+            )
         }
     )
 

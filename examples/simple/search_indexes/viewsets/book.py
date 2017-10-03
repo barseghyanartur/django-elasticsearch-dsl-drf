@@ -28,7 +28,7 @@ from ..documents import BookDocument
 from ..serializers import BookDocumentSimpleSerializer
 
 __all__ = (
-    'BookDocumentView',
+    'BookDocumentViewSet',
 )
 
 

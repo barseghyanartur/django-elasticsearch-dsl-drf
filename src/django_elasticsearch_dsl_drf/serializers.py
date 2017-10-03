@@ -7,7 +7,6 @@ from __future__ import absolute_import, unicode_literals
 
 import copy
 from collections import OrderedDict
-# from datetime import datetime
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -51,6 +50,7 @@ from rest_framework.fields import (
 
 import six
 
+from .fields import GeoPointField, NestedField, ObjectField
 from .helpers import sort_by_list
 from .utils import EmptySearch
 
@@ -136,12 +136,13 @@ class DocumentSerializer(
         fields.DateField: DateField,
         fields.DoubleField: FloatField,
         fields.FloatField: FloatField,
-        # fields.GeoPointField:  # TODO
+        fields.GeoPointField: GeoPointField,
         # fields.GeoShapeField:  # TODO
         fields.IntegerField: IntegerField,
         fields.IpField: IPAddressField,
         fields.LongField: IntegerField,
-        # fields.NestedField:  # TODO
+        fields.NestedField: NestedField,
+        fields.ObjectField: ObjectField,
         fields.ShortField: IntegerField,
         fields.StringField: CharField,
 
@@ -263,6 +264,8 @@ class DocumentSerializer(
                 field_name,
                 field_type
             )
+            if field_type.__class__ not in self._field_mapping:
+                continue
             field_mapping[field_name] = \
                 self._field_mapping[field_type.__class__](**kwargs)
 

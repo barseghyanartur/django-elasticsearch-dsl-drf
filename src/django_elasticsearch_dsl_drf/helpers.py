@@ -72,7 +72,8 @@ def sort_by_list(unsorted_dict, sorted_keys):
     )
     if PY3:
         for key in __sorted_keys:
-            unsorted_dict.move_to_end(key)
+            if key in unsorted_dict:
+                unsorted_dict.move_to_end(key)
 
         return unsorted_dict
     else:

@@ -1,8 +1,11 @@
 from django.contrib import admin
 
 from .models import (
+    Address,
     Author,
     Book,
+    City,
+    Country,
     Order,
     OrderLine,
     Publisher,
@@ -10,8 +13,11 @@ from .models import (
 )
 
 __all__ = (
+    'AddressAdmin',
     'AuthorAdmin',
     'BookAdmin',
+    'CityAdmin',
+    'CountryAdmin',
     'OrderAdmin',
     'OrderLineAdmin',
     'PublisherAdmin',
@@ -72,3 +78,30 @@ class TagAdmin(admin.ModelAdmin):
 
     list_display = ('title',)
     search_fields = ('title',)
+
+
+@admin.register(Address)
+class AddressAdmin(admin.ModelAdmin):
+    """Address admin."""
+
+    list_display = ('street', 'house_number', 'latitude', 'longitude',)
+    list_editable = ('latitude', 'longitude',)
+    search_fields = ('street',)
+
+
+@admin.register(City)
+class CityAdmin(admin.ModelAdmin):
+    """City admin."""
+
+    list_display = ('name', 'latitude', 'longitude',)
+    list_editable = ('latitude', 'longitude',)
+    search_fields = ('name',)
+
+
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    """Country admin."""
+
+    list_display = ('name', 'latitude', 'longitude',)
+    list_editable = ('latitude', 'longitude',)
+    search_fields = ('name',)

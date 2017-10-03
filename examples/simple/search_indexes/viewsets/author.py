@@ -17,7 +17,7 @@ from ..documents import AuthorDocument
 from ..serializers import AuthorDocumentSimpleSerializer
 
 __all__ = (
-    'AuthorDocumentView',
+    'AuthorDocumentViewSet',
 )
 
 

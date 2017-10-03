@@ -18,19 +18,19 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
 from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
 
-from ..documents import PublisherDocument
-from ..serializers import PublisherDocumentSerializer
+from ..documents import AddressDocument
+from ..serializers import AddressDocumentSerializer
 
 __all__ = (
-    'PublisherDocumentViewSet',
+    'AddressDocumentViewSet',
 )
 
 
-class PublisherDocumentViewSet(BaseDocumentViewSet):
-    """The PublisherDocument view."""
+class AddressDocumentViewSet(BaseDocumentViewSet):
+    """The AddressDocument view."""
 
-    document = PublisherDocument
-    serializer_class = PublisherDocumentSerializer
+    document = AddressDocument
+    serializer_class = AddressDocumentSerializer
     lookup_field = 'id'
     filter_backends = [
         FilteringFilterBackend,
@@ -44,20 +44,13 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
     pagination_class = LimitOffsetPagination
     # Define search fields
     search_fields = (
-        'name',
-        'info',
-        'address',
-        'city',
-        'state_province',
-        'country',
+        'street',
+        'zip_code',
     )
     # Define filtering fields
     filter_fields = {
         'id': None,
-        'name': 'name.raw',
-        'city': 'city.raw',
-        'state_province': 'state_province.raw',
-        'country': 'country.raw',
+        'city': 'city.name.raw',
     }
     # Define geo-spatial filtering fields
     geo_spatial_filter_fields = {
@@ -73,38 +66,27 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
     # Define ordering fields
     ordering_fields = {
         'id': None,
-        'name': None,
-        'city': None,
-        'country': None,
+        'street': None,
+        'city': 'city.name.raw',
+        'zip_code': None,
     }
     # Define ordering fields
     geo_spatial_ordering_fields = {
         'location': None,
     }
     # Specify default ordering
-    ordering = ('id', 'name',)
+    ordering = (
+        'id',
+        'street.raw',
+        'city.name.raw',
+    )
 
     # Suggester fields
     suggester_fields = {
-        'name_suggest': {
-            'field': 'name.suggest',
-            'suggesters': [
-                SUGGESTER_TERM,
-                SUGGESTER_PHRASE,
-                SUGGESTER_COMPLETION,
-            ],
-        },
-        'city_suggest': {
-            'field': 'city.suggest',
+        'street_suggest': {
+            'field': 'street.suggest',
             'suggesters': [
                 SUGGESTER_COMPLETION,
             ],
-        },
-        'state_province_suggest': 'state_province.suggest',
-        'country_suggest': {
-            'field': 'country.suggest',
-            'suggesters': [
-                SUGGESTER_COMPLETION,
-            ],
-        },
+        }
     }

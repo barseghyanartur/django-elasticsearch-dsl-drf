@@ -73,7 +73,13 @@ class AddressDocument(DocType):
             'location': fields.GeoPointField(attr='location_field_indexing'),
             'country': fields.ObjectField(
                 properties={
-                    'name': StringField(analyzer=html_strip),
+                    'name': StringField(
+                        analyzer=html_strip,
+                        fields={
+                            'raw': KeywordField(),
+                            'suggest': fields.CompletionField(),
+                        }
+                    ),
                     'info': StringField(analyzer=html_strip),
                     'location': fields.GeoPointField(
                         attr='location_field_indexing'

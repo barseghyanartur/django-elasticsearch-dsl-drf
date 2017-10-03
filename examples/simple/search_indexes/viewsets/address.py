@@ -2,8 +2,8 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_FILTER_GEO_POLYGON,
     LOOKUP_FILTER_GEO_BOUNDING_BOX,
-    SUGGESTER_TERM,
-    SUGGESTER_PHRASE,
+    # SUGGESTER_TERM,
+    # SUGGESTER_PHRASE,
     SUGGESTER_COMPLETION,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
@@ -51,6 +51,7 @@ class AddressDocumentViewSet(BaseDocumentViewSet):
     filter_fields = {
         'id': None,
         'city': 'city.name.raw',
+        'country': 'city.country.name.raw',
     }
     # Define geo-spatial filtering fields
     geo_spatial_filter_fields = {
@@ -68,6 +69,7 @@ class AddressDocumentViewSet(BaseDocumentViewSet):
         'id': None,
         'street': None,
         'city': 'city.name.raw',
+        'country': 'city.country.name.raw',
         'zip_code': None,
     }
     # Define ordering fields
@@ -79,12 +81,25 @@ class AddressDocumentViewSet(BaseDocumentViewSet):
         'id',
         'street.raw',
         'city.name.raw',
+        # 'city.country.name.raw',
     )
 
     # Suggester fields
     suggester_fields = {
         'street_suggest': {
             'field': 'street.suggest',
+            'suggesters': [
+                SUGGESTER_COMPLETION,
+            ],
+        },
+        'city_suggest': {
+            'field': 'city.name.suggest',
+            'suggesters': [
+                SUGGESTER_COMPLETION,
+            ],
+        },
+        'country_suggest': {
+            'field': 'city.country.name.suggest',
             'suggesters': [
                 SUGGESTER_COMPLETION,
             ],

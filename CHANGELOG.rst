@@ -15,6 +15,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.4.5
+-----
+2017-10-dd (not yet released)
+
+- Support for ``ObjectField``, ``NestedField`` and ``GeoPointField``.
+- Dynamic serializer has been made less strict.
+
 0.4.4
 -----
 2017-10-02

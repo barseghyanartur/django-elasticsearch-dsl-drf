@@ -19,10 +19,16 @@ class ObjectField(Field):
     """Object field."""
 
     def get_value(self, dictionary):
+        """Get value."""
         value = super(ObjectField, self).get_value(dictionary)
         return value.to_dict()
 
+    def to_internal_value(self, data):
+        """To internal value."""
+        return data
+
     def to_representation(self, value):
+        """To representation."""
         return value.to_dict()
 
 

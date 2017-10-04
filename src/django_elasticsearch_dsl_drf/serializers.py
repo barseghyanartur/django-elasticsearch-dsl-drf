@@ -16,41 +16,53 @@ from rest_framework import serializers
 from rest_framework.fields import empty
 from rest_framework.utils.field_mapping import get_field_kwargs
 
-from rest_framework.fields import (
-    BooleanField,
-    CharField,
-    # ChoiceField,
-    DateField,
-    # DateTimeField,
-    # DecimalField,
-    # DictField,
-    # DurationField,
-    # EmailField,
-    # Field,
-    # FileField,
-    # FilePathField,
-    FloatField,
-    # HiddenField,
-    # ImageField,
-    IntegerField,
-    IPAddressField,
-    # JSONField,
-    # ListField,
-    # ModelField,
-    # MultipleChoiceField,
-    # NullBooleanField,
-    # ReadOnlyField,
-    # RegexField,
-    # SerializerMethodField,
-    # SlugField,
-    # TimeField,
-    # URLField,
-    # UUIDField,
-)
+# from rest_framework.fields import (
+#     BooleanField,
+#     CharField,
+#     # ChoiceField,
+#     DateField,
+#     # DateTimeField,
+#     # DecimalField,
+#     # DictField,
+#     # DurationField,
+#     # EmailField,
+#     # Field,
+#     # FileField,
+#     # FilePathField,
+#     FloatField,
+#     # HiddenField,
+#     # ImageField,
+#     IntegerField,
+#     IPAddressField,
+#     # JSONField,
+#     # ListField,
+#     # ModelField,
+#     # MultipleChoiceField,
+#     # NullBooleanField,
+#     # ReadOnlyField,
+#     # RegexField,
+#     # SerializerMethodField,
+#     # SlugField,
+#     # TimeField,
+#     # URLField,
+#     # UUIDField,
+# )
 
 import six
 
-from .fields import GeoPointField, NestedField, ObjectField
+from .fields import (
+    BooleanField,
+    CharField,
+    DateField,
+    FloatField,
+    GeoPointField,
+    GeoShapeField,
+    IntegerField,
+    IPAddressField,
+    ListField,
+    NestedField,
+    ObjectField,
+)
 from .helpers import sort_by_list
 from .utils import EmptySearch
 
@@ -137,16 +149,17 @@ class DocumentSerializer(
         fields.DoubleField: FloatField,
         fields.FloatField: FloatField,
         fields.GeoPointField: GeoPointField,
-        # fields.GeoShapeField:  # TODO
+        fields.GeoShapeField: GeoShapeField,
         fields.IntegerField: IntegerField,
         fields.IpField: IPAddressField,
         fields.LongField: IntegerField,
         fields.NestedField: NestedField,
+        fields.ListField: ListField,
         fields.ObjectField: ObjectField,
         fields.ShortField: IntegerField,
         fields.StringField: CharField,
 
-        # *******************************************************************
+        # Needs to be thought about still:
         # models.CommaSeparatedIntegerField: CharField,
         # models.DateTimeField: DateTimeField,
         # models.DecimalField: DecimalField,
@@ -164,7 +177,6 @@ class DocumentSerializer(
         # models.TimeField: TimeField,
         # models.URLField: URLField,
         # models.FilePathField: FilePathField,
-        # *******************************************************************
     }
 
     # Elasticsearch 5.x specific fields
@@ -276,7 +288,6 @@ class DocumentSerializer(
                 field_mapping[field_name] = declared_fields[field_name]
 
         field_mapping = sort_by_list(field_mapping, __fields)
-
         return field_mapping
 
     def create(self, validated_data):

@@ -75,18 +75,19 @@ class BookDocumentSerializer(serializers.Serializer):
     #     """Get id."""
     #     return int(obj.meta.id)
 
-    def get_tags(self, obj):
-        """Get tags."""
-        if obj.tags:
-            return list(obj.tags)
-        else:
-            return []
+    # def get_tags(self, obj):
+    #     """Get tags."""
+    #     if obj.tags:
+    #         return list(obj.tags)
+    #     else:
+    #         return []
 
 
 class BookDocumentSimpleSerializer(DocumentSerializer):
     """Serializer for the Book document."""
 
-    tags = serializers.SerializerMethodField()
+    # tags = serializers.SerializerMethodField()
+    # authors = serializers.SerializerMethodField()
 
     class Meta(object):
         """Meta options."""
@@ -97,6 +98,7 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
             'title',
             'description',
             'summary',
+            'authors',
             'publisher',
             'publication_date',
             'state',
@@ -108,9 +110,16 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
             'null_field',  # Used in testing of `isnull` functional filter.
         )
 
-    def get_tags(self, obj):
-        """Get tags."""
-        if obj.tags:
-            return list(obj.tags)
-        else:
-            return []
+    # def get_tags(self, obj):
+    #     """Get tags."""
+    #     if obj.tags:
+    #         return list(obj.tags)
+    #     else:
+    #         return []
+    #
+    # def get_authors(self, obj):
+    #     """Get tags."""
+    #     if obj.authors:
+    #         return list(obj.authors)
+    #     else:
+    #         return []

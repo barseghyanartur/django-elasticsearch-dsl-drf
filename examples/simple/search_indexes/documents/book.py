@@ -61,6 +61,15 @@ class BookDocument(DocType):
     # ********** Additional fields for search and filtering **************
     # ********************************************************************
 
+    authors = fields.ListField(
+        StringField(
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField(),
+            }
+        )
+    )
+
     # Publisher
     publisher = StringField(
         attr='publisher_indexing',
@@ -120,3 +129,7 @@ class BookDocument(DocType):
     def prepare_summary(self, instance):
         """Prepare summary."""
         return instance.summary[:32766]
+
+    def prepare_authors(self, instance):
+        """Prepare authors."""
+        return [author.name for author in instance.authors.all()]

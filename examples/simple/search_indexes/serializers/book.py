@@ -114,4 +114,3 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
             return list(obj.tags)
         else:
             return []
-

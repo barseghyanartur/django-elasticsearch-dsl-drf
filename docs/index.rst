@@ -200,6 +200,7 @@ Contents:
    filtering_usage_examples
    basic_usage_examples
    advanced_usage_examples
+   nested_fields_usage_examples
    misc_usage_examples
    changelog
    django_elasticsearch_dsl_drf

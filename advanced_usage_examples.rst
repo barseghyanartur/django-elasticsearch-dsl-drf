@@ -9,13 +9,13 @@ See the `example project
 for sample models/views/serializers.
 
 - `models
-  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/books/models.py>`_
+  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/books/__init__.py>`_
 - `documents
-  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/documents/book.py>`_
+  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/documents/__init__.py>`_
 - `serializers
-  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/serializers.py>`_
-- `views
-  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/views.py>`_
+  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/serializers/__init__.py>`_
+- `viewsets
+  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/viewsets/__init__.py>`_
 
 Contents:
 
@@ -1551,3 +1551,32 @@ Example:
 
     http://127.0.0.1:8000/search/books/?limit=100
     http://127.0.0.1:8000/search/books/?offset=400&limit=100
+
+Customisations
+~~~~~~~~~~~~~~
+
+If you want to add additional data to the paginated response, for instance,
+the page size, subclass the correspondent pagination class and add your
+modifications in the ``get_paginated_response_context`` method as follows:
+
+.. code-block:: python
+
+    from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
+
+
+    class CustomPageNumberPagination(PageNumberPagination):
+        """Custom page number pagination."""
+
+        def get_paginated_response_context(self, data):
+            __data = super(
+                CustomPageNumberPagination,
+                self
+            ).get_paginated_response_context(data)
+            __data.append(
+                ('current_page', int(self.request.query_params.get('page', 1))),
+                ('page_size', self.page_size),
+            )
+
+            return __data
+
+Same applies to the customisations of the ``LimitOffsetPagination``.

@@ -146,8 +146,8 @@ class PageNumberPagination(pagination.PageNumberPagination):
         self.request = request
         return list(self.page)
 
-    def get_paginated_response(self, data):
-        """Get paginated response.
+    def get_paginated_response_context(self, data):
+        """Get paginated response data.
 
         :param data:
         :return:
@@ -165,7 +165,15 @@ class PageNumberPagination(pagination.PageNumberPagination):
         __data.append(
             ('results', data),
         )
-        return Response(OrderedDict(__data))
+        return __data
+
+    def get_paginated_response(self, data):
+        """Get paginated response.
+
+        :param data:
+        :return:
+        """
+        return Response(OrderedDict(self.get_paginated_response_context(data)))
 
 
 class LimitOffsetPagination(pagination.LimitOffsetPagination):
@@ -232,8 +240,8 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         if hasattr(facets, '_d_'):
             return facets._d_
 
-    def get_paginated_response(self, data):
-        """Get paginated response.
+    def get_paginated_response_context(self, data):
+        """Get paginated response data.
 
         :param data:
         :return:
@@ -251,4 +259,12 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         __data.append(
             ('results', data),
         )
-        return Response(OrderedDict(__data))
+        return __data
+
+    def get_paginated_response(self, data):
+        """Get paginated response.
+
+        :param data:
+        :return:
+        """
+        return Response(OrderedDict(self.get_paginated_response_context(data)))

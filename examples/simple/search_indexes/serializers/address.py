@@ -14,8 +14,10 @@ class AddressDocumentSerializer(DocumentSerializer):
         document = AddressDocument
         fields = (
             'id',
-            'name',
-            'info',
+            'street',
+            'house_number',
+            'appendix',
+            'zip_code',
             'city',
             'location',
         )

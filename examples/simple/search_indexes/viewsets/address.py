@@ -46,6 +46,8 @@ class AddressDocumentViewSet(BaseDocumentViewSet):
     search_fields = (
         'street',
         'zip_code',
+        'city.name',
+        'city.country.name',
     )
     # Define filtering fields
     filter_fields = {

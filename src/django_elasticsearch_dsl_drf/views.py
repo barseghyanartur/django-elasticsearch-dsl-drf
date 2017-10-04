@@ -1,4 +1,4 @@
-from .viewsets import *  # NOQA
+from .viewsets import BaseDocumentViewSet  # NOQA
 
 # This module is deprecated. Import from `viewsets` module instead.
 

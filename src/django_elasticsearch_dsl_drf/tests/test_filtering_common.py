@@ -19,6 +19,7 @@ from books import constants
 import factories
 
 from .base import BaseRestFrameworkTestCase
+from .data_mixins import AddressesMixin, BooksMixin
 
 if DJANGO_GTE_1_10:
     from django.urls import reverse
@@ -35,7 +36,9 @@ __all__ = (
 
 
 @pytest.mark.django_db
-class TestFilteringCommon(BaseRestFrameworkTestCase):
+class TestFilteringCommon(BaseRestFrameworkTestCase,
+                          AddressesMixin,
+                          BooksMixin):
     """Test filtering common."""
 
     pytestmark = pytest.mark.django_db
@@ -43,54 +46,18 @@ class TestFilteringCommon(BaseRestFrameworkTestCase):
     @classmethod
     def setUpClass(cls):
         """Set up."""
-        # Counts are primarily taken into consideration. Don't create Book
-        # objects without `state`. If you don't know which state to use, use
-        # ``constants.BOOK_PUBLISHING_STATUS_REJECTED``.
-        cls.published_count = 10
-        cls.published = factories.BookFactory.create_batch(
-            cls.published_count,
-            **{
-                'state': constants.BOOK_PUBLISHING_STATUS_PUBLISHED,
-            }
-        )
+        # Testing simple documents: Publisher index.
+        cls.create_books()
 
-        cls.in_progress_count = 10
-        cls.in_progress = factories.BookFactory.create_batch(
-            cls.in_progress_count,
-            **{
-                'state': constants.BOOK_PUBLISHING_STATUS_IN_PROGRESS,
-            }
-        )
+        # Testing nested objects: Addresses, cities and countries
+        cls.created_addresses()
 
-        cls.prefix_count = 2
-        cls.prefix = 'DelusionalInsanity'
-        cls.prefixed = factories.BookFactory.create_batch(
-            cls.prefix_count,
-            **{
-
-                'title': '{} {}'.format(cls.prefix, uuid.uuid4()),
-                'state': constants.BOOK_PUBLISHING_STATUS_REJECTED,
-            }
-        )
-
-        cls.no_tags_count = 5
-        cls.no_tags = factories.BookWithoutTagsFactory.create_batch(
-            cls.no_tags_count,
-            **{
-                'state': constants.BOOK_PUBLISHING_STATUS_REJECTED,
-            }
-        )
-
-        cls.all_count = (
-            cls.published_count +
-            cls.in_progress_count +
-            cls.prefix_count +
-            cls.no_tags_count
-        )
-
-        cls.base_url = reverse('bookdocument-list', kwargs={})
-        cls.base_publisher_url = reverse('publisherdocument-list', kwargs={})
+        # Update the Elasticsearch index
         call_command('search_index', '--rebuild', '-f')
+
+    # ***********************************************************************
+    # ************************ Simple fields ********************************
+    # ***********************************************************************
 
     def _field_filter_value(self, field_name, value, count):
         """Field filter value.
@@ -499,6 +466,60 @@ class TestFilteringCommon(BaseRestFrameworkTestCase):
             self.published_count
         )
 
+    # ***********************************************************************
+    # ************************ Nested fields ********************************
+    # ***********************************************************************
+
+    def _nested_field_filter_term(self, field_name, filter_value, count):
+        """Nested field filter term.
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags=children
+        """
+        self.authenticate()
+
+        url = self.addresses_url[:]
+        data = {}
+
+        # Should contain only 32 results
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(response.data['results']),
+            self.all_addresses_count
+        )
+
+        # Should contain only 10 results
+        filtered_response = self.client.get(
+            url + '?{}={}'.format(field_name, filter_value),
+            data
+        )
+        self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(filtered_response.data['results']),
+            count
+        )
+
+    def test_nested_field_filter_term(self):
+        """Nested field filter term."""
+        self._nested_field_filter_term(
+            'city',
+            'Yerevan',
+            self.addresses_in_yerevan_count
+        )
+
+        self._nested_field_filter_term(
+            'country',
+            'Armenia',
+            self.addresses_in_yerevan_count
+        )
+
+        self._nested_field_filter_term(
+            'city',
+            'Dublin',
+            self.addresses_in_dublin_count
+        )
 
 if __name__ == '__main__':
     unittest.main()

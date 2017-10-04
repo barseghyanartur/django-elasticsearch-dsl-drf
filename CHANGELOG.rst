@@ -21,6 +21,9 @@ are used for versioning (schema follows below):
 
 - Support for ``ObjectField``, ``NestedField`` and ``GeoPointField``.
 - Dynamic serializer has been made less strict.
+- Added ``get_paginated_response_context`` methods to both
+  ``PageNumberPagination`` and ``LimitOffsetPagination`` pagination classes
+  to simplify customisations.
 
 0.4.4
 -----

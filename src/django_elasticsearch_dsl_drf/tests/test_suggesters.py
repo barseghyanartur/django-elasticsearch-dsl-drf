@@ -18,6 +18,7 @@ from rest_framework import status
 import factories
 
 from .base import BaseRestFrameworkTestCase
+from .data_mixins import AddressesMixin
 
 if DJANGO_GTE_1_10:
     from django.urls import reverse
@@ -34,7 +35,7 @@ __all__ = (
 
 
 @pytest.mark.django_db
-class TestSuggesters(BaseRestFrameworkTestCase):
+class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
     """Test suggesters."""
 
     pytestmark = pytest.mark.django_db
@@ -178,6 +179,8 @@ class TestSuggesters(BaseRestFrameworkTestCase):
             kwargs={}
         )
 
+        cls.created_addresses()
+
         call_command('search_index', '--rebuild', '-f')
 
     def _test_suggesters(self, test_data, url):
@@ -279,6 +282,27 @@ class TestSuggesters(BaseRestFrameworkTestCase):
             },
         }
         self._test_suggesters(test_data, self.books_url)
+
+    def test_nested_fields_suggesters_completion(self):
+        """Test suggesters completion for nested fields."""
+        # Testing cities and countries
+        test_data = {
+            'city_suggest__completion': {
+                'Y': ['Yerevan', 'York'],
+                'Yer': ['Yerevan'],
+                'Ams': ['Amsterdam'],
+                'Du': ['Dublin'],
+                'Ne': [],
+            },
+            'country_suggest__completion': {
+                'Arm': ['Armenia'],
+                'Ar': ['Armenia', 'Argentina'],
+                'Re': ['Republic of Ireland'],
+                'Net': ['Netherlands'],
+                'Fra': [],
+            }
+        }
+        self._test_suggesters(test_data, self.addresses_suggest_url)
 
 
 if __name__ == '__main__':

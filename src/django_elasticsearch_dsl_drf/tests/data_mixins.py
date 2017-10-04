@@ -98,6 +98,7 @@ class AddressesMixin(object):
             kwargs={}
         )
 
+
 class BooksMixin(object):
     """Books mixin."""
 

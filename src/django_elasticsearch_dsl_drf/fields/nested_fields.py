@@ -53,7 +53,7 @@ class ListField(Field):
 
     def get_value(self, dictionary):
         """Get value."""
-        value = super(ObjectField, self).get_value(dictionary)
+        value = super(ListField, self).get_value(dictionary)
         return to_representation(value)
 
     def to_internal_value(self, data):

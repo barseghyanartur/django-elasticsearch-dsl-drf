@@ -15,11 +15,12 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
-0.4.5
------
+0.5
+---
 2017-10-dd (not yet released)
 
-- Support for ``ObjectField``, ``NestedField`` and ``GeoPointField``.
+- Support for ``ObjectField``, ``NestedField``, ``GeoPointField``,
+  ``ListField``, ``GeoShapeField``.
 - Dynamic serializer has been made less strict.
 - Added ``get_paginated_response_context`` methods to both
   ``PageNumberPagination`` and ``LimitOffsetPagination`` pagination classes

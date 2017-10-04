@@ -2,13 +2,13 @@ Roadmap
 =======
 Road-map/upcoming releases.
 
-0.5
+0.6
 ---
 yyyy-mm-dd (future)
 
 - Improved geo-spatial search/filtering/ordering support.
 
-0.6
+0.7
 ---
 yyyy-mm-dd (future)
 

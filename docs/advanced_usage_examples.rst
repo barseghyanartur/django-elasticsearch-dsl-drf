@@ -900,8 +900,6 @@ This is how publisher serializer would look like.
     class PublisherDocumentSerializer(DocumentSerializer):
         """Serializer for Publisher document."""
 
-        location = serializers.SerializerMethodField()
-
         class Meta(object):
             """Meta options."""
 
@@ -919,13 +917,6 @@ This is how publisher serializer would look like.
                 'country',
                 'website',
             )
-
-        def get_location(self, obj):
-        """Represent location value."""
-        try:
-            return obj.location.to_dict()
-        except:
-            return {}
 
 ViewSet definition
 ^^^^^^^^^^^^^^^^^^

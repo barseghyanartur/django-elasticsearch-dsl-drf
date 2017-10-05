@@ -19,6 +19,14 @@ are used for versioning (schema follows below):
 ---
 2017-10-05
 
+.. note::
+
+    This release contains changes that might be backwards incompatible
+    for your project. If you have used dynamic document serializer
+    ``django_elasticsearch_dsl_drf.serializers.DocumentSerializer``
+    with customisations (with use of ``serializers.SerializerMethodField``,
+    having the value parsed to JSON), just remove the custom parts.
+
 - Support for ``ObjectField``, ``NestedField``, ``GeoPointField``,
   ``ListField``, ``GeoShapeField`` (and in general, nesting fields either
   as a dictionary or list should not be a problem at all).

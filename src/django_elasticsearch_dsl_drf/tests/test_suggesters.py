@@ -206,11 +206,13 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                 ]))
                 self.assertEqual(
                     len(__unique_options),
-                    len(__expected_results)
+                    len(__expected_results),
+                    (__test_case, __expected_results)
                 )
                 self.assertEqual(
                     sorted(__unique_options),
-                    sorted(__expected_results)
+                    sorted(__expected_results),
+                    (__test_case, __expected_results)
                 )
 
     def test_suggesters_completion(self):
@@ -288,7 +290,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         # Testing cities and countries
         test_data = {
             'city_suggest__completion': {
-                'Y': ['Yerevan', 'York'],
+                'Ye': ['Yerevan', 'Yeovil'],
                 'Yer': ['Yerevan'],
                 'Ams': ['Amsterdam'],
                 'Du': ['Dublin'],

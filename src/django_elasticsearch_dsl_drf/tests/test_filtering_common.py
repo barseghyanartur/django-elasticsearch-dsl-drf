@@ -512,6 +512,18 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
             self.addresses_in_dublin_count
         )
 
+    def test_various_complex_fields(self):
+        """Test various complex fields.
+
+        :return:
+        """
+        data = {}
+        response = self.client.get(self.cities_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response = self.client.get(self.city_detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
 
 if __name__ == '__main__':
     unittest.main()

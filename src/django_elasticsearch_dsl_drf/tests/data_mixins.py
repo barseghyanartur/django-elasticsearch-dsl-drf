@@ -66,11 +66,11 @@ class AddressesMixin(object):
             }
         )
 
-        cls.addresses_in_york_count = 2
-        cls.addresses_in_york = factories.AddressFactory.create_batch(
-            cls.addresses_in_york_count,
+        cls.addresses_in_yeovil_count = 2
+        cls.addresses_in_yeovil = factories.AddressFactory.create_batch(
+            cls.addresses_in_yeovil_count,
             **{
-                'city__name': 'York',
+                'city__name': 'Yeovil',
                 'city__country__name': 'United Kingdom',
             }
         )
@@ -88,7 +88,7 @@ class AddressesMixin(object):
             cls.addresses_in_yerevan_count +
             cls.addresses_in_amsterdam_count +
             cls.addresses_in_dublin_count +
-            cls.addresses_in_york_count +
+            cls.addresses_in_yeovil_count +
             cls.addresses_in_buenos_aires_count
         )
 
@@ -96,6 +96,12 @@ class AddressesMixin(object):
         cls.addresses_suggest_url = reverse(
             'addressdocument-suggest-list',
             kwargs={}
+        )
+
+        city_id = cls.addresses_in_yerevan[0].city_id
+        cls.cities_url = reverse('citydocument-list', kwargs={})
+        cls.city_detail_url = reverse(
+            'citydocument-detail', kwargs={'id': city_id}
         )
 
 

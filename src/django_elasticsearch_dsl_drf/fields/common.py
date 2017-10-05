@@ -22,14 +22,14 @@ __all__ = (
 class BooleanField(serializers.BooleanField):
     """Object field."""
 
-    # def get_value(self, dictionary):
-    #     """Get value."""
-    #     value = super(BooleanField, self).get_value(dictionary)
-    #     return to_representation(value)
-    #
-    # def to_representation(self, value):
-    #     """To representation."""
-    #     return to_representation(value)
+    def get_value(self, dictionary):
+        """Get value."""
+        value = super(BooleanField, self).get_value(dictionary)
+        return to_representation(value)
+
+    def to_representation(self, value):
+        """To representation."""
+        return to_representation(value)
 
 
 class CharField(serializers.CharField):
@@ -48,50 +48,50 @@ class CharField(serializers.CharField):
 class DateField(serializers.DateField):
     """Object field."""
 
-    # def get_value(self, dictionary):
-    #     """Get value."""
-    #     value = super(DateField, self).get_value(dictionary)
-    #     return to_representation(value)
-    #
-    # def to_representation(self, value):
-    #     """To representation."""
-    #     return to_representation(value)
+    def get_value(self, dictionary):
+        """Get value."""
+        value = super(DateField, self).get_value(dictionary)
+        return to_representation(value)
+
+    def to_representation(self, value):
+        """To representation."""
+        return to_representation(value)
 
 
 class FloatField(serializers.FloatField):
     """Object field."""
 
-    # def get_value(self, dictionary):
-    #     """Get value."""
-    #     value = super(FloatField, self).get_value(dictionary)
-    #     return to_representation(value)
-    #
-    # def to_representation(self, value):
-    #     """To representation."""
-    #     return to_representation(value)
+    def get_value(self, dictionary):
+        """Get value."""
+        value = super(FloatField, self).get_value(dictionary)
+        return to_representation(value)
+
+    def to_representation(self, value):
+        """To representation."""
+        return to_representation(value)
 
 
 class IntegerField(serializers.IntegerField):
     """Object field."""
 
-    # def get_value(self, dictionary):
-    #     """Get value."""
-    #     value = super(IntegerField, self).get_value(dictionary)
-    #     return to_representation(value)
-    #
-    # def to_representation(self, value):
-    #     """To representation."""
-    #     return to_representation(value)
+    def get_value(self, dictionary):
+        """Get value."""
+        value = super(IntegerField, self).get_value(dictionary)
+        return to_representation(value)
+
+    def to_representation(self, value):
+        """To representation."""
+        return to_representation(value)
 
 
 class IPAddressField(serializers.IPAddressField):
     """Object field."""
 
-    # def get_value(self, dictionary):
-    #     """Get value."""
-    #     value = super(IPAddressField, self).get_value(dictionary)
-    #     return to_representation(value)
-    #
-    # def to_representation(self, value):
-    #     """To representation."""
-    #     return to_representation(value)
+    def get_value(self, dictionary):
+        """Get value."""
+        value = super(IPAddressField, self).get_value(dictionary)
+        return to_representation(value)
+
+    def to_representation(self, value):
+        """To representation."""
+        return to_representation(value)

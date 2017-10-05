@@ -27,7 +27,7 @@ Example app
 Sample models
 -------------
 
-*books/models.py*
+*books/models/country.py*
 
 .. code-block:: python
 
@@ -72,6 +72,9 @@ Sample models
                 'lon': self.longitude,
             }
 
+*books/models/city.py*
+
+.. code-block:: python
 
     @python_2_unicode_compatible
     class City(models.Model):
@@ -110,6 +113,9 @@ Sample models
                 'lon': self.longitude,
             }
 
+*books/models/address.py*
+
+.. code-block:: python
 
     @python_2_unicode_compatible
     class Address(models.Model):
@@ -302,7 +308,7 @@ Document index
 Sample serializer
 -----------------
 
-*search_indexes/serializers.py*
+*search_indexes/serializers/address.py*
 
 .. code-block:: python
 
@@ -415,7 +421,6 @@ Sample view
             'id',
             'street.raw',
             'city.name.raw',
-            # 'city.country.name.raw',
         )
 
         # Suggester fields

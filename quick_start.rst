@@ -98,7 +98,7 @@ Required imports
 ~~~~~~~~~~~~~~~~
 Imports required for model definition.
 
-*books/models.py*
+*books/models/book.py*
 
 .. code-block:: python
 
@@ -113,7 +113,7 @@ Imports required for model definition.
 Book statuses
 ~~~~~~~~~~~~~
 
-*books/models.py*
+*books/models/book.py*
 
 .. code-block:: python
 
@@ -136,7 +136,7 @@ Book statuses
 Publisher model
 ~~~~~~~~~~~~~~~
 
-*books/models.py*
+*books/models/book.py*
 
 .. code-block:: python
 
@@ -183,7 +183,7 @@ Publisher model
 Author model
 ~~~~~~~~~~~~
 
-*books/models.py*
+*books/models/author.py*
 
 .. code-block:: python
 
@@ -207,7 +207,7 @@ Author model
 Tag model
 ~~~~~~~~~
 
-*books/models.py*
+*books/models/tag.py*
 
 .. code-block:: python
 
@@ -228,7 +228,7 @@ Tag model
 Book model
 ~~~~~~~~~~
 
-*books/models.py*
+*books/models/book.py*
 
 .. code-block:: python
 
@@ -686,7 +686,7 @@ the code comments.
 Required imports
 ~~~~~~~~~~~~~~~~
 
-*search_indexes/serializers.py*
+*search_indexes/serializers/book.py*
 
 .. code-block:: python
 
@@ -704,14 +704,12 @@ Serializer definition
 Simplest way to create a serializer, is to just specify which fields are
 needed to be serialized and leave it further to the dynamic serializer.
 
-*search_indexes/serializers.py*
+*search_indexes/serializers/book.py*
 
 .. code-block:: python
 
     class BookDocumentSerializer(DocumentSerializer):
         """Serializer for the Book document."""
-
-        tags = serializers.SerializerMethodField()
 
         class Meta(object):
             """Meta options."""
@@ -736,18 +734,11 @@ needed to be serialized and leave it further to the dynamic serializer.
                 'tags',
             )
 
-        def get_tags(self, obj):
-            """Get tags."""
-            if obj.tags:
-                return list(obj.tags)
-            else:
-                return []
-
 However, if dynamic serializer doesn't work for your or you want to customize
 too many things, you are free to use standard ``Serializer`` class of the
 Django REST framework.
 
-*search_indexes/serializers.py*
+*search_indexes/serializers/book.py*
 
 .. code-block:: python
 
@@ -807,7 +798,7 @@ the code comments.
 Required imports
 ~~~~~~~~~~~~~~~~
 
-*search_indexes/viewsets.py*
+*search_indexes/viewsets/book.py*
 
 .. code-block:: python
 
@@ -838,7 +829,7 @@ Required imports
 ViewSet definition
 ~~~~~~~~~~~~~~~~~~
 
-*search_indexes/viewsets.py*
+*search_indexes/viewsets/book.py*
 
 .. code-block:: python
 

@@ -13,9 +13,9 @@ for sample models/views/serializers.
 - `documents
   <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/documents/book.py>`_
 - `serializers
-  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/serializers.py>`_
+  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/serializers/__init__.py>`_
 - `views
-  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/views.py>`_
+  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/viewsets/__init__.py>`_
 
 Contents:
 
@@ -27,7 +27,7 @@ Example app
 Sample models
 -------------
 
-books/models.py:
+*books/models/publisher.py*
 
 .. code-block:: python
 
@@ -73,7 +73,7 @@ books/models.py:
 Sample document
 ---------------
 
-search_indexes/documents/publisher.py:
+*search_indexes/documents/publisher.py*
 
 .. code-block:: python
 
@@ -141,7 +141,7 @@ search_indexes/documents/publisher.py:
 Sample serializer
 -----------------
 
-search_indexes/serializers.py:
+*search_indexes/serializers/book.py*
 
 .. code-block:: python
 
@@ -182,7 +182,7 @@ search_indexes/serializers.py:
 Sample view
 -----------
 
-search_indexes/views.py:
+*search_indexes/views/publisher.py*
 
 .. code-block:: python
 

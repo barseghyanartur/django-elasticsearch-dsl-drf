@@ -16,38 +16,6 @@ from rest_framework import serializers
 from rest_framework.fields import empty
 from rest_framework.utils.field_mapping import get_field_kwargs
 
-# from rest_framework.fields import (
-#     BooleanField,
-#     CharField,
-#     # ChoiceField,
-#     DateField,
-#     # DateTimeField,
-#     # DecimalField,
-#     # DictField,
-#     # DurationField,
-#     # EmailField,
-#     # Field,
-#     # FileField,
-#     # FilePathField,
-#     FloatField,
-#     # HiddenField,
-#     # ImageField,
-#     IntegerField,
-#     IPAddressField,
-#     # JSONField,
-#     # ListField,
-#     # ModelField,
-#     # MultipleChoiceField,
-#     # NullBooleanField,
-#     # ReadOnlyField,
-#     # RegexField,
-#     # SerializerMethodField,
-#     # SlugField,
-#     # TimeField,
-#     # URLField,
-#     # UUIDField,
-# )
-
 import six
 
 from .fields import (
@@ -140,11 +108,10 @@ class DocumentSerializer(
     _abstract = True
 
     _field_mapping = {
-        # models.AutoField: IntegerField,
         fields.AttachmentField: CharField,  # TODO
         fields.BooleanField: BooleanField,
         fields.ByteField: CharField,  # TODO
-        # fields.CompletionField: ,  # TODO
+        fields.CompletionField: CharField,  # TODO
         fields.DateField: DateField,
         fields.DoubleField: FloatField,
         fields.FloatField: FloatField,
@@ -158,32 +125,14 @@ class DocumentSerializer(
         fields.ObjectField: ObjectField,
         fields.ShortField: IntegerField,
         fields.StringField: CharField,
-
-        # Needs to be thought about still:
-        # models.CommaSeparatedIntegerField: CharField,
-        # models.DateTimeField: DateTimeField,
-        # models.DecimalField: DecimalField,
-        # models.EmailField: EmailField,
-        # models.Field: ModelField,
-        # models.FileField: FileField,
-        # models.ImageField: ImageField,
-        # models.IntegerField: IntegerField,
-        # models.NullBooleanField: NullBooleanField,
-        # models.PositiveIntegerField: IntegerField,
-        # models.PositiveSmallIntegerField: IntegerField,
-        # models.SlugField: SlugField,
-        # models.SmallIntegerField: IntegerField,
-        # models.TextField: CharField,
-        # models.TimeField: TimeField,
-        # models.URLField: URLField,
-        # models.FilePathField: FilePathField,
+        fields.FileField: CharField,  # TODO
     }
 
     # Elasticsearch 5.x specific fields
     try:
         _field_mapping.update(
             {
-                fields.KeywordField: CharField,  # TODO
+                fields.KeywordField: CharField,
                 fields.TextField: CharField
             }
         )
@@ -276,8 +225,10 @@ class DocumentSerializer(
                 field_name,
                 field_type
             )
+            # If field not in the mapping, just skip
             if field_type.__class__ not in self._field_mapping:
                 continue
+
             field_mapping[field_name] = \
                 self._field_mapping[field_type.__class__](**kwargs)
 

@@ -27,7 +27,7 @@ Example app
 Sample models
 -------------
 
-*books/models.py*
+*books/models/publisher.py*
 
 .. code-block:: python
 
@@ -95,6 +95,9 @@ Sample models
                 'lon': self.longitude,
             }
 
+*books/models/author.py*
+
+.. code-block:: python
 
     @python_2_unicode_compatible
     class Author(models.Model):
@@ -113,6 +116,9 @@ Sample models
         def __str__(self):
             return self.name
 
+*books/models/tag.py*
+
+.. code-block:: python
 
     class Tag(models.Model):
         """Simple tag model."""
@@ -128,6 +134,9 @@ Sample models
         def __str__(self):
             return self.title
 
+*books/models/book.py*
+
+.. code-block:: python
 
     @python_2_unicode_compatible
     class Book(models.Model):
@@ -322,7 +331,7 @@ Document index
 Sample serializer
 -----------------
 
-*search_indexes/serializers.py*
+*search_indexes/serializers/tag.py*
 
 .. code-block:: python
 
@@ -341,6 +350,9 @@ Sample serializer
             fields = ('title',)
             read_only_fields = ('title',)
 
+*search_indexes/serializers/book.py*
+
+.. code-block:: python
 
     class BookDocumentSerializer(serializers.Serializer):
         """Serializer for the Book document."""
@@ -389,7 +401,7 @@ Sample serializer
 Sample view
 -----------
 
-*search_indexes/viewsets.py*
+*search_indexes/viewsets/book.py*
 
 .. code-block:: python
 
@@ -647,7 +659,7 @@ Faceted search
 In order to add faceted search support, we would have to extend our
 view set in the following way:
 
-*search_indexes/viewsets.py*
+*search_indexes/viewsets/book.py*
 
 .. code-block:: python
 
@@ -877,7 +889,7 @@ Serializer definition
 
 This is how publisher serializer would look like.
 
-*search_indexes/serializers.py*
+*search_indexes/serializers/publisher.py*
 
 .. code-block:: python
 
@@ -921,7 +933,7 @@ ViewSet definition
 In order to add suggestions support, we would have to extend our view set in
 the following way:
 
-*search_indexes/viewsets.py*
+*search_indexes/viewsets/publisher.py*
 
 .. code-block:: python
 
@@ -1265,7 +1277,7 @@ Document definition
 ViewSet definition
 ^^^^^^^^^^^^^^^^^^
 
-*search_indexes/viewsets.py*
+*search_indexes/viewsets/book.py*
 
 .. code-block:: python
 
@@ -1526,7 +1538,7 @@ Limit/offset pagination
 In order to use a different ``pagination_class``, for instance the
 ``LimitOffsetPagination``, specify it explicitly in the view.
 
-*search_indexes/viewsets.py*
+*search_indexes/viewsets/book.py*
 
 .. code-block:: python
 

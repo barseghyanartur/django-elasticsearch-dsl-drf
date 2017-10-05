@@ -71,16 +71,12 @@ class BookDocumentSerializer(serializers.Serializer):
         :return:
         """
 
-    # def get_id(self, obj):
-    #     """Get id."""
-    #     return int(obj.meta.id)
-
-    # def get_tags(self, obj):
-    #     """Get tags."""
-    #     if obj.tags:
-    #         return list(obj.tags)
-    #     else:
-    #         return []
+    def get_tags(self, obj):
+        """Get tags."""
+        if obj.tags:
+            return list(obj.tags)
+        else:
+            return []
 
 
 class BookDocumentSimpleSerializer(DocumentSerializer):
@@ -109,17 +105,3 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
             'tags',
             'null_field',  # Used in testing of `isnull` functional filter.
         )
-
-    # def get_tags(self, obj):
-    #     """Get tags."""
-    #     if obj.tags:
-    #         return list(obj.tags)
-    #     else:
-    #         return []
-    #
-    # def get_authors(self, obj):
-    #     """Get tags."""
-    #     if obj.authors:
-    #         return list(obj.authors)
-    #     else:
-    #         return []

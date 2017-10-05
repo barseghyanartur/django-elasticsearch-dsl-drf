@@ -17,10 +17,11 @@ are used for versioning (schema follows below):
 
 0.5
 ---
-2017-10-dd (not yet released)
+2017-10-05
 
 - Support for ``ObjectField``, ``NestedField``, ``GeoPointField``,
-  ``ListField``, ``GeoShapeField``.
+  ``ListField``, ``GeoShapeField`` (and in general, nesting fields either
+  as a dictionary or list should not be a problem at all).
 - Dynamic serializer has been made less strict.
 - Added ``get_paginated_response_context`` methods to both
   ``PageNumberPagination`` and ``LimitOffsetPagination`` pagination classes

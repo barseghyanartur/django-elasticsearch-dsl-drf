@@ -5,6 +5,7 @@ from .viewsets import (
     AddressDocumentViewSet,
     AuthorDocumentViewSet,
     BookDocumentViewSet,
+    CityDocumentViewSet,
     PublisherDocumentViewSet,
 )
 
@@ -28,6 +29,12 @@ books = router.register(
     r'books',
     BookDocumentViewSet,
     base_name='bookdocument'
+)
+
+cities = router.register(
+    r'cities',
+    CityDocumentViewSet,
+    base_name='citydocument'
 )
 
 publishers = router.register(

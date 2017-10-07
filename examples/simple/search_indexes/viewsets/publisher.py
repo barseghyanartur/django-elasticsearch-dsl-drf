@@ -66,9 +66,9 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
                 LOOKUP_FILTER_GEO_BOUNDING_BOX,
                 LOOKUP_FILTER_GEO_DISTANCE,
                 LOOKUP_FILTER_GEO_POLYGON,
-
             ],
         },
+        'location_2': 'location',
     }
     # Define ordering fields
     ordering_fields = {

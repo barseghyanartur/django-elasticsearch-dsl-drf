@@ -89,7 +89,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         self.assertEqual(len(response.data['results']), _geo_in_count + 1)
 
     @pytest.mark.webtest
-    def _test_field_filter_geo_polygon(self, points, count):
+    def _test_field_filter_geo_polygon(self, field_name, points, count):
         """Private helper test field filter geo-polygon.
 
         Example:
@@ -118,7 +118,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         publishers = []
 
         url = self.base_publisher_url[:] + '?{}={}'.format(
-            'location__geo_polygon',
+            field_name,
             __params
         )
         data = {}
@@ -151,6 +151,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         ]
         call_command('search_index', '--rebuild', '-f')
         return self._test_field_filter_geo_polygon(
+            field_name='location__geo_polygon',
             points=valid_points,
             count=4
         )
@@ -169,6 +170,45 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         ]
         call_command('search_index', '--rebuild', '-f')
         return self._test_field_filter_geo_polygon(
+            field_name='location__geo_polygon',
+            points=invalid_points,
+            count=0
+        )
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_polygon_string_options(self):
+        """Test field filter geo-polygon.
+
+        :return:
+        """
+        valid_points = [
+            (-23.37, 47.51),
+            (-2.81, 63.15),
+            (15.99, 46.31),
+            (26.54, 42.42),
+        ]
+        call_command('search_index', '--rebuild', '-f')
+        return self._test_field_filter_geo_polygon(
+            field_name='location_2__geo_polygon',
+            points=valid_points,
+            count=4
+        )
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_polygon_string_options_fail_test(self):
+        """Test field filter geo-polygon (fail test).
+
+        :return:
+        """
+        invalid_points = [
+            (-82.79, 72.34),
+            (54.31, 72.34),
+            (-6.50, 78.42),
+            (-56.42, 82.78),
+        ]
+        call_command('search_index', '--rebuild', '-f')
+        return self._test_field_filter_geo_polygon(
+            field_name='location_2__geo_polygon',
             points=invalid_points,
             count=0
         )

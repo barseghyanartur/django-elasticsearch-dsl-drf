@@ -10,13 +10,14 @@ from collections import OrderedDict
 
 from django.core.exceptions import ImproperlyConfigured
 
-from django_elasticsearch_dsl import fields
+from django_elasticsearch_dsl import fields, DocType
 
 from rest_framework import serializers
 from rest_framework.fields import empty
 from rest_framework.utils.field_mapping import get_field_kwargs
 
 import six
+
 
 from .fields import (
     BooleanField,
@@ -143,10 +144,16 @@ class DocumentSerializer(
     def __init__(self, instance=None, data=empty, **kwargs):
         super(DocumentSerializer, self).__init__(instance, data, **kwargs)
 
-        if not self.Meta.document:
+        if not hasattr(self.Meta, 'document') or self.Meta.document is None:
             raise ImproperlyConfigured(
                 "You must set the 'document' attribute on the serializer "
                 "Meta class."
+            )
+
+        if not issubclass(self.Meta.document, (DocType,)):
+            raise ImproperlyConfigured(
+                "You must subclass the serializer 'document' from the DocType"
+                "class."
             )
 
         if not self.instance:

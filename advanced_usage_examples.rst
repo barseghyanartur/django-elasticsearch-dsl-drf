@@ -1576,10 +1576,12 @@ modifications in the ``get_paginated_response_context`` method as follows:
                 self
             ).get_paginated_response_context(data)
             __data.append(
-                ('current_page', int(self.request.query_params.get('page', 1))),
-                ('page_size', self.page_size),
+                ('current_page', int(self.request.query_params.get('page', 1)))
+            )
+            __data.append(
+                ('page_size', self.get_page_size(self.request))
             )
 
-            return __data
+            return sorted(__data)
 
 Same applies to the customisations of the ``LimitOffsetPagination``.

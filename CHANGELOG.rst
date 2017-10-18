@@ -16,7 +16,7 @@ are used for versioning (schema follows below):
 - All backwards incompatible changes are mentioned in this document.
 
 0.5.1
----
+-----
 2017-10-18
 
 - Fixed serialization of complex nested structures (lists of nested objects).

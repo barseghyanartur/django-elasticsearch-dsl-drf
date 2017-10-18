@@ -15,6 +15,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.5.1
+---
+2017-10-18
+
+- Fixed serialization of complex nested structures (lists of nested objects).
+- Documentation fixes.
+
 0.5
 ---
 2017-10-05

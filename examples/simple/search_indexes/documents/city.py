@@ -53,7 +53,7 @@ class CityDocument(DocType):
     # ********************************************************************
 
     # City object
-    country = fields.ObjectField(
+    country = fields.NestedField(
         properties={
             'name': StringField(
                 analyzer=html_strip,

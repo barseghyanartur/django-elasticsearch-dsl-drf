@@ -43,6 +43,10 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>>         'title',
         >>>         'content',
         >>>     )
+        >>>     search_nested_fields = {
+        >>>         'state': ['name'],
+        >>>         'documents.author': ['title', 'description'],
+        >>>     }
     """
 
     search_param = api_settings.SEARCH_PARAM
@@ -57,6 +61,41 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         """
         query_params = request.query_params.copy()
         return query_params.getlist(self.search_param, [])
+
+    def construct_nested_search(self, request, view):
+        """Construct nested search.
+
+        :param request: Django REST framework request.
+        :param queryset: Base queryset.
+        :param view: View.
+        :type request: rest_framework.request.Request
+        :type queryset: elasticsearch_dsl.search.Search
+        :type view: rest_framework.viewsets.ReadOnlyModelViewSet
+        :return: Updated queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        if not hasattr(view, 'search_nested_fields'):
+            return []
+
+        query_params = self.get_search_query_params(request)
+        __queries = []
+        for search_term in query_params:
+            for path, fields in view.search_nested_fields.items():
+                queries = []
+                for field in fields:
+                    field_key = "{}.{}".format(path, field)
+                    queries.append(
+                        Q("match", **{field_key: search_term})
+                    )
+
+                __queries.append(
+                    Q("nested",
+                      path=path,
+                      query=six.moves.reduce(operator.or_, queries)
+                      )
+                )
+
+        return __queries
 
     def construct_search(self, request, view):
         """Construct search.
@@ -99,10 +138,9 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Updated queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
-        __queries = self.construct_search(request, view)
+        __queries = self.construct_search(request, view) +\
+            self.construct_nested_search(request, view)
 
         if __queries:
-            queryset = queryset.query(
-                six.moves.reduce(operator.or_, __queries)
-            )
+            queryset = queryset.query('bool', should=__queries)
         return queryset

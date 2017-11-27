@@ -56,6 +56,17 @@ class TestSearch(BaseRestFrameworkTestCase):
         )
 
         cls.all_count = cls.special_count + cls.lorem_count
+
+        cls.cities_count = 20
+        cls.cities = factories.CityFactory.create_batch(
+            cls.cities_count)
+        cls.switzerland = factories.CountryFactory.create(name='Switzerland')
+        cls.switz_cities_count = 10
+        cls.switz_cities = factories.CityFactory.create_batch(
+            cls.switz_cities_count,
+            country=cls.switzerland)
+        cls.all_cities_cound = cls.cities_count + cls.switz_cities_count
+
         call_command('search_index', '--rebuild', '-f')
 
     def _search_by_field(self, field_name, search_term):
@@ -81,11 +92,40 @@ class TestSearch(BaseRestFrameworkTestCase):
             self.special_count
         )
 
+    def _search_by_nested_field(self, search_term):
+        """Search by field."""
+        self.authenticate()
+
+        url = reverse('citydocument-list', kwargs={})
+        data = {}
+
+        # Should contain 20 results
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']), self.all_cities_cound)
+
+        # Should contain only 10 results
+        filtered_response = self.client.get(
+            url + '?search={}'.format(search_term),
+            data
+        )
+        self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(filtered_response.data['results']),
+            self.switz_cities_count
+        )
+
     def test_search_by_field(self):
         """Search by field."""
         return self._search_by_field(
             'summary',
             'photography',
+        )
+
+    def test_search_by_nested_field(self):
+        """Search by field."""
+        return self._search_by_nested_field(
+            'Switzerland',
         )
 
 

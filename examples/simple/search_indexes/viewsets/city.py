@@ -46,8 +46,12 @@ class CityDocumentViewSet(BaseDocumentViewSet):
     search_fields = (
         'name',
         'info',
-        'country.name',
     )
+
+    search_nested_fields = {
+        'country': ['name'],
+    }
+
     # Define filtering fields
     filter_fields = {
         'id': None,

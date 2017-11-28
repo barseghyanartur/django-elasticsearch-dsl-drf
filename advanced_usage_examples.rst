@@ -1507,6 +1507,123 @@ Phrase
         }
     }
 
+Highlighting
+------------
+Highlighters enable you to get highlighted snippets from one or more fields
+in your search results so you can show users where the query matches are.
+
+**ViewSet definition**
+
+.. code-block:: python
+
+    from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+    from django_elasticsearch_dsl_drf.filter_backends import (
+        # ...
+        HighlightBackend,
+    )
+
+    from ..documents import BookDocument
+    from ..serializers import BookDocumentSimpleSerializer
+
+
+    class BookDocumentViewSet(BaseDocumentViewSet):
+    """The BookDocument view."""
+
+        document = BookDocument
+        # serializer_class = BookDocumentSerializer
+        serializer_class = BookDocumentSimpleSerializer
+        lookup_field = 'id'
+        filter_backends = [
+            # ...
+            HighlightBackend,
+        ]
+
+        # ...
+
+        # Define highlight fields
+        highlight_fields = {
+            'title': {
+                'enabled': True,
+                'options': {
+                    'pre_tags': ["<b>"],
+                    'post_tags': ["</b>"],
+                }
+            },
+            'summary': {
+                'options': {
+                    'fragment_size': 50,
+                    'number_of_fragments': 3
+                }
+            },
+            'description': {},
+        }
+
+        # ...
+
+**Request**
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/books/?search=optimisation&highlight=title&highlight=summary
+
+**Response**
+
+.. code-block:: javascript
+
+    {
+        "count": 1,
+        "next": null,
+        "previous": null,
+        "facets": {
+            "_filter_publisher": {
+                "publisher": {
+                    "buckets": [
+                        {
+                            "key": "GWW",
+                            "doc_count": 1
+                        }
+                    ],
+                    "doc_count_error_upper_bound": 0,
+                    "sum_other_doc_count": 0
+                },
+                "doc_count": 1
+            }
+        },
+        "results": [
+            {
+                "id": 999999,
+                "title": "Performance optimisation",
+                "description": null,
+                "summary": "Ad animi adipisci libero facilis iure totam
+                            impedit. Facilis maiores quae qui magnam dolores.
+                            Veritatis quia amet porro voluptates iure quod
+                            impedit. Dolor voluptatibus maiores at libero
+                            magnam.",
+                "authors": [
+                    "Artur Barseghyan"
+                ],
+                "publisher": "Self published",
+                "publication_date": "1981-04-29",
+                "state": "cancelled",
+                "isbn": "978-1-7372176-0-2",
+                "price": 40.51,
+                "pages": 162,
+                "stock_count": 30,
+                "tags": [
+                    "Guide",
+                    "Poetry",
+                    "Fantasy"
+                ],
+                "highlight": {
+                    "title": [
+                        "Performance <b>optimisation</b>"
+                    ]
+                },
+                "null_field": null
+            }
+        ]
+    }
+
 Pagination
 ----------
 

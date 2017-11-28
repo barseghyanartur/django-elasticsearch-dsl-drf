@@ -1,12 +1,7 @@
 """
-Faceted search backend.
+Highlight backend.
 """
-
-from elasticsearch_dsl.query import Q
-
 from rest_framework.filters import BaseFilterBackend
-
-from six import string_types, iteritems
 
 __title__ = 'django_elasticsearch_dsl_drf.highlight'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

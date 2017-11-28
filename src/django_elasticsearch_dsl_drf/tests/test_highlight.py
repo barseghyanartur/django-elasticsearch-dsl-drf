@@ -1,5 +1,5 @@
 """
-Test faceted search backend.
+Test highlight backend.
 """
 
 from __future__ import absolute_import
@@ -14,7 +14,6 @@ import pytest
 
 from rest_framework import status
 
-from books import constants
 import factories
 
 from .base import BaseRestFrameworkTestCase

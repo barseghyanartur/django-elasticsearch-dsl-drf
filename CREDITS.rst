@@ -35,4 +35,5 @@ Contributors
 Thanks to the following people for their contributions:
 
 - [Jean-David Fiquet](https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/commits?author=id13)
-  for his valuable contributions to the ``geo-spatial`` features.
+  for his valuable contributions to the ``geo-spatial`` features, ``highlight``
+  backend, ``nested search`` and a number of other additions/fixes.

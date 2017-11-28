@@ -19,6 +19,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     OrderingFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
+    HighlightBackend,
 )
 from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
 
@@ -47,6 +48,7 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         SearchFilterBackend,
         FacetedSearchFilterBackend,
         SuggesterFilterBackend,
+        HighlightBackend,
     ]
     # Define search fields
     search_fields = (
@@ -54,6 +56,23 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         'description',
         'summary',
     )
+    # Define highlight fields
+    highlight_fields = {
+        'title': {
+            'enabled': True,
+            'options': {
+                'pre_tags': ["<b>"],
+                'post_tags': ["</b>"],
+            }
+        },
+        'summary': {
+            'options': {
+                'fragment_size': 50,
+                'number_of_fragments': 3
+            }
+        },
+        'description': {},
+    }
     # Define filter fields
     filter_fields = {
         'id': {

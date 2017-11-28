@@ -84,6 +84,7 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
 
     # tags = serializers.SerializerMethodField()
     # authors = serializers.SerializerMethodField()
+    highlight = serializers.SerializerMethodField()
 
     class Meta(object):
         """Meta options."""
@@ -103,5 +104,11 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
             'pages',
             'stock_count',
             'tags',
+            'highlight',  # Used in highlight tests
             'null_field',  # Used in testing of `isnull` functional filter.
         )
+
+    def get_highlight(self, obj):
+        if hasattr(obj.meta, 'highlight'):
+            return obj.meta.highlight.__dict__['_d_']
+        return {}

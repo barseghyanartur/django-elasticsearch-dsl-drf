@@ -15,6 +15,7 @@ from .ordering import (
 )
 from .search import SearchFilterBackend
 from .suggester import SuggesterFilterBackend
+from .highlight import HighlightBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

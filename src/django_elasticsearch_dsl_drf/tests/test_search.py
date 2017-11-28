@@ -65,7 +65,7 @@ class TestSearch(BaseRestFrameworkTestCase):
         cls.switz_cities = factories.CityFactory.create_batch(
             cls.switz_cities_count,
             country=cls.switzerland)
-        cls.all_cities_cound = cls.cities_count + cls.switz_cities_count
+        cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
         call_command('search_index', '--rebuild', '-f')
 
@@ -102,7 +102,7 @@ class TestSearch(BaseRestFrameworkTestCase):
         # Should contain 20 results
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), self.all_cities_cound)
+        self.assertEqual(len(response.data['results']), self.all_cities_count)
 
         # Should contain only 10 results
         filtered_response = self.client.get(

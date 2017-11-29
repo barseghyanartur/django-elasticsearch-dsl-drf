@@ -65,6 +65,7 @@ Must haves
     + Implement ``isnull`` filter.
     + Implement ``exclude`` filter.
     + Make more-like-this shortcut more generic.
+    - Document nested search options.
 
 Should haves
 ============

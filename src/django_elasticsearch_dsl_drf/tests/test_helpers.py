@@ -17,7 +17,7 @@ from ..helpers import more_like_this
 
 from .base import BaseTestCase
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering'
+__title__ = 'django_elasticsearch_dsl_drf.tests.test_helpers'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'

@@ -678,12 +678,7 @@ Sample document
         boolean_list = fields.ListField(
             StringField(attr='boolean_list_indexing')
         )
-        # boolean_dict_indexing = fields.ObjectField(
-        #     properties={
-        #         'true': fields.BooleanField(),
-        #         'false': fields.BooleanField(),
-        #     }
-        # )
+
         datetime_list = fields.ListField(
             StringField(attr='datetime_list_indexing')
         )
@@ -695,7 +690,6 @@ Sample document
         integer_list = fields.ListField(
             StringField(attr='integer_list_indexing')
         )
-        # integer_dict_indexing
 
         class Meta(object):
             """Meta options."""
@@ -807,20 +801,14 @@ Sample view
         }
 
 
-Sample requests/responses
-+++++++++++++++++++++++++
+Sample request
+++++++++++++++
 
 **Request**
 
 .. code-block:: text
 
     GET http://127.0.0.1:8000/search/cities/?search=Switzerland
-
-**Request**
-
-.. code-block:: javascript
-
-    ['#TODO']
 
 Filtering
 ~~~~~~~~~

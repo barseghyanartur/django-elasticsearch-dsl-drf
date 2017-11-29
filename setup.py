@@ -55,6 +55,13 @@ DOCS_TRANSFORMATIONS = (
         '>`_'.format(version)
     ),
     (
+        ':doc:`Highlight backend <advanced_usage_examples>`',
+        '`Highlight backend <'
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#highlighting'
+        '>`_'.format(version)
+    ),
+    (
         ':doc:`Pagination (Page number and limit/offset pagination) '
         '<advanced_usage_examples>`',
         '`Pagination (Page number and limit/offset pagination) <'

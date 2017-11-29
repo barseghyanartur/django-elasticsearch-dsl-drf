@@ -1579,7 +1579,7 @@ in your search results so you can show users where the query matches are.
                 "publisher": {
                     "buckets": [
                         {
-                            "key": "GWW",
+                            "key": "Self published",
                             "doc_count": 1
                         }
                     ],

@@ -16,9 +16,9 @@ Must haves
     - Support ``mode`` argument in the ``OrderingFilterBackend``.
     - Think of making more-like-this a functional filter.
     - Add support for geo spatial search/filtering/ordering.
-    - Document geo spatial filtering.
     - Improve documentation.
     - Implement faceted search filtering.
+    + Document geo spatial filtering.
     + Skip suggestions functionality in all actions except the dedicated
       ``suggest`` action.
     + Add suggestions support (`term`, `phrase` and `completion`)
@@ -66,6 +66,8 @@ Must haves
     + Implement ``exclude`` filter.
     + Make more-like-this shortcut more generic.
     + Document nested search options.
+    + Move nested search options to the nested fields example. Make a
+      reference to the nested_fields_usage_example in the main docs.
 
 Should haves
 ============

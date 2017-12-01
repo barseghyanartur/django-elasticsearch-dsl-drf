@@ -22,6 +22,11 @@ class Command(BaseCommand):
                             type=int,
                             default=DEFAULT_NUMBER_OF_ITEMS_TO_CREATE,
                             help="Number of items to create.")
+        parser.add_argument('--no-books',
+                            action='store_false',
+                            dest='with_books',
+                            default=True,
+                            help="No books.")
 
     def handle(self, *args, **options):
         if options.get('number'):
@@ -29,14 +34,23 @@ class Command(BaseCommand):
         else:
             number = DEFAULT_NUMBER_OF_ITEMS_TO_CREATE
 
-        try:
-            books = factories.BookFactory.create_batch(number)
-            print("{} book objects created.".format(number))
-        except Exception as err:
-            raise CommandError(str(err))
+        with_books = bool(options.get('with_books'))
+
+        if with_books:
+            try:
+                books = factories.BookFactory.create_batch(number)
+                print("{} book objects created.".format(number))
+            except Exception as err:
+                raise CommandError(str(err))
+
+            try:
+                book = factories.SingleBookFactory()
+                print("A single book object is created.")
+            except Exception as err:
+                raise CommandError(str(err))
 
         try:
-            book = factories.SingleBookFactory()
-            print("A single book object is created.")
+            addresses = factories.AddressFactory.create_batch(number)
+            print("{} address objects created.".format(number))
         except Exception as err:
             raise CommandError(str(err))

@@ -115,10 +115,11 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
             __values = self.split_lookup_value(search_term, 1)
             __len_values = len(__values)
             if __len_values > 1:
-                field, value = __values
-                __queries.append(
-                    Q("match", **{field: value})
-                )
+                if field in view.search_fields:
+                    field, value = __values
+                    __queries.append(
+                        Q("match", **{field: value})
+                    )
             else:
                 for field in view.search_fields:
                     __queries.append(

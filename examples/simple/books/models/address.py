@@ -15,7 +15,7 @@ class Address(models.Model):
     house_number = models.CharField(max_length=60)
     appendix = models.CharField(max_length=30, null=True, blank=True)
     zip_code = models.CharField(max_length=60)
-    city = models.ForeignKey('books.City')
+    city = models.ForeignKey('books.City', on_delete=models.CASCADE)
 
     latitude = models.DecimalField(null=True,
                                    blank=True,

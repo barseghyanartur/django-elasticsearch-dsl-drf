@@ -54,7 +54,7 @@ class Migration(migrations.Migration):
             name='OrderLine',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('book', models.ForeignKey(to='books.Book')),
+                ('book', models.ForeignKey(to='books.Book', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['order__created'],
@@ -83,11 +83,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='order',
             name='owner',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='book',
             name='publisher',
-            field=models.ForeignKey(to='books.Publisher'),
+            field=models.ForeignKey(to='books.Publisher', on_delete=models.CASCADE),
         ),
     ]

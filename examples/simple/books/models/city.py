@@ -15,17 +15,21 @@ class City(models.Model):
 
     name = models.CharField(max_length=255)
     info = models.TextField(null=True, blank=True)
-    country = models.ForeignKey('books.Country')
-    latitude = models.DecimalField(null=True,
-                                   blank=True,
-                                   decimal_places=15,
-                                   max_digits=19,
-                                   default=0)
-    longitude = models.DecimalField(null=True,
-                                    blank=True,
-                                    decimal_places=15,
-                                    max_digits=19,
-                                    default=0)
+    country = models.ForeignKey('books.Country', on_delete=models.CASCADE)
+    latitude = models.DecimalField(
+        null=True,
+        blank=True,
+        decimal_places=15,
+        max_digits=19,
+        default=0
+    )
+    longitude = models.DecimalField(
+        null=True,
+        blank=True,
+        decimal_places=15,
+        max_digits=19,
+        default=0
+    )
 
     class Meta(object):
         """Meta options."""

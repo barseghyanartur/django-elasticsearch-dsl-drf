@@ -16,16 +16,20 @@ class Publisher(models.Model):
     state_province = models.CharField(max_length=30)
     country = models.CharField(max_length=50)
     website = models.URLField()
-    latitude = models.DecimalField(null=True,
-                                   blank=True,
-                                   decimal_places=15,
-                                   max_digits=19,
-                                   default=0)
-    longitude = models.DecimalField(null=True,
-                                    blank=True,
-                                    decimal_places=15,
-                                    max_digits=19,
-                                    default=0)
+    latitude = models.DecimalField(
+        null=True,
+        blank=True,
+        decimal_places=15,
+        max_digits=19,
+        default=0
+    )
+    longitude = models.DecimalField(
+        null=True,
+        blank=True,
+        decimal_places=15,
+        max_digits=19,
+        default=0
+    )
 
     class Meta(object):
         """Meta options."""

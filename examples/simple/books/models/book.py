@@ -18,18 +18,26 @@ class Book(models.Model):
     description = models.TextField(null=True, blank=True)
     summary = models.TextField(null=True, blank=True)
     authors = models.ManyToManyField('books.Author', related_name='books')
-    publisher = models.ForeignKey('books.Publisher', related_name='books')
+    publisher = models.ForeignKey(
+        'books.Publisher',
+        related_name='books',
+        on_delete=models.CASCADE
+    )
     publication_date = models.DateField()
-    state = models.CharField(max_length=100,
-                             choices=BOOK_PUBLISHING_STATUS_CHOICES,
-                             default=BOOK_PUBLISHING_STATUS_DEFAULT)
+    state = models.CharField(
+        max_length=100,
+        choices=BOOK_PUBLISHING_STATUS_CHOICES,
+        default=BOOK_PUBLISHING_STATUS_DEFAULT
+    )
     isbn = models.CharField(max_length=100, unique=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     pages = models.PositiveIntegerField(default=200)
     stock_count = models.PositiveIntegerField(default=30)
-    tags = models.ManyToManyField('books.Tag',
-                                  related_name='books',
-                                  blank=True)
+    tags = models.ManyToManyField(
+        'books.Tag',
+        related_name='books',
+        blank=True
+    )
 
     class Meta(object):
         """Meta options."""

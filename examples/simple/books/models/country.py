@@ -13,16 +13,20 @@ class Country(models.Model):
 
     name = models.CharField(max_length=255)
     info = models.TextField(null=True, blank=True)
-    latitude = models.DecimalField(null=True,
-                                   blank=True,
-                                   decimal_places=15,
-                                   max_digits=19,
-                                   default=0)
-    longitude = models.DecimalField(null=True,
-                                    blank=True,
-                                    decimal_places=15,
-                                    max_digits=19,
-                                    default=0)
+    latitude = models.DecimalField(
+        null=True,
+        blank=True,
+        decimal_places=15,
+        max_digits=19,
+        default=0
+    )
+    longitude = models.DecimalField(
+        null=True,
+        blank=True,
+        decimal_places=15,
+        max_digits=19,
+        default=0
+    )
 
     class Meta(object):
         """Meta options."""

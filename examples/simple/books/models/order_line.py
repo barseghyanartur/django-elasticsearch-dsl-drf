@@ -11,7 +11,11 @@ __all__ = ('OrderLine',)
 class OrderLine(models.Model):
     """Order line."""
 
-    book = models.ForeignKey('books.Book', related_name='order_lines')
+    book = models.ForeignKey(
+        'books.Book',
+        related_name='order_lines',
+        on_delete=models.CASCADE
+    )
 
     class Meta(object):
         """Meta options."""

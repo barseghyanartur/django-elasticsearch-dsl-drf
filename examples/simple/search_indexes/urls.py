@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
-from rest_framework_extensions.routers import ExtendedDefaultRouter
-
+from .rest_framework_extensions_routers_compat import ExtendedDefaultRouter
+# from rest_framework_extensions.routers import ExtendedDefaultRouter
 from .viewsets import (
     AddressDocumentViewSet,
     AuthorDocumentViewSet,

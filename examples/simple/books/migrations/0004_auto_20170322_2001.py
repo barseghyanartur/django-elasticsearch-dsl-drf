@@ -29,11 +29,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='book',
             name='publisher',
-            field=models.ForeignKey(related_name='books', to='books.Publisher'),
+            field=models.ForeignKey(related_name='books', to='books.Publisher', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='orderline',
             name='book',
-            field=models.ForeignKey(related_name='order_lines', to='books.Book'),
+            field=models.ForeignKey(related_name='order_lines', to='books.Book', on_delete=models.CASCADE),
         ),
     ]

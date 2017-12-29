@@ -15,6 +15,14 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.6.2
+-----
+2017-12-29
+
+- Update example project (and the tests that are dependant on the example
+  project) to work with Django 2.0.
+- Set minimal requirement for ``django-elasticsearch-dsl`` to 3.0.
+
 0.6.1
 -----
 2017-11-28

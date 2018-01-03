@@ -13,7 +13,7 @@ from .mixins import FilterBackendMixin
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017 Artur Barseghyan'
+__copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = ('SearchFilterBackend',)
 
@@ -115,8 +115,8 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
             __values = self.split_lookup_value(search_term, 1)
             __len_values = len(__values)
             if __len_values > 1:
+                field, value = __values
                 if field in view.search_fields:
-                    field, value = __values
                     __queries.append(
                         Q("match", **{field: value})
                     )
@@ -139,7 +139,7 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Updated queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
-        __queries = self.construct_search(request, view) +\
+        __queries = self.construct_search(request, view) + \
             self.construct_nested_search(request, view)
 
         if __queries:

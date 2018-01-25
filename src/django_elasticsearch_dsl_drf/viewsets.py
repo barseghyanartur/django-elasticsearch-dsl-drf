@@ -7,7 +7,6 @@ from __future__ import absolute_import, unicode_literals
 
 from django.http import Http404
 
-from elasticsearch_dsl import Search
 from elasticsearch_dsl.connections import connections
 
 from rest_framework.decorators import list_route
@@ -39,7 +38,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
         self.client = connections.get_connection()
         self.index = self.document._doc_type.index
         self.mapping = self.document._doc_type.mapping.properties.name
-        self.search = Search(using=self.client, index=self.index)
+        self.search = self.document.search(using=self.client, index=self.index) 
         super(BaseDocumentViewSet, self).__init__(*args, **kwargs)
 
     def get_queryset(self):

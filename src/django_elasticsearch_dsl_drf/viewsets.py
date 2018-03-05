@@ -17,7 +17,6 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .pagination import PageNumberPagination
 from .utils import DictionaryProxy
-import re
 
 __title__ = 'django_elasticsearch_dsl_drf.viewsets'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

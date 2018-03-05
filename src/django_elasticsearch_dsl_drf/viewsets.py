@@ -18,7 +18,6 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from .pagination import PageNumberPagination
 from .utils import DictionaryProxy
 
-
 __title__ = 'django_elasticsearch_dsl_drf.viewsets'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
@@ -39,7 +38,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
         self.client = connections.get_connection()
         self.index = self.document._doc_type.index
         self.mapping = self.document._doc_type.mapping.properties.name
-        self.search = Search(using=self.client, index=self.index)
+        self.search = Search(using=self.client, index=self.index, doc_type=self.document._doc_type.name)
         super(BaseDocumentViewSet, self).__init__(*args, **kwargs)
 
     def get_queryset(self):

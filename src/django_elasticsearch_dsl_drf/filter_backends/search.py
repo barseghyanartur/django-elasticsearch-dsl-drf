@@ -6,10 +6,13 @@ import operator
 import six
 
 from elasticsearch_dsl.query import Q
+from django_elasticsearch_dsl import fields
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.settings import api_settings
 
 from .mixins import FilterBackendMixin
+from ..compat import coreapi
+from ..compat import coreschema
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -145,3 +148,27 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         if __queries:
             queryset = queryset.query('bool', should=__queries)
         return queryset
+
+    def get_coreschema_field(self, field):
+        if isinstance(field, fields.IntegerField):
+            field_cls = coreschema.Number
+        else:
+            field_cls = coreschema.String
+        return field_cls()
+
+    def get_schema_fields(self, view):
+
+        assert coreapi is not None, 'coreapi must be installed to use `get_schema_fields()`'
+        assert coreschema is not None, 'coreschema must be installed to use `get_schema_fields()`'
+        search_fields = getattr(view, 'search_fields', None)
+
+        return [] if not search_fields else [
+            coreapi.Field(
+                name='search',
+                required=False,
+                location='query',
+                schema=coreschema.String(
+                    description='Search in {}.'.format(', '.join(search_fields))
+                )
+            )
+        ]

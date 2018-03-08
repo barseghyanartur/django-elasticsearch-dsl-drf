@@ -205,7 +205,7 @@ else:
         PROJECT_DIR(os.path.join('..', 'templates')),
     )
 
-MIDDLEWARE_CLASSES = (
+_MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -384,7 +384,7 @@ if DEBUG and DEBUG_TOOLBAR:
         import debug_toolbar
 
         # debug_toolbar
-        MIDDLEWARE_CLASSES += (
+        _MIDDLEWARE += (
             'debug_toolbar.middleware.DebugToolbarMiddleware',
             'debug_toolbar_force.middleware.ForceDebugToolbarMiddleware',
         )
@@ -428,3 +428,8 @@ if DEV:
     )
     # sys.path.insert(0, os.path.abspath('src'))
     sys.path.insert(0, os.path.abspath(app_source_path))
+
+if versions.DJANGO_GTE_2_0:
+    MIDDLEWARE = _MIDDLEWARE
+else:
+    MIDDLEWARE_CLASSES = _MIDDLEWARE

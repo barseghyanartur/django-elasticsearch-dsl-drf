@@ -7,6 +7,9 @@ from six import string_types
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.settings import api_settings
 
+from ...compat import coreapi
+from ...compat import coreschema
+
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.ordering.common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
@@ -135,6 +138,21 @@ class OrderingFilterBackend(BaseFilterBackend):
             return queryset.sort(*ordering_query_params)
 
         return queryset
+
+    def get_schema_fields(self, view):
+        assert coreapi is not None, 'coreapi must be installed to use `get_schema_fields()`'
+        assert coreschema is not None, 'coreschema must be installed to use `get_schema_fields()`'
+        return [
+            coreapi.Field(
+                name=self.ordering_param,
+                required=False,
+                location='query',
+                schema=coreschema.String(
+                    title='Ordering',
+                    description='Which field from to use when ordering the results.'
+                )
+            )
+        ]
 
 
 class DefaultOrderingFilterBackend(BaseFilterBackend):

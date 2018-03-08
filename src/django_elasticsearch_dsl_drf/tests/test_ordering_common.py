@@ -14,9 +14,16 @@ import pytest
 
 from rest_framework import status
 
-import factories
+from django_elasticsearch_dsl_drf.filter_backends import OrderingFilterBackend
 
-from .base import BaseRestFrameworkTestCase
+import factories
+from search_indexes.viewsets import BookDocumentViewSet
+
+from .base import (
+    BaseRestFrameworkTestCase,
+    CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+    CORE_API_AND_CORE_SCHEMA_MISSING_MSG,
+)
 
 if DJANGO_GTE_1_10:
     from django.urls import reverse
@@ -48,6 +55,10 @@ class TestOrdering(BaseRestFrameworkTestCase):
         cls.authors_url = reverse('authordocument-list', kwargs={})
 
         call_command('search_index', '--rebuild', '-f')
+
+        # Testing coreapi and coreschema
+        cls.backend = OrderingFilterBackend()
+        cls.view = BookDocumentViewSet()
 
     def _order_by_field(self, field_name, url, check_ordering=True):
         """Order by field.
@@ -179,6 +190,23 @@ class TestOrdering(BaseRestFrameworkTestCase):
         return self._order_by_field('another_non_existent_field',
                                     self.books_url,
                                     check_ordering=False)
+
+    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
+    def test_schema_fields_with_filter_fields_list(self):
+        """Test schema field generator"""
+        fields = self.backend.get_schema_fields(self.view)
+        fields = [f.name for f in fields]
+        self.assertEqual(fields, ['ordering'])
+
+    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
+    def test_schema_field_not_required(self):
+        """Test schema fields always not required"""
+        fields = self.backend.get_schema_fields(self.view)
+        fields = [f.required for f in fields]
+        for field in fields:
+            self.assertFalse(field)
 
 
 if __name__ == '__main__':

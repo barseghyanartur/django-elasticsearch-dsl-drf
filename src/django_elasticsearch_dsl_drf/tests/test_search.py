@@ -16,8 +16,14 @@ from rest_framework import status
 
 from books import constants
 import factories
+from ..filter_backends import SearchFilterBackend
+from search_indexes.viewsets import BookDocumentViewSet
 
-from .base import BaseRestFrameworkTestCase
+from .base import (
+    BaseRestFrameworkTestCase,
+    CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+    CORE_API_AND_CORE_SCHEMA_MISSING_MSG,
+)
 
 if DJANGO_GTE_1_10:
     from django.urls import reverse
@@ -68,6 +74,10 @@ class TestSearch(BaseRestFrameworkTestCase):
         cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
         call_command('search_index', '--rebuild', '-f')
+
+        # Testing coreapi and coreschema
+        cls.backend = SearchFilterBackend()
+        cls.view = BookDocumentViewSet()
 
     def _search_by_field(self, field_name, search_term):
         """Search by field."""
@@ -127,6 +137,23 @@ class TestSearch(BaseRestFrameworkTestCase):
         return self._search_by_nested_field(
             'Switzerland',
         )
+
+    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
+    def test_schema_fields_with_filter_fields_list(self):
+        """Test schema field generator"""
+        fields = self.backend.get_schema_fields(self.view)
+        fields = [f.name for f in fields]
+        self.assertEqual(fields, ['search'])
+
+    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
+    def test_schema_field_not_required(self):
+        """Test schema fields always not required"""
+        fields = self.backend.get_schema_fields(self.view)
+        fields = [f.required for f in fields]
+        for field in fields:
+            self.assertFalse(field)
 
 
 if __name__ == '__main__':

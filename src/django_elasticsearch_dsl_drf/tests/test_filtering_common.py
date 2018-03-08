@@ -13,8 +13,14 @@ import pytest
 from rest_framework import status
 
 from books import constants
+from search_indexes.viewsets import BookDocumentViewSet
 
-from .base import BaseRestFrameworkTestCase
+from ..filter_backends import FilteringFilterBackend
+from .base import (
+    BaseRestFrameworkTestCase,
+    CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+    CORE_API_AND_CORE_SCHEMA_MISSING_MSG,
+)
 from .data_mixins import AddressesMixin, BooksMixin
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering'
@@ -45,6 +51,10 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
 
         # Update the Elasticsearch index
         call_command('search_index', '--rebuild', '-f')
+
+        # Testing coreapi and coreschema
+        cls.backend = FilteringFilterBackend()
+        cls.view = BookDocumentViewSet()
 
     # ***********************************************************************
     # ************************ Simple fields ********************************
@@ -523,6 +533,23 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
 
         response = self.client.get(self.city_detail_url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
+    def test_schema_fields_with_filter_fields_list(self):
+        """Test schema field generator"""
+        fields = self.backend.get_schema_fields(self.view)
+        fields = [f.name for f in fields]
+        self.assertEqual(fields, list(self.view.filter_fields.keys()))
+
+    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
+    def test_schema_field_not_required(self):
+        """Test schema fields always not required"""
+        fields = self.backend.get_schema_fields(self.view)
+        fields = [f.required for f in fields]
+        for field in fields:
+            self.assertFalse(field)
 
 
 if __name__ == '__main__':

@@ -15,6 +15,17 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.7
+---
+2018-03-08
+
+.. note::
+
+    Dear ladies, congratulations on `International Women's Day
+    <https://en.wikipedia.org/wiki/International_Women%27s_Day>`_
+
+- CoreAPI/CoreSchema support.
+
 0.6.4
 -----
 2018-03-05

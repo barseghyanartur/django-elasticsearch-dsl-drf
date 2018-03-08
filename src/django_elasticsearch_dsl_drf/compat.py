@@ -68,3 +68,13 @@ def string_field(**kwargs):
 
 
 StringField = string_field
+
+try:
+    import coreapi
+except ImportError:
+    coreapi = None
+
+try:
+    import coreschema
+except ImportError:
+    coreschema = None

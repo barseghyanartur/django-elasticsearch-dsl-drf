@@ -19,7 +19,11 @@ import factories
 from ..filter_backends import SearchFilterBackend
 from search_indexes.viewsets import BookDocumentViewSet
 
-from .base import BaseRestFrameworkTestCase
+from .base import (
+    BaseRestFrameworkTestCase,
+    CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+    CORE_API_AND_CORE_SCHEMA_MISSING_MSG,
+)
 
 if DJANGO_GTE_1_10:
     from django.urls import reverse
@@ -134,12 +138,16 @@ class TestSearch(BaseRestFrameworkTestCase):
             'Switzerland',
         )
 
+    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
     def test_schema_fields_with_filter_fields_list(self):
         """Test schema field generator"""
         fields = self.backend.get_schema_fields(self.view)
         fields = [f.name for f in fields]
         self.assertEqual(fields, ['search'])
 
+    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
+                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
     def test_schema_field_not_required(self):
         """Test schema fields always not required"""
         fields = self.backend.get_schema_fields(self.view)

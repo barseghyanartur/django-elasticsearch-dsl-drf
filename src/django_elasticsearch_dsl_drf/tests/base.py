@@ -3,6 +3,7 @@ Base tests.
 """
 
 import logging
+import pip
 
 from django.test import TransactionTestCase
 import pytest
@@ -17,10 +18,23 @@ __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'BaseRestFrameworkTestCase',
     'BaseTestCase',
+    'INSTALLED_PACKAGES',
+    'CORE_API_IS_INSTALLED',
+    'CORE_SCHEMA_IS_INSTALLED',
+    'CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED',
+    'CORE_API_AND_CORE_SCHEMA_MISSING_MSG',
 )
 
 LOGGER = logging.getLogger(__name__)
-
+_INSTALLED_PACKAGES = pip.get_installed_distributions()
+INSTALLED_PACKAGES = [pkg.project_name for pkg in _INSTALLED_PACKAGES]
+CORE_API_IS_INSTALLED = 'coreapi' in INSTALLED_PACKAGES
+CORE_SCHEMA_IS_INSTALLED = 'coreschema' in INSTALLED_PACKAGES
+CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED = (
+    CORE_API_IS_INSTALLED and CORE_SCHEMA_IS_INSTALLED
+)
+CORE_API_AND_CORE_SCHEMA_MISSING_MSG = "Skipped because coreapi or " \
+                                       "coreschema are not installed!"
 
 @pytest.mark.django_db
 class BaseRestFrameworkTestCase(TransactionTestCase):

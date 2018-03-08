@@ -7,6 +7,6 @@ pytest-django==2.9.1
 pytest-ordering==0.5
 pytest==3.0.2
 selenium==2.53.6
-tox==2.3.1
-coreapi==2.3.3
-coreschema==0.0.4
+tox==2.9.1
+#coreapi==2.3.3
+#coreschema==0.0.4

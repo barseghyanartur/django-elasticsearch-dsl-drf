@@ -34,6 +34,8 @@ Contributors
 ------------
 Thanks to the following people for their contributions:
 
-- [Jean-David Fiquet](https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/commits?author=id13)
+- `Jean-David Fiquet <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/commits?author=id13>`_
   for his valuable contributions to the ``geo-spatial`` features, ``highlight``
   backend, ``nested search`` and a number of other additions/fixes.
+- `Mateusz Mejsner <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/commits?author=macher91>`_
+  for CoreAPI and CoreSchema support.

@@ -4,8 +4,11 @@ Common filtering backend.
 
 import operator
 
+import coreapi
+import coreschema
 from elasticsearch_dsl.query import Q
 from rest_framework.filters import BaseFilterBackend
+from django_elasticsearch_dsl import fields
 
 import six
 from six import string_types
@@ -631,3 +634,27 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                                       options,
                                                       value)
         return queryset
+
+    def get_coreschema_field(self, field):
+        if isinstance(field, fields.IntegerField):
+            field_cls = coreschema.Number
+        else:
+            field_cls = coreschema.String
+        return field_cls()
+
+    def get_schema_fields(self, view):
+
+        assert coreapi is not None, 'coreapi must be installed to use `get_schema_fields()`'
+        assert coreschema is not None, 'coreschema must be installed to use `get_schema_fields()`'
+        filter_fields = getattr(view, 'filter_fields', None)
+        document = getattr(view, 'document', None)
+
+        return [] if not filter_fields else [
+            coreapi.Field(
+                name=field_name,
+                required=False,
+                location='query',
+                schema=self.get_coreschema_field(document._doc_type._fields().get(field_name))
+            )
+            for field_name in filter_fields
+        ]

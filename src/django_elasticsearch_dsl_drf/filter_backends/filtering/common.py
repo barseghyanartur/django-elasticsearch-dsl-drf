@@ -4,8 +4,6 @@ Common filtering backend.
 
 import operator
 
-import coreapi
-import coreschema
 from elasticsearch_dsl.query import Q
 from rest_framework.filters import BaseFilterBackend
 from django_elasticsearch_dsl import fields
@@ -34,6 +32,10 @@ from ...constants import (
     LOOKUP_QUERY_EXCLUDE,
 )
 from ..mixins import FilterBackendMixin
+
+from ...compat import coreapi
+from ...compat import coreschema
+
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering.common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

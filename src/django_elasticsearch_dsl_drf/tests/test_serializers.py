@@ -4,8 +4,6 @@ Test serializers.
 
 from __future__ import absolute_import
 
-import datetime
-
 import unittest
 
 from django.contrib.auth.models import User
@@ -16,7 +14,7 @@ from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
 import pytest
 
-from ..serializers import DocumentSerializer, Meta
+from ..serializers import DocumentSerializer
 from .base import BaseRestFrameworkTestCase
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_serializers'

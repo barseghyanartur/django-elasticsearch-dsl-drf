@@ -83,9 +83,9 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         query_params = self.get_search_query_params(request)
         __queries = []
         for search_term in query_params:
-            for path, fields in view.search_nested_fields.items():
+            for path, _fields in view.search_nested_fields.items():
                 queries = []
-                for field in fields:
+                for field in _fields:
                     field_key = "{}.{}".format(path, field)
                     queries.append(
                         Q("match", **{field_key: search_term})
@@ -95,7 +95,7 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
                     Q("nested",
                       path=path,
                       query=six.moves.reduce(operator.or_, queries)
-                      )
+                    )
                 )
 
         return __queries

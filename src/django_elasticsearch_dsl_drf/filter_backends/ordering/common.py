@@ -140,8 +140,10 @@ class OrderingFilterBackend(BaseFilterBackend):
         return queryset
 
     def get_schema_fields(self, view):
-        assert coreapi is not None, 'coreapi must be installed to use `get_schema_fields()`'
-        assert coreschema is not None, 'coreschema must be installed to use `get_schema_fields()`'
+        assert coreapi is not None, 'coreapi must be installed to ' \
+                                    'use `get_schema_fields()`'
+        assert coreschema is not None, 'coreschema must be installed to ' \
+                                       'use `get_schema_fields()`'
         return [
             coreapi.Field(
                 name=self.ordering_param,
@@ -149,7 +151,8 @@ class OrderingFilterBackend(BaseFilterBackend):
                 location='query',
                 schema=coreschema.String(
                     title='Ordering',
-                    description='Which field from to use when ordering the results.'
+                    description='Which field from to use when ordering the '
+                                'results.'
                 )
             )
         ]

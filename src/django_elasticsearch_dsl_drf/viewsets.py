@@ -38,7 +38,11 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
         self.client = connections.get_connection()
         self.index = self.document._doc_type.index
         self.mapping = self.document._doc_type.mapping.properties.name
-        self.search = Search(using=self.client, index=self.index, doc_type=self.document._doc_type.name)
+        self.search = Search(
+            using=self.client,
+            index=self.index,
+            doc_type=self.document._doc_type.name
+        )
         super(BaseDocumentViewSet, self).__init__(*args, **kwargs)
 
     def get_queryset(self):

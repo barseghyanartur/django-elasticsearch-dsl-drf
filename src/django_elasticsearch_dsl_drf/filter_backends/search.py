@@ -157,9 +157,10 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         return field_cls()
 
     def get_schema_fields(self, view):
-
-        assert coreapi is not None, 'coreapi must be installed to use `get_schema_fields()`'
-        assert coreschema is not None, 'coreschema must be installed to use `get_schema_fields()`'
+        assert coreapi is not None, 'coreapi must be installed to ' \
+                                    'use `get_schema_fields()`'
+        assert coreschema is not None, 'coreschema must be installed to ' \
+                                       'use `get_schema_fields()`'
         search_fields = getattr(view, 'search_fields', None)
 
         return [] if not search_fields else [
@@ -168,7 +169,8 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 required=False,
                 location='query',
                 schema=coreschema.String(
-                    description='Search in {}.'.format(', '.join(search_fields))
+                    description='Search in '
+                                '{}.'.format(', '.join(search_fields))
                 )
             )
         ]

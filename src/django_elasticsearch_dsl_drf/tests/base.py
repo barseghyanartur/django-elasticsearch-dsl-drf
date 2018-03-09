@@ -36,6 +36,7 @@ CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED = (
 CORE_API_AND_CORE_SCHEMA_MISSING_MSG = "Skipped because coreapi or " \
                                        "coreschema are not installed!"
 
+
 @pytest.mark.django_db
 class BaseRestFrameworkTestCase(TransactionTestCase):
     """Base REST framework test case."""

@@ -68,6 +68,20 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def construct_nested_search(self, request, view):
         """Construct nested search.
 
+        We have to deal with two types of structures:
+
+        Type 1:
+
+        >>> search_nested_fields = {
+        >>>     'country': ['name'],
+        >>> }
+
+        Type 2:
+
+        >>> search_nested_fields = {
+        >>>     'country': [{'name': {'boost': 2}}],
+        >>> }
+
         :param request: Django REST framework request.
         :param queryset: Base queryset.
         :param view: View.
@@ -79,6 +93,8 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         """
         if not hasattr(view, 'search_nested_fields'):
             return []
+
+        # TODO
 
         query_params = self.get_search_query_params(request)
         __queries = []

@@ -5,14 +5,13 @@ Search backend.
 import operator
 import six
 
-from elasticsearch_dsl.query import Q
 from django_elasticsearch_dsl import fields
+from elasticsearch_dsl.query import Q
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.settings import api_settings
 
 from .mixins import FilterBackendMixin
-from ..compat import coreapi
-from ..compat import coreschema
+from ..compat import coreapi, coreschema
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -108,9 +107,10 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
                     )
 
                 __queries.append(
-                    Q("nested",
-                      path=path,
-                      query=six.moves.reduce(operator.or_, queries)
+                    Q(
+                        "nested",
+                        path=path,
+                        query=six.moves.reduce(operator.or_, queries)
                     )
                 )
 

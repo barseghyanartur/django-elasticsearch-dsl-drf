@@ -47,6 +47,7 @@ class TestSearch(BaseRestFrameworkTestCase):
 
     @classmethod
     def setUp(cls):
+        # Book factories with unique title
         cls.special_count = 10
         cls.special = factories.BookWithUniqueTitleFactory.create_batch(
             cls.special_count,
@@ -56,10 +57,17 @@ class TestSearch(BaseRestFrameworkTestCase):
             }
         )
 
+        # Lorem ipsum book factories
         cls.lorem_count = 10
         cls.lorem = factories.BookWithUniqueTitleFactory.create_batch(
             cls.lorem_count
         )
+
+        # Book factories with title, description and summary that actually
+        # make sense
+        # cls.non_lorem_count = 10
+        # cls.non_lorem = factories.
+        # TODO
 
         cls.all_count = cls.special_count + cls.lorem_count
 

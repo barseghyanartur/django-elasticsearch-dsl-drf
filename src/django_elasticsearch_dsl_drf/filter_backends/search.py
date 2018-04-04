@@ -103,6 +103,24 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def construct_search(self, request, view):
         """Construct search.
 
+        We have to deal with two types of structures:
+
+        Type 1:
+
+        >>> search_fields = (
+        >>>     'title',
+        >>>     'description',
+        >>>     'summary',
+        >>> )
+
+        Type 2:
+
+        >>> search_fields = {
+        >>>     'title': {'boost': 2},
+        >>>     'description': None,
+        >>>     'summary': None,
+        >>> }
+
         :param request: Django REST framework request.
         :param queryset: Base queryset.
         :param view: View.
@@ -120,13 +138,31 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
             if __len_values > 1:
                 field, value = __values
                 if field in view.search_fields:
+                    # Initial kwargs for the match query
+                    field_kwargs = {field: {'query': value}}
+                    # In case if we deal with structure 2
+                    if isinstance(view.search_fields, dict):
+                        extra_field_kwargs = view.search_fields[field]
+                        if extra_field_kwargs:
+                            field_kwargs[field].update(extra_field_kwargs)
+                    # The match query
                     __queries.append(
-                        Q("match", **{field: value})
+                        Q("match", **field_kwargs)
                     )
             else:
                 for field in view.search_fields:
+                    # Initial kwargs for the match query
+                    field_kwargs = {field: {'query': search_term}}
+
+                    # In case if we deal with structure 2
+                    if isinstance(view.search_fields, dict):
+                        extra_field_kwargs = view.search_fields[field]
+                        if extra_field_kwargs:
+                            field_kwargs[field].update(extra_field_kwargs)
+
+                    # The match query
                     __queries.append(
-                        Q("match", **{field: search_term})
+                        Q("match", **field_kwargs)
                     )
         return __queries
 

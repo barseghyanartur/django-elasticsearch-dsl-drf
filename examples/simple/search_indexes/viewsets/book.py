@@ -51,11 +51,16 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         HighlightBackend,
     ]
     # Define search fields
-    search_fields = (
-        'title',
-        'description',
-        'summary',
-    )
+    # search_fields = (
+    #     'title',
+    #     'description',
+    #     'summary',
+    # )
+    search_fields = {
+        'title': {'boost': 4},
+        'description': {'boost': 2},
+        'summary': None,
+    }
     # Define highlight fields
     highlight_fields = {
         'title': {

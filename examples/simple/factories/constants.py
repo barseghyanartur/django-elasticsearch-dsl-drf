@@ -44,7 +44,7 @@ NON_FAKER_BOOK_CONTENT = [
     # Chapter II. Contains "Pool of Tears" in the `title`, `summary` and
     # `description`.
     {
-        'title': "CHAPTER II. The Pool of Tears",
+        'title': "CHAPTER II. The Pool of Tears.",
         'summary': "Alice spots another creature in the pool, swimming far "
                    "off. She sees that it is a mouse, who has also slipped "
                    "into the pool of tears. Alice thinks she might as well "
@@ -102,7 +102,7 @@ NON_FAKER_BOOK_CONTENT = [
     # Chapter II. Contains "Pig and Pepper" in the `title`, `summary` and
     # `description`.
     {
-        'title': "CHAPTER VI. Pig and Pepper",
+        'title': "CHAPTER VI. Pig and Pepper.",
         'summary': "Everybody is sneezing because of the excessive amount of "
                    "pepper the cook is putting in the soup; everybody except "
                    "a cat, which sits on the hearth, smiling. Alice asks the "

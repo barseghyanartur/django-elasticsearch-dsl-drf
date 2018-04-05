@@ -75,7 +75,7 @@ class TestSearch(BaseRestFrameworkTestCase):
             factories.BookChapter62Factory(),
             factories.BookChapter110Factory(),
             factories.BookChapter111Factory(),
-            factories.BookChapter111Factory(),
+            factories.BookChapter112Factory(),
         ]
 
         cls.all_count = (
@@ -119,6 +119,79 @@ class TestSearch(BaseRestFrameworkTestCase):
         self.assertEqual(
             len(filtered_response.data['results']),
             self.special_count
+        )
+
+    def _search_boost(self, search_term, ordering):
+        """Search boost.
+
+        In our book view, we have the following defined:
+
+        >>> search_fields = {
+        >>>     'title': {'boost': 4},
+        >>>     'description': {'boost': 2},
+        >>>     'summary': None,
+        >>> }
+
+        That means that `title` is more important than `description` and
+        `description` is more important than `summary`.
+        Results with search term in `title`, `summary` and
+        `description` shall be ranked better than results with search term
+        in `summary` and `description`. In their turn, results with search term
+        in `summary` and `description` shall be ranked better than results
+        with search term in `description` only.
+
+        :param search_term:
+        :param ordering:
+        :return:
+        """
+        self.authenticate()
+
+        url = reverse('bookdocument-list', kwargs={})
+        data = {}
+
+        filtered_response = self.client.get(
+            url + '?search={}'.format(search_term),
+            data
+        )
+        self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
+        self.assertIn('results', filtered_response.data)
+        for counter in len(ordering):
+            result_item = filtered_response.data['results'][counter]
+            self.assertEqual(result_item.id, ordering[counter])
+
+    def search_boost(self):
+        """Search boost.
+
+        :return:
+        """
+        # Search for "The Pool of Tears"
+        self._search_boost(
+            search_term="The Pool of Tears",
+            ordering=[
+                self.non_lorem[0].pk,
+                self.non_lorem[1].pk,
+                self.non_lorem[2].pk,
+            ]
+        )
+
+        # Search for "Pig and Pepper"
+        self._search_boost(
+            search_term="Pig and Pepper",
+            ordering=[
+                self.non_lorem[3].pk,
+                self.non_lorem[4].pk,
+                self.non_lorem[5].pk,
+            ]
+        )
+
+        # Search for "Who Stole the Tarts"
+        self._search_boost(
+            search_term="Who Stole the Tarts",
+            ordering=[
+                self.non_lorem[6].pk,
+                self.non_lorem[7].pk,
+                self.non_lorem[8].pk,
+            ]
         )
 
     def _search_by_nested_field(self, search_term):

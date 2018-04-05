@@ -5,6 +5,7 @@ from .viewsets import (
     AddressDocumentViewSet,
     AuthorDocumentViewSet,
     BookDocumentViewSet,
+    BookOrderingByScoreDocumentViewSet,
     CityDocumentViewSet,
     PublisherDocumentViewSet,
 )
@@ -29,6 +30,12 @@ books = router.register(
     r'books',
     BookDocumentViewSet,
     base_name='bookdocument'
+)
+
+books = router.register(
+    r'books-ordered-by-score',
+    BookOrderingByScoreDocumentViewSet,
+    base_name='bookdocument_ordered_by_score'
 )
 
 cities = router.register(

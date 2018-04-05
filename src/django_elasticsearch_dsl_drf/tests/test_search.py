@@ -146,7 +146,7 @@ class TestSearch(BaseRestFrameworkTestCase):
         """
         self.authenticate()
 
-        url = reverse('bookdocument-list', kwargs={})
+        url = reverse('bookdocument_ordered_by_score-list', kwargs={})
         data = {}
 
         filtered_response = self.client.get(

@@ -58,8 +58,8 @@ class BookDocumentViewSet(BaseDocumentViewSet):
     # )
     search_fields = {
         'title': {'boost': 4},
-        'description': {'boost': 2},
-        'summary': None,
+        'summary': {'boost': 2},
+        'description': None,
     }
     # Define highlight fields
     highlight_fields = {

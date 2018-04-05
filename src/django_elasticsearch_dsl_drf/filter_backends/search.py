@@ -93,7 +93,7 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         if not hasattr(view, 'search_nested_fields'):
             return []
 
-        # TODO
+        # TODO: Support query boosting
 
         query_params = self.get_search_query_params(request)
         __queries = []

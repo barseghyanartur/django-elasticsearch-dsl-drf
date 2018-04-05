@@ -15,6 +15,8 @@ __all__ = (
     'get_elasticsearch_version',
     'KeywordField',
     'StringField',
+    'coreapi',
+    'coreschema',
 )
 
 

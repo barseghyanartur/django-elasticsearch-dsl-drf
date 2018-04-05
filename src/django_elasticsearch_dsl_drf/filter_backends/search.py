@@ -5,14 +5,13 @@ Search backend.
 import operator
 import six
 
-from elasticsearch_dsl.query import Q
 from django_elasticsearch_dsl import fields
+from elasticsearch_dsl.query import Q
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.settings import api_settings
 
 from .mixins import FilterBackendMixin
-from ..compat import coreapi
-from ..compat import coreschema
+from ..compat import coreapi, coreschema
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -68,6 +67,20 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def construct_nested_search(self, request, view):
         """Construct nested search.
 
+        We have to deal with two types of structures:
+
+        Type 1:
+
+        >>> search_nested_fields = {
+        >>>     'country': ['name'],
+        >>> }
+
+        Type 2:
+
+        >>> search_nested_fields = {
+        >>>     'country': [{'name': {'boost': 2}}],
+        >>> }
+
         :param request: Django REST framework request.
         :param queryset: Base queryset.
         :param view: View.
@@ -80,28 +93,49 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         if not hasattr(view, 'search_nested_fields'):
             return []
 
+        # TODO: Support query boosting
+
         query_params = self.get_search_query_params(request)
         __queries = []
         for search_term in query_params:
-            for path, fields in view.search_nested_fields.items():
+            for path, _fields in view.search_nested_fields.items():
                 queries = []
-                for field in fields:
+                for field in _fields:
                     field_key = "{}.{}".format(path, field)
                     queries.append(
                         Q("match", **{field_key: search_term})
                     )
 
                 __queries.append(
-                    Q("nested",
-                      path=path,
-                      query=six.moves.reduce(operator.or_, queries)
-                      )
+                    Q(
+                        "nested",
+                        path=path,
+                        query=six.moves.reduce(operator.or_, queries)
+                    )
                 )
 
         return __queries
 
     def construct_search(self, request, view):
         """Construct search.
+
+        We have to deal with two types of structures:
+
+        Type 1:
+
+        >>> search_fields = (
+        >>>     'title',
+        >>>     'description',
+        >>>     'summary',
+        >>> )
+
+        Type 2:
+
+        >>> search_fields = {
+        >>>     'title': {'boost': 2},
+        >>>     'description': None,
+        >>>     'summary': None,
+        >>> }
 
         :param request: Django REST framework request.
         :param queryset: Base queryset.
@@ -120,13 +154,31 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
             if __len_values > 1:
                 field, value = __values
                 if field in view.search_fields:
+                    # Initial kwargs for the match query
+                    field_kwargs = {field: {'query': value}}
+                    # In case if we deal with structure 2
+                    if isinstance(view.search_fields, dict):
+                        extra_field_kwargs = view.search_fields[field]
+                        if extra_field_kwargs:
+                            field_kwargs[field].update(extra_field_kwargs)
+                    # The match query
                     __queries.append(
-                        Q("match", **{field: value})
+                        Q("match", **field_kwargs)
                     )
             else:
                 for field in view.search_fields:
+                    # Initial kwargs for the match query
+                    field_kwargs = {field: {'query': search_term}}
+
+                    # In case if we deal with structure 2
+                    if isinstance(view.search_fields, dict):
+                        extra_field_kwargs = view.search_fields[field]
+                        if extra_field_kwargs:
+                            field_kwargs[field].update(extra_field_kwargs)
+
+                    # The match query
                     __queries.append(
-                        Q("match", **{field: search_term})
+                        Q("match", **field_kwargs)
                     )
         return __queries
 

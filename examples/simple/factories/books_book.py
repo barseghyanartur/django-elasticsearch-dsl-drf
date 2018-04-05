@@ -20,8 +20,18 @@ from .books_author import (
 from .books_order import OrderFactory
 from .books_orderline import OrderLineFactory
 from .books_tag import LimitedTagFactory, TagGenreFactory
+from .constants import NON_FAKER_BOOK_CONTENT
 
 __all__ = (
+    'BookChapter110Factory',
+    'BookChapter111Factory',
+    'BookChapter112Factory',
+    'BookChapter20Factory',
+    'BookChapter21Factory',
+    'BookChapter22Factory',
+    'BookChapter60Factory',
+    'BookChapter61Factory',
+    'BookChapter62Factory',
     'BookFactory',
     'BookWithoutOrdersFactory',
     'BookWithoutTagsAndOrdersFactory',
@@ -147,3 +157,85 @@ class BookWithoutTagsAndOrdersFactory(BaseBookFactory):
     @post_generation
     def orders(obj, created, extracted, **kwargs):
         """Dummy."""
+
+
+# *************************************************************
+# ****************** Factories with real texts ****************
+# *************************************************************
+
+# Second chapter, 3 times
+
+class BookChapter20Factory(BookWithUniqueTitleFactory):
+    """Book chapter II factory."""
+
+    title = NON_FAKER_BOOK_CONTENT[0]['title']
+    summary = NON_FAKER_BOOK_CONTENT[0]['summary']
+    description = NON_FAKER_BOOK_CONTENT[0]['description']
+
+
+class BookChapter21Factory(BookWithUniqueTitleFactory):
+    """Book chapter II factory."""
+
+    title = NON_FAKER_BOOK_CONTENT[1]['title']
+    summary = NON_FAKER_BOOK_CONTENT[1]['summary']
+    description = NON_FAKER_BOOK_CONTENT[1]['description']
+
+
+class BookChapter22Factory(BookWithUniqueTitleFactory):
+    """Book chapter II factory."""
+
+    title = NON_FAKER_BOOK_CONTENT[2]['title']
+    summary = NON_FAKER_BOOK_CONTENT[2]['summary']
+    description = NON_FAKER_BOOK_CONTENT[2]['description']
+
+
+# Sixth chapter, 3 times
+
+class BookChapter60Factory(BookWithUniqueTitleFactory):
+    """Book chapter VI factory."""
+
+    title = NON_FAKER_BOOK_CONTENT[3]['title']
+    summary = NON_FAKER_BOOK_CONTENT[3]['summary']
+    description = NON_FAKER_BOOK_CONTENT[3]['description']
+
+
+class BookChapter61Factory(BookWithUniqueTitleFactory):
+    """Book chapter VI factory."""
+
+    title = NON_FAKER_BOOK_CONTENT[4]['title']
+    summary = NON_FAKER_BOOK_CONTENT[4]['summary']
+    description = NON_FAKER_BOOK_CONTENT[4]['description']
+
+
+class BookChapter62Factory(BookWithUniqueTitleFactory):
+    """Book chapter VI factory."""
+
+    title = NON_FAKER_BOOK_CONTENT[5]['title']
+    summary = NON_FAKER_BOOK_CONTENT[5]['summary']
+    description = NON_FAKER_BOOK_CONTENT[5]['description']
+
+
+# Eleventh chapter, 3 times
+
+class BookChapter110Factory(BookWithUniqueTitleFactory):
+    """Book chapter XI factory."""
+
+    title = NON_FAKER_BOOK_CONTENT[6]['title']
+    summary = NON_FAKER_BOOK_CONTENT[6]['summary']
+    description = NON_FAKER_BOOK_CONTENT[6]['description']
+
+
+class BookChapter111Factory(BookWithUniqueTitleFactory):
+    """Book chapter XI factory."""
+
+    title = NON_FAKER_BOOK_CONTENT[7]['title']
+    summary = NON_FAKER_BOOK_CONTENT[7]['summary']
+    description = NON_FAKER_BOOK_CONTENT[7]['description']
+
+
+class BookChapter112Factory(BookWithUniqueTitleFactory):
+    """Book chapter XI factory."""
+
+    title = NON_FAKER_BOOK_CONTENT[8]['title']
+    summary = NON_FAKER_BOOK_CONTENT[8]['summary']
+    description = NON_FAKER_BOOK_CONTENT[8]['description']

@@ -441,8 +441,8 @@ Sample view
         # Define search fields
         search_fields = (
             'title',
-            'description',
             'summary',
+            'description',
         )
         # Define filtering fields
         filter_fields = {
@@ -541,6 +541,32 @@ fields add multiple ``search`` query params and field names separated with
 .. code-block:: text
 
     http://127.0.0.1:8080/search/books/?search=title|education&search=summary|technology
+
+**Search with boosting**
+
+It's possible to boost search fields. In order to do that change the
+`search_fields` definition of the `BookDocumentViewSet` as follows:
+
+.. code-block:: python
+
+    class BookDocumentView(BaseDocumentViewSet):
+        """The BookDocument view."""
+
+        # ...
+
+        # Define search fields
+        search_fields = {
+            'title': {'boost': 4},
+            'summary': {'boost': 2},
+            'description': None,
+        }
+
+        # Order by `_score` first.
+        ordering = ('_score', 'id', 'title', 'price',)
+
+        # ...
+
+Note, that we are ordering results by `_score` first.
 
 Filtering
 ~~~~~~~~~

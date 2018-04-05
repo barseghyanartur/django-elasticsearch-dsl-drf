@@ -15,6 +15,17 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.7.1
+-----
+2018-04-04
+
+.. note::
+
+    Release supported by `Goldmund, Wyldebeast & Wunderliebe
+    <https://goldmund-wyldebeast-wunderliebe.nl/>`_
+
+- Add query `boost` support for search fields.
+
 0.7
 ---
 2018-03-08

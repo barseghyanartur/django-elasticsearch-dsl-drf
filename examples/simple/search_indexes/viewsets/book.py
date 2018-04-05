@@ -30,6 +30,7 @@ from ..serializers import BookDocumentSimpleSerializer
 
 __all__ = (
     'BookDocumentViewSet',
+    'BookOrderingByScoreDocumentViewSet',
 )
 
 
@@ -200,3 +201,14 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         'tag_suggest': 'tags.suggest',
         'summary_suggest': 'summary',
     }
+
+
+class BookOrderingByScoreDocumentViewSet(BookDocumentViewSet):
+    """Same as BookDocumentViewSet, but sorted by _score."""
+
+    search_fields = {
+        'title': {'boost': 4},
+        'summary': {'boost': 2},
+        'description': None,
+    }
+    ordering = ('_score', 'id', 'title', 'price',)

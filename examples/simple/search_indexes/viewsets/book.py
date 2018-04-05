@@ -52,16 +52,11 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         HighlightBackend,
     ]
     # Define search fields
-    # search_fields = (
-    #     'title',
-    #     'description',
-    #     'summary',
-    # )
-    search_fields = {
-        'title': {'boost': 4},
-        'summary': {'boost': 2},
-        'description': None,
-    }
+    search_fields = (
+        'title',
+        'description',
+        'summary',
+    )
     # Define highlight fields
     highlight_fields = {
         'title': {
@@ -211,4 +206,9 @@ class BookDocumentViewSet(BaseDocumentViewSet):
 class BookOrderingByScoreDocumentViewSet(BookDocumentViewSet):
     """Same as BookDocumentViewSet, but sorted by _score."""
 
+    search_fields = {
+        'title': {'boost': 4},
+        'summary': {'boost': 2},
+        'description': None,
+    }
     ordering = ('_score', 'id', 'title', 'price',)

@@ -16,8 +16,8 @@ from rest_framework import status
 
 from books import constants
 import factories
-from ..filter_backends import SearchFilterBackend
 from search_indexes.viewsets import BookDocumentViewSet
+from ..filter_backends import SearchFilterBackend
 
 from .base import (
     BaseRestFrameworkTestCase,

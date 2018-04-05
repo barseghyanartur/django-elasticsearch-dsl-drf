@@ -65,11 +65,22 @@ class TestSearch(BaseRestFrameworkTestCase):
 
         # Book factories with title, description and summary that actually
         # make sense
-        # cls.non_lorem_count = 10
-        # cls.non_lorem = factories.
-        # TODO
+        cls.non_lorem_count = 9
+        cls.non_lorem = [
+            factories.BookChapter20Factory(),
+            factories.BookChapter21Factory(),
+            factories.BookChapter22Factory(),
+            factories.BookChapter60Factory(),
+            factories.BookChapter61Factory(),
+            factories.BookChapter62Factory(),
+            factories.BookChapter110Factory(),
+            factories.BookChapter111Factory(),
+            factories.BookChapter111Factory(),
+        ]
 
-        cls.all_count = cls.special_count + cls.lorem_count
+        cls.all_count = (
+            cls.special_count + cls.lorem_count + cls.non_lorem_count
+        )
 
         cls.cities_count = 20
         cls.cities = factories.CityFactory.create_batch(

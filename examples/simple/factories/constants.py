@@ -39,6 +39,7 @@ BOOK_GENRES = [
     'Trilogy',
 ]
 
+# A list of 9 dicts.
 NON_FAKER_BOOK_CONTENT = [
     # Chapter II. Contains "Pool of Tears" in the `title`, `summary` and
     # `description`.
@@ -70,7 +71,7 @@ NON_FAKER_BOOK_CONTENT = [
     },
     # Chapter II. Contains "Pool of Tears" in the `summary` and `description`.
     {
-        'title': "CHAPTER II. Noise.",
+        'title': "CHAPTER II. Summary and description.",
         'summary': "‘What a curious feeling!’ said Alice; ‘I must be shutting "
                    "up like a telescope.’ However, she soon made out that she "
                    "was in the pool of tears which she had wept when she was "
@@ -86,7 +87,7 @@ NON_FAKER_BOOK_CONTENT = [
     },
     # Chapter II. Contains "Pool of Tears" in the `description`.
     {
-        'title': "CHAPTER II. Noise.",
+        'title': "CHAPTER II. Description.",
         'summary': "Alice’s Right Foot, Esq. Hearthrug, near The Fender, "
                    "(with Alice’s love). Oh dear, what nonsense I’m talking!’",
         'description': "So she was considering in her own mind (as well as "
@@ -133,7 +134,7 @@ NON_FAKER_BOOK_CONTENT = [
     },
     # Chapter VI. Contains "Pig and Pepper" in the `summary` and `description`.
     {
-        'title': "CHAPTER VI. Noise.",
+        'title': "CHAPTER VI. Summary and description.",
         'summary': "Until you encounter the comically grotesque details of "
                    "it, with the cook producing a soup so much pepper people "
                    "can barely breathe much less eat it, and the Duchess "
@@ -144,7 +145,7 @@ NON_FAKER_BOOK_CONTENT = [
     },
     # Chapter VI. Contains "Pig and Pepper" in the `description`.
     {
-        'title': "CHAPTER VI. Noise.",
+        'title': "CHAPTER VI. Description.",
         'summary': "Duchess deals with the chaos around her suggests the "
                    "image of a matronly woman, but she actually has no "
                    "control, as the cook’s actions indicate.",
@@ -189,7 +190,7 @@ NON_FAKER_BOOK_CONTENT = [
     # Chapter VI. Contains "Who Stole the Tarts" in the `summary`
     # and `description`.
     {
-        'title': "CHAPTER XI. Noise.",
+        'title': "CHAPTER XI. Summary and description.",
         'summary': "She retorts that he is growing too, but the Dormouse "
                    "insists his kind of growing is normal, and skulks away "
                    "from Alice. The Knave of Hearts stole the tarts that "
@@ -203,7 +204,7 @@ NON_FAKER_BOOK_CONTENT = [
     },
     # Chapter VI. Contains "Who Stole the Tarts" in the `description`.
     {
-        'title': "CHAPTER XI. Noise.",
+        'title': "CHAPTER XI. Description.",
         'summary': "The King tells the Hatter to remove his hat. The Hatter "
                    "explains that the hat is not his to remove, as he "
                    "doesn't own the hats but instead sells them.",

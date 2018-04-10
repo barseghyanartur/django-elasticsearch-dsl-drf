@@ -147,7 +147,31 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         'null_field': 'null_field',
     }
     # Post filter fields, copy filters as they are valid
-    post_filter_fields = {}.update(filter_fields)
+    post_filter_fields = {
+        'publisher_pf': 'publisher.raw',
+        'state_pf': 'state.raw',
+        'tags_pf': {
+            'field': 'tags',
+            'lookups': [
+                LOOKUP_FILTER_TERMS,
+                LOOKUP_FILTER_PREFIX,
+                LOOKUP_FILTER_WILDCARD,
+                LOOKUP_QUERY_IN,
+                LOOKUP_QUERY_EXCLUDE,
+                LOOKUP_QUERY_ISNULL,
+            ],
+        },
+        'tags_raw_pf': {
+            'field': 'tags.raw',
+            'lookups': [
+                LOOKUP_FILTER_TERMS,
+                LOOKUP_FILTER_PREFIX,
+                LOOKUP_FILTER_WILDCARD,
+                LOOKUP_QUERY_IN,
+                LOOKUP_QUERY_EXCLUDE,
+            ],
+        },
+    }
     # Define ordering fields
     ordering_fields = {
         'id': 'id',

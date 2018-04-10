@@ -113,6 +113,8 @@ class PageNumberPagination(pagination.PageNumberPagination):
         :param view:
         :return:
         """
+        # TODO: It seems that paginator breaks things. If take out, queries
+        # doo work.
         # Check if there are suggest queries in the queryset,
         # ``execute_suggest`` method shall be called, instead of the
         # ``execute`` method and results shall be returned back immediately.

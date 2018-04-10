@@ -14,13 +14,13 @@ from django_elasticsearch_dsl_drf.constants import (
 from django_elasticsearch_dsl_drf.filter_backends import (
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
+    PostFilterFilteringFilterBackend,
     IdsFilterBackend,
     DefaultOrderingFilterBackend,
     OrderingFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
     HighlightBackend,
-    PostFilterFilteringFilterBackend,
 )
 from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
 
@@ -44,6 +44,7 @@ class BookDocumentViewSet(BaseDocumentViewSet):
     lookup_field = 'id'
     filter_backends = [
         FilteringFilterBackend,
+        PostFilterFilteringFilterBackend,
         IdsFilterBackend,
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,

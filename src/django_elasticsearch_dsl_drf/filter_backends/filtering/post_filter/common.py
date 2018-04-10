@@ -89,6 +89,28 @@ class PostFilterFilteringFilterBackend(FilteringFilterBackend):
 
         return filter_fields
 
+    @classmethod
+    def apply_filter(cls, queryset, *args, **kwargs):
+        """Apply filter.
+
+        :param queryset:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return queryset.post_filter(*args, **kwargs)
+
+    @classmethod
+    def apply_query(cls, queryset, *args, **kwargs):
+        """Apply query.
+
+        :param queryset:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return queryset.query(*args, **kwargs)
+
     def get_coreschema_field(self, field):
         if isinstance(field, fields.IntegerField):
             field_cls = coreschema.Number

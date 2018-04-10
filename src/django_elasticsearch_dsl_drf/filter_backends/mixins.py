@@ -56,3 +56,25 @@ class FilterBackendMixin(object):
         :rtype: list
         """
         return value.split(SEPARATOR_LOOKUP_COMPLEX_VALUE, maxsplit)
+
+    @classmethod
+    def apply_filter(cls, queryset, *args, **kwargs):
+        """Apply filter.
+
+        :param queryset:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return queryset.filter(*args, **kwargs)
+
+    @classmethod
+    def apply_query(cls, queryset, *args, **kwargs):
+        """Apply query.
+
+        :param queryset:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return queryset.query(*args, **kwargs)

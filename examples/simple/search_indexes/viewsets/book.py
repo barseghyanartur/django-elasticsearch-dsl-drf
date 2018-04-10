@@ -20,6 +20,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     SearchFilterBackend,
     SuggesterFilterBackend,
     HighlightBackend,
+    PostFilterFilteringFilterBackend,
 )
 from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
 
@@ -145,6 +146,8 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         # This has been added to test `isnull` filter.
         'null_field': 'null_field',
     }
+    # Post filter fields, copy filters as they are valid
+    post_filter_fields = {}.update(filter_fields)
     # Define ordering fields
     ordering_fields = {
         'id': 'id',

@@ -1,10 +1,11 @@
 """
-Term level filtering backends.
+Term level filtering and ``post_filter`` backends.
 """
 
 from .common import FilteringFilterBackend
 from .ids import IdsFilterBackend
 from .geo_spatial import GeoSpatialFilteringFilterBackend
+from .post_filter.common import PostFilterFilteringFilterBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -14,4 +15,5 @@ __all__ = (
     'FilteringFilterBackend',
     'GeoSpatialFilteringFilterBackend',
     'IdsFilterBackend',
+    'PostFilterFilteringFilterBackend',
 )

@@ -133,6 +133,12 @@ class PageNumberPagination(pagination.PageNumberPagination):
         if page_number in self.last_page_strings:
             page_number = paginator.num_pages
 
+        # Something weird is happening here. If None returned before the
+        # following code, post_filter works. If None returned after this code
+        # post_filter does not work. Obviously, something strange happens in
+        # the paginator.page(page_number) and thus affects the lazy
+        # queryset in such a way, that we get TransportError(400,
+        # 'parsing_exception', 'request does not support [post_filter]')
         try:
             self.page = paginator.page(page_number)
         except django_paginator.InvalidPage as exc:

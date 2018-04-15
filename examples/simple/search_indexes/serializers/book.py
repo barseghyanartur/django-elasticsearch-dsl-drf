@@ -84,6 +84,7 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
 
     # tags = serializers.SerializerMethodField()
     # authors = serializers.SerializerMethodField()
+    score = serializers.SerializerMethodField()
     highlight = serializers.SerializerMethodField()
 
     class Meta(object):
@@ -112,3 +113,8 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
         if hasattr(obj.meta, 'highlight'):
             return obj.meta.highlight.__dict__['_d_']
         return {}
+
+    def get_score(self, obj):
+        if hasattr(obj.meta, 'score'):
+            return obj.meta.score
+        return None

@@ -230,7 +230,7 @@ are used for versioning (schema follows below):
 ---
 2017-07-11
 
-- Add suggestions support (`term`, `phrase` and `completion`).
+- Add suggestions support (``term``, ``phrase`` and ``completion``).
 
 0.2.6
 -----
@@ -294,7 +294,7 @@ are used for versioning (schema follows below):
 -----
 2017-06-23
 
-- Implemented ``gt`, ``gte``, ``lt`` and ``lte`` functional query lookups.
+- Implemented ``gt``, ``gte``, ``lt`` and ``lte`` functional query lookups.
 - Implemented ``ids`` native filter lookup.
 
 0.1.5

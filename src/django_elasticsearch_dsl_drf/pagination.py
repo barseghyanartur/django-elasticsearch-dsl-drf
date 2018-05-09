@@ -10,7 +10,6 @@ from collections import OrderedDict
 from django.core import paginator as django_paginator
 
 from rest_framework import pagination
-from rest_framework.pagination import _get_count
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
@@ -208,7 +207,11 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         if is_suggest:
             return queryset.execute_suggest().to_dict()
 
-        self.count = _get_count(queryset)
+        if hasattr(self, 'get_count'):
+            self.count = self.get_count(queryset) 
+        else:
+            from rest_framework.pagination import _get_count
+            self.count = _get_count(queryset)
         self.limit = self.get_limit(request)
         if self.limit is None:
             return None

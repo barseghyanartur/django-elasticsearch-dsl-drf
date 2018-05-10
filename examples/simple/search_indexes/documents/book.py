@@ -119,7 +119,7 @@ class BookDocument(DocType):
         multi=True
     )
 
-    null_field = fields.StringField(attr='null_field_indexing')
+    null_field = StringField(attr='null_field_indexing')
 
     class Meta(object):
         """Meta options."""

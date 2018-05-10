@@ -1,6 +1,5 @@
 from django.conf.urls import url, include
-from .rest_framework_extensions_routers_compat import ExtendedDefaultRouter
-# from rest_framework_extensions.routers import ExtendedDefaultRouter
+from rest_framework.routers import DefaultRouter
 from .viewsets import (
     AddressDocumentViewSet,
     AuthorDocumentViewSet,
@@ -12,7 +11,7 @@ from .viewsets import (
 
 __all__ = ('urlpatterns',)
 
-router = ExtendedDefaultRouter()
+router = DefaultRouter()
 
 addresses = router.register(
     r'addresses',

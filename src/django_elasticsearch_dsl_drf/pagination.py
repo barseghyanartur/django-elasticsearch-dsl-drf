@@ -15,6 +15,8 @@ from rest_framework.response import Response
 
 import six
 
+from .compat import get_count
+
 __title__ = 'django_elasticsearch_dsl_drf.pagination'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
@@ -207,11 +209,13 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         if is_suggest:
             return queryset.execute_suggest().to_dict()
 
-        if hasattr(self, 'get_count'):
-            self.count = self.get_count(queryset) 
-        else:
-            from rest_framework.pagination import _get_count
-            self.count = _get_count(queryset)
+        # if hasattr(self, 'get_count'):
+        #     self.count = self.get_count(queryset)
+        # else:
+        #     from rest_framework.pagination import _get_count
+        #     self.count = _get_count(queryset)
+        self.count = get_count(self, queryset)
+
         self.limit = self.get_limit(request)
         if self.limit is None:
             return None

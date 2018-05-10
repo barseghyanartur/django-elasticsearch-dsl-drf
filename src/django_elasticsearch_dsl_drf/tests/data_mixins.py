@@ -94,7 +94,7 @@ class AddressesMixin(object):
 
         cls.addresses_url = reverse('addressdocument-list', kwargs={})
         cls.addresses_suggest_url = reverse(
-            'addressdocument-suggest-list',
+            'addressdocument-suggest',
             kwargs={}
         )
 

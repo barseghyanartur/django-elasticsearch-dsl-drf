@@ -15,6 +15,17 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.7.2
+-----
+2018-05-09
+
+.. note::
+
+    Release dedicated to the Victory Day, the victims of the Second World War
+    and Liberation of Shushi.
+
+- Django REST framework 3.8.x support.
+
 0.7.1
 -----
 2018-04-04

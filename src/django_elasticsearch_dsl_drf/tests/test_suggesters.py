@@ -102,7 +102,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         )
 
         cls.publishers_url = reverse(
-            'publisherdocument-suggest-list',
+            'publisherdocument-suggest',
             kwargs={}
         )
 
@@ -150,7 +150,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         )
 
         cls.books_url = reverse(
-            'bookdocument-suggest-list',
+            'bookdocument-suggest',
             kwargs={}
         )
 
@@ -175,7 +175,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         )
 
         cls.authors_url = reverse(
-            'authordocument-suggest-list',
+            'authordocument-suggest',
             kwargs={}
         )
 

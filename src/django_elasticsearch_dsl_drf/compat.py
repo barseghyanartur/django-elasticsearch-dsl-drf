@@ -7,17 +7,46 @@ Elastic 5.x as soon as possible.
 
 from django_elasticsearch_dsl import fields
 
+try:
+    import coreapi
+except ImportError:
+    coreapi = None
+
+try:
+    import coreschema
+except ImportError:
+    coreschema = None
+
+try:
+    from rest_framework.pagination import _get_count
+except ImportError:
+    _get_count = None
+
 __title__ = 'django_elasticsearch_dsl_drf.compat'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
+    'coreapi',
+    'coreschema',
+    'get_count',
     'get_elasticsearch_version',
     'KeywordField',
     'StringField',
-    'coreapi',
-    'coreschema',
 )
+
+
+def get_count(self, queryset):
+    """Get count.
+
+    :param self:
+    :param queryset:
+    :return:
+    """
+    if _get_count is None:
+        return self.get_count(queryset)
+    else:
+        return _get_count(queryset)
 
 
 def get_elasticsearch_version(default=(2, 0, 0)):
@@ -70,13 +99,3 @@ def string_field(**kwargs):
 
 
 StringField = string_field
-
-try:
-    import coreapi
-except ImportError:
-    coreapi = None
-
-try:
-    import coreschema
-except ImportError:
-    coreschema = None

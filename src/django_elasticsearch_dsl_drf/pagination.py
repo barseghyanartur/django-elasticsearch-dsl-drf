@@ -123,6 +123,14 @@ class PageNumberPagination(pagination.PageNumberPagination):
         if is_suggest:
             return queryset.execute_suggest().to_dict()
 
+        # Check if we're using paginate queryset from `functional_suggest`
+        # backend.
+        if view.action == 'functional_suggest':
+            return queryset
+
+        # If we got to this point, it means it's not a suggest or functional
+        # suggest case.
+
         page_size = self.get_page_size(request)
         if not page_size:
             return None
@@ -209,11 +217,20 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         if is_suggest:
             return queryset.execute_suggest().to_dict()
 
+        # Check if we're using paginate queryset from `functional_suggest`
+        # backend.
+        if view.action == 'functional_suggest':
+            return queryset
+
+        # If we got to this point, it means it's not a suggest or functional
+        # suggest case.
+
         # if hasattr(self, 'get_count'):
         #     self.count = self.get_count(queryset)
         # else:
         #     from rest_framework.pagination import _get_count
         #     self.count = _get_count(queryset)
+
         self.count = get_count(self, queryset)
 
         self.limit = self.get_limit(request)

@@ -22,7 +22,40 @@ __title__ = 'django_elasticsearch_dsl_drf.viewsets'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('BaseDocumentViewSet',)
+__all__ = (
+    'BaseDocumentViewSet',
+    'DocumentViewSet',
+    'FunctionalSuggestMixin',
+    'SuggestMixin',
+)
+
+
+class SuggestMixin(object):
+    """Suggest mixin."""
+
+    @list_route()
+    def suggest(self, request):
+        """Suggest functionality."""
+        queryset = self.filter_queryset(self.get_queryset())
+        is_suggest = getattr(queryset, '_suggest', False)
+        if not is_suggest:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        page = self.paginate_queryset(queryset)
+        return Response(page)
+
+
+class FunctionalSuggestMixin(object):
+    """Functional suggest mixin."""
+
+    @list_route()
+    def functional_suggest(self, request):
+        """Functional suggest functionality."""
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        return Response(page)
 
 
 class BaseDocumentViewSet(ReadOnlyModelViewSet):
@@ -85,15 +118,6 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
 
             raise Http404("No result matches the given query.")
 
-    @list_route()
-    def suggest(self, request):
-        """Suggest functionality."""
-        queryset = self.filter_queryset(self.get_queryset())
-        is_suggest = getattr(queryset, '_suggest', False)
-        if not is_suggest:
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST
-            )
 
-        page = self.paginate_queryset(queryset)
-        return Response(page)
+class DocumentViewSet(BaseDocumentViewSet, SuggestMixin):
+    """DocumentViewSet with suggest mixin."""

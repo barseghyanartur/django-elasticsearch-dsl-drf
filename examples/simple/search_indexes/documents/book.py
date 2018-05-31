@@ -5,7 +5,7 @@ from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
 from books.models import Book
 
-from .analyzers import html_strip
+from .analyzers import html_strip, autocomplete
 
 
 __all__ = ('BookDocument',)
@@ -40,6 +40,7 @@ class BookDocument(DocType):
         fields={
             'raw': KeywordField(),
             'suggest': fields.CompletionField(),
+            'autocomplete': StringField(analyzer=autocomplete),
         }
     )
 

@@ -11,7 +11,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     SuggesterFilterBackend,
 )
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
-from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
 from ..documents import AuthorDocument
 from ..serializers import AuthorDocumentSimpleSerializer
@@ -21,7 +21,7 @@ __all__ = (
 )
 
 
-class AuthorDocumentViewSet(BaseDocumentViewSet):
+class AuthorDocumentViewSet(DocumentViewSet):
     """The AuthorDocument view."""
 
     document = AuthorDocument

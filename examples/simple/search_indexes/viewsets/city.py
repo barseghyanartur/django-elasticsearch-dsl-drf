@@ -16,7 +16,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     GeoSpatialOrderingFilterBackend,
 )
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
-from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
 from ..documents import CityDocument
 from ..serializers import CityDocumentSerializer
@@ -26,7 +26,7 @@ __all__ = (
 )
 
 
-class CityDocumentViewSet(BaseDocumentViewSet):
+class CityDocumentViewSet(DocumentViewSet):
     """The CityDocument view."""
 
     document = CityDocument

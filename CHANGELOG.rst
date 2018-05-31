@@ -15,6 +15,35 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.8
+---
+2018-mm-dd (not yet released)
+
+.. note::
+
+    Release supported by `Goldmund, Wyldebeast & Wunderliebe
+    <https://goldmund-wyldebeast-wunderliebe.nl/>`_.
+
+.. note::
+
+    This release contain minor backwards incompatible changes. You should
+    update your code.
+    - (1) ``BaseDocumentViewSet`` (which from now on does not contain
+          ``suggest`` functionality) has been renamed to ``DocumentViewSet``
+          (which does contain ``suggest`` functionality).
+    - (2) You should no longer import from
+          ``django_elasticsearch_dsl_drf.views``. Instead, import from
+          ``django_elasticsearch_dsl_drf.viewsets``.
+
+- Deprecated ``django_elasticsearch_dsl_drf.views`` in favour
+  of ``django_elasticsearch_dsl_drf.viewsets``.
+- Suggest action/method has been moved to ``SuggestMixin`` class.
+- ``FunctionalSuggestMixin`` class introduced which resembled functionality
+  of the ``SuggestMixin`` with several improvements/additions, such as
+  advanced filtering and context-aware suggestions.
+- You can now define a default suggester in ``suggester_fields`` which will
+  be used if you do not provide suffix for the filter name.
+
 0.7.2
 -----
 2018-05-09
@@ -33,7 +62,7 @@ are used for versioning (schema follows below):
 .. note::
 
     Release supported by `Goldmund, Wyldebeast & Wunderliebe
-    <https://goldmund-wyldebeast-wunderliebe.nl/>`_
+    <https://goldmund-wyldebeast-wunderliebe.nl/>`_.
 
 - Add query `boost` support for search fields.
 

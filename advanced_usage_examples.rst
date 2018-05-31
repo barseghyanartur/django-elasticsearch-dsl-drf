@@ -419,14 +419,14 @@ Sample view
         DefaultOrderingFilterBackend,
         SearchFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
     # Example app models
     from search_indexes.documents.book import BookDocument
     from search_indxes.serializers import BookDocumentSerializer
 
 
-    class BookDocumentView(BaseDocumentViewSet):
+    class BookDocumentView(DocumentViewSet):
         """The BookDocument view."""
 
         document = BookDocument
@@ -545,11 +545,11 @@ fields add multiple ``search`` query params and field names separated with
 **Search with boosting**
 
 It's possible to boost search fields. In order to do that change the
-`search_fields` definition of the `BookDocumentViewSet` as follows:
+`search_fields` definition of the `DocumentViewSet` as follows:
 
 .. code-block:: python
 
-    class BookDocumentView(BaseDocumentViewSet):
+    class BookDocumentView(DocumentViewSet):
         """The BookDocument view."""
 
         # ...
@@ -705,7 +705,7 @@ view set in the following way:
 
     # ...
 
-    class BookDocumentView(BaseDocumentViewSet):
+    class BookDocumentView(DocumentViewSet):
         """The BookDocument view."""
 
         # ...
@@ -963,7 +963,7 @@ the following way:
 
     # ...
 
-    class PublisherDocumentViewSet(BaseDocumentViewSet):
+    class PublisherDocumentViewSet(DocumentViewSet):
         """The PublisherDocument view."""
 
         document = PublisherDocument
@@ -1293,6 +1293,8 @@ Document definition
 ViewSet definition
 ^^^^^^^^^^^^^^^^^^
 
+.. note:: The suggester filter backends shall come as last ones.
+
 *search_indexes/viewsets/book.py*
 
 .. code-block:: python
@@ -1310,6 +1312,7 @@ ViewSet definition
         LOOKUP_QUERY_ISNULL,
         LOOKUP_QUERY_LT,
         LOOKUP_QUERY_LTE,
+        SUGGESTER_COMPLETION,
         SUGGESTER_PHRASE,
         SUGGESTER_TERM,
     )
@@ -1318,7 +1321,7 @@ ViewSet definition
         SuggesterFilterBackend,
     )
 
-    class BookDocumentViewSet(BaseDocumentViewSet):
+    class BookDocumentViewSet(DocumentViewSet):
         """The BookDocument view."""
 
         document = BookDocument
@@ -1330,7 +1333,7 @@ ViewSet definition
             OrderingFilterBackend,
             DefaultOrderingFilterBackend,
             SearchFilterBackend,
-            SuggesterFilterBackend,
+            SuggesterFilterBackend,  # This should be the last backend
         ]
         # Define search fields
         search_fields = (
@@ -1422,7 +1425,11 @@ ViewSet definition
 
         # Suggester fields
         suggester_fields = {
-            'title_suggest': 'title.suggest',
+            'title_suggest': {
+                'field': 'title.suggest',
+                'suggesters': [SUGGESTER_COMPLETION, SUGGESTER_TERM]
+                'default_suggester': SUGGESTER_COMPLETION,
+            },
             'publisher_suggest': 'publisher.suggest',
             'tag_suggest': 'tags.suggest',
             'summary_suggest': 'summary',
@@ -1452,6 +1459,100 @@ Let's considering, that one of our books has the following text in the summary:
     Long time the manxome foe he sought --
     So rested he by the Tumtum tree,
     And stood awhile in thought.
+
+Completion
+++++++++++
+
+
+**Request**
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/books/suggest/?title_suggest__completion=temp
+
+**Response**
+
+.. code-block:: javascript
+
+    {
+        "_shards": {
+            "successful": 1,
+            "total": 1,
+            "failed": 0
+        },
+        "title_suggest": [
+            {
+                "length": 4,
+                "text": "temp",
+                "options": [
+                    {
+                        "text": "Tempora voluptates distinctio facere ",
+                        "_index": "book",
+                        "_score": 1.0,
+                        "_id": "1000087",
+                        "_type": "book_document",
+                        "_source": {
+                            "description": null,
+                            "summary": "Veniam dolores recusandae maxime laborum earum.",
+                            "id": 1000087,
+                            "state": "cancelled",
+                            "authors": [
+                                "Jayden van Luyssel",
+                                "Yassin van Rooij",
+                                "Florian van 't Erve",
+                                "Mats van Nimwegen",
+                                "Wessel Keltenie"
+                            ],
+                            "title": "Tempora voluptates distinctio facere."
+                        }
+                    },
+                    {
+                        "text": "Tempore sapiente repellat alias ad corrupti",
+                        "_index": "book",
+                        "_score": 1.0,
+                        "_id": "29",
+                        "_type": "book_document"
+                        "_source": {
+                            "description": null,
+                            "summary": "Dolores minus architecto iure fugit qui sed.",
+                            "id": 29,
+                            "state": "canelled",
+                            "authors": [
+                                "Wout van Northeim",
+                                "Lenn van Vliet-Kuijpers",
+                                "Tijs Mulder"
+                            ],
+                            "title": "Tempore sapiente repellat alias ad."
+                        },
+
+                    },
+                    {
+                        "text": "Temporibus exercitationem minus expedita",
+                        "_index": "book",
+                        "_score": 1.0,
+                        "_id": "17",
+                        "_type": "book_document",
+                        "_source": {
+                            "description": null,
+                            "summary": "A laborum alias voluptates tenetur sapiente modi.",
+                            "id": 17,
+                            "state": "canelled",
+                            "authors": [
+                                "Juliette Estey",
+                                "Keano de Keijzer",
+                                "Koen Scheffers",
+                                "Florian van 't Erve",
+                                "Tara Oversteeg",
+                                "Mats van Nimwegen"
+                            ],
+                            "title": "Temporibus exercitationem minus expedita."
+                        }
+                    }
+                ],
+                "offset": 0
+            }
+        ]
+    }
 
 Term
 ++++
@@ -1532,6 +1633,12 @@ Phrase
         }
     }
 
+Functional suggestions
+----------------------
+If native suggestions are not good enough for you, use functional suggesters.
+
+# TODO
+
 Highlighting
 ------------
 Highlighters enable you to get highlighted snippets from one or more fields
@@ -1541,7 +1648,7 @@ in your search results so you can show users where the query matches are.
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
     from django_elasticsearch_dsl_drf.filter_backends import (
         # ...
         HighlightBackend,
@@ -1656,7 +1763,7 @@ Page number pagination
 ~~~~~~~~~~~~~~~~~~~~~~
 
 By default, the ``PageNumberPagination`` class is used on all view sets
-which inherit from ``BaseDocumentViewSet``.
+which inherit from ``DocumentViewSet``.
 
 Example:
 
@@ -1681,7 +1788,7 @@ In order to use a different ``pagination_class``, for instance the
 
     # ...
 
-    class BookDocumentView(BaseDocumentViewSet):
+    class BookDocumentView(DocumentViewSet):
         """The BookDocument view."""
 
         # ...

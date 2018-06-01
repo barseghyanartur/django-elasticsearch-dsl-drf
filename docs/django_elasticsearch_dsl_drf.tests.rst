@@ -44,10 +44,26 @@ django\_elasticsearch\_dsl\_drf\.tests\.test\_filtering\_geo\_spatial module
     :undoc-members:
     :show-inheritance:
 
+django\_elasticsearch\_dsl\_drf\.tests\.test\_functional\_suggesters module
+---------------------------------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.tests.test_functional_suggesters
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 django\_elasticsearch\_dsl\_drf\.tests\.test\_helpers module
 ------------------------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.tests.test_helpers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+django\_elasticsearch\_dsl\_drf\.tests\.test\_highlight module
+--------------------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.tests.test_highlight
     :members:
     :undoc-members:
     :show-inheritance:
@@ -80,6 +96,14 @@ django\_elasticsearch\_dsl\_drf\.tests\.test\_search module
 -----------------------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.tests.test_search
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+django\_elasticsearch\_dsl\_drf\.tests\.test\_serializers module
+----------------------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.tests.test_serializers
     :members:
     :undoc-members:
     :show-inheritance:

@@ -17,7 +17,7 @@ are used for versioning (schema follows below):
 
 0.8
 ---
-2018-mm-dd (not yet released)
+2018-06-01
 
 .. note::
 

@@ -51,6 +51,7 @@ Main features and highlights
 - :doc:`Faceted search filter backend <advanced_usage_examples>`.
 - :doc:`Highlight backend <advanced_usage_examples>`.
 - :doc:`Suggester filter backend <advanced_usage_examples>`.
+- :doc:`Functional suggester filter backend <advanced_usage_examples>`.
 - :doc:`Pagination (Page number and limit/offset pagination) <advanced_usage_examples>`.
 - :doc:`Ids filter backend <advanced_usage_examples>`.
 

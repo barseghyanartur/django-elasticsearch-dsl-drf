@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = '0.7.2'
+version = '0.8'
 
 DOCS_TRANSFORMATIONS = (
     (
@@ -81,6 +81,13 @@ DOCS_TRANSFORMATIONS = (
         '`Suggester filter backend <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
         'advanced_usage_examples.html#suggestions'
+        '>`_'.format(version)
+    ),
+    (
+        ':doc:`Functional suggester filter backend <advanced_usage_examples>`',
+        '`Functional suggester filter backend <'
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#functional-suggestions'
         '>`_'.format(version)
     ),
     (

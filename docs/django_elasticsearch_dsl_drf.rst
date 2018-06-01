@@ -13,6 +13,14 @@ Subpackages
 Submodules
 ----------
 
+django\_elasticsearch\_dsl\_drf\.analyzers module
+-------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.analyzers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 django\_elasticsearch\_dsl\_drf\.apps module
 --------------------------------------------
 

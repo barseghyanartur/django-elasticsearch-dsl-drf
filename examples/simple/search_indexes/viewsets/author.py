@@ -2,6 +2,8 @@ from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_TERM,
     SUGGESTER_PHRASE,
     SUGGESTER_COMPLETION,
+    FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+    FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
     FilteringFilterBackend,
@@ -65,10 +67,32 @@ class AuthorDocumentViewSet(DocumentViewSet):
                 SUGGESTER_PHRASE,
                 SUGGESTER_COMPLETION,
             ],
+            'default_suggester': SUGGESTER_COMPLETION,
         },
         'salutation.suggest': {
             'suggesters': [
                 SUGGESTER_COMPLETION,
             ],
+            'default_suggester': SUGGESTER_COMPLETION,
+        },
+    }
+
+    # Functional suggester fields
+    functional_suggester_fields = {
+        'name_suggest': {
+            'field': 'name.raw',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            'serializer_field': 'name',
+        },
+        'salutation.suggest': {
+            'field': 'salutation.raw',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            'serializer_field': 'salutation',
         },
     }

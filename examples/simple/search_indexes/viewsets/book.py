@@ -1,18 +1,18 @@
 from django_elasticsearch_dsl_drf.constants import (
-    LOOKUP_FILTER_TERMS,
-    LOOKUP_FILTER_RANGE,
+    FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+    FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
     LOOKUP_FILTER_PREFIX,
+    LOOKUP_FILTER_RANGE,
+    LOOKUP_FILTER_TERMS,
     LOOKUP_FILTER_WILDCARD,
-    LOOKUP_QUERY_IN,
+    LOOKUP_QUERY_EXCLUDE,
     LOOKUP_QUERY_GT,
     LOOKUP_QUERY_GTE,
+    LOOKUP_QUERY_IN,
+    LOOKUP_QUERY_ISNULL,
     LOOKUP_QUERY_LT,
     LOOKUP_QUERY_LTE,
-    LOOKUP_QUERY_EXCLUDE,
-    LOOKUP_QUERY_ISNULL,
     SUGGESTER_COMPLETION,
-    FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-    FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
 
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
@@ -28,7 +28,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 )
 from django_elasticsearch_dsl_drf.viewsets import (
     BaseDocumentViewSet,
-    DocumentViewSet,
+    # DocumentViewSet,
     FunctionalSuggestMixin,
     SuggestMixin,
 )
@@ -261,7 +261,7 @@ class BookFunctionalSuggesterDocumentViewSet(
         FunctionalSuggesterFilterBackend,
     ]
 
-    # Suggester fields
+    # Functional suggester fields
     functional_suggester_fields = {
         'title_suggest_prefix': {
             'field': 'title.raw',
@@ -273,7 +273,7 @@ class BookFunctionalSuggesterDocumentViewSet(
             'serializer_field': 'title',
         },
         'title_suggest_match': {
-            'field': 'title.autocomplete',
+            'field': 'title.edge_ngram_completion',
             'suggesters': [FUNCTIONAL_SUGGESTER_COMPLETION_MATCH],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
             'serializer_field': 'title',

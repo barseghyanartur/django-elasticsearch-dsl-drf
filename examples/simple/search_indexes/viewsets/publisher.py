@@ -1,10 +1,12 @@
 from django_elasticsearch_dsl_drf.constants import (
+    FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+    FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+    LOOKUP_FILTER_GEO_BOUNDING_BOX,
     LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_FILTER_GEO_POLYGON,
-    LOOKUP_FILTER_GEO_BOUNDING_BOX,
-    SUGGESTER_TERM,
-    SUGGESTER_PHRASE,
     SUGGESTER_COMPLETION,
+    SUGGESTER_PHRASE,
+    SUGGESTER_TERM,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
     FilteringFilterBackend,
@@ -93,6 +95,7 @@ class PublisherDocumentViewSet(DocumentViewSet):
                 SUGGESTER_PHRASE,
                 SUGGESTER_COMPLETION,
             ],
+            'default_suggester': SUGGESTER_COMPLETION,
         },
         'city_suggest': {
             'field': 'city.suggest',
@@ -106,5 +109,34 @@ class PublisherDocumentViewSet(DocumentViewSet):
             'suggesters': [
                 SUGGESTER_COMPLETION,
             ],
+            'default_suggester': SUGGESTER_COMPLETION,
+        },
+    }
+
+    # Functional suggester fields
+    functional_suggester_fields = {
+        'name_suggest_prefix': {
+            'field': 'name.raw',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            'serializer_field': 'name',
+        },
+        'city_suggest': {
+            'field': 'city.raw',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            ],
+            'serializer_field': 'city',
+        },
+        'state_province_suggest': 'state_province.suggest',
+        'country_suggest': {
+            'field': 'country.raw',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            'serializer_field': 'state_province',
         },
     }

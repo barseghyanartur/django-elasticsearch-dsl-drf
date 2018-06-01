@@ -119,5 +119,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
             raise Http404("No result matches the given query.")
 
 
-class DocumentViewSet(BaseDocumentViewSet, SuggestMixin):
-    """DocumentViewSet with suggest mixin."""
+class DocumentViewSet(BaseDocumentViewSet,
+                      SuggestMixin,
+                      FunctionalSuggestMixin):
+    """DocumentViewSet with suggest and functional-suggest mix-ins."""

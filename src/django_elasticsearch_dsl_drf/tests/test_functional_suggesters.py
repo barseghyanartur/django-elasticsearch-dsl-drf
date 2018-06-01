@@ -1,6 +1,6 @@
 # coding: utf-8
 """
-Test suggestions backend.
+Test functional suggestions backend.
 """
 
 from __future__ import absolute_import, unicode_literals
@@ -30,13 +30,13 @@ __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
-    'TestSuggesters',
+    'TestFunctionalSuggesters',
 )
 
 
 @pytest.mark.django_db
-class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
-    """Test suggesters."""
+class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
+    """Test functional suggesters."""
 
     pytestmark = pytest.mark.django_db
 
@@ -102,7 +102,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         )
 
         cls.publishers_url = reverse(
-            'publisherdocument-suggest',
+            'publisherdocument-functional-suggest',
             kwargs={}
         )
 
@@ -150,7 +150,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         )
 
         cls.books_url = reverse(
-            'bookdocument-suggest',
+            'bookdocument-functional-suggest',
             kwargs={}
         )
 
@@ -175,7 +175,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         )
 
         cls.authors_url = reverse(
-            'authordocument-suggest',
+            'authordocument-functional-suggest',
             kwargs={}
         )
 
@@ -249,6 +249,12 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                 'Bbb': [],
             },
         }
+        # Testing default suggesters as well
+        test_data.update(
+            {
+                'title_suggest': test_data['title_suggest__completion'],
+            }
+        )
         self._test_suggesters(test_data, self.books_url)
 
         # Testing authors
@@ -259,59 +265,66 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                 'Hhh': [],
             },
         }
+        # Testing default suggesters as well
+        test_data.update(
+            {
+                'salutation.suggest':
+                    test_data['salutation.suggest__completion'],
+            }
+        )
         self._test_suggesters(test_data, self.authors_url)
 
-    def test_suggesters_completion_no_args_provided(self):
-        """Test suggesters completion with no args provided."""
-        data = {}
-        # Check if response now is valid
-        response = self.client.get(self.publishers_url, data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_suggesters_term(self):
-        """Test suggesters term."""
-        # Testing books
-        test_data = {
-            'summary_suggest__term': {
-                'borogovse': ['borogov'],
-                'Tumtus': ['tumtum'],
-                'Jabberwok': ['jabberwock'],
-                'tovse': ['tove', 'took', 'twas'],
-            },
-        }
-        self._test_suggesters(test_data, self.books_url)
-
-    def test_suggesters_phrase(self):
-        """Test suggesters phrase."""
-        # Testing books
-        test_data = {
-            'summary_suggest__phrase': {
-                'slith tovs': ['slithi tov'],
-                'mimsy boroto': ['mimsi borogov'],
-            },
-        }
-        self._test_suggesters(test_data, self.books_url)
-
-    def test_nested_fields_suggesters_completion(self):
-        """Test suggesters completion for nested fields."""
-        # Testing cities and countries
-        test_data = {
-            'city_suggest__completion': {
-                'Ye': ['Yerevan', 'Yeovil'],
-                'Yer': ['Yerevan'],
-                'Ams': ['Amsterdam'],
-                'Du': ['Dublin'],
-                'Ne': [],
-            },
-            'country_suggest__completion': {
-                'Arm': ['Armenia'],
-                'Ar': ['Armenia', 'Argentina'],
-                'Re': ['Republic of Ireland'],
-                'Net': ['Netherlands'],
-                'Fra': [],
-            }
-        }
-        self._test_suggesters(test_data, self.addresses_suggest_url)
+    # def test_suggesters_completion_no_args_provided(self):
+    #     """Test suggesters completion with no args provided."""
+    #     data = {}
+    #     # Check if response now is valid
+    #     response = self.client.get(self.publishers_url, data)
+    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    #
+    # def test_suggesters_term(self):
+    #     """Test suggesters term."""
+    #     # Testing books
+    #     test_data = {
+    #         'summary_suggest__term': {
+    #             'borogovse': ['borogov'],
+    #             'Tumtus': ['tumtum'],
+    #             'Jabberwok': ['jabberwock'],
+    #             'tovse': ['tove', 'took', 'twas'],
+    #         },
+    #     }
+    #     self._test_suggesters(test_data, self.books_url)
+    #
+    # def test_suggesters_phrase(self):
+    #     """Test suggesters phrase."""
+    #     # Testing books
+    #     test_data = {
+    #         'summary_suggest__phrase': {
+    #             'slith tovs': ['slithi tov'],
+    #             'mimsy boroto': ['mimsi borogov'],
+    #         },
+    #     }
+    #     self._test_suggesters(test_data, self.books_url)
+    #
+    # def test_nested_fields_suggesters_completion(self):
+    #     """Test suggesters completion for nested fields."""
+    #     # Testing cities and countries
+    #     test_data = {
+    #         'city_suggest__completion': {
+    #             'Ye': ['Yerevan', 'Yeovil'],
+    #             'Yer': ['Yerevan'],
+    #             'Ams': ['Amsterdam'],
+    #             'Du': ['Dublin'],
+    #             'Ne': [],
+    #         },
+    #         'country_suggest__completion': {
+    #             'Arm': ['Armenia'],
+    #             'Ar': ['Armenia', 'Argentina'],
+    #             'Re': ['Republic of Ireland'],
+    #             'Net': ['Netherlands'],
+    #             'Fra': [],
+    #         }
+    #     }
+    #     self._test_suggesters(test_data, self.addresses_suggest_url)
 
 
 if __name__ == '__main__':

@@ -150,7 +150,7 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         )
 
         cls.books_url = reverse(
-            'bookdocument-functional-suggest',
+            'bookdocument_functional_suggester-functional-suggest',
             kwargs={}
         )
 

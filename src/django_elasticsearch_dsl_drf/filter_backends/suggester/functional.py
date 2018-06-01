@@ -78,6 +78,7 @@ from django_elasticsearch_dsl_drf.constants import (
 )
 from django_elasticsearch_dsl_drf.utils import EmptySearch
 
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import BaseFilterBackend
 
 from six import string_types
@@ -471,9 +472,10 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         # has no affect on other backends, since this only applies to
         # view.action == 'functional_suggest' case.
         if not applied:
-            empty_queryset = EmptySearch()
-            empty_queryset._functional_suggest = True
-            return empty_queryset
+            raise ValidationError()
+            # empty_queryset = EmptySearch()
+            # empty_queryset._functional_suggest = True
+            # return empty_queryset
 
         return self.serialize_queryset(
             queryset,
@@ -481,5 +483,3 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
             picked_value,
             picked_serializer_field
         )
-
-        # return queryset

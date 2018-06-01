@@ -189,42 +189,44 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
 
         data = {}
 
-        for __suggester_field, __test_cases in test_data.items():
+        for _suggester_field, _test_cases in test_data.items():
 
-            for __test_case, __expected_results in __test_cases.items():
+            for _test_case, _expected_results in _test_cases.items():
                 # Check if response now is valid
+
                 response = self.client.get(
-                    url + '?' + __suggester_field + '=' + __test_case,
+                    url + '?' + _suggester_field + '=' + _test_case,
                     data
                 )
+                # import pytest; pytest.set_trace()
                 self.assertEqual(response.status_code, status.HTTP_200_OK)
-                self.assertIn(__suggester_field, response.data)
-                __unique_options = list(set([
+                self.assertIn(_suggester_field, response.data)
+                _unique_options = list(set([
                     __o['text']
                     for __o
-                    in response.data[__suggester_field][0]['options']
+                    in response.data[_suggester_field]['options']
                 ]))
                 self.assertEqual(
-                    len(__unique_options),
-                    len(__expected_results),
-                    (__test_case, __expected_results)
+                    len(_unique_options),
+                    len(_expected_results),
+                    (_test_case, _expected_results)
                 )
                 self.assertEqual(
-                    sorted(__unique_options),
-                    sorted(__expected_results),
-                    (__test_case, __expected_results)
+                    sorted(_unique_options),
+                    sorted(_expected_results),
+                    (_test_case, _expected_results)
                 )
 
     def test_suggesters_completion(self):
         """Test suggesters completion."""
         # Testing publishers
         test_data = {
-            'name_suggest__completion': {
+            'name_suggest__completion_prefix': {
                 'Ad': ['Addison–Wesley', 'Adis International'],
                 'Atl': ['Atlantic Books', 'Atlas Press'],
                 'Boo': ['Book League of America', 'Book Works', 'Booktrope'],
             },
-            'country_suggest__completion': {
+            'country_suggest__completion_prefix': {
                 'Arm': ['Armenia'],
                 'Ar': ['Armenia', 'Argentina'],
                 'Bel': ['Belgium', 'Belarus'],
@@ -236,15 +238,16 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         # Testing default suggesters as well
         test_data.update(
             {
-                'name_suggest': test_data['name_suggest__completion'],
-                'country_suggest': test_data['country_suggest__completion'],
+                'name_suggest': test_data['name_suggest__completion_prefix'],
+                'country_suggest':
+                    test_data['country_suggest__completion_prefix'],
             }
         )
         self._test_suggesters(test_data, self.publishers_url)
 
         # Testing books
         test_data = {
-            'title_suggest__completion': {
+            'title_suggest_prefix__completion_prefix': {
                 'Aaa': ['Aaaaa Bbbb', 'Aaaaa Cccc', 'Aaaaa Dddd'],
                 'Bbb': [],
             },
@@ -252,14 +255,15 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         # Testing default suggesters as well
         test_data.update(
             {
-                'title_suggest': test_data['title_suggest__completion'],
+                'title_suggest_prefix':
+                    test_data['title_suggest_prefix__completion_prefix'],
             }
         )
         self._test_suggesters(test_data, self.books_url)
 
         # Testing authors
         test_data = {
-            'salutation.suggest__completion': {
+            'salutation.suggest__completion_prefix': {
                 'Aaa': ['Aaa Bbb', 'Aaa Ccc'],
                 'Bbb': ['Bbb Ccc'],
                 'Hhh': [],
@@ -269,18 +273,18 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         test_data.update(
             {
                 'salutation.suggest':
-                    test_data['salutation.suggest__completion'],
+                    test_data['salutation.suggest__completion_prefix'],
             }
         )
         self._test_suggesters(test_data, self.authors_url)
 
-    # def test_suggesters_completion_no_args_provided(self):
-    #     """Test suggesters completion with no args provided."""
-    #     data = {}
-    #     # Check if response now is valid
-    #     response = self.client.get(self.publishers_url, data)
-    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    #
+    def test_suggesters_completion_no_args_provided(self):
+        """Test suggesters completion with no args provided."""
+        data = {}
+        # Check if response now is valid
+        response = self.client.get(self.publishers_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     # def test_suggesters_term(self):
     #     """Test suggesters term."""
     #     # Testing books

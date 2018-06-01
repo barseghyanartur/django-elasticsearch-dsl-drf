@@ -11,6 +11,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     OrderingFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
+    FunctionalSuggesterFilterBackend,
 )
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
@@ -35,6 +36,7 @@ class AuthorDocumentViewSet(DocumentViewSet):
         DefaultOrderingFilterBackend,
         SearchFilterBackend,
         SuggesterFilterBackend,
+        FunctionalSuggesterFilterBackend,
     ]
     pagination_class = LimitOffsetPagination
     # Define search fields

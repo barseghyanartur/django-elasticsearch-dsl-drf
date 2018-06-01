@@ -14,6 +14,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     OrderingFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
+    FunctionalSuggesterFilterBackend,
     GeoSpatialFilteringFilterBackend,
     GeoSpatialOrderingFilterBackend,
 )
@@ -42,6 +43,7 @@ class PublisherDocumentViewSet(DocumentViewSet):
         GeoSpatialOrderingFilterBackend,
         DefaultOrderingFilterBackend,
         SuggesterFilterBackend,
+        FunctionalSuggesterFilterBackend,
     ]
     pagination_class = LimitOffsetPagination
     # Define search fields
@@ -115,7 +117,7 @@ class PublisherDocumentViewSet(DocumentViewSet):
 
     # Functional suggester fields
     functional_suggester_fields = {
-        'name_suggest_prefix': {
+        'name_suggest': {
             'field': 'name.raw',
             'suggesters': [
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
@@ -128,15 +130,23 @@ class PublisherDocumentViewSet(DocumentViewSet):
             'suggesters': [
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             'serializer_field': 'city',
         },
-        'state_province_suggest': 'state_province.suggest',
+        'state_province_suggest': {
+            'field': 'state_province.suggest',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            'serializer_field': 'state_province',
+        },
         'country_suggest': {
             'field': 'country.raw',
             'suggesters': [
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-            'serializer_field': 'state_province',
+            'serializer_field': 'country',
         },
     }

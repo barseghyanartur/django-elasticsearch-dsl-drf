@@ -6,6 +6,7 @@ Base ViewSets.
 from __future__ import absolute_import, unicode_literals
 
 from django.http import Http404
+from django.core.exceptions import ImproperlyConfigured
 
 from elasticsearch_dsl import Search
 from elasticsearch_dsl.connections import connections
@@ -53,6 +54,21 @@ class FunctionalSuggestMixin(object):
     @list_route()
     def functional_suggest(self, request):
         """Functional suggest functionality."""
+        # TODO: leave or remove?
+        if 'view' in request.parser_context:
+            view = request.parser_context['view']
+            filter_backend_names = [
+                __b.__name__
+                for __b
+                in view.filter_backends
+            ]
+            if 'FunctionalSuggesterFilterBackend' not in filter_backend_names:
+                raise ImproperlyConfigured(
+                    "To use functional suggester backend you shall add "
+                    "`FunctionalSuggesterFilterBackend` to the "
+                    "`filter_backends` of your ViewSet."
+                )
+
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
         return Response(page)

@@ -87,7 +87,7 @@ class AuthorDocumentViewSet(DocumentViewSet):
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-            'serializer_field': 'name',
+            # 'serializer_field': 'name',
         },
         'salutation.suggest': {
             'field': 'salutation.raw',
@@ -95,6 +95,6 @@ class AuthorDocumentViewSet(DocumentViewSet):
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-            'serializer_field': 'salutation',
+            # 'serializer_field': 'salutation',
         },
     }

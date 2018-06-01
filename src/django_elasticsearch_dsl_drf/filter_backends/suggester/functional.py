@@ -331,8 +331,19 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                         if __value.strip() != ''
                     ]
 
-                    serializer_field = \
-                        suggester_fields[field_name]['serializer_field']
+                    # If specific field given, use that. Otherwise,
+                    # fall back to the top level field name.
+                    if 'serializer_field' in suggester_fields[field_name]:
+                        serializer_field = \
+                            suggester_fields[field_name]['serializer_field']
+                    else:
+                        serializer_field = suggester_fields[field_name].get(
+                            'field',
+                            field_name
+                        )
+                        serializer_field = self.extract_field_name(
+                            serializer_field
+                        )
 
                     if values:
                         suggester_query_params[query_param] = {
@@ -395,6 +406,18 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
             '_shards': result['_shards'],
         }
         return data
+
+    def extract_field_name(self, field_name):
+        """Extract field name.
+
+        For instance, "name.suggest" or "name.raw" becomes "name".
+
+        :param field_name:
+        :type str:
+        :return:
+        :rtype: str
+        """
+        return field_name.split('.')[0]
 
     def filter_queryset(self, request, queryset, view):
         """Filter the queryset.

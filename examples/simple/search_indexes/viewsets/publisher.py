@@ -123,7 +123,7 @@ class PublisherDocumentViewSet(DocumentViewSet):
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-            'serializer_field': 'name',
+            # 'serializer_field': 'name',
         },
         'city_suggest': {
             'field': 'city.raw',
@@ -131,7 +131,7 @@ class PublisherDocumentViewSet(DocumentViewSet):
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-            'serializer_field': 'city',
+            # 'serializer_field': 'city',
         },
         'state_province_suggest': {
             'field': 'state_province.suggest',
@@ -139,7 +139,7 @@ class PublisherDocumentViewSet(DocumentViewSet):
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-            'serializer_field': 'state_province',
+            # 'serializer_field': 'state_province',
         },
         'country_suggest': {
             'field': 'country.raw',
@@ -147,6 +147,6 @@ class PublisherDocumentViewSet(DocumentViewSet):
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-            'serializer_field': 'country',
+            # 'serializer_field': 'country',
         },
     }

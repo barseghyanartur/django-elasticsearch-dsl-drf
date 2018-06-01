@@ -270,13 +270,13 @@ class BookFunctionalSuggesterDocumentViewSet(
                 FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
             ],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-            'serializer_field': 'title',
+            # 'serializer_field': 'title',
         },
         'title_suggest_match': {
             'field': 'title.edge_ngram_completion',
             'suggesters': [FUNCTIONAL_SUGGESTER_COMPLETION_MATCH],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
-            'serializer_field': 'title',
+            # 'serializer_field': 'title',
         }
         # 'publisher_suggest': 'publisher.suggest',
         # 'tag_suggest': 'tags.suggest',

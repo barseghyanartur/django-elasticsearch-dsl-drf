@@ -1850,13 +1850,11 @@ functionality). Thus, it might be written as short as:
                     FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
                 ],
                 'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-                'serializer_field': 'title',
             },
             'title_suggest_match': {
                 'field': 'title.edge_ngram_completion',
                 'suggesters': [FUNCTIONAL_SUGGESTER_COMPLETION_MATCH],
                 'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
-                'serializer_field': 'title',
             }
         }
 

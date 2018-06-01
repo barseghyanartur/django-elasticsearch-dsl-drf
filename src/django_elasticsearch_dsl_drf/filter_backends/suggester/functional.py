@@ -207,7 +207,11 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
     #     )
     #
     # @classmethod
-    # def apply_suggester_phrase(cls, suggester_name, queryset, options, value):
+    # def apply_suggester_phrase(cls,
+    #                            suggester_name,
+    #                            queryset,
+    #                            options,
+    #                            value):
     #     """Apply `phrase` suggester.
     #
     #     :param suggester_name:
@@ -319,8 +323,8 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 if suggester_param is None \
                         or suggester_param in valid_suggesters:
 
-                    # If we have default suggester given use it as a default and
-                    # do not require further suffix specification.
+                    # If we have default suggester given use it as a default
+                    # and do not require further suffix specification.
                     if suggester_param is None:
                         suggester_param = str(default_suggester)
 
@@ -358,7 +362,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                         }
         return suggester_query_params
 
-    def _clean_queryset(self, queryset):
+    def clean_queryset(self, queryset):
         """Clean the queryset.
 
         - Remove aggregations.
@@ -438,7 +442,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
             return queryset
 
         # Clean the queryset.
-        queryset = self._clean_queryset(queryset)
+        queryset = self.clean_queryset(queryset)
 
         suggester_query_params = self.get_suggester_query_params(request, view)
 

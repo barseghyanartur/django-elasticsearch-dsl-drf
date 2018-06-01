@@ -284,8 +284,8 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 if suggester_param is None \
                         or suggester_param in valid_suggesters:
 
-                    # If we have default suggester given use it as a default and
-                    # do not require further suffix specification.
+                    # If we have default suggester given use it as a default
+                    # and do not require further suffix specification.
                     if suggester_param is None:
                         suggester_param = str(default_suggester)
 

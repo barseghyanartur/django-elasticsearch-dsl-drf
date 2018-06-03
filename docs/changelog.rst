@@ -28,6 +28,7 @@ are used for versioning (schema follows below):
 
     This release contain minor backwards incompatible changes. You should
     update your code.
+
     - (1) ``BaseDocumentViewSet`` (which from now on does not contain
           ``suggest`` functionality) has been renamed to ``DocumentViewSet``
           (which does contain ``suggest`` functionality).

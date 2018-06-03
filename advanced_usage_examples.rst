@@ -1767,11 +1767,13 @@ ViewSet definition
 Functional suggesters for the view are configured in
 ``functional_suggester_fields`` property.
 
-In the example below, the ``title_suggest_prefix`` is the name of the GET query
+In the example below, the ``title_suggest`` is the name of the GET query
 param which points to the ``title.raw`` field of the ``BookDocument`` document.
-For the ``title_suggest`` the allowed suggesters are
-``FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX`` and
-``FUNCTIONAL_SUGGESTER_COMPLETION_MATCH``.
+For the ``title_suggest`` the allowed suggester is
+``FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX``. For Ngram match we have the
+``title_suggest_match`` field, which points to ``title.edge_ngram_completion``
+field of the same document. For ``title_suggest_match`` the allowed suggester
+is ``FUNCTIONAL_SUGGESTER_COMPLETION_MATCH``.
 
 URL shall be constructed in the following way:
 
@@ -1843,11 +1845,10 @@ functionality). Thus, it might be written as short as:
 
         # Functional suggester fields
         functional_suggester_fields = {
-            'title_suggest_prefix': {
+            'title_suggest': {
                 'field': 'title.raw',
                 'suggesters': [
                     FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-                    FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
                 ],
                 'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             },

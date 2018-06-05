@@ -193,18 +193,16 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
 
             for _test_case, _expected_results in _test_cases.items():
                 # Check if response now is valid
-
                 response = self.client.get(
                     url + '?' + _suggester_field + '=' + _test_case,
                     data
                 )
-                # import pytest; pytest.set_trace()
                 self.assertEqual(response.status_code, status.HTTP_200_OK)
                 self.assertIn(_suggester_field, response.data)
                 _unique_options = list(set([
                     __o['text']
                     for __o
-                    in response.data[_suggester_field]['options']
+                    in response.data[_suggester_field][0]['options']
                 ]))
                 self.assertEqual(
                     len(_unique_options),

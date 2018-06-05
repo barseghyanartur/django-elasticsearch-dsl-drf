@@ -401,12 +401,12 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
             hits.append(hit)
 
         data = {
-            suggester_name: {
+            suggester_name: [{
                 'text': value,
                 'options': hits,
                 'length': len(value),
                 'offset': 0,
-            },
+            }],
             '_shards': result['_shards'],
         }
         return data

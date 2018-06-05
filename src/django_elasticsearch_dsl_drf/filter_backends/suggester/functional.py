@@ -499,7 +499,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         # has no affect on other backends, since this only applies to
         # view.action == 'functional_suggest' case.
         if not applied:
-            raise ValidationError()
+            raise ValidationError(detail=None)
             # empty_queryset = EmptySearch()
             # empty_queryset._functional_suggest = True
             # return empty_queryset

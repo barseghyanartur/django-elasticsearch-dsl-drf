@@ -15,6 +15,14 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.8.1
+-----
+2018-06-05
+
+- Fixed wrong filter name in functional suggesters results into an error on
+  Django 1.10 (and prior).
+- Documentation improvements.
+
 0.8
 ---
 2018-06-01

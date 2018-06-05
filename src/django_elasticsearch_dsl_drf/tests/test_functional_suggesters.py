@@ -257,13 +257,17 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
             {
                 'title_suggest_prefix':
                     test_data['title_suggest_prefix__completion_prefix'],
+                'title.raw__completion_prefix':
+                    test_data['title_suggest_prefix__completion_prefix'],
+                'title_simple__completion_prefix':
+                    test_data['title_suggest_prefix__completion_prefix'],
             }
         )
         self._test_suggesters(test_data, self.books_url)
 
         # Testing authors
         test_data = {
-            'salutation.suggest__completion_prefix': {
+            'salutation_suggest__completion_prefix': {
                 'Aaa': ['Aaa Bbb', 'Aaa Ccc'],
                 'Bbb': ['Bbb Ccc'],
                 'Hhh': [],
@@ -272,8 +276,10 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         # Testing default suggesters as well
         test_data.update(
             {
-                'salutation.suggest':
-                    test_data['salutation.suggest__completion_prefix'],
+                'salutation_suggest':
+                    test_data['salutation_suggest__completion_prefix'],
+                'salutation.raw':
+                    test_data['salutation_suggest__completion_prefix'],
             }
         )
         self._test_suggesters(test_data, self.authors_url)

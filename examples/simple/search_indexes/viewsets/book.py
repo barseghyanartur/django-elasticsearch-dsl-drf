@@ -277,8 +277,10 @@ class BookFunctionalSuggesterDocumentViewSet(
             'suggesters': [FUNCTIONAL_SUGGESTER_COMPLETION_MATCH],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
             # 'serializer_field': 'title',
-        }
-        # 'publisher_suggest': 'publisher.suggest',
-        # 'tag_suggest': 'tags.suggest',
+        },
+        'title.raw': None,
+        'title_simple': 'title.raw',
+        # 'publisher_suggest': 'publisher.raw',
+        # 'tag_suggest': 'tags',
         # 'summary_suggest': 'summary',
     }

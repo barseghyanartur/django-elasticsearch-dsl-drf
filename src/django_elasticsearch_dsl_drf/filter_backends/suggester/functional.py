@@ -97,8 +97,8 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
     """Suggester filter backend for Elasticsearch.
 
     Suggestion functionality is exclusive. Once you have queried the
-    ``SuggesterFilterBackend``, the latter will transform your current
-    search query into suggestion search query (which is very different).
+    ``FunctionalSuggesterFilterBackend``, the latter will transform your
+    current search query into another search query (altered).
     Therefore, always add it as the very last filter backend.
 
     Example:
@@ -127,7 +127,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>>     serializer_class = PublisherDocumentSerializer
         >>>     filter_backends = [
         >>>         # ...
-        >>>         SuggesterFilterBackend,
+        >>>         FunctionalSuggesterFilterBackend,
         >>>     ]
         >>>     # Suggester fields
         >>>     suggester_fields = {

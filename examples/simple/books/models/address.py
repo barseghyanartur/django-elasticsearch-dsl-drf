@@ -51,3 +51,18 @@ class Address(models.Model):
             'lat': self.latitude,
             'lon': self.longitude,
         }
+
+    # @property
+    # def country_indexing(self):
+    #     """Country data (nested) for indexing.
+    #
+    #     :return:
+    #     """
+    #     return {
+    #         'country': {
+    #             'name': self.city.country.name,
+    #             'city': {
+    #                 'name': self.city.name
+    #             }
+    #         }
+    #     }

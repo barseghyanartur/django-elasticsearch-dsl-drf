@@ -82,8 +82,6 @@ class BookDocumentSerializer(serializers.Serializer):
 class BookDocumentSimpleSerializer(DocumentSerializer):
     """Serializer for the Book document."""
 
-    # tags = serializers.SerializerMethodField()
-    # authors = serializers.SerializerMethodField()
     highlight = serializers.SerializerMethodField()
 
     class Meta(object):

@@ -89,6 +89,30 @@ class AddressDocument(DocType):
         }
     )
 
+    # # Country object
+    # country = fields.NestedField(
+    #     attr='country_indexing',
+    #     properties={
+    #         'name': StringField(
+    #             analyzer=html_strip,
+    #             fields={
+    #                 'raw': KeywordField(),
+    #                 'suggest': fields.CompletionField(),
+    #             }
+    #         ),
+    #         'city': fields.ObjectField(
+    #             properties={
+    #                 'name': StringField(
+    #                     analyzer=html_strip,
+    #                     fields={
+    #                         'raw': KeywordField(),
+    #                     }
+    #                 )
+    #             }
+    #         )
+    #     }
+    # )
+
     location = fields.GeoPointField(attr='location_field_indexing')
 
     class Meta(object):

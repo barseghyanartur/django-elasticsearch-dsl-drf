@@ -11,6 +11,7 @@ from .test_pagination import TestPagination
 from .test_search import TestSearch
 from .test_serializers import TestSerializers
 from .test_views import TestViews
+from .test_wrappers import TestWrappers
 
 __title__ = 'django_elasticsearch_dsl_drf.tests'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -27,4 +28,5 @@ __all__ = (
     'TestSearch',
     'TestSerializers',
     'TestViews',
+    'TestWrappers',
 )

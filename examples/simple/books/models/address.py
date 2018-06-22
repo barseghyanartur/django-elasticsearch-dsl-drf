@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django_elasticsearch_dsl_drf.wrappers import dict_to_obj
 
 from six import python_2_unicode_compatible
 
@@ -52,17 +53,31 @@ class Address(models.Model):
             'lon': self.longitude,
         }
 
-    # @property
-    # def country_indexing(self):
-    #     """Country data (nested) for indexing.
-    #
-    #     :return:
-    #     """
-    #     return {
-    #         'country': {
-    #             'name': self.city.country.name,
-    #             'city': {
-    #                 'name': self.city.name
-    #             }
-    #         }
-    #     }
+    @property
+    def country_indexing(self):
+        """Country data (nested) for indexing.
+
+        Example:
+
+        >>> mapping = {
+        >>>     'country': {
+        >>>         'name': 'Netherlands',
+        >>>         'province': {
+        >>>             'name': 'North Holland',
+        >>>             'city': {
+        >>>                 'name': 'Amsterdam',
+        >>>             }
+        >>>         }
+        >>>     }
+        >>> }
+
+        :return:
+        """
+        wrapper = dict_to_obj({
+            'name': self.city.country.name,
+            'city': {
+                'name': self.city.name
+            }
+        })
+
+        return wrapper

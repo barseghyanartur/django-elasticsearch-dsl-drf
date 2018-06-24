@@ -106,11 +106,11 @@ class AddressDocument(DocType):
                         analyzer=html_strip,
                         fields={
                             'raw': KeywordField(),
-                        }
-                    )
-                }
-            )
-        }
+                        },
+                    ),
+                },
+            ),
+        },
     )
 
     # Continent object
@@ -121,9 +121,10 @@ class AddressDocument(DocType):
                 analyzer=html_strip,
                 fields={
                     'raw': KeywordField(),
+                    'suggest': fields.CompletionField(),
                 }
             ),
-            'country': fields.ObjectField(
+            'country': fields.NestedField(
                 properties={
                     'name': StringField(
                         analyzer=html_strip,
@@ -131,7 +132,7 @@ class AddressDocument(DocType):
                             'raw': KeywordField(),
                         }
                     ),
-                    'city': fields.ObjectField(
+                    'city': fields.NestedField(
                         properties={
                             'name': StringField(
                                 analyzer=html_strip,

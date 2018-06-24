@@ -1,4 +1,4 @@
-from factory import DjangoModelFactory
+from factory import DjangoModelFactory, SubFactory
 
 from books.models import Country
 
@@ -12,6 +12,7 @@ class BaseCountryFactory(DjangoModelFactory):
 
     name = Faker('country')
     info = Faker('text')
+    continent = SubFactory('factories.books_continent.ContinentFactory')
     latitude = Faker('latitude')
     longitude = Faker('longitude')
 

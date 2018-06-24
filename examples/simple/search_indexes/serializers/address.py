@@ -19,5 +19,7 @@ class AddressDocumentSerializer(DocumentSerializer):
             'appendix',
             'zip_code',
             'city',
+            'country',
+            'continent',
             'location',
         )

@@ -4,16 +4,15 @@ from django.db import models
 
 from six import python_2_unicode_compatible
 
-__all__ = ('Country',)
+__all__ = ('Continent',)
 
 
 @python_2_unicode_compatible
-class Country(models.Model):
-    """Country."""
+class Continent(models.Model):
+    """Continent."""
 
     name = models.CharField(max_length=255)
     info = models.TextField(null=True, blank=True)
-    continent = models.ForeignKey('books.Continent', on_delete=models.CASCADE)
     latitude = models.DecimalField(
         null=True,
         blank=True,

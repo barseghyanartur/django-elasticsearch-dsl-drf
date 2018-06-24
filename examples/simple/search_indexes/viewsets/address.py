@@ -7,6 +7,7 @@ from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_COMPLETION,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
+    FacetedSearchFilterBackend,
     FilteringFilterBackend,
     DefaultOrderingFilterBackend,
     OrderingFilterBackend,
@@ -33,6 +34,7 @@ class AddressDocumentViewSet(DocumentViewSet):
     serializer_class = AddressDocumentSerializer
     lookup_field = 'id'
     filter_backends = [
+        FacetedSearchFilterBackend,
         FilteringFilterBackend,
         OrderingFilterBackend,
         SearchFilterBackend,
@@ -106,4 +108,24 @@ class AddressDocumentViewSet(DocumentViewSet):
                 SUGGESTER_COMPLETION,
             ],
         }
+    }
+
+    # Facets
+    faceted_search_fields = {
+        'city': {
+            'field': 'city.name.raw',
+            'enabled': True,
+        },
+        'country': {
+            'field': 'city.country.name.raw',
+            'enabled': True,
+        },
+        'city2': {
+            'field': 'country.city.name.raw',
+            'enabled': True,
+        },
+        'country2': {
+            'field': 'country.name.raw',
+            'enabled': True,
+        },
     }

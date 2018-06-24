@@ -81,3 +81,38 @@ class Address(models.Model):
         })
 
         return wrapper
+
+    @property
+    def continent_indexing(self):
+        """Continent data (nested) for indexing.
+
+        Example:
+
+        >>> mapping = {
+        >>>     'continent': {
+        >>>         'name': 'Asia',
+        >>>         'country': {
+        >>>             'name': 'Netherlands',
+        >>>             'province': {
+        >>>                 'name': 'North Holland',
+        >>>                 'city': {
+        >>>                     'name': 'Amsterdam',
+        >>>                 }
+        >>>             }
+        >>>         }
+        >>>     }
+        >>> }
+
+        :return:
+        """
+        wrapper = dict_to_obj({
+            'name': self.city.country.continent.name,
+            'country': {
+                'name': self.city.country.name,
+                'city': {
+                    'name': self.city.name,
+                }
+            }
+        })
+
+        return wrapper

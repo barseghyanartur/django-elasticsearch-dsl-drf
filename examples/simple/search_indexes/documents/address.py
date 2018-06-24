@@ -100,12 +100,45 @@ class AddressDocument(DocType):
                     'suggest': fields.CompletionField(),
                 }
             ),
-            'city': fields.NestedField(
+            'city': fields.ObjectField(
                 properties={
                     'name': StringField(
                         analyzer=html_strip,
                         fields={
                             'raw': KeywordField(),
+                        }
+                    )
+                }
+            )
+        }
+    )
+
+    # Continent object
+    continent = fields.NestedField(
+        attr='continent_indexing',
+        properties={
+            'name': StringField(
+                analyzer=html_strip,
+                fields={
+                    'raw': KeywordField(),
+                }
+            ),
+            'country': fields.ObjectField(
+                properties={
+                    'name': StringField(
+                        analyzer=html_strip,
+                        fields={
+                            'raw': KeywordField(),
+                        }
+                    ),
+                    'city': fields.ObjectField(
+                        properties={
+                            'name': StringField(
+                                analyzer=html_strip,
+                                fields={
+                                    'raw': KeywordField(),
+                                }
+                            )
                         }
                     )
                 }

@@ -26,7 +26,7 @@ else:
         url(r'^admin/', include(admin.site.urls)),
     ]
 
-urlpatterns_args = [
+urlpatterns_args += [
     # Books URLs
     url(r'^books/', include(books_urls)),
 

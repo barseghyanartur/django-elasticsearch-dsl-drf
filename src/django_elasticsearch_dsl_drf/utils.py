@@ -54,3 +54,10 @@ class DictionaryProxy(object):
         if isinstance(val, datetime.datetime):
             val = val.date()
         return val
+
+    def to_dict(self):
+        """To dict.
+
+        :return:
+        """
+        return self.__mapping

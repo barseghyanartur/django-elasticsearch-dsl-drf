@@ -15,6 +15,15 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.8.3
+-----
+2018-06-25
+
+- It's possible to retrieve original dictionary from ``DictionaryProxy``
+  object.
+- Added helper wrappers and helper functions as a temporary fix for issues
+  in the ``django-elasticsearch-dsl``.
+
 0.8.2
 -----
 2018-06-05

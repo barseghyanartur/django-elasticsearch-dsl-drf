@@ -19,6 +19,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
+from ..backends import NestedContinentsBackend
 from ..documents import AddressDocument
 from ..serializers import AddressDocumentSerializer
 
@@ -40,6 +41,7 @@ class AddressDocumentViewSet(DocumentViewSet):
         SearchFilterBackend,
         GeoSpatialFilteringFilterBackend,
         GeoSpatialOrderingFilterBackend,
+        NestedContinentsBackend,
         DefaultOrderingFilterBackend,
         SuggesterFilterBackend,
     ]
@@ -118,14 +120,6 @@ class AddressDocumentViewSet(DocumentViewSet):
         },
         'country': {
             'field': 'city.country.name.raw',
-            'enabled': True,
-        },
-        'city2': {
-            'field': 'country.city.name.raw',
-            'enabled': True,
-        },
-        'country2': {
-            'field': 'country.name.raw',
             'enabled': True,
         },
     }

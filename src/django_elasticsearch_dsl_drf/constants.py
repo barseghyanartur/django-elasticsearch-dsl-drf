@@ -8,12 +8,17 @@ __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
+    'ALL_FUNCTIONAL_SUGGESTERS',
     'ALL_GEO_SPATIAL_LOOKUP_FILTERS_AND_QUERIES',
     'ALL_LOOKUP_FILTERS_AND_QUERIES',
     'ALL_SUGGESTERS',
     'EXTENDED_NUMBER_LOOKUP_FILTERS',
     'EXTENDED_STRING_LOOKUP_FILTERS',
     'FALSE_VALUES',
+    'FUNCTIONAL_SUGGESTER_COMPLETION_MATCH',
+    'FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX',
+    'FUNCTIONAL_SUGGESTER_PHRASE_MATCH',
+    'FUNCTIONAL_SUGGESTER_TERM_MATCH',
     'LOOKUP_FILTER_EXISTS',
     'LOOKUP_FILTER_GEO_BOUNDING_BOX',
     'LOOKUP_FILTER_GEO_DISTANCE',
@@ -26,8 +31,12 @@ __all__ = (
     'LOOKUP_QUERY_CONTAINS',
     'LOOKUP_QUERY_ENDSWITH',
     'LOOKUP_QUERY_EXCLUDE',
+    'LOOKUP_QUERY_GT',
+    'LOOKUP_QUERY_GTE',
     'LOOKUP_QUERY_IN',
     'LOOKUP_QUERY_ISNULL',
+    'LOOKUP_QUERY_LT',
+    'LOOKUP_QUERY_LTE',
     'LOOKUP_QUERY_STARTSWITH',
     'NUMBER_LOOKUP_FILTERS',
     'SEARCH_QUERY_PARAM',
@@ -384,6 +393,27 @@ SUGGESTER_PHRASE = 'phrase'
 SUGGESTER_COMPLETION = 'completion'
 
 # ****************************************************************************
+# ********************** Functional suggestions filters **********************
+# ****************************************************************************
+# http://elasticsearch-dsl.readthedocs.io/en/latest/search_dsl.html#suggestions
+
+# The `term` suggester
+# http://127.0.0.1:8000/search/books/?title_suggest__term=Lore
+FUNCTIONAL_SUGGESTER_TERM_MATCH = 'term_match'
+
+# The `phrase` suggester
+# http://127.0.0.1:8000/search/books/?title_suggest__phrase=Lorem
+FUNCTIONAL_SUGGESTER_PHRASE_MATCH = 'phrase_match'
+
+# The `completion` suggester
+# http://127.0.0.1:8000/search/books/?title_suggest__completion_match=Lore
+FUNCTIONAL_SUGGESTER_COMPLETION_MATCH = 'completion_match'
+
+# The `completion` suggester
+# http://127.0.0.1:8000/search/books/?title_suggest__completion_prefix=Lore
+FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX = 'completion_prefix'
+
+# ****************************************************************************
 # ******************************* Combinations *******************************
 # ****************************************************************************
 # Combinations of multiple constants.
@@ -418,6 +448,13 @@ ALL_SUGGESTERS = (
     SUGGESTER_TERM,
     SUGGESTER_PHRASE,
     SUGGESTER_COMPLETION,
+)
+
+ALL_FUNCTIONAL_SUGGESTERS = (
+    FUNCTIONAL_SUGGESTER_TERM_MATCH,
+    FUNCTIONAL_SUGGESTER_PHRASE_MATCH,
+    FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+    FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
 )
 
 ALL_GEO_SPATIAL_LOOKUP_FILTERS_AND_QUERIES = (

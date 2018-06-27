@@ -1,6 +1,10 @@
 from .address import AddressDocumentViewSet
 from .author import AuthorDocumentViewSet
-from .book import BookDocumentViewSet, BookOrderingByScoreDocumentViewSet
+from .book import (
+    BookDocumentViewSet,
+    BookOrderingByScoreDocumentViewSet,
+    BookFunctionalSuggesterDocumentViewSet,
+)
 from .city import CityDocumentViewSet
 from .publisher import PublisherDocumentViewSet
 

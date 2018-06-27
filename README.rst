@@ -49,8 +49,10 @@ Main features and highlights
 - :doc:`Geo-spatial ordering filter backend <advanced_usage_examples>` (the
   following filters implemented: ``geo_distance``).
 - :doc:`Faceted search filter backend <advanced_usage_examples>`.
+- :doc:`Nested filtering filter backend <nested_fields_usage_examples>`.
 - :doc:`Highlight backend <advanced_usage_examples>`.
 - :doc:`Suggester filter backend <advanced_usage_examples>`.
+- :doc:`Functional suggester filter backend <advanced_usage_examples>`.
 - :doc:`Pagination (Page number and limit/offset pagination) <advanced_usage_examples>`.
 - :doc:`Ids filter backend <advanced_usage_examples>`.
 

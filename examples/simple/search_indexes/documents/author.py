@@ -2,6 +2,7 @@ from django.conf import settings
 
 from django_elasticsearch_dsl import DocType, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
+from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
 
 from books.models import Author
 
@@ -26,6 +27,9 @@ class AuthorDocument(DocType):
         fields={
             'raw': KeywordField(),
             'suggest': fields.CompletionField(),
+            'edge_ngram_completion': StringField(
+                analyzer=edge_ngram_completion
+            ),
         }
     )
 
@@ -33,6 +37,9 @@ class AuthorDocument(DocType):
         fields={
             'raw': KeywordField(),
             'suggest': fields.CompletionField(),
+            'edge_ngram_completion': StringField(
+                analyzer=edge_ngram_completion
+            ),
         }
     )
 

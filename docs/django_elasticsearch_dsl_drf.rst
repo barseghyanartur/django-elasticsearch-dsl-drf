@@ -13,74 +13,90 @@ Subpackages
 Submodules
 ----------
 
-django\_elasticsearch\_dsl\_drf\.apps module
---------------------------------------------
+django\_elasticsearch\_dsl\_drf.analyzers module
+------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.analyzers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+django\_elasticsearch\_dsl\_drf.apps module
+-------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.apps
     :members:
     :undoc-members:
     :show-inheritance:
 
-django\_elasticsearch\_dsl\_drf\.compat module
-----------------------------------------------
+django\_elasticsearch\_dsl\_drf.compat module
+---------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.compat
     :members:
     :undoc-members:
     :show-inheritance:
 
-django\_elasticsearch\_dsl\_drf\.constants module
--------------------------------------------------
+django\_elasticsearch\_dsl\_drf.constants module
+------------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.constants
     :members:
     :undoc-members:
     :show-inheritance:
 
-django\_elasticsearch\_dsl\_drf\.helpers module
------------------------------------------------
+django\_elasticsearch\_dsl\_drf.helpers module
+----------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.helpers
     :members:
     :undoc-members:
     :show-inheritance:
 
-django\_elasticsearch\_dsl\_drf\.pagination module
---------------------------------------------------
+django\_elasticsearch\_dsl\_drf.pagination module
+-------------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.pagination
     :members:
     :undoc-members:
     :show-inheritance:
 
-django\_elasticsearch\_dsl\_drf\.serializers module
----------------------------------------------------
+django\_elasticsearch\_dsl\_drf.serializers module
+--------------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.serializers
     :members:
     :undoc-members:
     :show-inheritance:
 
-django\_elasticsearch\_dsl\_drf\.utils module
----------------------------------------------
+django\_elasticsearch\_dsl\_drf.utils module
+--------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.utils
     :members:
     :undoc-members:
     :show-inheritance:
 
-django\_elasticsearch\_dsl\_drf\.views module
----------------------------------------------
+django\_elasticsearch\_dsl\_drf.views module
+--------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.views
     :members:
     :undoc-members:
     :show-inheritance:
 
-django\_elasticsearch\_dsl\_drf\.viewsets module
-------------------------------------------------
+django\_elasticsearch\_dsl\_drf.viewsets module
+-----------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.viewsets
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+django\_elasticsearch\_dsl\_drf.wrappers module
+-----------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.wrappers
     :members:
     :undoc-members:
     :show-inheritance:

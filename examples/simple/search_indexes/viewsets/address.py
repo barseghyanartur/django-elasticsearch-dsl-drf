@@ -2,22 +2,23 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_FILTER_GEO_POLYGON,
     LOOKUP_FILTER_GEO_BOUNDING_BOX,
-    # SUGGESTER_TERM,
-    # SUGGESTER_PHRASE,
     SUGGESTER_COMPLETION,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
-    FilteringFilterBackend,
     DefaultOrderingFilterBackend,
+    FacetedSearchFilterBackend,
+    FilteringFilterBackend,
+    GeoSpatialFilteringFilterBackend,
+    GeoSpatialOrderingFilterBackend,
+    NestedFilteringFilterBackend,
     OrderingFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
-    GeoSpatialFilteringFilterBackend,
-    GeoSpatialOrderingFilterBackend,
 )
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
-from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
+from ..backends import NestedContinentsBackend
 from ..documents import AddressDocument
 from ..serializers import AddressDocumentSerializer
 
@@ -26,18 +27,21 @@ __all__ = (
 )
 
 
-class AddressDocumentViewSet(BaseDocumentViewSet):
+class AddressDocumentViewSet(DocumentViewSet):
     """The AddressDocument view."""
 
     document = AddressDocument
     serializer_class = AddressDocumentSerializer
     lookup_field = 'id'
     filter_backends = [
+        FacetedSearchFilterBackend,
         FilteringFilterBackend,
         OrderingFilterBackend,
         SearchFilterBackend,
         GeoSpatialFilteringFilterBackend,
         GeoSpatialOrderingFilterBackend,
+        NestedContinentsBackend,
+        NestedFilteringFilterBackend,
         DefaultOrderingFilterBackend,
         SuggesterFilterBackend,
     ]
@@ -54,6 +58,21 @@ class AddressDocumentViewSet(BaseDocumentViewSet):
         'id': None,
         'city': 'city.name.raw',
         'country': 'city.country.name.raw',
+    }
+    # Nested filtering fields
+    nested_filter_fields = {
+        'continent_country': {
+            'field': 'continent.country.name.raw',
+            'path': 'continent.country',
+        },
+        'continent_country_city': {
+            'field': 'continent.country.city.name.raw',
+            'path': 'continent.country.city',
+        },
+        'continent_country_city_id': {
+            'field': 'continent.country.city.id',
+            'path': 'continent.country.city',
+        },
     }
     # Define geo-spatial filtering fields
     geo_spatial_filter_fields = {
@@ -83,9 +102,7 @@ class AddressDocumentViewSet(BaseDocumentViewSet):
         'id',
         'street.raw',
         'city.name.raw',
-        # 'city.country.name.raw',
     )
-
     # Suggester fields
     suggester_fields = {
         'street_suggest': {
@@ -106,4 +123,16 @@ class AddressDocumentViewSet(BaseDocumentViewSet):
                 SUGGESTER_COMPLETION,
             ],
         }
+    }
+
+    # Facets
+    faceted_search_fields = {
+        'city': {
+            'field': 'city.name.raw',
+            'enabled': True,
+        },
+        'country': {
+            'field': 'city.country.name.raw',
+            'enabled': True,
+        },
     }

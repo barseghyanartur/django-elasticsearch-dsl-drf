@@ -1,15 +1,19 @@
 from django_elasticsearch_dsl_drf.constants import (
-    LOOKUP_FILTER_TERMS,
-    LOOKUP_FILTER_RANGE,
+    FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+    FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
     LOOKUP_FILTER_PREFIX,
+    LOOKUP_FILTER_RANGE,
+    LOOKUP_FILTER_TERMS,
     LOOKUP_FILTER_WILDCARD,
-    LOOKUP_QUERY_IN,
+    LOOKUP_QUERY_EXCLUDE,
     LOOKUP_QUERY_GT,
     LOOKUP_QUERY_GTE,
+    LOOKUP_QUERY_IN,
+    LOOKUP_QUERY_ISNULL,
     LOOKUP_QUERY_LT,
     LOOKUP_QUERY_LTE,
-    LOOKUP_QUERY_EXCLUDE,
-    LOOKUP_QUERY_ISNULL,
+    SUGGESTER_COMPLETION,
+
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
     FacetedSearchFilterBackend,
@@ -19,9 +23,15 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     OrderingFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
+    FunctionalSuggesterFilterBackend,
     HighlightBackend,
 )
-from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+from django_elasticsearch_dsl_drf.viewsets import (
+    BaseDocumentViewSet,
+    # DocumentViewSet,
+    FunctionalSuggestMixin,
+    SuggestMixin,
+)
 
 from elasticsearch_dsl import DateHistogramFacet, RangeFacet
 
@@ -31,11 +41,12 @@ from ..serializers import BookDocumentSimpleSerializer
 __all__ = (
     'BookDocumentViewSet',
     'BookOrderingByScoreDocumentViewSet',
+    'BookFunctionalSuggesterDocumentViewSet',
 )
 
 
-class BookDocumentViewSet(BaseDocumentViewSet):
-    """The BookDocument view."""
+class BaseDocumentViewSet(BaseDocumentViewSet):
+    """Base BookDocument ViewSet."""
 
     document = BookDocument
     # serializer_class = BookDocumentSerializer
@@ -48,7 +59,8 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         DefaultOrderingFilterBackend,
         SearchFilterBackend,
         FacetedSearchFilterBackend,
-        SuggesterFilterBackend,
+        # SuggesterFilterBackend,
+        # FunctionalSuggesterFilterBackend,
         HighlightBackend,
     ]
     # Define search fields
@@ -194,9 +206,27 @@ class BookDocumentViewSet(BaseDocumentViewSet):
         },
     }
 
+
+class BookDocumentViewSet(BaseDocumentViewSet, SuggestMixin):
+    """The BookDocument view."""
+
+    filter_backends = [
+        FilteringFilterBackend,
+        IdsFilterBackend,
+        OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
+        SearchFilterBackend,
+        FacetedSearchFilterBackend,
+        HighlightBackend,
+        SuggesterFilterBackend,
+    ]
+
     # Suggester fields
     suggester_fields = {
-        'title_suggest': 'title.suggest',
+        'title_suggest': {
+            'field': 'title.suggest',
+            'default_suggester': SUGGESTER_COMPLETION,
+        },
         'publisher_suggest': 'publisher.suggest',
         'tag_suggest': 'tags.suggest',
         'summary_suggest': 'summary',
@@ -212,3 +242,45 @@ class BookOrderingByScoreDocumentViewSet(BookDocumentViewSet):
         'description': None,
     }
     ordering = ('_score', 'id', 'title', 'price',)
+
+
+class BookFunctionalSuggesterDocumentViewSet(
+    BaseDocumentViewSet,
+    FunctionalSuggestMixin
+):
+    """Same as BookDocumentViewSet, but uses functional suggester."""
+
+    filter_backends = [
+        FilteringFilterBackend,
+        IdsFilterBackend,
+        OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
+        SearchFilterBackend,
+        FacetedSearchFilterBackend,
+        HighlightBackend,
+        FunctionalSuggesterFilterBackend,
+    ]
+
+    # Functional suggester fields
+    functional_suggester_fields = {
+        'title_suggest_prefix': {
+            'field': 'title.raw',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+                FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            # 'serializer_field': 'title',
+        },
+        'title_suggest_match': {
+            'field': 'title.edge_ngram_completion',
+            'suggesters': [FUNCTIONAL_SUGGESTER_COMPLETION_MATCH],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+            # 'serializer_field': 'title',
+        },
+        'title.raw': None,
+        'title_simple': 'title.raw',
+        # 'publisher_suggest': 'publisher.raw',
+        # 'tag_suggest': 'tags',
+        # 'summary_suggest': 'summary',
+    }

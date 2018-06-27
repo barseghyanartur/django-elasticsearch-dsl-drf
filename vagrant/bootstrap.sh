@@ -1,3 +1,5 @@
+sudo apt-get update
+
 # Elasticsearch 2.x installer for Vagrant.
 # Separated in steps. Most of the steps are obligatory. Optional steps could be skipped.
 # Install Java 8

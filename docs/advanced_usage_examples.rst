@@ -419,14 +419,14 @@ Sample view
         DefaultOrderingFilterBackend,
         SearchFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
     # Example app models
     from search_indexes.documents.book import BookDocument
     from search_indxes.serializers import BookDocumentSerializer
 
 
-    class BookDocumentView(BaseDocumentViewSet):
+    class BookDocumentView(DocumentViewSet):
         """The BookDocument view."""
 
         document = BookDocument
@@ -545,11 +545,11 @@ fields add multiple ``search`` query params and field names separated with
 **Search with boosting**
 
 It's possible to boost search fields. In order to do that change the
-`search_fields` definition of the `BookDocumentViewSet` as follows:
+`search_fields` definition of the `DocumentViewSet` as follows:
 
 .. code-block:: python
 
-    class BookDocumentView(BaseDocumentViewSet):
+    class BookDocumentView(DocumentViewSet):
         """The BookDocument view."""
 
         # ...
@@ -705,7 +705,7 @@ view set in the following way:
 
     # ...
 
-    class BookDocumentView(BaseDocumentViewSet):
+    class BookDocumentView(DocumentViewSet):
         """The BookDocument view."""
 
         # ...
@@ -963,7 +963,7 @@ the following way:
 
     # ...
 
-    class PublisherDocumentViewSet(BaseDocumentViewSet):
+    class PublisherDocumentViewSet(DocumentViewSet):
         """The PublisherDocument view."""
 
         document = PublisherDocument
@@ -1293,6 +1293,47 @@ Document definition
 ViewSet definition
 ^^^^^^^^^^^^^^^^^^
 
+.. note:: The suggester filter backends shall come as last ones.
+
+Suggesters for the view are configured in ``suggester_fields`` property.
+
+In the example below, the ``title_suggest`` is the name of the GET query param
+which points to the ``title.suggest`` field of the ``BookDocument`` document.
+For the ``title_suggest`` the allowed suggesters are ``SUGGESTER_COMPLETION``,
+``SUGGESTER_TERM`` and ``SUGGESTER_PHRASE``.
+
+URL shall be constructed in the following way:
+
+.. code-block:: text
+
+    /search/books/suggest/?{QUERY_PARAM}__{SUGGESTER_NAME}={VALUE}
+
+Example for ``completion`` suggester:
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/books/suggest/?title_suggest__completion=temp
+
+However, since we have ``default_suggester`` defined we can skip the
+``__{SUGGESTER_NAME}`` part (if we want ``completion`` suggester
+functionality). Thus, it might be written as short as:
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/books/suggest/?title_suggest=temp
+
+Example for ``term`` suggester:
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/books/suggest/?title_suggest__term=tmeporus
+
+Example for ``phrase`` suggester:
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/books/suggest/?title_suggest__phrase=tmeporus
+
 *search_indexes/viewsets/book.py*
 
 .. code-block:: python
@@ -1310,6 +1351,7 @@ ViewSet definition
         LOOKUP_QUERY_ISNULL,
         LOOKUP_QUERY_LT,
         LOOKUP_QUERY_LTE,
+        SUGGESTER_COMPLETION,
         SUGGESTER_PHRASE,
         SUGGESTER_TERM,
     )
@@ -1318,7 +1360,7 @@ ViewSet definition
         SuggesterFilterBackend,
     )
 
-    class BookDocumentViewSet(BaseDocumentViewSet):
+    class BookDocumentViewSet(DocumentViewSet):
         """The BookDocument view."""
 
         document = BookDocument
@@ -1330,7 +1372,7 @@ ViewSet definition
             OrderingFilterBackend,
             DefaultOrderingFilterBackend,
             SearchFilterBackend,
-            SuggesterFilterBackend,
+            SuggesterFilterBackend,  # This should be the last backend
         ]
         # Define search fields
         search_fields = (
@@ -1422,7 +1464,15 @@ ViewSet definition
 
         # Suggester fields
         suggester_fields = {
-            'title_suggest': 'title.suggest',
+            'title_suggest': {
+                'field': 'title.suggest',
+                'suggesters': [
+                    SUGGESTER_COMPLETION,
+                    SUGGESTER_TERM,
+                    SUGGESTER_PHRASE,
+                ]
+                'default_suggester': SUGGESTER_COMPLETION,
+            },
             'publisher_suggest': 'publisher.suggest',
             'tag_suggest': 'tags.suggest',
             'summary_suggest': 'summary',
@@ -1452,6 +1502,100 @@ Let's considering, that one of our books has the following text in the summary:
     Long time the manxome foe he sought --
     So rested he by the Tumtum tree,
     And stood awhile in thought.
+
+Completion
+++++++++++
+
+
+**Request**
+
+.. code-block:: text
+
+    GET http://127.0.0.1:8000/search/books/suggest/?title_suggest__completion=temp
+
+**Response**
+
+.. code-block:: javascript
+
+    {
+        "_shards": {
+            "successful": 1,
+            "total": 1,
+            "failed": 0
+        },
+        "title_suggest": [
+            {
+                "length": 4,
+                "text": "temp",
+                "options": [
+                    {
+                        "text": "Tempora voluptates distinctio facere ",
+                        "_index": "book",
+                        "_score": 1.0,
+                        "_id": "1000087",
+                        "_type": "book_document",
+                        "_source": {
+                            "description": null,
+                            "summary": "Veniam dolores recusandae maxime laborum earum.",
+                            "id": 1000087,
+                            "state": "cancelled",
+                            "authors": [
+                                "Jayden van Luyssel",
+                                "Yassin van Rooij",
+                                "Florian van 't Erve",
+                                "Mats van Nimwegen",
+                                "Wessel Keltenie"
+                            ],
+                            "title": "Tempora voluptates distinctio facere."
+                        }
+                    },
+                    {
+                        "text": "Tempore sapiente repellat alias ad corrupti",
+                        "_index": "book",
+                        "_score": 1.0,
+                        "_id": "29",
+                        "_type": "book_document"
+                        "_source": {
+                            "description": null,
+                            "summary": "Dolores minus architecto iure fugit qui sed.",
+                            "id": 29,
+                            "state": "canelled",
+                            "authors": [
+                                "Wout van Northeim",
+                                "Lenn van Vliet-Kuijpers",
+                                "Tijs Mulder"
+                            ],
+                            "title": "Tempore sapiente repellat alias ad."
+                        },
+
+                    },
+                    {
+                        "text": "Temporibus exercitationem minus expedita",
+                        "_index": "book",
+                        "_score": 1.0,
+                        "_id": "17",
+                        "_type": "book_document",
+                        "_source": {
+                            "description": null,
+                            "summary": "A laborum alias voluptates tenetur sapiente modi.",
+                            "id": 17,
+                            "state": "canelled",
+                            "authors": [
+                                "Juliette Estey",
+                                "Keano de Keijzer",
+                                "Koen Scheffers",
+                                "Florian van 't Erve",
+                                "Tara Oversteeg",
+                                "Mats van Nimwegen"
+                            ],
+                            "title": "Temporibus exercitationem minus expedita."
+                        }
+                    }
+                ],
+                "offset": 0
+            }
+        ]
+    }
 
 Term
 ++++
@@ -1532,6 +1676,189 @@ Phrase
         }
     }
 
+Functional suggestions
+----------------------
+If native suggestions are not good enough for you, use functional suggesters.
+
+Configuration is very similar to native suggesters.
+
+Document definition
+~~~~~~~~~~~~~~~~~~~
+Obviously, different filters require different approaches. For instance,
+when using functional completion prefix filter, the best approach is to use
+keyword field of the Elasticsearch. While for match completion, Ngram fields
+work really well.
+
+The following example indicates Ngram analyzer/filter usage.
+
+*search_indexes/documents/book.py*
+
+.. code-block:: python
+
+    from django.conf import settings
+    from django_elasticsearch_dsl import DocType, Index, fields
+
+    from elasticsearch_dsl import analyzer
+    from elasticsearch_dsl.analysis import token_filter
+
+    from books.models import Book
+
+    edge_ngram_completion_filter = token_filter(
+        'edge_ngram_completion_filter',
+        type="edge_ngram",
+        min_gram=1,
+        max_gram=20
+    )
+
+
+    edge_ngram_completion = analyzer(
+        "edge_ngram_completion",
+        tokenizer="standard",
+        filter=["lowercase", edge_ngram_completion_filter]
+    )
+
+    INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
+
+    # See Elasticsearch Indices API reference for available settings
+    INDEX.settings(
+        number_of_shards=1,
+        number_of_replicas=1
+    )
+
+    @INDEX.doc_type
+    class BookDocument(DocType):
+        """Book Elasticsearch document."""
+
+        # In different parts of the code different fields are used. There are
+        # a couple of use cases: (1) more-like-this functionality, where `title`,
+        # `description` and `summary` fields are used, (2) search and filtering
+        # functionality where all of the fields are used.
+
+        # ID
+        id = fields.IntegerField(attr='id')
+
+        # ********************************************************************
+        # *********************** Main data fields for search ****************
+        # ********************************************************************
+
+        title = StringField(
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField(),
+                'suggest': fields.CompletionField(),
+                'edge_ngram_completion': StringField(
+                    analyzer=edge_ngram_completion
+                ),
+            }
+        )
+
+        # ...
+
+        class Meta(object):
+            """Meta options."""
+
+            model = Book  # The model associate with this DocType
+
+ViewSet definition
+~~~~~~~~~~~~~~~~~~
+
+.. note:: The suggester filter backends shall come as last ones.
+
+Functional suggesters for the view are configured in
+``functional_suggester_fields`` property.
+
+In the example below, the ``title_suggest`` is the name of the GET query
+param which points to the ``title.raw`` field of the ``BookDocument`` document.
+For the ``title_suggest`` the allowed suggester is
+``FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX``. For Ngram match we have the
+``title_suggest_match`` field, which points to ``title.edge_ngram_completion``
+field of the same document. For ``title_suggest_match`` the allowed suggester
+is ``FUNCTIONAL_SUGGESTER_COMPLETION_MATCH``.
+
+URL shall be constructed in the following way:
+
+.. code-block:: text
+
+    /search/books/functional_suggest/?{QUERY_PARAM}__{SUGGESTER_NAME}={VALUE}
+
+Example for ``completion_prefix`` suggester:
+
+.. code-block:: text
+
+    GET http://localhost:8000/search/books/functional_suggest/?title_suggest_prefix__completion_prefix=Temp
+
+However, since we have ``default_suggester`` defined we can skip the
+``__{SUGGESTER_NAME}`` part (if we want ``completion_prefix`` suggester
+functionality). Thus, it might be written as short as:
+
+.. code-block:: text
+
+    GET http://localhost:8000/search/books/functional_suggest/?title_suggest_prefix=Temp
+
+Example for ``completion_match`` suggester:
+
+.. code-block:: text
+
+    GET http://localhost:8000/search/books/functional_suggest/?title_suggest_match__completion_match=Temp
+
+However, since we have ``default_suggester`` defined we can skip the
+``__{SUGGESTER_NAME}`` part (if we want ``completion_match`` suggester
+functionality). Thus, it might be written as short as:
+
+.. code-block:: text
+
+    GET http://localhost:8000/search/books/functional_suggest/?title_suggest_match=Temp
+
+*search_indexes/viewsets/book.py*
+
+
+.. code-block:: python
+
+    from django_elasticsearch_dsl_drf.constants import (
+        # ...
+        FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+        FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+    )
+    from django_elasticsearch_dsl_drf.filter_backends import (
+        # ...
+        SuggesterFilterBackend,
+    )
+
+    class BookDocumentViewSet(DocumentViewSet):
+        """The BookDocument view."""
+
+        document = BookDocument
+        serializer_class = BookDocumentSerializer
+        lookup_field = 'id'
+        filter_backends = [
+            FilteringFilterBackend,
+            IdsFilterBackend,
+            OrderingFilterBackend,
+            DefaultOrderingFilterBackend,
+            SearchFilterBackend,
+            FacetedSearchFilterBackend,
+            HighlightBackend,
+            FunctionalSuggesterFilterBackend,  # This should come as last
+        ]
+
+        # ...
+
+        # Functional suggester fields
+        functional_suggester_fields = {
+            'title_suggest': {
+                'field': 'title.raw',
+                'suggesters': [
+                    FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+                ],
+                'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            },
+            'title_suggest_match': {
+                'field': 'title.edge_ngram_completion',
+                'suggesters': [FUNCTIONAL_SUGGESTER_COMPLETION_MATCH],
+                'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+            }
+        }
+
 Highlighting
 ------------
 Highlighters enable you to get highlighted snippets from one or more fields
@@ -1541,7 +1868,7 @@ in your search results so you can show users where the query matches are.
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
     from django_elasticsearch_dsl_drf.filter_backends import (
         # ...
         HighlightBackend,
@@ -1656,7 +1983,7 @@ Page number pagination
 ~~~~~~~~~~~~~~~~~~~~~~
 
 By default, the ``PageNumberPagination`` class is used on all view sets
-which inherit from ``BaseDocumentViewSet``.
+which inherit from ``DocumentViewSet``.
 
 Example:
 
@@ -1681,7 +2008,7 @@ In order to use a different ``pagination_class``, for instance the
 
     # ...
 
-    class BookDocumentView(BaseDocumentViewSet):
+    class BookDocumentView(DocumentViewSet):
         """The BookDocument view."""
 
         # ...

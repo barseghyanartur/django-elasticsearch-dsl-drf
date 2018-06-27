@@ -2,6 +2,7 @@ from django.conf import settings
 
 from django_elasticsearch_dsl import DocType, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
+from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
 
 from books.models import Book
 
@@ -40,6 +41,9 @@ class BookDocument(DocType):
         fields={
             'raw': KeywordField(),
             'suggest': fields.CompletionField(),
+            'edge_ngram_completion': StringField(
+                analyzer=edge_ngram_completion
+            ),
         }
     )
 
@@ -119,7 +123,7 @@ class BookDocument(DocType):
         multi=True
     )
 
-    null_field = fields.StringField(attr='null_field_indexing')
+    null_field = StringField(attr='null_field_indexing')
 
     class Meta(object):
         """Meta options."""

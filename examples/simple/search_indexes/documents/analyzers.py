@@ -1,7 +1,8 @@
 from elasticsearch_dsl import analyzer
 
-__all__ = ('html_strip',)
-
+__all__ = (
+    'html_strip',
+)
 
 html_strip = analyzer(
     'html_strip',

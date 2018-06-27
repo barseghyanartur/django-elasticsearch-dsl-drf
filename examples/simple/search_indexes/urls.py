@@ -1,18 +1,18 @@
 from django.conf.urls import url, include
-from .rest_framework_extensions_routers_compat import ExtendedDefaultRouter
-# from rest_framework_extensions.routers import ExtendedDefaultRouter
+from rest_framework.routers import DefaultRouter
 from .viewsets import (
     AddressDocumentViewSet,
     AuthorDocumentViewSet,
     BookDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
+    BookFunctionalSuggesterDocumentViewSet,
     CityDocumentViewSet,
     PublisherDocumentViewSet,
 )
 
 __all__ = ('urlpatterns',)
 
-router = ExtendedDefaultRouter()
+router = DefaultRouter()
 
 addresses = router.register(
     r'addresses',
@@ -32,10 +32,16 @@ books = router.register(
     base_name='bookdocument'
 )
 
-books = router.register(
+books_ordered_by_score = router.register(
     r'books-ordered-by-score',
     BookOrderingByScoreDocumentViewSet,
     base_name='bookdocument_ordered_by_score'
+)
+
+books_functional_suggester = router.register(
+    r'books-functional-suggester',
+    BookFunctionalSuggesterDocumentViewSet,
+    base_name='bookdocument_functional_suggester'
 )
 
 cities = router.register(

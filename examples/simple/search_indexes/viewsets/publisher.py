@@ -1,10 +1,12 @@
 from django_elasticsearch_dsl_drf.constants import (
+    FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+    FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+    LOOKUP_FILTER_GEO_BOUNDING_BOX,
     LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_FILTER_GEO_POLYGON,
-    LOOKUP_FILTER_GEO_BOUNDING_BOX,
-    SUGGESTER_TERM,
-    SUGGESTER_PHRASE,
     SUGGESTER_COMPLETION,
+    SUGGESTER_PHRASE,
+    SUGGESTER_TERM,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
     FilteringFilterBackend,
@@ -12,11 +14,12 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     OrderingFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
+    FunctionalSuggesterFilterBackend,
     GeoSpatialFilteringFilterBackend,
     GeoSpatialOrderingFilterBackend,
 )
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
-from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
 from ..documents import PublisherDocument
 from ..serializers import PublisherDocumentSerializer
@@ -26,7 +29,7 @@ __all__ = (
 )
 
 
-class PublisherDocumentViewSet(BaseDocumentViewSet):
+class PublisherDocumentViewSet(DocumentViewSet):
     """The PublisherDocument view."""
 
     document = PublisherDocument
@@ -40,6 +43,7 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
         GeoSpatialOrderingFilterBackend,
         DefaultOrderingFilterBackend,
         SuggesterFilterBackend,
+        FunctionalSuggesterFilterBackend,
     ]
     pagination_class = LimitOffsetPagination
     # Define search fields
@@ -93,6 +97,7 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
                 SUGGESTER_PHRASE,
                 SUGGESTER_COMPLETION,
             ],
+            'default_suggester': SUGGESTER_COMPLETION,
         },
         'city_suggest': {
             'field': 'city.suggest',
@@ -106,5 +111,42 @@ class PublisherDocumentViewSet(BaseDocumentViewSet):
             'suggesters': [
                 SUGGESTER_COMPLETION,
             ],
+            'default_suggester': SUGGESTER_COMPLETION,
+        },
+    }
+
+    # Functional suggester fields
+    functional_suggester_fields = {
+        'name_suggest': {
+            'field': 'name.raw',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            # 'serializer_field': 'name',
+        },
+        'city_suggest': {
+            'field': 'city.raw',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            # 'serializer_field': 'city',
+        },
+        'state_province_suggest': {
+            'field': 'state_province.suggest',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            # 'serializer_field': 'state_province',
+        },
+        'country_suggest': {
+            'field': 'country.raw',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            # 'serializer_field': 'country',
         },
     }

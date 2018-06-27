@@ -102,7 +102,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         )
 
         cls.publishers_url = reverse(
-            'publisherdocument-suggest-list',
+            'publisherdocument-suggest',
             kwargs={}
         )
 
@@ -150,7 +150,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         )
 
         cls.books_url = reverse(
-            'bookdocument-suggest-list',
+            'bookdocument-suggest',
             kwargs={}
         )
 
@@ -175,7 +175,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         )
 
         cls.authors_url = reverse(
-            'authordocument-suggest-list',
+            'authordocument-suggest',
             kwargs={}
         )
 
@@ -189,30 +189,30 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
 
         data = {}
 
-        for __suggester_field, __test_cases in test_data.items():
+        for _suggester_field, _test_cases in test_data.items():
 
-            for __test_case, __expected_results in __test_cases.items():
+            for _test_case, _expected_results in _test_cases.items():
                 # Check if response now is valid
                 response = self.client.get(
-                    url + '?' + __suggester_field + '=' + __test_case,
+                    url + '?' + _suggester_field + '=' + _test_case,
                     data
                 )
                 self.assertEqual(response.status_code, status.HTTP_200_OK)
-                self.assertIn(__suggester_field, response.data)
-                __unique_options = list(set([
+                self.assertIn(_suggester_field, response.data)
+                _unique_options = list(set([
                     __o['text']
                     for __o
-                    in response.data[__suggester_field][0]['options']
+                    in response.data[_suggester_field][0]['options']
                 ]))
                 self.assertEqual(
-                    len(__unique_options),
-                    len(__expected_results),
-                    (__test_case, __expected_results)
+                    len(_unique_options),
+                    len(_expected_results),
+                    (_test_case, _expected_results)
                 )
                 self.assertEqual(
-                    sorted(__unique_options),
-                    sorted(__expected_results),
-                    (__test_case, __expected_results)
+                    sorted(_unique_options),
+                    sorted(_expected_results),
+                    (_test_case, _expected_results)
                 )
 
     def test_suggesters_completion(self):
@@ -233,6 +233,13 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                 'Fra': [],
             }
         }
+        # Testing default suggesters as well
+        test_data.update(
+            {
+                'name_suggest': test_data['name_suggest__completion'],
+                'country_suggest': test_data['country_suggest__completion'],
+            }
+        )
         self._test_suggesters(test_data, self.publishers_url)
 
         # Testing books

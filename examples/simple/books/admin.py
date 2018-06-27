@@ -5,6 +5,7 @@ from .models import (
     Author,
     Book,
     City,
+    Continent,
     Country,
     Order,
     OrderLine,
@@ -17,6 +18,7 @@ __all__ = (
     'AuthorAdmin',
     'BookAdmin',
     'CityAdmin',
+    'ContinentAdmin',
     'CountryAdmin',
     'OrderAdmin',
     'OrderLineAdmin',
@@ -101,6 +103,15 @@ class CityAdmin(admin.ModelAdmin):
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
     """Country admin."""
+
+    list_display = ('name', 'latitude', 'longitude',)
+    list_editable = ('latitude', 'longitude',)
+    search_fields = ('name',)
+
+
+@admin.register(Continent)
+class ContinentAdmin(admin.ModelAdmin):
+    """Continent admin."""
 
     list_display = ('name', 'latitude', 'longitude',)
     list_editable = ('latitude', 'longitude',)

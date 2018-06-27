@@ -3,6 +3,7 @@ Utils.
 """
 
 import datetime
+from elasticsearch_dsl.search import AggsProxy
 
 
 __title__ = 'django_elasticsearch_dsl_drf.utils'
@@ -18,14 +19,28 @@ __all__ = (
 class EmptySearch(object):
     """Empty Search."""
 
-    def __init__(self, **kwargs):
-        pass
+    def __init__(self, *args, **kwargs):
+        self.aggs = AggsProxy('')
+        self._highlight = {}
+        self._sort = []
 
     def __len__(self):
         return 0
 
     def __iter__(self):
         return iter([])
+
+    def highlight(self, *args, **kwargs):
+        return self
+
+    def sort(self, *args, **kwargs):
+        return self
+
+    def execute(self, *args, **kwargs):
+        return self
+
+    def to_dict(self, *args, **kwargs):
+        return {}
 
 
 class DictionaryProxy(object):
@@ -39,3 +54,10 @@ class DictionaryProxy(object):
         if isinstance(val, datetime.datetime):
             val = val.date()
         return val
+
+    def to_dict(self):
+        """To dict.
+
+        :return:
+        """
+        return self.__mapping

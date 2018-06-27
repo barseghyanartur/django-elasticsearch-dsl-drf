@@ -396,6 +396,7 @@ if DEBUG and DEBUG_TOOLBAR:
 
         DEBUG_TOOLBAR_CONFIG = {
             'INTERCEPT_REDIRECTS': False,
+            'JQUERY_URL': STATIC_URL + 'js/vendor/jquery.js',
         }
 
         DEBUG_TOOLBAR_PANELS = (

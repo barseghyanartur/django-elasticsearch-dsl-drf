@@ -194,13 +194,13 @@ Sample view
         OrderingFilterBackend,
         SearchFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
     # Example app models
     from search_indexes.documents.publisher import PublisherDocument
     from search_indxes.serializers import PublisherDocumentSerializer
 
-    class PublisherDocumentView(BaseDocumentViewSet):
+    class PublisherDocumentView(DocumentViewSet):
         """The PublisherDocument view."""
 
         document = PublisherDocument

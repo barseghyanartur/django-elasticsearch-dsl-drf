@@ -7,6 +7,7 @@ from .filtering import (
     FilteringFilterBackend,
     GeoSpatialFilteringFilterBackend,
     IdsFilterBackend,
+    NestedFilteringFilterBackend,
 )
 from .ordering import (
     DefaultOrderingFilterBackend,
@@ -14,7 +15,10 @@ from .ordering import (
     OrderingFilterBackend,
 )
 from .search import SearchFilterBackend
-from .suggester import SuggesterFilterBackend
+from .suggester import (
+    SuggesterFilterBackend,
+    FunctionalSuggesterFilterBackend,
+)
 from .highlight import HighlightBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends'

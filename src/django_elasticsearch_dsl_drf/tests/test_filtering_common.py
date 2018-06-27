@@ -23,7 +23,7 @@ from .base import (
 )
 from .data_mixins import AddressesMixin, BooksMixin
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering'
+__title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering_common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'

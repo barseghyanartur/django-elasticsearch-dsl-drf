@@ -79,7 +79,7 @@ from rest_framework.filters import BaseFilterBackend
 
 from six import string_types
 
-from .mixins import FilterBackendMixin
+from ..mixins import FilterBackendMixin
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.suggester'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -106,7 +106,7 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>> from django_elasticsearch_dsl_drf.filter_backends import (
         >>>     SuggesterFilterBackend
         >>> )
-        >>> from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+        >>> from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
         >>>
         >>> # Local PublisherDocument definition
         >>> from .documents import PublisherDocument
@@ -274,8 +274,21 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
                 valid_suggesters = suggester_fields[field_name]['suggesters']
 
+                # If we have default suggester given use it as a default and
+                # do not require further suffix specification.
+                default_suggester = None
+                if 'default_suggester' in suggester_fields[field_name]:
+                    default_suggester = \
+                        suggester_fields[field_name]['default_suggester']
+
                 if suggester_param is None \
                         or suggester_param in valid_suggesters:
+
+                    # If we have default suggester given use it as a default
+                    # and do not require further suffix specification.
+                    if suggester_param is None:
+                        suggester_param = str(default_suggester)
+
                     values = [
                         __value.strip()
                         for __value

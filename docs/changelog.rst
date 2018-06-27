@@ -15,6 +15,83 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.8.4
+-----
+2018-06-27
+
+.. note::
+
+    Release supported by `Goldmund, Wyldebeast & Wunderliebe
+    <https://goldmund-wyldebeast-wunderliebe.nl/>`_.
+
+- Added ``NestedFilteringFilterBackend`` backend.
+- Documentation updated with examples of implementing a nested
+  aggregations/facets.
+
+0.8.3
+-----
+2018-06-25
+
+- It's possible to retrieve original dictionary from ``DictionaryProxy``
+  object.
+- Added helper wrappers and helper functions as a temporary fix for issues
+  in the ``django-elasticsearch-dsl``.
+
+0.8.2
+-----
+2018-06-05
+
+- Minor fixes.
+
+0.8.1
+-----
+2018-06-05
+
+- Fixed wrong filter name in functional suggesters results into an error on
+  Django 1.10 (and prior).
+- Documentation improvements.
+
+0.8
+---
+2018-06-01
+
+.. note::
+
+    Release supported by `Goldmund, Wyldebeast & Wunderliebe
+    <https://goldmund-wyldebeast-wunderliebe.nl/>`_.
+
+.. note::
+
+    This release contain minor backwards incompatible changes. You should
+    update your code.
+
+    - (1) ``BaseDocumentViewSet`` (which from now on does not contain
+          ``suggest`` functionality) has been renamed to ``DocumentViewSet``
+          (which does contain ``suggest`` functionality).
+    - (2) You should no longer import from
+          ``django_elasticsearch_dsl_drf.views``. Instead, import from
+          ``django_elasticsearch_dsl_drf.viewsets``.
+
+- Deprecated ``django_elasticsearch_dsl_drf.views`` in favour
+  of ``django_elasticsearch_dsl_drf.viewsets``.
+- Suggest action/method has been moved to ``SuggestMixin`` class.
+- ``FunctionalSuggestMixin`` class introduced which resembled functionality
+  of the ``SuggestMixin`` with several improvements/additions, such as
+  advanced filtering and context-aware suggestions.
+- You can now define a default suggester in ``suggester_fields`` which will
+  be used if you do not provide suffix for the filter name.
+
+0.7.2
+-----
+2018-05-09
+
+.. note::
+
+    Release dedicated to the Victory Day, the victims of the Second World War
+    and Liberation of Shushi.
+
+- Django REST framework 3.8.x support.
+
 0.7.1
 -----
 2018-04-04
@@ -22,7 +99,7 @@ are used for versioning (schema follows below):
 .. note::
 
     Release supported by `Goldmund, Wyldebeast & Wunderliebe
-    <https://goldmund-wyldebeast-wunderliebe.nl/>`_
+    <https://goldmund-wyldebeast-wunderliebe.nl/>`_.
 
 - Add query `boost` support for search fields.
 
@@ -230,7 +307,7 @@ are used for versioning (schema follows below):
 ---
 2017-07-11
 
-- Add suggestions support (`term`, `phrase` and `completion`).
+- Add suggestions support (``term``, ``phrase`` and ``completion``).
 
 0.2.6
 -----
@@ -294,7 +371,7 @@ are used for versioning (schema follows below):
 -----
 2017-06-23
 
-- Implemented ``gt`, ``gte``, ``lt`` and ``lte`` functional query lookups.
+- Implemented ``gt``, ``gte``, ``lt`` and ``lte`` functional query lookups.
 - Implemented ``ids`` native filter lookup.
 
 0.1.5

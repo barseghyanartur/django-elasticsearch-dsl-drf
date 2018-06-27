@@ -43,6 +43,7 @@ class AddressesMixin(object):
             **{
                 'city__name': 'Yerevan',
                 'city__country__name': 'Armenia',
+                'city__country__continent__name': 'Europe',
             }
         )
 
@@ -52,6 +53,7 @@ class AddressesMixin(object):
             **{
                 'city__name': 'Amsterdam',
                 'city__country__name': 'Netherlands',
+                'city__country__continent__name': 'Europe',
             }
         )
 
@@ -63,6 +65,7 @@ class AddressesMixin(object):
             **{
                 'city__name': 'Dublin',
                 'city__country__name': 'Republic of Ireland',
+                'city__country__continent__name': 'Europe',
             }
         )
 
@@ -72,6 +75,7 @@ class AddressesMixin(object):
             **{
                 'city__name': 'Yeovil',
                 'city__country__name': 'United Kingdom',
+                'city__country__continent__name': 'Europe',
             }
         )
 
@@ -81,6 +85,7 @@ class AddressesMixin(object):
             **{
                 'city__name': 'Buenos Aires',
                 'city__country__name': 'Argentina',
+                'city__country__continent__name': 'South America',
             }
         )
 
@@ -92,9 +97,19 @@ class AddressesMixin(object):
             cls.addresses_in_buenos_aires_count
         )
 
+        cls.addresses_in_europe_count = (
+            cls.addresses_in_yerevan_count +
+            cls.addresses_in_amsterdam_count +
+            cls.addresses_in_dublin_count +
+            cls.addresses_in_yeovil_count
+        )
+
+        cls.addresses_in_south_america_count = \
+            cls.addresses_in_buenos_aires_count
+
         cls.addresses_url = reverse('addressdocument-list', kwargs={})
         cls.addresses_suggest_url = reverse(
-            'addressdocument-suggest-list',
+            'addressdocument-suggest',
             kwargs={}
         )
 

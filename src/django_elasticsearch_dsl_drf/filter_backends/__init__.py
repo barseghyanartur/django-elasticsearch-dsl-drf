@@ -8,6 +8,7 @@ from .filtering import (
     GeoSpatialFilteringFilterBackend,
     IdsFilterBackend,
     NestedFilteringFilterBackend,
+    PostFilterFilteringFilterBackend,
 )
 from .ordering import (
     DefaultOrderingFilterBackend,

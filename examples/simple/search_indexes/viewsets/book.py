@@ -18,6 +18,7 @@ from django_elasticsearch_dsl_drf.constants import (
 from django_elasticsearch_dsl_drf.filter_backends import (
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
+    PostFilterFilteringFilterBackend,
     IdsFilterBackend,
     DefaultOrderingFilterBackend,
     OrderingFilterBackend,
@@ -54,6 +55,7 @@ class BaseDocumentViewSet(BaseDocumentViewSet):
     lookup_field = 'id'
     filter_backends = [
         FilteringFilterBackend,
+        PostFilterFilteringFilterBackend,
         IdsFilterBackend,
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,
@@ -156,6 +158,32 @@ class BaseDocumentViewSet(BaseDocumentViewSet):
         'non_existent_field': 'non_existent_field',
         # This has been added to test `isnull` filter.
         'null_field': 'null_field',
+    }
+    # Post filter fields, copy filters as they are valid
+    post_filter_fields = {
+        'publisher_pf': 'publisher.raw',
+        'state_pf': 'state.raw',
+        'tags_pf': {
+            'field': 'tags',
+            'lookups': [
+                LOOKUP_FILTER_TERMS,
+                LOOKUP_FILTER_PREFIX,
+                LOOKUP_FILTER_WILDCARD,
+                LOOKUP_QUERY_IN,
+                LOOKUP_QUERY_EXCLUDE,
+                LOOKUP_QUERY_ISNULL,
+            ],
+        },
+        'tags_raw_pf': {
+            'field': 'tags.raw',
+            'lookups': [
+                LOOKUP_FILTER_TERMS,
+                LOOKUP_FILTER_PREFIX,
+                LOOKUP_FILTER_WILDCARD,
+                LOOKUP_QUERY_IN,
+                LOOKUP_QUERY_EXCLUDE,
+            ],
+        },
     }
     # Define ordering fields
     ordering_fields = {

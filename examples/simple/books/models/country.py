@@ -13,7 +13,10 @@ class Country(models.Model):
 
     name = models.CharField(max_length=255)
     info = models.TextField(null=True, blank=True)
-    continent = models.ForeignKey('books.Continent', on_delete=models.CASCADE)
+    continent = models.ForeignKey(
+        'books.Continent',
+        on_delete=models.CASCADE
+    )
     latitude = models.DecimalField(
         null=True,
         blank=True,

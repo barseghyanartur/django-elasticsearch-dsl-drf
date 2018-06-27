@@ -23,7 +23,7 @@ if DJANGO_GTE_1_10:
 else:
     from django.core.urlresolvers import reverse
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering'
+__title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering_geo_spatial'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'

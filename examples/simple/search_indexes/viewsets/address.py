@@ -2,19 +2,18 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_FILTER_GEO_POLYGON,
     LOOKUP_FILTER_GEO_BOUNDING_BOX,
-    # SUGGESTER_TERM,
-    # SUGGESTER_PHRASE,
     SUGGESTER_COMPLETION,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
+    DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
-    DefaultOrderingFilterBackend,
+    GeoSpatialFilteringFilterBackend,
+    GeoSpatialOrderingFilterBackend,
+    NestedFilteringFilterBackend,
     OrderingFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
-    GeoSpatialFilteringFilterBackend,
-    GeoSpatialOrderingFilterBackend,
 )
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
@@ -42,6 +41,7 @@ class AddressDocumentViewSet(DocumentViewSet):
         GeoSpatialFilteringFilterBackend,
         GeoSpatialOrderingFilterBackend,
         NestedContinentsBackend,
+        NestedFilteringFilterBackend,
         DefaultOrderingFilterBackend,
         SuggesterFilterBackend,
     ]
@@ -58,6 +58,21 @@ class AddressDocumentViewSet(DocumentViewSet):
         'id': None,
         'city': 'city.name.raw',
         'country': 'city.country.name.raw',
+    }
+    # Nested filtering fields
+    nested_filter_fields = {
+        'continent_country': {
+            'field': 'continent.country.name.raw',
+            'path': 'continent.country',
+        },
+        'continent_country_city': {
+            'field': 'continent.country.city.name.raw',
+            'path': 'continent.country.city',
+        },
+        'continent_country_city_id': {
+            'field': 'continent.country.city.id',
+            'path': 'continent.country.city',
+        },
     }
     # Define geo-spatial filtering fields
     geo_spatial_filter_fields = {
@@ -87,9 +102,7 @@ class AddressDocumentViewSet(DocumentViewSet):
         'id',
         'street.raw',
         'city.name.raw',
-        # 'city.country.name.raw',
     )
-
     # Suggester fields
     suggester_fields = {
         'street_suggest': {

@@ -15,6 +15,19 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.8.4
+-----
+2018-06-27
+
+.. note::
+
+    Release supported by `Goldmund, Wyldebeast & Wunderliebe
+    <https://goldmund-wyldebeast-wunderliebe.nl/>`_.
+
+- Added ``NestedFilteringFilterBackend`` backend.
+- Documentation updated with examples of implementing a nested
+  aggregations/facets.
+
 0.8.3
 -----
 2018-06-25

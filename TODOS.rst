@@ -17,9 +17,9 @@ Must haves
     - Think of making more-like-this a functional filter.
     - Add support for geo spatial search/filtering/ordering.
     - Improve documentation.
-    - Implement faceted search filtering.
     - Added tests for nested fields suggesters in functional suggester backend.
     - Implement phrase and term filters for functional suggester backend.
+    + Implement aggregations (faceted search) filtering.
     + Document geo spatial filtering.
     + Skip suggestions functionality in all actions except the dedicated
       ``suggest`` action.

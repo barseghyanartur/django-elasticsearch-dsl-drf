@@ -17,17 +17,20 @@ class Address(models.Model):
     appendix = models.CharField(max_length=30, null=True, blank=True)
     zip_code = models.CharField(max_length=60)
     city = models.ForeignKey('books.City', on_delete=models.CASCADE)
-
-    latitude = models.DecimalField(null=True,
-                                   blank=True,
-                                   decimal_places=15,
-                                   max_digits=19,
-                                   default=0)
-    longitude = models.DecimalField(null=True,
-                                    blank=True,
-                                    decimal_places=15,
-                                    max_digits=19,
-                                    default=0)
+    latitude = models.DecimalField(
+        null=True,
+        blank=True,
+        decimal_places=15,
+        max_digits=19,
+        default=0
+    )
+    longitude = models.DecimalField(
+        null=True,
+        blank=True,
+        decimal_places=15,
+        max_digits=19,
+        default=0
+    )
 
     class Meta(object):
         """Meta options."""
@@ -62,11 +65,8 @@ class Address(models.Model):
         >>> mapping = {
         >>>     'country': {
         >>>         'name': 'Netherlands',
-        >>>         'province': {
-        >>>             'name': 'North Holland',
-        >>>             'city': {
-        >>>                 'name': 'Amsterdam',
-        >>>             }
+        >>>         'city': {
+        >>>             'name': 'Amsterdam',
         >>>         }
         >>>     }
         >>> }
@@ -90,14 +90,14 @@ class Address(models.Model):
 
         >>> mapping = {
         >>>     'continent': {
+        >>>         'id': 2,
         >>>         'name': 'Asia',
         >>>         'country': {
+        >>>             'id': 3,
         >>>             'name': 'Netherlands',
-        >>>             'province': {
-        >>>                 'name': 'North Holland',
-        >>>                 'city': {
-        >>>                     'name': 'Amsterdam',
-        >>>                 }
+        >>>             'city': {
+        >>>                 'id': 5,
+        >>>                 'name': 'Amsterdam',
         >>>             }
         >>>         }
         >>>     }
@@ -106,10 +106,13 @@ class Address(models.Model):
         :return:
         """
         wrapper = dict_to_obj({
+            'id': self.city.country.continent.id,
             'name': self.city.country.continent.name,
             'country': {
+                'id': self.city.country.id,
                 'name': self.city.country.name,
                 'city': {
+                    'id': self.city.id,
                     'name': self.city.name,
                 }
             }

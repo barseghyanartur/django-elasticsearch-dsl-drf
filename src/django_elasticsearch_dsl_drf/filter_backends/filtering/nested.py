@@ -6,6 +6,7 @@ import operator
 
 from elasticsearch_dsl.query import Q
 from rest_framework.filters import BaseFilterBackend
+from django.core.exceptions import ImproperlyConfigured
 from django_elasticsearch_dsl import fields
 
 import six
@@ -50,6 +51,7 @@ class NestedFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     Example:
 
         >>> from django_elasticsearch_dsl_drf.constants import (
+        >>>     LOOKUP_FILTER_TERM,
         >>>     LOOKUP_FILTER_PREFIX,
         >>>     LOOKUP_FILTER_WILDCARD,
         >>>     LOOKUP_QUERY_EXCLUDE,
@@ -72,10 +74,12 @@ class NestedFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>>     serializer_class = ArticleDocumentSerializer
         >>>     filter_backends = [NestedFilteringFilterBackend,]
         >>>     nested_filter_fields = {
-        >>>         'title': 'title.raw',
-        >>>         'state': {
-        >>>             'field': 'state.raw',
+        >>>         'country': {
+        >>>             'field': 'continent.country.name.raw',
+        >>>             'path': 'continent.country',
         >>>             'lookups': [
+        >>>                 LOOKUP_FILTER_TERM,
+        >>>                 LOOKUP_FILTER_TERMS,
         >>>                 LOOKUP_FILTER_PREFIX,
         >>>                 LOOKUP_FILTER_WILDCARD,
         >>>                 LOOKUP_QUERY_EXCLUDE,
@@ -94,6 +98,13 @@ class NestedFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Filtering options.
         :rtype: dict
         """
+        if not hasattr(view, 'nested_filter_fields'):
+            raise ImproperlyConfigured(
+                "You need to define `nested_filter_fields` in your `{}` view "
+                "when using `{}` filter backend."
+                "".format(view.__class__.__name__, cls.__name__)
+            )
+
         filter_fields = view.nested_filter_fields
 
         for field, options in filter_fields.items():
@@ -523,6 +534,17 @@ class NestedFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         return queryset
 
+    def get_filter_field_nested_path(self, filter_fields, field_name):
+        """Get filter field path to be used in nested query.
+
+        :param filter_fields:
+        :param field_name:
+        :return:
+        """
+        if 'path' in filter_fields[field_name]:
+            return filter_fields[field_name]['path']
+        return field_name
+
     def get_filter_query_params(self, request, view):
         """Get query params to be filtered on.
 
@@ -550,6 +572,10 @@ class NestedFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                     lookup_param = query_param_list[1]
 
                 valid_lookups = filter_fields[field_name]['lookups']
+                nested_path = self.get_filter_field_nested_path(
+                    filter_fields,
+                    field_name
+                )
 
                 if lookup_param is None or lookup_param in valid_lookups:
                     values = [
@@ -567,7 +593,8 @@ class NestedFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                 'field',
                                 field_name
                             ),
-                            'type': view.mapping
+                            'type': view.mapping,
+                            'path': nested_path,
                         }
         return filter_query_params
 
@@ -584,6 +611,7 @@ class NestedFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         filter_query_params = self.get_filter_query_params(request, view)
+
         for options in filter_query_params.values():
             # When no specific lookup given, in case of multiple values
             # we apply `terms` filter by default and proceed to the next

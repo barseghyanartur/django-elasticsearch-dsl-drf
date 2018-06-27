@@ -117,6 +117,7 @@ class AddressDocument(DocType):
     continent = fields.NestedField(
         attr='continent_indexing',
         properties={
+            'id': fields.IntegerField(),
             'name': StringField(
                 analyzer=html_strip,
                 fields={
@@ -126,6 +127,7 @@ class AddressDocument(DocType):
             ),
             'country': fields.NestedField(
                 properties={
+                    'id': fields.IntegerField(),
                     'name': StringField(
                         analyzer=html_strip,
                         fields={
@@ -134,6 +136,7 @@ class AddressDocument(DocType):
                     ),
                     'city': fields.NestedField(
                         properties={
+                            'id': fields.IntegerField(),
                             'name': StringField(
                                 analyzer=html_strip,
                                 fields={

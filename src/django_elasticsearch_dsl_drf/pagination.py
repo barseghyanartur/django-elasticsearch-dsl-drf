@@ -247,15 +247,17 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
 
         self.offset = self.get_offset(request)
         self.request = request
+
+        resp = queryset[self.offset:self.offset + self.limit].execute()
+        self.facets = getattr(resp, 'aggregations', None)
+
+        self.count = self.get_count(resp)
         if self.count > self.limit and self.template is not None:
             self.display_page_controls = True
 
         if self.count == 0 or self.offset > self.count:
             return []
-
-        __queryset = queryset[self.offset:self.offset + self.limit].execute()
-        self.facets = getattr(__queryset, 'aggregations', None)
-        return list(queryset[self.offset:self.offset + self.limit])
+        return list(resp)
 
     def get_facets(self, facets=None):
         """Get facets.
@@ -300,3 +302,6 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         :return:
         """
         return Response(OrderedDict(self.get_paginated_response_context(data)))
+
+    def get_count(self, es_response):
+        return es_response.hits.total

@@ -17,7 +17,7 @@ class Wrapper(object):
     """Wrapper.
 
     Example:
-    >>> from django_elasticsearch_dsl_drf.wrappers import DictProxy
+    >>> from django_elasticsearch_dsl_drf.wrappers import dict_to_obj
     >>>
     >>> mapping = {
     >>>     'country': {

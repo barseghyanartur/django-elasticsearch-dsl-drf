@@ -15,6 +15,12 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.8.5
+-----
+yyyy-mm-dd (not released yet)
+
+- Reduced Elastic queries from 3 to 2 when using ``LimitOffsetPagination``.
+
 0.8.4
 -----
 2018-06-27

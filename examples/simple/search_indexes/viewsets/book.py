@@ -240,6 +240,7 @@ class BookDocumentViewSet(BaseDocumentViewSet, SuggestMixin):
 
     filter_backends = [
         FilteringFilterBackend,
+        PostFilterFilteringFilterBackend,
         IdsFilterBackend,
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,

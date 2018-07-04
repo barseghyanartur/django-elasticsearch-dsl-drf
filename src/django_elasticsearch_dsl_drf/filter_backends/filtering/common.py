@@ -177,9 +177,11 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Modified queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
-        return queryset.filter(
-            'term',
-            **{options['field']: value}
+        return cls.apply_filter(
+            queryset=queryset,
+            options=options,
+            args=['term'],
+            kwargs={options['field']: value}
         )
 
     @classmethod
@@ -204,9 +206,10 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
             __values = cls.split_lookup_value(value)
 
         return cls.apply_filter(
-            queryset,
-            'terms',
-            **{options['field']: __values}
+            queryset=queryset,
+            options=options,
+            args=['terms'],
+            kwargs={options['field']: __values}
         )
 
     @classmethod
@@ -223,9 +226,10 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return cls.apply_filter(
-            queryset,
-            'range',
-            **{options['field']: cls.get_range_params(value)}
+            queryset=queryset,
+            options=options,
+            args=['range'],
+            kwargs={options['field']: cls.get_range_params(value)}
         )
 
     @classmethod
@@ -244,13 +248,15 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         _value_lower = value.lower()
         if _value_lower in TRUE_VALUES:
             return cls.apply_query(
-                queryset,
-                Q("exists", field=options['field'])
+                queryset=queryset,
+                options=options,
+                args=[Q("exists", field=options['field'])]
             )
         elif _value_lower in FALSE_VALUES:
             return cls.apply_query(
-                queryset,
-                ~Q("exists", field=options['field'])
+                queryset=queryset,
+                options=options,
+                args=[~Q("exists", field=options['field'])]
             )
         return queryset
 
@@ -268,9 +274,10 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return cls.apply_filter(
-            queryset,
-            'prefix',
-            **{options['field']: value}
+            queryset=queryset,
+            options=options,
+            args=['prefix'],
+            kwargs={options['field']: value}
         )
 
     @classmethod
@@ -287,8 +294,9 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return cls.apply_query(
-            queryset,
-            Q('wildcard', **{options['field']: value})
+            queryset=queryset,
+            options=options,
+            args=[Q('wildcard', **{options['field']: value})]
         )
 
     @classmethod
@@ -305,8 +313,9 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return cls.apply_query(
-            queryset,
-            Q('wildcard', **{options['field']: '*{}*'.format(value)})
+            queryset=queryset,
+            options=options,
+            args=[Q('wildcard', **{options['field']: '*{}*'.format(value)})]
         )
 
     @classmethod
@@ -323,8 +332,9 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return cls.apply_query(
-            queryset,
-            Q('wildcard', **{options['field']: '*{}'.format(value)})
+            queryset=queryset,
+            options=options,
+            args=[Q('wildcard', **{options['field']: '*{}'.format(value)})]
         )
 
     @classmethod
@@ -349,8 +359,9 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         if __queries:
             queryset = cls.apply_query(
-                queryset,
-                six.moves.reduce(operator.or_, __queries)
+                queryset=queryset,
+                options=options,
+                args=[six.moves.reduce(operator.or_, __queries)]
             )
 
         return queryset
@@ -369,9 +380,10 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return cls.apply_filter(
-            queryset,
-            'range',
-            **{options['field']: cls.get_gte_lte_params(value, 'gt')}
+            queryset=queryset,
+            options=options,
+            args=['range'],
+            kwargs={options['field']: cls.get_gte_lte_params(value, 'gt')}
         )
 
     @classmethod
@@ -388,9 +400,10 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return cls.apply_filter(
-            queryset,
-            'range',
-            **{options['field']: cls.get_gte_lte_params(value, 'gte')}
+            queryset=queryset,
+            options=options,
+            args=['range'],
+            kwargs={options['field']: cls.get_gte_lte_params(value, 'gte')}
         )
 
     @classmethod
@@ -407,9 +420,10 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return cls.apply_filter(
-            queryset,
-            'range',
-            **{options['field']: cls.get_gte_lte_params(value, 'lt')}
+            queryset=queryset,
+            options=options,
+            args=['range'],
+            kwargs={options['field']: cls.get_gte_lte_params(value, 'lt')}
         )
 
     @classmethod
@@ -426,9 +440,10 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return cls.apply_filter(
-            queryset,
-            'range',
-            **{options['field']: cls.get_gte_lte_params(value, 'lte')}
+            queryset=queryset,
+            options=options,
+            args=['range'],
+            kwargs={options['field']: cls.get_gte_lte_params(value, 'lte')}
         )
 
     @classmethod
@@ -447,13 +462,15 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         _value_lower = value.lower()
         if _value_lower in TRUE_VALUES:
             return cls.apply_query(
-                queryset,
-                ~Q("exists", field=options['field'])
+                queryset=queryset,
+                options=options,
+                args=[~Q("exists", field=options['field'])]
             )
         elif _value_lower in FALSE_VALUES:
             return cls.apply_query(
-                queryset,
-                Q("exists", field=options['field'])
+                queryset=queryset,
+                options=options,
+                args=[Q("exists", field=options['field'])]
             )
         return queryset
 
@@ -480,8 +497,9 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         if __queries:
             queryset = cls.apply_query(
-                queryset,
-                six.moves.reduce(operator.or_, __queries)
+                queryset=queryset,
+                options=options,
+                args=[six.moves.reduce(operator.or_, __queries)]
             )
 
         return queryset

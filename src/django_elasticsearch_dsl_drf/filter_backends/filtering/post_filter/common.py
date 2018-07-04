@@ -90,10 +90,11 @@ class PostFilterFilteringFilterBackend(FilteringFilterBackend):
         return filter_fields
 
     @classmethod
-    def apply_filter(cls, queryset, *args, **kwargs):
+    def apply_filter(cls, queryset, options=None, args=None, kwargs=None):
         """Apply filter.
 
         :param queryset:
+        :param options:
         :param args:
         :param kwargs:
         :return:
@@ -101,10 +102,11 @@ class PostFilterFilteringFilterBackend(FilteringFilterBackend):
         return queryset.post_filter(*args, **kwargs)
 
     @classmethod
-    def apply_query(cls, queryset, *args, **kwargs):
+    def apply_query(cls, queryset, options=None, args=None, kwargs=None):
         """Apply query.
 
         :param queryset:
+        :param options:
         :param args:
         :param kwargs:
         :return:

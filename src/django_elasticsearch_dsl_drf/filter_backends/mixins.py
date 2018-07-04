@@ -58,23 +58,33 @@ class FilterBackendMixin(object):
         return value.split(SEPARATOR_LOOKUP_COMPLEX_VALUE, maxsplit)
 
     @classmethod
-    def apply_filter(cls, queryset, *args, **kwargs):
+    def apply_filter(cls, queryset, options=None, args=None, kwargs=None):
         """Apply filter.
 
         :param queryset:
+        :param options:
         :param args:
         :param kwargs:
         :return:
         """
+        if args is None:
+            args = []
+        if kwargs is None:
+            kwargs = {}
         return queryset.filter(*args, **kwargs)
 
     @classmethod
-    def apply_query(cls, queryset, *args, **kwargs):
+    def apply_query(cls, queryset, options=None, args=None, kwargs=None):
         """Apply query.
 
         :param queryset:
+        :param options:
         :param args:
         :param kwargs:
         :return:
         """
+        if args is None:
+            args = []
+        if kwargs is None:
+            kwargs = {}
         return queryset.query(*args, **kwargs)

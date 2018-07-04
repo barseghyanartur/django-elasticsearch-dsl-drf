@@ -3,13 +3,14 @@ Base tests.
 """
 
 import logging
-import pip
 
 from django.test import TransactionTestCase
 import pytest
 from rest_framework.test import APIClient
 
 import factories
+
+from .pip_helpers import get_installed_packages
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.base'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -26,8 +27,7 @@ __all__ = (
 )
 
 LOGGER = logging.getLogger(__name__)
-_INSTALLED_PACKAGES = pip.get_installed_distributions()
-INSTALLED_PACKAGES = [pkg.project_name for pkg in _INSTALLED_PACKAGES]
+INSTALLED_PACKAGES = get_installed_packages()
 CORE_API_IS_INSTALLED = 'coreapi' in INSTALLED_PACKAGES
 CORE_SCHEMA_IS_INSTALLED = 'coreschema' in INSTALLED_PACKAGES
 CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED = (

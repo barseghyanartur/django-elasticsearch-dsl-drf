@@ -732,7 +732,7 @@ class __NestedFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                     'use `get_schema_fields()`'
         assert coreschema is not None, 'coreschema must be installed to ' \
                                        'use `get_schema_fields()`'
-        filter_fields = getattr(view, 'filter_fields', None)
+        filter_fields = getattr(view, 'nested_filter_fields', None)
         document = getattr(view, 'document', None)
 
         return [] if not filter_fields else [

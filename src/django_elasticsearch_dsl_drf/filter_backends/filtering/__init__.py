@@ -6,7 +6,7 @@ from .common import FilteringFilterBackend
 from .geo_spatial import GeoSpatialFilteringFilterBackend
 from .ids import IdsFilterBackend
 from .nested import NestedFilteringFilterBackend
-from .post_filter.common import PostFilterFilteringFilterBackend
+from .post_filter import PostFilterFilteringFilterBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

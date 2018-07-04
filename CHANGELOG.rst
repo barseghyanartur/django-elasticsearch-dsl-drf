@@ -15,10 +15,14 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
-0.8.5
------
-yyyy-mm-dd (not released yet)
+0.9
+---
+2018-07-04
 
+- Introduced ``post_filter`` support.
+- Generalised the ``FilteringFilterBackend`` backend. Both
+  ``PostFilterFilteringFilterBackend`` and ``NestedFilteringFilterBackend``
+  backends are now primarily based on it.
 - Reduced Elastic queries from 3 to 2 when using ``LimitOffsetPagination``.
 
 0.8.4

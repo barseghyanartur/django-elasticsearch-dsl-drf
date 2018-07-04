@@ -109,7 +109,7 @@ class PostFilterFilteringFilterBackend(FilteringFilterBackend):
         :param kwargs:
         :return:
         """
-        return queryset.query(*args, **kwargs)
+        return queryset.post_filter(*args, **kwargs)
 
     def get_coreschema_field(self, field):
         if isinstance(field, fields.IntegerField):

@@ -6,13 +6,11 @@ from django_elasticsearch_dsl import fields
 
 from six import string_types
 
+from ...compat import coreapi
+from ...compat import coreschema
 from ...constants import ALL_LOOKUP_FILTERS_AND_QUERIES
 
 from .common import FilteringFilterBackend
-
-from ...compat import coreapi
-from ...compat import coreschema
-
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering.' \
             'post_filter.common'

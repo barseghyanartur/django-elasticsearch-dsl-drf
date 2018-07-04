@@ -554,7 +554,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         """Test schema field generator"""
         fields = self.backend.get_schema_fields(self.view)
         fields = [f.name for f in fields]
-        self.assertEqual(fields, list(self.view.filter_fields.keys()))
+        self.assertEqual(fields, list(self.view.nested_filter_fields.keys()))
 
     @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
                      CORE_API_AND_CORE_SCHEMA_MISSING_MSG)

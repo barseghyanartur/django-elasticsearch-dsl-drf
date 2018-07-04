@@ -2,11 +2,6 @@ Roadmap
 =======
 Road-map/upcoming releases.
 
-0.7
----
-yyyy-mm-dd (future)
-
-- Improved geo-spatial search/filtering/ordering support.
-- All filters (mentioned in the ``constants`` module) implemented.
-- Aggregations (also for geo-spatial backends).
-- Awesome documentation.
+See `GitHub issues
+<https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/issues>`_
+for a complete list of TODOs.

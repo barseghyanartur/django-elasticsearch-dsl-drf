@@ -55,6 +55,13 @@ DOCS_TRANSFORMATIONS = (
         '>`_'.format(version)
     ),
     (
+        ':doc:`Post-filter filter backend <advanced_usage_examples>`',
+        '`Post-filter filter backend <'
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'advanced_usage_examples.html#post-filter'
+        '>`_'.format(version)
+    ),
+    (
         ':doc:`Highlight backend <advanced_usage_examples>`',
         '`Highlight backend <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'

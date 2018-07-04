@@ -12,6 +12,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     GeoSpatialOrderingFilterBackend,
     NestedFilteringFilterBackend,
     OrderingFilterBackend,
+    PostFilterFilteringFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
 )
@@ -42,6 +43,7 @@ class AddressDocumentViewSet(DocumentViewSet):
         GeoSpatialOrderingFilterBackend,
         NestedContinentsBackend,
         NestedFilteringFilterBackend,
+        PostFilterFilteringFilterBackend,
         DefaultOrderingFilterBackend,
         SuggesterFilterBackend,
     ]
@@ -58,6 +60,10 @@ class AddressDocumentViewSet(DocumentViewSet):
         'id': None,
         'city': 'city.name.raw',
         'country': 'city.country.name.raw',
+    }
+    post_filter_fields = {
+        'city_pf': 'city.name.raw',
+        'country_pf': 'city.country.name.raw',
     }
     # Nested filtering fields
     nested_filter_fields = {

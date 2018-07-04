@@ -34,6 +34,7 @@ class Page(django_paginator.Page):
 
     def __init__(self, object_list, number, paginator, facets):
         self.facets = facets
+        self.count = object_list.hits.total
         super(Page, self).__init__(object_list, number, paginator)
 
 
@@ -89,6 +90,7 @@ class PageNumberPagination(pagination.PageNumberPagination):
         self.facets = None
         # self.page = None
         # self.request = None
+        self.count = None
         super(PageNumberPagination, self).__init__(*args, **kwargs)
 
     def get_facets(self, page=None):
@@ -170,7 +172,8 @@ class PageNumberPagination(pagination.PageNumberPagination):
         :return:
         """
         __data = [
-            ('count', self.page.paginator.count),
+            ('count', self.page.count),
+            # ('count', self.count),
             ('next', self.get_next_link()),
             ('previous', self.get_previous_link()),
         ]
@@ -192,6 +195,9 @@ class PageNumberPagination(pagination.PageNumberPagination):
         """
         return Response(OrderedDict(self.get_paginated_response_context(data)))
 
+    def get_count(self, es_response):
+        return es_response.hits.total
+
 
 class LimitOffsetPagination(pagination.LimitOffsetPagination):
     """A limit/offset pagination.
@@ -209,7 +215,7 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         :param kwargs:
         """
         self.facets = None
-        # self.count = None
+        self.count = None
         # self.limit = None
         # self.offset = None
         # self.request = None
@@ -239,7 +245,7 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         #     from rest_framework.pagination import _get_count
         #     self.count = _get_count(queryset)
 
-        self.count = get_count(self, queryset)
+        # self.count = get_count(self, queryset)
 
         self.limit = self.get_limit(request)
         if self.limit is None:

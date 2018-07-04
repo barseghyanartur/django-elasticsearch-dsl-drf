@@ -1,5 +1,5 @@
 """
-Test filtering backend.
+Test filtering `post_filter` backend.
 """
 
 from __future__ import absolute_import
@@ -15,7 +15,7 @@ from rest_framework import status
 from books import constants
 from search_indexes.viewsets import BookDocumentViewSet
 
-from ..filter_backends import FilteringFilterBackend
+from ..filter_backends import PostFilterFilteringFilterBackend
 from .base import (
     BaseRestFrameworkTestCase,
     CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
@@ -23,20 +23,20 @@ from .base import (
 )
 from .data_mixins import AddressesMixin, BooksMixin
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering_common'
+__title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering_post'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
-    'TestFilteringCommon',
+    'TestFilteringPostFilter',
 )
 
 
 @pytest.mark.django_db
-class TestFilteringCommon(BaseRestFrameworkTestCase,
-                          AddressesMixin,
-                          BooksMixin):
-    """Test filtering common."""
+class TestFilteringPostFilter(BaseRestFrameworkTestCase,
+                              AddressesMixin,
+                              BooksMixin):
+    """Test filtering `post_filter`."""
 
     pytestmark = pytest.mark.django_db
 
@@ -53,7 +53,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
-        cls.backend = FilteringFilterBackend()
+        cls.backend = PostFilterFilteringFilterBackend()
         cls.view = BookDocumentViewSet()
 
     # ***********************************************************************
@@ -468,59 +468,11 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         )
 
     # ***********************************************************************
-    # ************************ Nested fields ********************************
+    # ************************** Test facets ********************************
     # ***********************************************************************
 
-    def _nested_field_filter_term(self, field_name, filter_value, count):
-        """Nested field filter term.
-
-        Example:
-
-            http://localhost:8000/api/articles/?tags=children
-        """
-        self.authenticate()
-
-        url = self.addresses_url[:]
-        data = {}
-
-        # Should contain only 32 results
-        response = self.client.get(url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(response.data['results']),
-            self.all_addresses_count
-        )
-
-        # Should contain only 10 results
-        filtered_response = self.client.get(
-            url + '?{}={}'.format(field_name, filter_value),
-            data
-        )
-        self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(filtered_response.data['results']),
-            count
-        )
-
-    def test_nested_field_filter_term(self):
-        """Nested field filter term."""
-        self._nested_field_filter_term(
-            'city',
-            'Yerevan',
-            self.addresses_in_yerevan_count
-        )
-
-        self._nested_field_filter_term(
-            'country',
-            'Armenia',
-            self.addresses_in_yerevan_count
-        )
-
-        self._nested_field_filter_term(
-            'city',
-            'Dublin',
-            self.addresses_in_dublin_count
-        )
+    # This is what's it's all about - the facets.
+    # TODO
 
     # ***********************************************************************
     # ************************* Other fields ********************************
@@ -548,7 +500,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         """Test schema field generator"""
         fields = self.backend.get_schema_fields(self.view)
         fields = [f.name for f in fields]
-        self.assertEqual(fields, list(self.view.filter_fields.keys()))
+        self.assertEqual(fields, list(self.view.post_filter_fields.keys()))
 
     @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
                      CORE_API_AND_CORE_SCHEMA_MISSING_MSG)

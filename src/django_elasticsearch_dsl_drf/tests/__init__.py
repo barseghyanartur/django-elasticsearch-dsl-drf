@@ -4,12 +4,17 @@ Tests.
 from .test_faceted_search import TestFacetedSearch
 from .test_filtering_common import TestFilteringCommon
 from .test_filtering_geo_spatial import TestFilteringGeoSpatial
+from .test_filtering_nested import TestFilteringNested
+from .test_filtering_post_filter import TestFilteringPostFilter
+from .test_functional_suggesters import TestFunctionalSuggesters
 from .test_helpers import TestHelpers
+from .test_highlight import TestHighlight
 from .test_ordering_common import TestOrdering
 from .test_ordering_geo_spatial import TestOrderingGeoSpatial
 from .test_pagination import TestPagination
 from .test_search import TestSearch
 from .test_serializers import TestSerializers
+from .test_suggesters import TestSuggesters
 from .test_views import TestViews
 from .test_wrappers import TestWrappers
 
@@ -21,12 +26,17 @@ __all__ = (
     'TestFacetedSearch',
     'TestFilteringCommon',
     'TestFilteringGeoSpatial',
+    'TestFilteringNested',
+    'TestFilteringPostFilter',
+    'TestFunctionalSuggesters',
     'TestHelpers',
+    'TestHighlight',
     'TestOrdering',
     'TestOrderingGeoSpatial',
     'TestPagination',
     'TestSearch',
     'TestSerializers',
+    'TestSuggesters',
     'TestViews',
     'TestWrappers',
 )

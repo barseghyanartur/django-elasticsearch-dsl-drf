@@ -544,6 +544,10 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
     #         self.published_count
     #     )
 
+    # ***********************************************************************
+    # ******************** Core api and core schema *************************
+    # ***********************************************************************
+
     @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
                      CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
     def test_schema_fields_with_filter_fields_list(self):

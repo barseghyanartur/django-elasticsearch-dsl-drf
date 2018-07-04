@@ -759,6 +759,130 @@ In the example below, we show results with faceted ``state`` and
 
     http://127.0.0.1:8000/search/books/?facet=state&facet=pages_count
 
+Post-filter
+-----------
+The `post_filter` is very similar to the common filter. The only difference
+is that it doesn't affect facets. So, whatever post-filters applied, the
+numbers in facets will remain intact.
+
+Sample view
+~~~~~~~~~~~
+.. note::
+
+    Note the ``PostFilterFilteringFilterBackend`` and ``post_filter_fields``
+    usage.
+
+*search_indexes/viewsets/book.py*
+
+.. code-block:: python
+
+    # ...
+
+    from django_elasticsearch_dsl_drf.filter_backends import (
+        # ...
+        PostFilterFilteringFilterBackend,
+    )
+
+    # ...
+
+    class BookDocumentView(DocumentViewSet):
+        """The BookDocument view."""
+
+        document = BookDocument
+        serializer_class = BookDocumentSerializer
+        lookup_field = 'id'
+        filter_backends = [
+            FilteringFilterBackend,
+            OrderingFilterBackend,
+            DefaultOrderingFilterBackend,
+            SearchFilterBackend,
+            PostFilterFilteringFilterBackend,
+        ]
+        # Define search fields
+        search_fields = (
+            'title',
+            'summary',
+            'description',
+        )
+        # Define filtering fields
+        filter_fields = {
+            'id': {
+                'field': '_id',
+                'lookups': [
+                    LOOKUP_FILTER_RANGE,
+                    LOOKUP_QUERY_IN,
+                ],
+            },
+            'publisher': 'publisher.raw',
+            'publication_date': 'publication_date',
+            'isbn': 'isbn.raw',
+            'tags': {
+                'field': 'tags',
+                'lookups': [
+                    LOOKUP_FILTER_TERMS,
+                    LOOKUP_FILTER_PREFIX,
+                    LOOKUP_FILTER_WILDCARD,
+                    LOOKUP_QUERY_IN,
+                    LOOKUP_QUERY_EXCLUDE,
+                ],
+            },
+            'tags.raw': {
+                'field': 'tags.raw',
+                'lookups': [
+                    LOOKUP_FILTER_TERMS,
+                    LOOKUP_FILTER_PREFIX,
+                    LOOKUP_FILTER_WILDCARD,
+                    LOOKUP_QUERY_IN,
+                    LOOKUP_QUERY_EXCLUDE,
+                ],
+            },
+        }
+        # Define post-filter filtering fields
+        post_filter_fields = {
+            'publisher_pf': 'publisher.raw',
+            'isbn_pf': 'isbn.raw',
+            'state_pf': 'state.raw',
+            'tags_pf': {
+                'field': 'tags',
+                'lookups': [
+                    LOOKUP_FILTER_TERMS,
+                    LOOKUP_FILTER_PREFIX,
+                    LOOKUP_FILTER_WILDCARD,
+                    LOOKUP_QUERY_IN,
+                    LOOKUP_QUERY_EXCLUDE,
+                ],
+            },
+        }
+        # Define ordering fields
+        ordering_fields = {
+            'id': 'id',
+            'title': 'title.raw',
+            'price': 'price.raw',
+            'state': 'state.raw',
+            'publication_date': 'publication_date',
+        }
+        # Specify default ordering
+        ordering = ('id', 'title',)
+
+Sample queries
+~~~~~~~~~~~~~~
+
+**Filter documents by field**
+
+Filter documents by field (``state``) "published".
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/books/?state_pf=published
+
+**Filter documents by multiple fields**
+
+Filter documents by field (``states``) "published" and "in_progress".
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/books/?state_pf__in=published|in_progress
+
 Geo-spatial features
 --------------------
 

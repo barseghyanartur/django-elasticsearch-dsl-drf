@@ -105,10 +105,10 @@ class TestFacetedSearch(BaseRestFrameworkTestCase):
             'buckets',
             facet_state_response.data['facets']['_filter_state']['state']
         )
-        self.assertIn(
-            'buckets',
-            facet_state_response.data['facets']['_filter_state']['state']
-        )
+        # self.assertIn(
+        #     'buckets',
+        #     facet_state_response.data['facets']['_filter_state']['state']
+        # )
         self.assertIn(
             {
                 "doc_count": 10,

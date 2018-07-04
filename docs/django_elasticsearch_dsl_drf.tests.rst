@@ -52,6 +52,14 @@ django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_nested module
     :undoc-members:
     :show-inheritance:
 
+django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_post\_filter module
+--------------------------------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.tests.test_filtering_post_filter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 django\_elasticsearch\_dsl\_drf.tests.test\_functional\_suggesters module
 -------------------------------------------------------------------------
 

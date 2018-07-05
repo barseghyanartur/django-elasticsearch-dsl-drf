@@ -72,13 +72,27 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         Type 1:
 
         >>> search_nested_fields = {
-        >>>     'country': ['name'],
+        >>>     'country': {
+        >>>         'path': 'country',
+        >>>         'fields': ['name'],
+        >>>     },
+        >>>     'city': {
+        >>>         'path': 'country.city',
+        >>>         'fields': ['name'],
+        >>>     },
         >>> }
 
         Type 2:
 
         >>> search_nested_fields = {
-        >>>     'country': [{'name': {'boost': 2}}],
+        >>>     'country': {
+        >>>         'path': 'country',
+        >>>         'fields': [{'name': {'boost': 2}}]
+        >>>     },
+        >>>     'city': {
+        >>>         'path': 'country.city',
+        >>>         'fields': [{'name': {'boost': 2}}]
+        >>>     },
         >>> }
 
         :param request: Django REST framework request.

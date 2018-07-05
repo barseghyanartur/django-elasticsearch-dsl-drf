@@ -109,7 +109,7 @@ class DocumentSerializer(
     _abstract = True
 
     _field_mapping = {
-        fields.AttachmentField: CharField,  # TODO
+        fields.AttachmentField: CharField,  # Removed from Elasticsearch 6.x
         fields.BooleanField: BooleanField,
         fields.ByteField: CharField,  # TODO
         fields.CompletionField: CharField,  # TODO
@@ -125,7 +125,7 @@ class DocumentSerializer(
         fields.ListField: ListField,
         fields.ObjectField: ObjectField,
         fields.ShortField: IntegerField,
-        fields.StringField: CharField,
+        fields.StringField: CharField,  # Removed in Elasticsearch 6.x
         fields.FileField: CharField,  # TODO
     }
 

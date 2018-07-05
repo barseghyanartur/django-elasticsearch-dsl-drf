@@ -9,6 +9,7 @@ Contents:
    :maxdepth: 20
 
    index
+   installing_elasticsearch
    quick_start
    filtering_usage_examples
    basic_usage_examples

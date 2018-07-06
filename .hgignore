@@ -7,6 +7,7 @@ syntax: regexp
 \.travis\.yml~
 \.cache/
 \.coverage$
+\.coverage
 ^htmlcov/
 \.py,cover
 \.idea/

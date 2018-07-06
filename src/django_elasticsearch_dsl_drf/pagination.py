@@ -127,7 +127,7 @@ class PageNumberPagination(pagination.PageNumberPagination):
         is_suggest = getattr(queryset, '_suggest', False)
         if is_suggest:
             if ELASTICSEARCH_GTE_6_0:
-                return queryset.execute().to_dict()
+                return queryset.execute().to_dict()['suggest']
             return queryset.execute_suggest().to_dict()
 
         # Check if we're using paginate queryset from `functional_suggest`
@@ -233,7 +233,7 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         is_suggest = getattr(queryset, '_suggest', False)
         if is_suggest:
             if ELASTICSEARCH_GTE_6_0:
-                return queryset.execute().to_dict()
+                return queryset.execute().to_dict()['suggest']
             return queryset.execute_suggest().to_dict()
 
         # Check if we're using paginate queryset from `functional_suggest`

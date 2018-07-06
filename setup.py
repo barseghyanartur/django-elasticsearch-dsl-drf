@@ -62,6 +62,13 @@ DOCS_TRANSFORMATIONS = (
         '>`_'.format(version)
     ),
     (
+        ':doc:`Nested filtering filter backend <nested_fields_usage_examples>`',
+        '`Nested filtering filter backend <'
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'nested_fields_usage_examples.html#nested-filtering'
+        '>`_'.format(version)
+    ),
+    (
         ':doc:`Highlight backend <advanced_usage_examples>`',
         '`Highlight backend <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'

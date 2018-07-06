@@ -10,7 +10,7 @@ from rest_framework.test import APIClient
 
 import factories
 
-from .pip_helpers import get_installed_packages
+from ..pip_helpers import get_installed_packages
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.base'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

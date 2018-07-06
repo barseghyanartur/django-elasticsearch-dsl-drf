@@ -85,7 +85,7 @@ class TestSearch(BaseRestFrameworkTestCase):
         cls.cities_count = 20
         cls.cities = factories.CityFactory.create_batch(
             cls.cities_count)
-        cls.switzerland = factories.CountryFactory.create(name='Switzerland')
+        cls.switzerland = factories.CountryFactory.create(name='Wonderland')
         cls.switz_cities_count = 10
         cls.switz_cities = factories.CityFactory.create_batch(
             cls.switz_cities_count,
@@ -227,7 +227,7 @@ class TestSearch(BaseRestFrameworkTestCase):
     def test_search_by_nested_field(self):
         """Search by field."""
         return self._search_by_nested_field(
-            'Switzerland',
+            'Wonderland',
         )
 
     @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,

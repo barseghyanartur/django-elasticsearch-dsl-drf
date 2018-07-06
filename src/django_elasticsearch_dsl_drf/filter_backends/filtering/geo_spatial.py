@@ -137,7 +137,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         if __len_values == 4:
             params['distance_type'] = __values[3]
         else:
-            params['distance_type'] = 'sloppy_arc'
+            params['distance_type'] = 'arc'
 
         return params
 

@@ -16,7 +16,7 @@ are used for versioning (schema follows below):
 - All backwards incompatible changes are mentioned in this document.
 
 0.10
----
+----
 2018-07-06
 
 - Elasticsearch 6.x support.

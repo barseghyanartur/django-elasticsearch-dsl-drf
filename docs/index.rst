@@ -18,7 +18,7 @@ Prerequisites
 
 - Django 1.8, 1.9, 1.10, 1.11 and 2.0.
 - Python 2.7, 3.4, 3.5, 3.6
-- Elasticsearch 2.x, 5.x
+- Elasticsearch 2.x, 5.x, 6.x
 
 Dependencies
 ============

@@ -97,7 +97,7 @@ class MoreLikeThisMixin(object):
             kwargs = copy.copy(getattr(view, 'more_like_this_options', {}))
             id_ = pk if pk else id
             # obj = self.get_object()
-            queryset = self.get_queryset()
+            queryset = self.filter_queryset(self.get_queryset())
             fields = kwargs.pop('fields', {})
             if not fields:
                 serializer_class = self.get_serializer_class()

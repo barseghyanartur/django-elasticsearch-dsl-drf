@@ -5,13 +5,16 @@ Base ViewSets.
 """
 from __future__ import absolute_import, unicode_literals
 
+import copy
+
 from django.http import Http404
 from django.core.exceptions import ImproperlyConfigured
 
 from elasticsearch_dsl import Search
 from elasticsearch_dsl.connections import connections
+from elasticsearch_dsl.query import MoreLikeThis
 
-from rest_framework.decorators import list_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.viewsets import ReadOnlyModelViewSet
@@ -27,6 +30,7 @@ __all__ = (
     'BaseDocumentViewSet',
     'DocumentViewSet',
     'FunctionalSuggestMixin',
+    'MoreLikeThisMixin',
     'SuggestMixin',
 )
 
@@ -53,8 +57,12 @@ class FunctionalSuggestMixin(object):
 
     @list_route()
     def functional_suggest(self, request):
-        """Functional suggest functionality."""
-        # TODO: leave or remove?
+        """Functional suggest functionality.
+
+        :param request:
+        :return:
+        """
+        # TODO: leave the following check or remove?
         if 'view' in request.parser_context:
             view = request.parser_context['view']
             filter_backend_names = [
@@ -72,6 +80,42 @@ class FunctionalSuggestMixin(object):
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
         return Response(page)
+
+
+class MoreLikeThisMixin(object):
+    """More-like-this mixin."""
+
+    @detail_route()
+    def more_like_this(self, request, pk=None, id=None):
+        """More-like-this functionality detail view.
+
+        :param request:
+        :return:
+        """
+        if 'view' in request.parser_context:
+            view = request.parser_context['view']
+            kwargs = copy.copy(getattr(view, 'more_like_this_options', {}))
+            id_ = pk if pk else id
+            # obj = self.get_object()
+            queryset = self.get_queryset()
+            fields = kwargs.pop('fields', {})
+            if not fields:
+                serializer_class = self.get_serializer_class()
+                fields = serializer_class.Meta.fields[:]
+            queryset = queryset.query(
+                MoreLikeThis(
+                    fields=fields,
+                    like={
+                        '_id': "{}".format(id_),
+                        '_index': "{}".format(self.index),
+                        '_type': "{}".format(self.mapping)
+                    },
+                    **kwargs
+                )
+            )
+            return Response(queryset.execute().to_dict())
+            # page = self.paginate_queryset(queryset)
+            # return Response(page)
 
 
 class BaseDocumentViewSet(ReadOnlyModelViewSet):

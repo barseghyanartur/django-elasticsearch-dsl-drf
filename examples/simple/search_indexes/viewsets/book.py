@@ -32,6 +32,7 @@ from django_elasticsearch_dsl_drf.viewsets import (
     # DocumentViewSet,
     FunctionalSuggestMixin,
     SuggestMixin,
+    MoreLikeThisMixin,
 )
 
 from elasticsearch_dsl import DateHistogramFacet, RangeFacet
@@ -235,7 +236,9 @@ class BaseDocumentViewSet(BaseDocumentViewSet):
     }
 
 
-class BookDocumentViewSet(BaseDocumentViewSet, SuggestMixin):
+class BookDocumentViewSet(BaseDocumentViewSet,
+                          SuggestMixin,
+                          MoreLikeThisMixin):
     """The BookDocument view."""
 
     filter_backends = [
@@ -261,6 +264,18 @@ class BookDocumentViewSet(BaseDocumentViewSet, SuggestMixin):
         'summary_suggest': 'summary',
     }
 
+    # More-like-this options
+    more_like_this_options = {
+        'fields': (
+            # 'title',
+            'summary.raw',
+            # 'authors',
+            'tags.raw',
+        ),
+        'min_term_freq': 1,
+        'max_query_terms': 12,
+    }
+
 
 class BookOrderingByScoreDocumentViewSet(BookDocumentViewSet):
     """Same as BookDocumentViewSet, but sorted by _score."""
@@ -273,10 +288,8 @@ class BookOrderingByScoreDocumentViewSet(BookDocumentViewSet):
     ordering = ('_score', 'id', 'title', 'price',)
 
 
-class BookFunctionalSuggesterDocumentViewSet(
-    BaseDocumentViewSet,
-    FunctionalSuggestMixin
-):
+class BookFunctionalSuggesterDocumentViewSet(BaseDocumentViewSet,
+                                             FunctionalSuggestMixin):
     """Same as BookDocumentViewSet, but uses functional suggester."""
 
     filter_backends = [

@@ -9,6 +9,7 @@ from .test_filtering_post_filter import TestFilteringPostFilter
 from .test_functional_suggesters import TestFunctionalSuggesters
 from .test_helpers import TestHelpers
 from .test_highlight import TestHighlight
+from .test_more_like_this import TestMoreLikeThis
 from .test_ordering_common import TestOrdering
 from .test_ordering_geo_spatial import TestOrderingGeoSpatial
 from .test_pagination import TestPagination
@@ -31,6 +32,7 @@ __all__ = (
     'TestFunctionalSuggesters',
     'TestHelpers',
     'TestHighlight',
+    'TestMoreLikeThis',
     'TestOrdering',
     'TestOrderingGeoSpatial',
     'TestPagination',

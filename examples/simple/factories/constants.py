@@ -218,3 +218,89 @@ NON_FAKER_BOOK_CONTENT = [
     },
 
 ]
+
+NON_FAKER_BOOK_CONTENT_IRRELEVANT = [
+    {
+        'title': "Then Gelsen entered.",
+        'summary': "He saw that the rest of the watchbird.",
+        'description': """ 
+        Manufacturers were already present. There were six of them, not 
+        counting himself, and the room was blue with expensive cigar smoke.
+        "Hi, Charlie," one of them called as he came in.
+        The rest broke off conversation long enough to wave a casual greeting 
+        at him. As a watchbird manufacturer, he was a member manufacturer of 
+        salvation, he reminded himself wryly. Very exclusive. You must have a 
+        certified government contract if you want to save the human race.
+        "The government representative isn't here yet," one of the men told 
+        him. "He's due any minute."
+        "We're getting the green light," another said.
+        "Fine." Gelsen found a chair near the door and looked around the room. 
+        It was like a convention, or a Boy Scout rally. The six men made up 
+        for their lack of numbers by sheer volume. The president of Southern 
+        Consolidated was talking at the top of his lungs about watchbird's 
+        enormous durability. The two presidents he was talking at were 
+        grinning, nodding, one trying to interrupt with the results of a test 
+        he had run on watchbird's resourcefulness, the other talking about the 
+        new recharging apparatus.
+        The other three men were in their own little group, delivering what 
+        sounded like a panegyric to watchbird.
+        Gelsen noticed that all of them stood straight and tall, like the 
+        saviors they felt they were. He didn't find it funny. Up to a few days 
+        ago he had felt that way himself. He had considered himself a 
+        pot-bellied, slightly balding saint.
+        """
+    },
+    {
+        'title': "He sighed and lighted a cigarette. ",
+        'summary': "At the beginning of the project, he had been as "
+                   "enthusiastic as the others. He remembered saying to "
+                   "Macintyre, his chief engineer",
+        'description': """
+        "Mac, a new day is coming. Watchbird is the Answer." And Macintyre 
+        had nodded very profoundly—another watchbird convert.
+        How wonderful it had seemed then! A simple, reliable answer to one of 
+        mankind's greatest problems, all wrapped and packaged in a pound of 
+        incorruptible metal, crystal and plastics.
+        Perhaps that was the very reason he was doubting it now. Gelsen 
+        suspected that you don't solve human problems so easily. There had to 
+        be a catch somewhere.
+        After all, murder was an old problem, and watchbird too new a solution.
+        "Gentlemen—" They had been talking so heatedly that they hadn't 
+        noticed the government representative entering. Now the room became 
+        quiet at once.
+        "Gentlemen," the plump government man said, "the President, with the 
+        consent of Congress, has acted to form a watchbird division for every 
+        city and town in the country."
+        The men burst into a spontaneous shout of triumph. They were going to 
+        have their chance to save the world after all, Gelsen thought, and 
+        worriedly asked himself what was wrong with that.
+        He listened carefully as the government man outlined the distribution 
+        scheme. The country was to be divided into seven areas, each to be 
+        supplied and serviced by one manufacturer. This meant monopoly, of 
+        course, but a necessary one. Like the telephone service, it was in 
+        the public's best interests. You couldn't have competition in 
+        watchbird service. Watchbird was for everyone.
+        "The President hopes," the representative continued, "that full 
+        watchbird service will be installed in the shortest possible time. 
+        You will have top priorities on strategic metals, manpower, and so 
+        forth." "Speaking for myself," the president of Southern Consolidated 
+        said, " I expect to have the first batch of watchbirds distributed  
+        within the week. Production is all set up."
+        """
+    },
+    {
+        'title': "",
+        'summary': "",
+        'description': """"""
+    },
+    {
+        'title': "",
+        'summary': "",
+        'description': """"""
+    },
+    {
+        'title': "",
+        'summary': "",
+        'description': """"""
+    },
+]

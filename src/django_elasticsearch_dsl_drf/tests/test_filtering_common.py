@@ -373,9 +373,19 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         data = {}
 
         if boost is not None:
-            url += '?{}__{}={}|{}'.format(field_name, lookup, value, boost)
+            url += '?{field_name}__{lookup}={value}{separator}{boost}'.format(
+                field_name=field_name,
+                lookup=lookup,
+                value=value,
+                boost=boost,
+                separator=SEPARATOR_LOOKUP_COMPLEX_VALUE
+            )
         else:
-            url += '?{}__{}={}'.format(field_name, lookup, value)
+            url += '?{field_name}__{lookup}={value}'.format(
+                field_name=field_name,
+                lookup=lookup,
+                value=value
+            )
 
         response = self.client.get(
             url,
@@ -482,7 +492,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         __ids = [str(__obj.id) for __obj in self.published]
         return self._field_filter_value(
             'ids',
-            '|'.join(__ids),
+            SEPARATOR_LOOKUP_COMPLEX_VALUE.join(__ids),
             self.published_count
         )
 

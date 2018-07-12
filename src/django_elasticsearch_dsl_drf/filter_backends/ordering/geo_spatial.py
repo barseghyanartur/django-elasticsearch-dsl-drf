@@ -53,7 +53,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         Example:
 
-            /api/articles/?ordering=-location|45.3214|-34.3421|km|planes
+            /api/articles/?ordering=-location;45.3214;-34.3421;km;planes
 
         :param value:
         :param field:
@@ -62,7 +62,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Params to be used in `geo_distance` query.
         :rtype: dict
         """
-        __values = cls.split_lookup_value(value, maxsplit=3)
+        __values = cls.split_lookup_complex_value(value, maxsplit=3)
         __len_values = len(__values)
 
         if __len_values < 2:

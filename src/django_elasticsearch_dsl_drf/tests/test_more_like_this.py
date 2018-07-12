@@ -43,8 +43,17 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
     def setUpClass(cls):
         """Set up class."""
         cls.books = []
-        for book_data in factories.constants.NON_FAKER_BOOK_CONTENT:
 
+        for book_data in factories.constants.NON_FAKER_BOOK_CONTENT:
+            cls.books.append(
+                factories.BookFactory(
+                    title=book_data['title'],
+                    summary=book_data['summary'],
+                    description=book_data['description'],
+                )
+            )
+
+        for book_data in factories.constants.NON_FAKER_BOOK_CONTENT_OTHER:
             cls.books.append(
                 factories.BookFactory(
                     title=book_data['title'],

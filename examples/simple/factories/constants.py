@@ -219,7 +219,7 @@ NON_FAKER_BOOK_CONTENT = [
 
 ]
 
-NON_FAKER_BOOK_CONTENT_IRRELEVANT = [
+NON_FAKER_BOOK_CONTENT_OTHER = [
     {
         'title': "Then Gelsen entered.",
         'summary': "He saw that the rest of the watchbird.",
@@ -234,6 +234,12 @@ NON_FAKER_BOOK_CONTENT_IRRELEVANT = [
         "The government representative isn't here yet," one of the men told 
         him. "He's due any minute."
         "We're getting the green light," another said.
+        """
+    },
+    {
+        'title': "Gelsen found a chair.",
+        'summary': "Thoughts about watchbird",
+        'description': """
         "Fine." Gelsen found a chair near the door and looked around the room. 
         It was like a convention, or a Boy Scout rally. The six men made up 
         for their lack of numbers by sheer volume. The president of Southern 
@@ -242,6 +248,12 @@ NON_FAKER_BOOK_CONTENT_IRRELEVANT = [
         grinning, nodding, one trying to interrupt with the results of a test 
         he had run on watchbird's resourcefulness, the other talking about the 
         new recharging apparatus.
+        """
+    },
+    {
+        'title': "The other three men",
+        'summary': "Three men delivering sounds of the watchbird",
+        'description': """
         The other three men were in their own little group, delivering what 
         sounded like a panegyric to watchbird.
         Gelsen noticed that all of them stood straight and tall, like the 
@@ -264,10 +276,23 @@ NON_FAKER_BOOK_CONTENT_IRRELEVANT = [
         Perhaps that was the very reason he was doubting it now. Gelsen 
         suspected that you don't solve human problems so easily. There had to 
         be a catch somewhere.
+        """
+    },
+    {
+        'title': "Smoke of cigarettes",
+        'summary': "After all, murder was an old problem.",
+        'description': """
         After all, murder was an old problem, and watchbird too new a solution.
         "Gentlemen—" They had been talking so heatedly that they hadn't 
         noticed the government representative entering. Now the room became 
         quiet at once.
+        """
+    },
+    {
+        'title': "Watchbird division for everyone everywhere.",
+        'summary': "President consulted the cogress on divisions for every "
+                   "village, town and country.",
+        'description': """
         "Gentlemen," the plump government man said, "the President, with the 
         consent of Congress, has acted to form a watchbird division for every 
         city and town in the country."
@@ -280,6 +305,12 @@ NON_FAKER_BOOK_CONTENT_IRRELEVANT = [
         course, but a necessary one. Like the telephone service, it was in 
         the public's best interests. You couldn't have competition in 
         watchbird service. Watchbird was for everyone.
+        """
+    },
+    {
+        'title': "Hopes of the govenment",
+        'summary': "Divisions at the service as soon as possible.",
+        'description': """
         "The President hopes," the representative continued, "that full 
         watchbird service will be installed in the shortest possible time. 
         You will have top priorities on strategic metals, manpower, and so 
@@ -288,19 +319,5 @@ NON_FAKER_BOOK_CONTENT_IRRELEVANT = [
         within the week. Production is all set up."
         """
     },
-    {
-        'title': "",
-        'summary': "",
-        'description': """"""
-    },
-    {
-        'title': "",
-        'summary': "",
-        'description': """"""
-    },
-    {
-        'title': "",
-        'summary': "",
-        'description': """"""
-    },
+
 ]

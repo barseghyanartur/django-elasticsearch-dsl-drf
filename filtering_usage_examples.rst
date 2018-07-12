@@ -95,19 +95,46 @@ terms
 Find documents which contain any of the exact terms specified in the field
 specified.
 
+.. code-block:: text
+
+    http://localhost:8000/api/articles/?id=1&id=2&id=3
+    http://localhost:8000/api/articles/?id__terms=1;2;3
+
 range
 ^^^^^
 Find documents where the field specified contains values (dates, numbers, or
 strings) in the range specified.
 
+**From, to**
+
+.. code-block:: text
+
+    http://localhost:8000/api/users/?age__range=16;67
+
+.. code-block:: text
+
+**From, to, boost**
+
+.. code-block:: text
+
+    http://localhost:8000/api/users/?age__range=16;67;2.0
+
 exists
 ^^^^^^
 Find documents where the field specified contains any non-null value.
+
+.. code-block:: text
+
+    http://localhost:8000/api/articles/?tags__exists=true
 
 prefix
 ^^^^^^
 Find documents where the field specified contains terms which begin with the
 exact prefix specified.
+
+.. code-block:: text
+
+    http://localhost:8000/api/articles/?tags__prefix=bio
 
 wildcard
 ^^^^^^^^
@@ -115,9 +142,18 @@ Find documents where the field specified contains terms which match the pattern
 specified, where the pattern supports single character wildcards (?) and
 multi-character wildcards (*)
 
+.. code-block:: text
+
+    http://localhost:8000/api/articles/?title__wildcard=*elusional*
+
 ids
 ^^^
 Find documents with the specified type and IDs.
+
+.. code-block:: text
+
+    http://localhost:8000/api/articles/?ids=68;64;58
+    http://localhost:8000/api/articles/?ids=68&ids=64&ids=58
 
 Functional
 ~~~~~~~~~~
@@ -144,38 +180,80 @@ in
 ^^
 In a given list.
 
+.. code-block:: text
+
+    http://localhost:8000/api/articles/?id__in=1;2;3
+
 gt
 ^^
 Greater than.
+
+.. code-block:: text
+
+    http://localhost:8000/api/users/?id__gt=10
 
 gte
 ^^^
 Greater than or equal to.
 
+.. code-block:: text
+
+    http://localhost:8000/api/users/?id__gte=10
+
 lt
 ^^
 Less than.
+
+.. code-block:: text
+
+    http://localhost:8000/api/users/?id__lt=10
 
 lte
 ^^^
 Less than or equal to.
 
+.. code-block:: text
+
+    http://localhost:8000/api/users/?id__lte=10
+
 startswith
 ^^^^^^^^^^
 Case-sensitive starts-with.
+
+    http://localhost:8000/api/articles/?tags__startswith=bio
 
 endswith
 ^^^^^^^^
 Case-sensitive ends-with.
 
+.. code-block:: text
+
+    http://localhost:8000/api/articles/?state__endswith=lished
+
 isnull
 ^^^^^^
 Takes either True or False.
+
+**True**
+
+.. code-block:: text
+
+    http://localhost:8000/api/articles/?null_field__isnull=true
+
+**False**
+
+.. code-block:: text
+
+    http://localhost:8000/api/articles/?tags__isnull=false
 
 exclude
 ^^^^^^^
 Returns a new query set of containing objects that do not match the given
 lookup parameters.
+
+.. code-block:: text
+
+    http://localhost:8000/api/articles/?tags__exclude=children
 
 Usage examples
 ==============

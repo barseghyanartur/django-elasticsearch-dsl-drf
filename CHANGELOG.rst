@@ -15,6 +15,26 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.11
+----
+yyyy-mm-dd (not released yet)
+
+.. note::
+
+    This release contains minor backwards incompatible changes.
+    You should update your code and other parts of your applications
+    that were relying on the complex queries using `|` and `:` in the
+    GET params.
+    Do not keep things as they were in your own fork, since new search backends
+    will use the `|` and `:` symbols differently.
+
+- `SEPARATOR_LOOKUP_VALUE` has been removed. Use
+  `SEPARATOR_LOOKUP_COMPLEX_VALUE` and
+  `SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE` instead.
+  # TODO: Name a couple of usage examples.
+- `SEPARATOR_LOOKUP_NAME` has been added.
+  # TODO: Name a couple of usage examples.
+
 0.10
 ----
 2018-07-06

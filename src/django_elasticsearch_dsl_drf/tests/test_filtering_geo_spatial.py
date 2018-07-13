@@ -16,6 +16,7 @@ from rest_framework import status
 
 import factories
 
+from ..constants import SEPARATOR_LOOKUP_COMPLEX_VALUE
 from .base import BaseRestFrameworkTestCase
 
 if DJANGO_GTE_1_10:
@@ -50,7 +51,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         Example:
 
             http://localhost:8000
-            /api/publisher/?location__geo_distance=1km|48.8549|2.3000
+            /api/publisher/?location__geo_distance=1km;48.8549;2.3000
         """
         self.authenticate()
 
@@ -73,9 +74,12 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
 
         call_command('search_index', '--rebuild', '-f')
 
-        __params = '{}|{}|{}'.format(_geo_distance,
-                                     _geo_origin.latitude,
-                                     _geo_origin.longitude)
+        __params = '{distance}{separator}{lat}{separator}{lon}'.format(
+            distance=_geo_distance,
+            lat=_geo_origin.latitude,
+            lon=_geo_origin.longitude,
+            separator=SEPARATOR_LOOKUP_COMPLEX_VALUE
+        )
 
         url = self.base_publisher_url[:] + '?{}={}'.format(
             'location__geo_distance',
@@ -95,7 +99,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         Example:
 
             http://localhost:8000/api/articles/
-            ?location__geo_polygon=3.51,71.46|-47.63,41.64|62.05,29.22
+            ?location__geo_polygon=3.51,71.46;-47.63,41.64;62.05,29.22
 
         :param points:
         :param count:
@@ -106,13 +110,14 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         """
         self.authenticate()
 
-        __params = '{},{}|{},{}|{},{}'.format(
-            3.51,
-            71.46,
-            -47.63,
-            41.64,
-            62.05,
-            29.22,
+        __params = '{val1},{val2}{sep}{val3},{val4}{sep}{val5},{val6}'.format(
+            val1=3.51,
+            val2=71.46,
+            val3=-47.63,
+            val4=41.64,
+            val5=62.05,
+            val6=29.22,
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
         )
 
         publishers = []
@@ -220,7 +225,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         Example:
 
             http://localhost:8000/api/articles/
-            ?location__geo_bounding_box=44.87,40.07|43.87,41.11
+            ?location__geo_bounding_box=44.87,40.07;43.87,41.11
 
         :param points:
         :param count:
@@ -231,11 +236,12 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         """
         self.authenticate()
 
-        __params = '{},{}|{},{}'.format(
-            44.87,
-            40.07,
-            43.87,
-            41.11,
+        __params = '{val1},{val2}{sep}{val3},{val4}'.format(
+            val1=44.87,
+            val2=40.07,
+            val3=43.87,
+            val4=41.11,
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
         )
 
         publishers = []

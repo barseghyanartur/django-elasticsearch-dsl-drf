@@ -21,7 +21,7 @@ The queries in this group are:
 + geo_polygon query: Find documents with geo-points within the specified
   polygon.
 """
-
+import logging
 from elasticsearch_dsl.query import Q
 from rest_framework.filters import BaseFilterBackend
 
@@ -42,6 +42,9 @@ __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = ('GeoSpatialFilteringFilterBackend',)
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
@@ -111,7 +114,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         Example:
 
-            /api/articles/?location__geo_distance=2km|43.53|-12.23
+            /api/articles/?location__geo_distance=2km;43.53;-12.23
 
         :param value:
         :param field:
@@ -120,7 +123,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Params to be used in `geo_distance` query.
         :rtype: dict
         """
-        __values = cls.split_lookup_value(value, maxsplit=3)
+        __values = cls.split_lookup_complex_value(value, maxsplit=3)
         __len_values = len(__values)
 
         if __len_values < 3:
@@ -147,12 +150,12 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         Example:
 
-            /api/articles/?location__geo_polygon=40,-70|30,-80|20,-90
+            /api/articles/?location__geo_polygon=40,-70;30,-80;20,-90
 
         Example:
 
-            /api/articles/?location__geo_polygon=40,-70|30,-80|20,-90
-                |_name:myname|validation_method:IGNORE_MALFORMED
+            /api/articles/?location__geo_polygon=40,-70;30,-80;20,-90
+                ;_name,myname;validation_method,IGNORE_MALFORMED
 
         Elasticsearch:
 
@@ -184,7 +187,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Params to be used in `geo_distance` query.
         :rtype: dict
         """
-        __values = cls.split_lookup_value(value)
+        __values = cls.split_lookup_complex_value(value)
         __len_values = len(__values)
 
         if not __len_values:
@@ -195,26 +198,21 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         for __value in __values:
             if SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE in __value:
-                __lat_lon = __value.split(
+                __split_value = __value.split(
                     SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
                 )
-                if len(__lat_lon) >= 2:
-                    __points.append(
-                        {
-                            'lat': float(__lat_lon[0]),
-                            'lon': float(__lat_lon[1]),
-                        }
-                    )
-
-            elif SEPARATOR_LOOKUP_COMPLEX_VALUE in __value:
-                __opt_name_val = __value.split(
-                    SEPARATOR_LOOKUP_COMPLEX_VALUE
-                )
-                if len(__opt_name_val) >= 2:
-                    if __opt_name_val[0] in ('_name', 'validation_method'):
+                if len(__split_value) >= 2:
+                    if __split_value[0] in ('_name', 'validation_method'):
                         __options.update(
                             {
-                                __opt_name_val[0]: __opt_name_val[1]
+                                __split_value[0]: __split_value[1]
+                            }
+                        )
+                    else:
+                        __points.append(
+                            {
+                                'lat': float(__split_value[0]),
+                                'lon': float(__split_value[1]),
                             }
                         )
 
@@ -235,12 +233,12 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         Example:
 
-            /api/articles/?location__geo_bounding_box=40.73,-74.1|40.01,-71.12
+            /api/articles/?location__geo_bounding_box=40.73,-74.1;40.01,-71.12
 
         Example:
 
-            /api/articles/?location__geo_polygon=40.73,-74.1|40.01,-71.12
-                |_name:myname|validation_method:IGNORE_MALFORMED|type:indexed
+            /api/articles/?location__geo_polygon=40.73,-74.1;40.01,-71.12
+                ;_name,myname;validation_method,IGNORE_MALFORMED;type,indexed
 
         Elasticsearch:
 
@@ -275,7 +273,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Params to be used in `geo_bounding_box` query.
         :rtype: dict
         """
-        __values = cls.split_lookup_value(value)
+        __values = cls.split_lookup_complex_value(value)
         __len_values = len(__values)
 
         if not __len_values:
@@ -307,9 +305,9 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         # Options
         for __value in __values[2:]:
-            if SEPARATOR_LOOKUP_COMPLEX_VALUE in __value:
+            if SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE in __value:
                 __opt_name_val = __value.split(
-                    SEPARATOR_LOOKUP_COMPLEX_VALUE
+                    SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
                 )
                 if len(__opt_name_val) >= 2:
                     if __opt_name_val[0] in ('_name',

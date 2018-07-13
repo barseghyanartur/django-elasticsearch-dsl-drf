@@ -120,7 +120,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Params to be used in `range` query.
         :rtype: dict
         """
-        __values = cls.split_lookup_value(value, maxsplit=3)
+        __values = cls.split_lookup_complex_value(value, maxsplit=3)
         __len_values = len(__values)
 
         if __len_values == 0:
@@ -149,7 +149,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Params to be used in `range` query.
         :rtype: dict
         """
-        __values = cls.split_lookup_value(value, maxsplit=2)
+        __values = cls.split_lookup_complex_value(value, maxsplit=2)
         __len_values = len(__values)
 
         if __len_values == 0:
@@ -203,7 +203,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         # Otherwise, we consider it to be a string and split it further.
         else:
-            __values = cls.split_lookup_value(value)
+            __values = cls.split_lookup_complex_value(value)
 
         return cls.apply_filter(
             queryset=queryset,
@@ -350,7 +350,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Modified queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
-        __values = cls.split_lookup_value(value)
+        __values = cls.split_lookup_complex_value(value)
         __queries = []
         for __value in __values:
             __queries.append(
@@ -487,7 +487,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Modified queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
-        __values = cls.split_lookup_value(value)
+        __values = cls.split_lookup_complex_value(value)
 
         __queries = []
         for __value in __values:

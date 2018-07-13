@@ -55,6 +55,7 @@ yyyy-mm-dd (not released yet)
 - `SEPARATOR_LOOKUP_NAME` has been added.
 - The method `split_lookup_complex_value` has been removed. Use
   `split_lookup_complex_value` instead.
+- Default filter lookup option is added.
 
 0.10
 ----

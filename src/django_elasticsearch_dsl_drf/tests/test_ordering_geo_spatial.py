@@ -16,7 +16,10 @@ from rest_framework import status
 
 import factories
 
-from ..constants import GEO_DISTANCE_ORDERING_PARAM
+from ..constants import (
+    GEO_DISTANCE_ORDERING_PARAM,
+    SEPARATOR_LOOKUP_COMPLEX_VALUE,
+)
 from .base import BaseRestFrameworkTestCase
 
 if DJANGO_GTE_1_10:
@@ -72,15 +75,16 @@ class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
         Example:
 
             http://localhost:8000
-            /api/publisher/?ordering=location|48.85|2.30|km|plane
+            /api/publisher/?ordering=location;48.85;2.30;km;plane
         """
         self.authenticate()
 
-        __params = 'location|{}|{}|{}|{}'.format(
-                                     self.geo_origin.latitude,
-                                     self.geo_origin.longitude,
-                                     self.unit,
-                                     self.algo
+        __params = 'location{sep}{lat}{sep}{lon}{sep}{unit}{sep}{algo}'.format(
+            lat=self.geo_origin.latitude,
+            lon=self.geo_origin.longitude,
+            unit=self.unit,
+            algo=self.algo,
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
         )
 
         url = self.base_publisher_url[:] + '?{}={}'.format(

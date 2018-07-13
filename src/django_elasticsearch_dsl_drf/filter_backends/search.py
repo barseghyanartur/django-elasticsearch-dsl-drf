@@ -163,7 +163,7 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         query_params = self.get_search_query_params(request)
         __queries = []
         for search_term in query_params:
-            __values = self.split_lookup_value(search_term, 1)
+            __values = self.split_lookup_complex_value(search_term, 1)
             __len_values = len(__values)
             if __len_values > 1:
                 field, value = __values

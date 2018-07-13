@@ -105,6 +105,7 @@ class BaseDocumentViewSet(BaseDocumentViewSet):
             ],
         },
         'title': 'title.raw',
+        'summary': 'summary',
         'publisher': 'publisher.raw',
         'publication_date': 'publication_date',
         'state': 'state.raw',

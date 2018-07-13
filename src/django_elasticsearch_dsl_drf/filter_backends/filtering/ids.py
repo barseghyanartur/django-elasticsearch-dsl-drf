@@ -88,7 +88,7 @@ class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
         query_params = self.get_ids_query_params(request)
         __ids = []
         for __id in query_params:
-            __values = self.split_lookup_value(__id)
+            __values = self.split_lookup_complex_value(__id)
             __ids += __values
         return __ids
 

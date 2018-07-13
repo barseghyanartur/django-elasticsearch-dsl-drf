@@ -53,7 +53,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         Example:
 
-            /api/articles/?ordering=-location|45.3214|-34.3421|km|planes
+            /api/articles/?ordering=-location;45.3214;-34.3421;km;planes
 
         :param value:
         :param field:
@@ -62,7 +62,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Params to be used in `geo_distance` query.
         :rtype: dict
         """
-        __values = cls.split_lookup_value(value, maxsplit=3)
+        __values = cls.split_lookup_complex_value(value, maxsplit=3)
         __len_values = len(__values)
 
         if __len_values < 2:
@@ -102,7 +102,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
         __ordering_params = []
         # Remove invalid ordering query params
         for query_param in ordering_query_params:
-            __key, __value = FilterBackendMixin.split_lookup_value(
+            __key, __value = FilterBackendMixin.split_lookup_complex_value(
                 query_param.lstrip('-'),
                 maxsplit=1,
             )

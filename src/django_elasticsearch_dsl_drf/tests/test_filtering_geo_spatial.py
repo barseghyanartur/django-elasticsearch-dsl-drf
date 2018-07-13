@@ -51,7 +51,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         Example:
 
             http://localhost:8000
-            /api/publisher/?location__geo_distance=1km;48.8549;2.3000
+            /api/publisher/?location__geo_distance=1km__48.8549__2.3000
         """
         self.authenticate()
 
@@ -99,7 +99,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         Example:
 
             http://localhost:8000/api/articles/
-            ?location__geo_polygon=3.51,71.46;-47.63,41.64;62.05,29.22
+            ?location__geo_polygon=3.51,71.46__-47.63,41.64__62.05,29.22
 
         :param points:
         :param count:
@@ -225,7 +225,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         Example:
 
             http://localhost:8000/api/articles/
-            ?location__geo_bounding_box=44.87,40.07;43.87,41.11
+            ?location__geo_bounding_box=44.87,40.07__43.87,41.11
 
         :param points:
         :param count:

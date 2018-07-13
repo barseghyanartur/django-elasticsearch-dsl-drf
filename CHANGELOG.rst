@@ -28,12 +28,17 @@ yyyy-mm-dd (not released yet)
     Do not keep things as they were in your own fork, since new search backends
     will use the `|` and `:` symbols differently.
 
+**Shortcuts**
+
+.. code-block:: text
+
+
+
+
 - `SEPARATOR_LOOKUP_VALUE` has been removed. Use
   `SEPARATOR_LOOKUP_COMPLEX_VALUE` and
   `SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE` instead.
-  # TODO: Name a couple of usage examples.
 - `SEPARATOR_LOOKUP_NAME` has been added.
-  # TODO: Name a couple of usage examples.
 - The method `split_lookup_complex_value` has been removed. Use
   `split_lookup_complex_value` instead.
 

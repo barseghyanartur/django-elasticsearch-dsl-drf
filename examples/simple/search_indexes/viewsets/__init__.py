@@ -5,6 +5,7 @@ from .book import (
     BookOrderingByScoreDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
     BookMoreLikeThisDocumentViewSet,
+    BookDefaultFilterLookupDocumentViewSet,
 )
 from .city import CityDocumentViewSet
 from .publisher import PublisherDocumentViewSet
@@ -15,6 +16,7 @@ __all__ = (
     'BookDocumentViewSet',
     'BookFunctionalSuggesterDocumentViewSet',
     'BookMoreLikeThisDocumentViewSet',
+    'BookDefaultFilterLookupDocumentViewSet',
     'BookOrderingByScoreDocumentViewSet',
     'CityDocumentViewSet',
     'PublisherDocumentViewSet',

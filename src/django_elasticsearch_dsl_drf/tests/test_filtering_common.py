@@ -137,7 +137,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/users/?age__range=16;67
+            http://localhost:8000/api/users/?age__range=16__67
         """
         lower_id = self.published[0].id
         upper_id = self.published[-1].id
@@ -157,7 +157,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/users/?age__range=16;67;2.0
+            http://localhost:8000/api/users/?age__range=16__67__2.0
         """
         lower_id = self.published[0].id
         upper_id = self.published[-1].id
@@ -191,7 +191,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/articles/?id__in=1;2;3
+            http://localhost:8000/api/articles/?id__in=1__2__3
         """
         return self._field_filter_value(
             'id__in',
@@ -235,7 +235,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/articles/?id__terms=1;2;3
+            http://localhost:8000/api/articles/?id__terms=1__2__3
         """
         return self._field_filter_value(
             'id__terms',
@@ -424,7 +424,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/users/?id__gt=10|2.0
+            http://localhost:8000/api/users/?id__gt=10__2.0
         :return:
         """
         # TODO: check boost value
@@ -460,7 +460,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/users/?id__lt=10|2.0
+            http://localhost:8000/api/users/?id__lt=10__2.0
         :return:
         """
         # TODO: check boost value
@@ -486,7 +486,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/articles/?ids=68;64;58
+            http://localhost:8000/api/articles/?ids=68__64__58
             http://localhost:8000/api/articles/?ids=68&ids=64&ids=58
         """
         __ids = [str(__obj.id) for __obj in self.published]

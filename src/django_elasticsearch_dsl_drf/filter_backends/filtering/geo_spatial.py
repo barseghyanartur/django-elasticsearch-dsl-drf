@@ -114,7 +114,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         Example:
 
-            /api/articles/?location__geo_distance=2km;43.53;-12.23
+            /api/articles/?location__geo_distance=2km__43.53__-12.23
 
         :param value:
         :param field:
@@ -150,12 +150,15 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         Example:
 
-            /api/articles/?location__geo_polygon=40,-70;30,-80;20,-90
+            /api/articles/?location__geo_polygon=40,-70__30,-80__20,-90
 
         Example:
 
-            /api/articles/?location__geo_polygon=40,-70;30,-80;20,-90
-                ;_name,myname;validation_method,IGNORE_MALFORMED
+            /api/articles/?location__geo_polygon=40,-70
+                __30,-80
+                __20,-90
+                ___name,myname
+                __validation_method,IGNORE_MALFORMED
 
         Elasticsearch:
 
@@ -233,12 +236,15 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         Example:
 
-            /api/articles/?location__geo_bounding_box=40.73,-74.1;40.01,-71.12
+            /api/articles/?location__geo_bounding_box=40.73,-74.1__40.01,-71.12
 
         Example:
 
-            /api/articles/?location__geo_polygon=40.73,-74.1;40.01,-71.12
-                ;_name,myname;validation_method,IGNORE_MALFORMED;type,indexed
+            /api/articles/?location__geo_polygon=40.73,-74.1
+                __40.01,-71.12
+                ___name,myname
+                __validation_method,IGNORE_MALFORMED
+                __type,indexed
 
         Elasticsearch:
 

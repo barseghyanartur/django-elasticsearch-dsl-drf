@@ -17,7 +17,7 @@ Elastic query:
 
 REST framework request equivalent:
 
-- http://localhost:8000/api/articles/?ids=68|64|58
+- http://localhost:8000/api/articles/?ids=68__64__58
 - http://localhost:8000/api/articles/?ids=68&ids=64&ids=58
 
 Official Elastic docs:

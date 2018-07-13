@@ -33,11 +33,11 @@ Search a single term on specific field
 --------------------------------------
 
 In order to search in specific field (``name``) for term "reilly", add
-the field name separated with ``|`` to the search term.
+the field name separated with ``:`` to the search term.
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/publisher/?search=name|reilly
+    http://127.0.0.1:8080/search/publisher/?search=name:reilly
 
 Search for multiple terms
 -------------------------
@@ -54,11 +54,11 @@ Search for multiple terms in specific fields
 
 In order to search for multiple terms "reilly", "bloomsbury" in specific
 fields add multiple ``search`` query params and field names separated with
-``|`` to each of the search terms.
+``:`` to each of the search terms.
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/publisher/?search=name|reilly&search=city|london
+    http://127.0.0.1:8080/search/publisher/?search=name:reilly&search=city:london
 
 Filtering
 =========
@@ -98,7 +98,7 @@ specified.
 .. code-block:: text
 
     http://localhost:8000/api/articles/?id=1&id=2&id=3
-    http://localhost:8000/api/articles/?id__terms=1;2;3
+    http://localhost:8000/api/articles/?id__terms=1__2__3
 
 range
 ^^^^^
@@ -109,7 +109,7 @@ strings) in the range specified.
 
 .. code-block:: text
 
-    http://localhost:8000/api/users/?age__range=16;67
+    http://localhost:8000/api/users/?age__range=16__67
 
 .. code-block:: text
 
@@ -117,7 +117,7 @@ strings) in the range specified.
 
 .. code-block:: text
 
-    http://localhost:8000/api/users/?age__range=16;67;2.0
+    http://localhost:8000/api/users/?age__range=16__67__2.0
 
 exists
 ^^^^^^
@@ -152,7 +152,7 @@ Find documents with the specified type and IDs.
 
 .. code-block:: text
 
-    http://localhost:8000/api/articles/?ids=68;64;58
+    http://localhost:8000/api/articles/?ids=68__64__58
     http://localhost:8000/api/articles/?ids=68&ids=64&ids=58
 
 Functional
@@ -182,7 +182,7 @@ In a given list.
 
 .. code-block:: text
 
-    http://localhost:8000/api/articles/?id__in=1;2;3
+    http://localhost:8000/api/articles/?id__in=1__2__3
 
 gt
 ^^
@@ -254,6 +254,7 @@ lookup parameters.
 .. code-block:: text
 
     http://localhost:8000/api/articles/?tags__exclude=children
+    http://localhost:8000/api/articles/?tags__exclude=children__python
 
 Usage examples
 ==============

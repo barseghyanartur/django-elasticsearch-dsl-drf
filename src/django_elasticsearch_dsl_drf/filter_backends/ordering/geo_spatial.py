@@ -53,7 +53,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         Example:
 
-            /api/articles/?ordering=-location;45.3214;-34.3421;km;planes
+            /api/articles/?ordering=-location__45.3214__-34.3421__km__planes
 
         :param value:
         :param field:

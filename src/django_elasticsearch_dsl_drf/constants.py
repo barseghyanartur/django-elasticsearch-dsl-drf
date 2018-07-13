@@ -127,7 +127,7 @@ LOOKUP_FILTER_TERM = 'term'
 # The `terms` filter. Should accept multiple values, separated by
 # `SEPARATOR_LOOKUP_COMPLEX_VALUE`.
 # Example: {"filter": {"terms": {"tags": ["python", "children"]}}}
-# Example: http://localhost:8000/api/articles/?tags__terms=children;python
+# Example: http://localhost:8000/api/articles/?tags__terms=children__python
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/
 # query-dsl-terms-query.html
 LOOKUP_FILTER_TERMS = 'terms'
@@ -137,9 +137,9 @@ LOOKUP_FILTER_TERMS = 'terms'
 # Example: {"query": {"range": {"age": {"gte": "16",
 #                                       "lte": "67",
 #                                       "boost": 2.0}}}}
-# Example: http://localhost:8000/api/users/?age__range=16;67;2.0
+# Example: http://localhost:8000/api/users/?age__range=16__67__2.0
 # Example: {"query": {"range": {"age": {"gte": "16", "lte": "67"}}}}
-# Example: http://localhost:8000/api/users/?age__range=16;67
+# Example: http://localhost:8000/api/users/?age__range=16__67
 # Example: {"query": {"range": {"age": {"gte": "16"}}}}
 # Example: http://localhost:8000/api/users/?age__range=16
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/
@@ -206,7 +206,7 @@ LOOKUP_FILTER_TYPE = 'type'
 # Draws a circle around the specified location and finds all documents that
 # have a geo-point within that circle.
 #
-# The `geo_distance` filter. Accepts three values (distance;lat;lon)
+# The `geo_distance` filter. Accepts three values (distance__lat__lon)
 # separated by `SEPARATOR_LOOKUP_COMPLEX_VALUE`.
 # https://www.elastic.co/guide/en/elasticsearch/guide/current/geo-distance.html
 #
@@ -232,7 +232,7 @@ LOOKUP_FILTER_TYPE = 'type'
 #     }
 #
 # Example: http://localhost:8000
-# /api/articles/?location__geo_distance=2km;43.53455243;-12.2344243
+# /api/articles/?location__geo_distance=2km__43.53455243__-12.2344243
 LOOKUP_FILTER_GEO_DISTANCE = 'geo_distance'
 
 # Geo Polygon Query
@@ -269,7 +269,7 @@ LOOKUP_FILTER_GEO_DISTANCE = 'geo_distance'
 #   longitude, or STRICT (default is STRICT).
 #
 # Example: http://localhost:8000
-# /api/articles/?location__geo_polygon=40,-70;30,-80;20,-90
+# /api/articles/?location__geo_polygon=40,-70__30,-80__20,-90
 LOOKUP_FILTER_GEO_POLYGON = 'geo_polygon'
 
 # Geo Bounding Box Query
@@ -313,7 +313,7 @@ LOOKUP_FILTER_GEO_POLYGON = 'geo_polygon'
 #   Default is memory.
 #
 # Example: http://localhost:8000
-# /api/articles/?location__geo_bounding_box=40.73,-74.1;40.01,-71.12
+# /api/articles/?location__geo_bounding_box=40.73,-74.1__40.01,-71.12
 LOOKUP_FILTER_GEO_BOUNDING_BOX = 'geo_bounding_box'
 
 # ****************************************************************************
@@ -324,37 +324,37 @@ LOOKUP_FILTER_GEO_BOUNDING_BOX = 'geo_bounding_box'
 # https://docs.djangoproject.com/en/1.11/ref/models/querysets/#id4
 
 # A single value
-# http://localhost:8000/api/articles/?state__endswith=lishe
+# http://localhost:8000/api/articles/?state__contains=lish
 LOOKUP_QUERY_CONTAINS = 'contains'
 
 # Multiple values.
-# Example: http://localhost:8000/api/articles/?tags__in=children|python
+# Example: http://localhost:8000/api/articles/?tags__in=children__python
 LOOKUP_QUERY_IN = 'in'
 
 # A single value
 # Example: http://localhost:8000/api/articles/?id__gt=1
-# Example: http://localhost:8000/api/articles/?id__gt=1;2.0
+# Example: http://localhost:8000/api/articles/?id__gt=1__2.0
 # https://www.elastic.co/guide/en/elasticsearch/reference/1.6/
 # query-dsl-range-filter.html
 LOOKUP_QUERY_GT = 'gt'
 
 # A single value
 # Example: http://localhost:8000/api/articles/?id__gte=1
-# Example: http://localhost:8000/api/articles/?id__gte=1;2.0
+# Example: http://localhost:8000/api/articles/?id__gte=1__2.0
 # https://www.elastic.co/guide/en/elasticsearch/reference/1.6/
 # query-dsl-range-filter.html
 LOOKUP_QUERY_GTE = 'gte'
 
 # A single value
 # Example: http://localhost:8000/api/articles/?id__lt=1
-# Example: http://localhost:8000/api/articles/?id__lt=1;2.0
+# Example: http://localhost:8000/api/articles/?id__lt=1__2.0
 # https://www.elastic.co/guide/en/elasticsearch/reference/1.6/
 # query-dsl-range-filter.html
 LOOKUP_QUERY_LT = 'lt'
 
 # A single value
 # Example: http://localhost:8000/api/articles/?id__lte=1
-# Example: http://localhost:8000/api/articles/?id__lte=1;2.0
+# Example: http://localhost:8000/api/articles/?id__lte=1__2.0
 # https://www.elastic.co/guide/en/elasticsearch/reference/1.6/
 # query-dsl-range-filter.html
 LOOKUP_QUERY_LTE = 'lte'
@@ -374,6 +374,7 @@ LOOKUP_QUERY_ISNULL = 'isnull'
 
 # Multiple values.
 # Example: http://localhost:8000/api/articles/?tags__exclude=children
+# Example: http://localhost:8000/api/articles/?tags__exclude=children__python
 LOOKUP_QUERY_EXCLUDE = 'exclude'
 
 # ****************************************************************************

@@ -102,7 +102,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
         __ordering_params = []
         # Remove invalid ordering query params
         for query_param in ordering_query_params:
-            __key, __value = FilterBackendMixin.split_lookup_value(
+            __key, __value = FilterBackendMixin.split_lookup_complex_value(
                 query_param.lstrip('-'),
                 maxsplit=1,
             )

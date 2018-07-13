@@ -34,6 +34,8 @@ yyyy-mm-dd (not released yet)
   # TODO: Name a couple of usage examples.
 - `SEPARATOR_LOOKUP_NAME` has been added.
   # TODO: Name a couple of usage examples.
+- The method `split_lookup_complex_value` has been removed. Use
+  `split_lookup_complex_value` instead.
 
 0.10
 ----

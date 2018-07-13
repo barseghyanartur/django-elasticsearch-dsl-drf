@@ -100,7 +100,7 @@ SEPARATOR_LOOKUP_FILTER = '__'
 SEPARATOR_LOOKUP_NAME = ':'  # Used to be SEPARATOR_LOOKUP_VALUE
 
 # Lookup filter value complex separator. To be used with geo-spatial features.
-SEPARATOR_LOOKUP_COMPLEX_VALUE = ';'
+SEPARATOR_LOOKUP_COMPLEX_VALUE = '|'
 
 SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE = ','
 

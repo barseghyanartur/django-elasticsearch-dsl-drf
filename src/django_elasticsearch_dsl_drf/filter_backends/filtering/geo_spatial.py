@@ -21,7 +21,7 @@ The queries in this group are:
 + geo_polygon query: Find documents with geo-points within the specified
   polygon.
 """
-
+import logging
 from elasticsearch_dsl.query import Q
 from rest_framework.filters import BaseFilterBackend
 
@@ -42,6 +42,9 @@ __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = ('GeoSpatialFilteringFilterBackend',)
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
@@ -184,7 +187,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Params to be used in `geo_distance` query.
         :rtype: dict
         """
-        __values = cls.split_lookup_comple_value(value)
+        __values = cls.split_lookup_complex_value(value)
         __len_values = len(__values)
 
         if not __len_values:
@@ -270,7 +273,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Params to be used in `geo_bounding_box` query.
         :rtype: dict
         """
-        __values = cls.split_comple_lookup_value(value)
+        __values = cls.split_lookup_complex_value(value)
         __len_values = len(__values)
 
         if not __len_values:

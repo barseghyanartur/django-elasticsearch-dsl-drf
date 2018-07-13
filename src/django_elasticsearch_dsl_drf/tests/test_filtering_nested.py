@@ -15,6 +15,7 @@ from rest_framework import status
 
 from search_indexes.viewsets import AddressDocumentViewSet
 
+from ..constants import SEPARATOR_LOOKUP_COMPLEX_VALUE
 from ..filter_backends import NestedFilteringFilterBackend
 from .base import (
     BaseRestFrameworkTestCase,
@@ -179,7 +180,11 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         # Pick the first and the last elements from the list
         lower_id = self.all_cities_ids[1]
         upper_id = self.all_cities_ids[3]
-        value = '{}|{}'.format(lower_id, upper_id)
+        value = '{lower_id}{sep}{upper_id}'.format(
+            lower_id=lower_id,
+            upper_id=upper_id,
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
+        )
         # Calculate expected number of items
         count = (
             self.add_addresses_dict[lower_id]['count'] +
@@ -201,7 +206,12 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         """
         lower_id = self.all_cities_ids[2]
         upper_id = self.all_cities_ids[4]
-        value = '{}|{}|{}'.format(lower_id, upper_id, '2.0')
+        value = '{lower_id}{sep}{upper_id}{sep}{boost}'.format(
+            lower_id=lower_id,
+            upper_id=upper_id,
+            boost='2.0',
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
+        )
         # Calculate expected number of items
         count = (
                 self.add_addresses_dict[lower_id]['count'] +
@@ -240,7 +250,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         ]
         return self._field_filter_value(
             'continent_country_city_id__in',
-            '|'.join([str(_id) for _id in ids]),
+            SEPARATOR_LOOKUP_COMPLEX_VALUE.join([str(_id) for _id in ids]),
             self.addresses_in_amsterdam_count + self.addresses_in_yerevan_count
         )
 
@@ -282,7 +292,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         """
         return self._field_filter_value(
             'continent_country_city__terms',
-            '|'.join(['Yerevan', 'Dublin']),
+            SEPARATOR_LOOKUP_COMPLEX_VALUE.join(['Yerevan', 'Dublin']),
             self.addresses_in_dublin_count + self.addresses_in_yerevan_count
         )
 

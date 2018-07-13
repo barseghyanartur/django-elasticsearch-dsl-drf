@@ -17,6 +17,7 @@ from rest_framework import status
 from books import constants
 from search_indexes.viewsets import BookDocumentViewSet
 
+from ..constants import SEPARATOR_LOOKUP_COMPLEX_VALUE
 from ..filter_backends import PostFilterFilteringFilterBackend
 from .base import (
     BaseRestFrameworkTestCase,
@@ -138,11 +139,15 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/users/?age__range=16|67
+            http://localhost:8000/api/users/?age__range=16;67
         """
         lower_id = self.published[0].id
         upper_id = self.published[-1].id
-        value = '{}|{}'.format(lower_id, upper_id)
+        value = '{lower_id}{sep}{upper_id}'.format(
+            lower_id=lower_id,
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE,
+            upper_id=upper_id,
+        )
         return self._field_filter_value(
             'id__range',
             value,
@@ -154,11 +159,16 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/users/?age__range=16|67|2.0
+            http://localhost:8000/api/users/?age__range=16;67;2.0
         """
         lower_id = self.published[0].id
         upper_id = self.published[-1].id
-        value = '{}|{}|{}'.format(lower_id, upper_id, '2.0')
+        value = '{lower_id}{sep}{upper_id}{sep}{boost}'.format(
+            lower_id=lower_id,
+            upper_id=upper_id,
+            boost='2.0',
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE,
+        )
         return self._field_filter_value(
             'id__range',
             value,
@@ -183,11 +193,13 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/articles/?id__in=1|2|3
+            http://localhost:8000/api/articles/?id__in=1;2;3
         """
         return self._field_filter_value(
             'id__in',
-            '|'.join([str(__b.id) for __b in self.prefixed]),
+            SEPARATOR_LOOKUP_COMPLEX_VALUE.join(
+                [str(__b.id) for __b in self.prefixed]
+            ),
             self.prefix_count
         )
 
@@ -225,11 +237,13 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/articles/?id__terms=1|2|3
+            http://localhost:8000/api/articles/?id__terms=1;2;3
         """
         return self._field_filter_value(
             'id__terms',
-            '|'.join([str(__b.id) for __b in self.prefixed]),
+            SEPARATOR_LOOKUP_COMPLEX_VALUE.join(
+                [str(__b.id) for __b in self.prefixed]
+            ),
             self.prefix_count
         )
 
@@ -361,7 +375,13 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
         data = {}
 
         if boost is not None:
-            url += '?{}__{}={}|{}'.format(field_name, lookup, value, boost)
+            url += '?{field_name}__{lookup}={value}{sep}{boost}'.format(
+                field_name=field_name,
+                lookup=lookup,
+                value=value,
+                boost=boost,
+                sep=SEPARATOR_LOOKUP_COMPLEX_VALUE,
+            )
         else:
             url += '?{}__{}={}'.format(field_name, lookup, value)
 
@@ -402,7 +422,7 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/users/?id__gt=10|2.0
+            http://localhost:8000/api/users/?id__gt=10;2.0
         :return:
         """
         # TODO: check boost value
@@ -438,7 +458,7 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/users/?id__lt=10|2.0
+            http://localhost:8000/api/users/?id__lt=10;2.0
         :return:
         """
         # TODO: check boost value
@@ -464,13 +484,13 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
 
         Example:
 
-            http://localhost:8000/api/articles/?ids=68|64|58
+            http://localhost:8000/api/articles/?ids=68;64;58
             http://localhost:8000/api/articles/?ids=68&ids=64&ids=58
         """
         __ids = [str(__obj.id) for __obj in self.published]
         return self._field_filter_value(
             'ids',
-            '|'.join(__ids),
+            SEPARATOR_LOOKUP_COMPLEX_VALUE.join(__ids),
             self.published_count
         )
 

@@ -358,7 +358,7 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
 #         :return: Params to be used in `range` query.
 #         :rtype: dict
 #         """
-#         __values = cls.split_lookup_value(value, maxsplit=3)
+#         __values = cls.split_complex_lookup_value(value, maxsplit=3)
 #         __len_values = len(__values)
 #
 #         if __len_values == 0:
@@ -387,7 +387,7 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
 #         :return: Params to be used in `range` query.
 #         :rtype: dict
 #         """
-#         __values = cls.split_lookup_value(value, maxsplit=2)
+#         __values = cls.split_complex_lookup_value(value, maxsplit=2)
 #         __len_values = len(__values)
 #
 #         if __len_values == 0:
@@ -441,7 +441,7 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
 #
 #         # Otherwise, we consider it to be a string and split it further.
 #         else:
-#             __values = cls.split_lookup_value(value)
+#             __values = cls.split_complex_lookup_value(value)
 #
 #         path = options.pop('path')
 #         return queryset.query(
@@ -592,7 +592,7 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
 #         :return: Modified queryset.
 #         :rtype: elasticsearch_dsl.search.Search
 #         """
-#         __values = cls.split_lookup_value(value)
+#         __values = cls.split_complex_lookup_value(value)
 #         __queries = []
 #         path = options.pop('path')
 #         for __value in __values:
@@ -743,7 +743,7 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
 #         :return: Modified queryset.
 #         :rtype: elasticsearch_dsl.search.Search
 #         """
-#         __values = cls.split_lookup_value(value)
+#         __values = cls.split_complex_lookup_value(value)
 #         __queries = []
 #         path = options.pop('path')
 #

@@ -28,11 +28,25 @@ yyyy-mm-dd (not released yet)
     Do not keep things as they were in your own fork, since new search backends
     will use the `|` and `:` symbols differently.
 
-**Shortcuts**
+**Old**
 
 .. code-block:: text
 
+    http://127.0.0.1:8080/search/publisher/?search=name|reilly&search=city|london
+    http://127.0.0.1:8000/search/publishers/?location__geo_distance=100000km|12.04|-63.93
+    http://localhost:8000/api/articles/?id__terms=1|2|3
+    http://localhost:8000/api/users/?age__range=16|67|2.0
+    http://localhost:8000/api/articles/?id__in=1|2|3
 
+**New**
+
+.. code-block:: text
+
+    http://127.0.0.1:8080/search/publisher/?search=name:reilly&search=city:london
+    http://127.0.0.1:8000/search/publishers/?location__geo_distance=100000km__12.04__-63.93
+    http://localhost:8000/api/articles/?id__terms=1__2__3
+    http://localhost:8000/api/users/?age__range=16__67__2.0
+    http://localhost:8000/api/articles/?id__in=1__2__3
 
 
 - `SEPARATOR_LOOKUP_VALUE` has been removed. Use

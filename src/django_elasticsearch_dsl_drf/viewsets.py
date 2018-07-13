@@ -112,7 +112,7 @@ class MoreLikeThisMixin(object):
                     },
                     **kwargs
                 )
-            )
+            ).sort('_score')
             return Response(queryset.execute().to_dict())
             # page = self.paginate_queryset(queryset)
             # return Response(page)

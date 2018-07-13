@@ -6,6 +6,7 @@ from .viewsets import (
     BookDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
+    BookMoreLikeThisDocumentViewSet,
     CityDocumentViewSet,
     PublisherDocumentViewSet,
 )
@@ -42,6 +43,12 @@ books_functional_suggester = router.register(
     r'books-functional-suggester',
     BookFunctionalSuggesterDocumentViewSet,
     base_name='bookdocument_functional_suggester'
+)
+
+books_more_like_this = router.register(
+    r'books-more-like-this',
+    BookMoreLikeThisDocumentViewSet,
+    base_name='bookdocument_more_like_this'
 )
 
 cities = router.register(

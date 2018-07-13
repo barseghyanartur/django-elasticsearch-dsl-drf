@@ -46,6 +46,7 @@ class BookDocument(DocType):
             'edge_ngram_completion': StringField(
                 analyzer=edge_ngram_completion
             ),
+            'mlt': StringField(analyzer='english'),
         }
     )
 
@@ -53,13 +54,15 @@ class BookDocument(DocType):
         analyzer=html_strip,
         fields={
             'raw': KeywordField(),
+            'mlt': StringField(analyzer='english'),
         }
     )
 
     summary = StringField(
         analyzer=html_strip,
         fields={
-            'raw': KeywordField()
+            'raw': KeywordField(),
+            'mlt': StringField(analyzer='english'),
         }
     )
 

@@ -44,6 +44,7 @@ __all__ = (
     'BookDocumentViewSet',
     'BookOrderingByScoreDocumentViewSet',
     'BookFunctionalSuggesterDocumentViewSet',
+    'BookMoreLikeThisDocumentViewSet',
 )
 
 
@@ -264,17 +265,22 @@ class BookDocumentViewSet(BaseDocumentViewSet,
         'summary_suggest': 'summary',
     }
 
-    # More-like-this options
-    more_like_this_options = {
-        'fields': (
-            # 'title',
-            'summary.raw',
-            # 'authors',
-            'tags.raw',
-        ),
-        'min_term_freq': 1,
-        'max_query_terms': 12,
-    }
+    # # More-like-this options
+    # more_like_this_options = {
+    #     'fields': (
+    #         'title.raw',
+    #         'summary.raw',
+    #         'description.raw',
+    #         'title',
+    #         'summary',
+    #         'description',
+    #         # 'authors',
+    #         # 'tags.raw',
+    #     ),
+    #     'min_term_freq': 2,
+    #     'max_query_terms': 5,
+    #     "unlike": ['chapter',],
+    # }
 
 
 class BookOrderingByScoreDocumentViewSet(BookDocumentViewSet):
@@ -286,6 +292,37 @@ class BookOrderingByScoreDocumentViewSet(BookDocumentViewSet):
         'description': None,
     }
     ordering = ('_score', 'id', 'title', 'price',)
+
+
+class BookMoreLikeThisDocumentViewSet(BaseDocumentViewSet,
+                                      MoreLikeThisMixin):
+    """Same as BookDocumentViewSet, with more-like-this and no facets."""
+
+    filter_backends = [
+        FilteringFilterBackend,
+        PostFilterFilteringFilterBackend,
+        IdsFilterBackend,
+        OrderingFilterBackend,
+        # DefaultOrderingFilterBackend,
+        SearchFilterBackend,
+    ]
+
+    # More-like-this options
+    more_like_this_options = {
+        'fields': (
+            'title.mlt',
+            'summary.mlt',
+            # 'description.mlt',
+            # 'title.raw',
+            # 'summary.raw',
+            # 'description.raw',
+            # 'authors',
+            # 'tags.raw',
+        ),
+        # 'min_term_freq': 1,
+        # 'max_query_terms': 25,
+        # "unlike": ['chapter', 'CHAPTER'],
+    }
 
 
 class BookFunctionalSuggesterDocumentViewSet(BaseDocumentViewSet,

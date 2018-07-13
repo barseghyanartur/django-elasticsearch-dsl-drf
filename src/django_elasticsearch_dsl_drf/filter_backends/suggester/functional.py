@@ -325,7 +325,8 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
                     # If we have default suggester given use it as a default
                     # and do not require further suffix specification.
-                    if suggester_param is None:
+                    if suggester_param is None \
+                            and default_suggester is not None:
                         suggester_param = str(default_suggester)
 
                     values = [

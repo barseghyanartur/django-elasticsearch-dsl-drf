@@ -175,7 +175,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
 
         Example:
 
-            http://localhost:8000/api/users/?age__range=16|67
+            http://localhost:8000/api/users/?age__range=16__67
         """
         # Pick the first and the last elements from the list
         lower_id = self.all_cities_ids[1]
@@ -202,7 +202,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
 
         Example:
 
-            http://localhost:8000/api/users/?age__range=16|67|2.0
+            http://localhost:8000/api/users/?age__range=16__67__2.0
         """
         lower_id = self.all_cities_ids[2]
         upper_id = self.all_cities_ids[4]
@@ -242,7 +242,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
 
         Example:
 
-            http://localhost:8000/api/articles/?id__in=1|2|3
+            http://localhost:8000/api/articles/?id__in=1__2__3
         """
         ids = [
             self.addresses_in_yerevan[0].city.id,
@@ -288,7 +288,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
 
         Example:
 
-            http://localhost:8000/api/articles/?id__terms=1|2|3
+            http://localhost:8000/api/articles/?id__terms=1__2__3
         """
         return self._field_filter_value(
             'continent_country_city__terms',

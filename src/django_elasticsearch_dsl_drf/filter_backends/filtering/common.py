@@ -81,6 +81,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>>                 LOOKUP_QUERY_EXCLUDE,
         >>>                 LOOKUP_QUERY_ISNULL,
         >>>             ],
+        >>>             'default_lookup': LOOKUP_FILTER_WILDCARD,
         >>>         }
         >>> }
     """
@@ -115,6 +116,17 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def get_range_params(cls, value):
         """Get params for `range` query.
 
+        Syntax:
+
+            /endpoint/?field_name__range={lower}__{upper}__{boost}
+            /endpoint/?field_name__range={lower}__{upper}
+
+        Example:
+
+            http://localhost:8000/api/users/?age__range=16__67__2.0
+            http://localhost:8000/api/users/?age__range=16__67
+            http://localhost:8000/api/users/?age__range=16
+
         :param value:
         :type: str
         :return: Params to be used in `range` query.
@@ -142,6 +154,16 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def get_gte_lte_params(cls, value, lookup):
         """Get params for `gte`, `gt`, `lte` and `lt` query.
 
+        Syntax:
+
+            /endpoint/?field_name__gt={lower}__{boost}
+            /endpoint/?field_name__gt={lower}
+
+        Example:
+
+            http://localhost:8000/api/articles/?id__gt=1
+            http://localhost:8000/api/articles/?id__gt=1__2.0
+
         :param value:
         :param lookup:
         :type value: str
@@ -168,6 +190,14 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def apply_filter_term(cls, queryset, options, value):
         """Apply `term` filter.
 
+        Syntax:
+
+            /endpoint/?field_name={value}
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags=children
+
         :param queryset: Original queryset.
         :param options: Filter options.
         :param value: value to filter on.
@@ -187,6 +217,18 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     @classmethod
     def apply_filter_terms(cls, queryset, options, value):
         """Apply `terms` filter.
+
+        Syntax:
+
+            /endpoint/?field_name__terms={value1}__{value2}
+            /endpoint/?field_name__terms={value1}
+
+        Note, that number of values is not limited.
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__terms=children__python
+            http://localhost:8000/api/articles/?tags__terms=children
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -216,6 +258,17 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def apply_filter_range(cls, queryset, options, value):
         """Apply `range` filter.
 
+         Syntax:
+
+            /endpoint/?field_name__range={lower}__{upper}__{boost}
+            /endpoint/?field_name__range={lower}__{upper}
+
+        Example:
+
+            http://localhost:8000/api/users/?age__range=16__67__2.0
+            http://localhost:8000/api/users/?age__range=16__67
+            http://localhost:8000/api/users/?age__range=16
+
         :param queryset: Original queryset.
         :param options: Filter options.
         :param value: value to filter on.
@@ -235,6 +288,16 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     @classmethod
     def apply_query_exists(cls, queryset, options, value):
         """Apply `exists` filter.
+
+        Syntax:
+
+            /endpoint/?field_name__exists=true
+            /endpoint/?field_name__exists=false
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__exists=true
+            http://localhost:8000/api/articles/?tags__exists=false
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -264,6 +327,14 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def apply_filter_prefix(cls, queryset, options, value):
         """Apply `prefix` filter.
 
+        Syntax:
+
+            /endpoint/?field_name__prefix={value}
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__prefix=bio
+
         :param queryset: Original queryset.
         :param options: Filter options.
         :param value: value to filter on.
@@ -284,6 +355,16 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def apply_query_wildcard(cls, queryset, options, value):
         """Apply `wildcard` filter.
 
+        Syntax:
+
+            /endpoint/?field_name__wildcard={value}*
+            /endpoint/?field_name__wildcard=*{value}
+            /endpoint/?field_name__wildcard=*{value}*
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__wildcard=child*
+
         :param queryset: Original queryset.
         :param options: Filter options.
         :param value: value to filter on.
@@ -302,6 +383,14 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     @classmethod
     def apply_query_contains(cls, queryset, options, value):
         """Apply `contains` filter.
+
+        Syntax:
+
+            /endpoint/?field_name__contains={value}
+
+        Example:
+
+            http://localhost:8000/api/articles/?state__contains=lis
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -322,6 +411,14 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def apply_query_endswith(cls, queryset, options, value):
         """Apply `endswith` filter.
 
+        Syntax:
+
+            /endpoint/?field_name__endswith={value}
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__endswith=dren
+
         :param queryset: Original queryset.
         :param options: Filter options.
         :param value: value to filter on.
@@ -340,6 +437,17 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     @classmethod
     def apply_query_in(cls, queryset, options, value):
         """Apply `in` functional query.
+
+        Syntax:
+
+            /endpoint/?field_name__in={value1}__{value2}
+            /endpoint/?field_name__in={value1}
+
+        Note, that number of values is not limited.
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__in=children__python
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -370,6 +478,16 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def apply_query_gt(cls, queryset, options, value):
         """Apply `gt` functional query.
 
+        Syntax:
+
+            /endpoint/?field_name__gt={value}__{boost}
+            /endpoint/?field_name__gt={value}
+
+        Example:
+
+            http://localhost:8000/api/articles/?id__gt=1__2.0
+            http://localhost:8000/api/articles/?id__gt=1
+
         :param queryset: Original queryset.
         :param options: Filter options.
         :param value: value to filter on.
@@ -389,6 +507,16 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     @classmethod
     def apply_query_gte(cls, queryset, options, value):
         """Apply `gte` functional query.
+
+        Syntax:
+
+            /endpoint/?field_name__gte={value}__{boost}
+            /endpoint/?field_name__gte={value}
+
+        Example:
+
+            http://localhost:8000/api/articles/?id__gte=1__2.0
+            http://localhost:8000/api/articles/?id__gte=1
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -410,6 +538,16 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def apply_query_lt(cls, queryset, options, value):
         """Apply `lt` functional query.
 
+        Syntax:
+
+            /endpoint/?field_name__lt={value}__{boost}
+            /endpoint/?field_name__lt={value}
+
+        Example:
+
+            http://localhost:8000/api/articles/?id__lt=1__2.0
+            http://localhost:8000/api/articles/?id__lt=1
+
         :param queryset: Original queryset.
         :param options: Filter options.
         :param value: value to filter on.
@@ -430,6 +568,16 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     def apply_query_lte(cls, queryset, options, value):
         """Apply `lte` functional query.
 
+        Syntax:
+
+            /endpoint/?field_name__lte={value}__{boost}
+            /endpoint/?field_name__lte={value}
+
+        Example:
+
+            http://localhost:8000/api/articles/?id__lte=1__2.0
+            http://localhost:8000/api/articles/?id__lte=1
+
         :param queryset: Original queryset.
         :param options: Filter options.
         :param value: value to filter on.
@@ -449,6 +597,16 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     @classmethod
     def apply_query_isnull(cls, queryset, options, value):
         """Apply `isnull` functional query.
+
+        Syntax:
+
+            /endpoint/?field_name__isnull=true
+            /endpoint/?field_name__isnull=false
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__isnull=true
+            http://localhost:8000/api/articles/?tags__isnull=false
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -477,6 +635,18 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
     @classmethod
     def apply_query_exclude(cls, queryset, options, value):
         """Apply `exclude` functional query.
+
+        Syntax:
+
+            /endpoint/?field_name__isnull={value1}__{value2}
+            /endpoint/?field_name__exclude={valu1}
+
+        Note, that number of values is not limited.
+
+        Example:
+
+            http://localhost:8000/api/articles/?tags__exclude=children__python
+            http://localhost:8000/api/articles/?tags__exclude=children
 
         :param queryset: Original queryset.
         :param options: Filter options.
@@ -532,7 +702,20 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
                 valid_lookups = filter_fields[field_name]['lookups']
 
+                # If we have default lookup given use it as a default and
+                # do not require further suffix specification.
+                default_lookup = None
+                if 'default_lookup' in filter_fields[field_name]:
+                    default_lookup = \
+                        filter_fields[field_name]['default_lookup']
+
                 if lookup_param is None or lookup_param in valid_lookups:
+
+                    # If we have default lookup given use it as a default
+                    # and do not require further suffix specification.
+                    if lookup_param is None and default_lookup is not None:
+                        lookup_param = str(default_lookup)
+
                     values = [
                         __value.strip()
                         for __value
@@ -664,11 +847,13 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                                         options,
                                                         value)
 
-                # `term` filter lookup
+                # `term` filter lookup. This is default if no `default_lookup`
+                # option has been given or explicit lookup provided.
                 else:
                     queryset = self.apply_filter_term(queryset,
                                                       options,
                                                       value)
+
         return queryset
 
     def get_coreschema_field(self, field):

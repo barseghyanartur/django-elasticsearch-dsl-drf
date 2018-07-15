@@ -341,7 +341,7 @@ with use of functional ``in`` query filter.
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/publisher/?city__in=yerevan|amsterdam
+    http://127.0.0.1:8080/search/publisher/?city__in=yerevan__amsterdam
 
 You can achieve the same effect by specifying multiple filters (``city``)
 "Yerevan" and "Amsterdam". Note, that in this case multiple filter terms are

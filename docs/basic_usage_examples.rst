@@ -277,11 +277,11 @@ Search in all fields (``name``, ``address``, ``city``, ``state_province`` and
 **Search a single term on specific field**
 
 In order to search in specific field (``name``) for term "reilly", add
-the field name separated with ``|`` to the search term.
+the field name separated with ``:`` to the search term.
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/publisher/?search=name|reilly
+    http://127.0.0.1:8080/search/publisher/?search=name:reilly
 
 **Search for multiple terms**
 
@@ -300,7 +300,7 @@ fields add multiple ``search`` query params and field names separated with
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/publisher/?search=name|reilly&search=city|london
+    http://127.0.0.1:8080/search/publisher/?search=name:reilly&search=city:london
 
 Filtering
 ^^^^^^^^^
@@ -373,7 +373,7 @@ Filter documents by radius of 100000km from the given location.
 
 .. code-block:: text
 
-    http://127.0.0.1:8000/search/publishers/?location__geo_distance=100000km|12.04|-63.93
+    http://127.0.0.1:8000/search/publishers/?location__geo_distance=100000km__12.04__-63.93
 
 Ordering
 ^^^^^^^^
@@ -386,7 +386,7 @@ Filter documents by field ``city`` (ascending).
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/publisher/?search=country|armenia&ordering=city
+    http://127.0.0.1:8080/search/publisher/?search=country:armenia&ordering=city
 
 **Order documents by field (descending)**
 

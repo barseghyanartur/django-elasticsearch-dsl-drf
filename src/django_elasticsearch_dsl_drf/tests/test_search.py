@@ -83,13 +83,13 @@ class TestSearch(BaseRestFrameworkTestCase):
         )
 
         cls.cities_count = 20
-        cls.cities = factories.CityFactory.create_batch(
-            cls.cities_count)
+        cls.cities = factories.CityFactory.create_batch(cls.cities_count)
         cls.switzerland = factories.CountryFactory.create(name='Wonderland')
         cls.switz_cities_count = 10
         cls.switz_cities = factories.CityFactory.create_batch(
             cls.switz_cities_count,
-            country=cls.switzerland)
+            country=cls.switzerland
+        )
         cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
         call_command('search_index', '--rebuild', '-f')

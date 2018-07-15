@@ -17,10 +17,10 @@ try:
 except ImportError:
     coreschema = None
 
-try:
-    from rest_framework.pagination import _get_count
-except ImportError:
-    _get_count = None
+# try:
+#     from rest_framework.pagination import _get_count
+# except ImportError:
+#     _get_count = None
 
 __title__ = 'django_elasticsearch_dsl_drf.compat'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -29,24 +29,24 @@ __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'coreapi',
     'coreschema',
-    'get_count',
+    # 'get_count',
     'get_elasticsearch_version',
     'KeywordField',
     'StringField',
 )
 
 
-def get_count(self, queryset):
-    """Get count.
-
-    :param self:
-    :param queryset:
-    :return:
-    """
-    if _get_count is None:
-        return self.get_count(queryset)
-    else:
-        return _get_count(queryset)
+# def get_count(self, queryset):
+#     """Get count.
+#
+#     :param self:
+#     :param queryset:
+#     :return:
+#     """
+#     if _get_count is None:
+#         return self.get_count(queryset)
+#     else:
+#         return _get_count(queryset)
 
 
 def get_elasticsearch_version(default=(2, 0, 0)):

@@ -517,11 +517,11 @@ Search in all fields (``title``, ``description`` and ``summary``) for word
 **Search a single term on specific field**
 
 In order to search in specific field (``title``) for term "education", add
-the field name separated with ``|`` to the search term.
+the field name separated with ``:`` to the search term.
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/books/?search=title|education
+    http://127.0.0.1:8080/search/books/?search=title:education
 
 **Search for multiple terms**
 
@@ -536,11 +536,11 @@ multiple ``search`` query params.
 
 In order to search for multiple terms "education", "technology" in specific
 fields add multiple ``search`` query params and field names separated with
-``|`` to each of the search terms.
+``:`` to each of the search terms.
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/books/?search=title|education&search=summary|technology
+    http://127.0.0.1:8080/search/books/?search=title:education&search=summary:technology
 
 **Search with boosting**
 
@@ -590,7 +590,7 @@ Filter documents by field (``states``) "published" and "in_progress".
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/books/?state__in=published|in_progress
+    http://127.0.0.1:8080/search/books/?state__in=published__in_progress
 
 **Filter document by a single field**
 
@@ -607,7 +607,7 @@ with use of functional ``in`` query filter.
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/books/?tags__in=education|economy
+    http://127.0.0.1:8080/search/books/?tags__in=education__economy
 
 You can achieve the same effect by specifying multiple fields (``tags``)
 "education" and "economy". Note, that in this case multiple filter terms are
@@ -644,7 +644,7 @@ Order documents by field ``price`` (ascending).
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/books/?search=title|lorem&ordering=price
+    http://127.0.0.1:8080/search/books/?search=title:lorem&ordering=price
 
 **Order documents by field (descending)**
 
@@ -652,7 +652,7 @@ Order documents by field ``price`` (descending).
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/books/?search=title|lorem&ordering=-price
+    http://127.0.0.1:8080/search/books/?search=title:lorem&ordering=-price
 
 **Order documents by multiple fields**
 
@@ -662,7 +662,7 @@ the example below, documents would be ordered first by field
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/books/?search=title|lorem&ordering=-publication_date&ordering=price
+    http://127.0.0.1:8080/search/books/?search=title:lorem&ordering=-publication_date&ordering=price
 
 Ids filter
 ----------
@@ -670,7 +670,7 @@ Filters documents that only have the provided ids.
 
 .. code-block:: text
 
-    http://127.0.0.1:8000/api/articles/?ids=68|64|58
+    http://127.0.0.1:8000/api/articles/?ids=68__64__58
 
 Or, alternatively:
 
@@ -881,7 +881,7 @@ Filter documents by field (``states``) "published" and "in_progress".
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/books/?state_pf__in=published|in_progress
+    http://127.0.0.1:8080/search/books/?state_pf__in=published__in_progress
 
 Geo-spatial features
 --------------------
@@ -900,7 +900,7 @@ Filter documents by radius of 100000km from the given location.
 
 .. code-block:: text
 
-    http://localhost:8000/search/publishers/?location__geo_distance=100000km|12.04|-63.93
+    http://localhost:8000/search/publishers/?location__geo_distance=100000km__12.04__-63.93
 
 **Geo-polygon filtering**
 
@@ -908,7 +908,7 @@ Filter documents that are located in the given polygon.
 
 .. code-block:: text
 
-    http://localhost:8000/search/publishers/?location__geo_polygon=40,-70|30,-80|20,-90
+    http://localhost:8000/search/publishers/?location__geo_polygon=40,-70__30,-80__20,-90
 
 **Geo-bounding-box filtering**
 
@@ -916,7 +916,7 @@ Filter documents that are located in the given bounding box.
 
 .. code-block:: text
 
-    http://localhost:8000/search/publishers/?location__geo_bounding_box=44.87,40.07|43.87,41.11
+    http://localhost:8000/search/publishers/?location__geo_bounding_box=44.87,40.07__43.87,41.11
 
 Ordering
 ~~~~~~~~
@@ -925,7 +925,7 @@ Ordering
 
 .. code-block:: text
 
-    http://localhost:8000/search/publishers/?ordering=location|48.85|2.30|km|plane
+    http://localhost:8000/search/publishers/?ordering=location__48.85__2.30__km__plane
 
 Suggestions
 -----------

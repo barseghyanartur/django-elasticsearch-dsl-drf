@@ -10,6 +10,7 @@ from .viewsets import (
     BookMoreLikeThisDocumentViewSet,
     BookDefaultFilterLookupDocumentViewSet,
     CityDocumentViewSet,
+    CityCompoundSearchBackendDocumentViewSet,
     PublisherDocumentViewSet,
 )
 
@@ -69,6 +70,12 @@ cities = router.register(
     r'cities',
     CityDocumentViewSet,
     base_name='citydocument'
+)
+
+cities_compound_search_backend = router.register(
+    r'cities-compound-search-backend',
+    CityCompoundSearchBackendDocumentViewSet,
+    base_name='citydocument_compound_search_backend'
 )
 
 publishers = router.register(

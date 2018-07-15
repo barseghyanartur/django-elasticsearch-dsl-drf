@@ -8,7 +8,7 @@ from .book import (
     BookMoreLikeThisDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
 )
-from .city import CityDocumentViewSet
+from .city import CityDocumentViewSet, CityCompoundSearchBackendDocumentViewSet
 from .publisher import PublisherDocumentViewSet
 
 __all__ = (
@@ -20,6 +20,7 @@ __all__ = (
     'BookFunctionalSuggesterDocumentViewSet',
     'BookMoreLikeThisDocumentViewSet',
     'BookOrderingByScoreDocumentViewSet',
+    'CityCompoundSearchBackendDocumentViewSet',
     'CityDocumentViewSet',
     'PublisherDocumentViewSet',
 )

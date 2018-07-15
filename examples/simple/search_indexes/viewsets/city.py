@@ -7,6 +7,7 @@ from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_COMPLETION,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
+    CompoundSearchFilterBackend,
     FilteringFilterBackend,
     DefaultOrderingFilterBackend,
     OrderingFilterBackend,
@@ -23,6 +24,7 @@ from ..serializers import CityDocumentSerializer
 
 __all__ = (
     'CityDocumentViewSet',
+    'CityCompoundSearchBackendDocumentViewSet',
 )
 
 
@@ -101,3 +103,17 @@ class CityDocumentViewSet(DocumentViewSet):
             ],
         }
     }
+
+
+class CityCompoundSearchBackendDocumentViewSet(CityDocumentViewSet):
+    """City document view set based on compound search filter backend."""
+
+    filter_backends = [
+        FilteringFilterBackend,
+        OrderingFilterBackend,
+        CompoundSearchFilterBackend,
+        GeoSpatialFilteringFilterBackend,
+        GeoSpatialOrderingFilterBackend,
+        DefaultOrderingFilterBackend,
+        SuggesterFilterBackend,
+    ]

@@ -23,28 +23,28 @@ are used for versioning (schema follows below):
 
     This release contains backwards incompatible changes.
     You should update your Django code and front-end parts of your applications
-    that were relying on the complex queries using `|` and `:` chars in the
+    that were relying on the complex queries using ``|`` and ``:`` chars in the
     GET params.
 
 .. note::
 
-    If you have used custom filter backends using `SEPARATOR_LOOKUP_VALUE`
-    `SEPARATOR_LOOKUP_COMPLEX_VALUE` or
-    `SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE` constants or
-    `split_lookup_complex_value` helper method of the `FilterBackendMixin`,
+    If you have used custom filter backends using ``SEPARATOR_LOOKUP_VALUE``,
+    ``SEPARATOR_LOOKUP_COMPLEX_VALUE`` or
+    ``SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE`` constants or
+    ``split_lookup_complex_value`` helper method of the ``FilterBackendMixin``,
     you most likely want to run your functional tests to see if everything
     still works.
 
 .. note::
 
     Do not keep things as they were in your own fork, since new search backends
-    will use the `|` and `:` symbols differently.
+    will use the ``|`` and ``:`` symbols differently.
 
 **Examples of old API requests vs new API requests**
 
 .. note::
 
-    Note, that `|` and `:` chars were mostly replaced with `__` and `,`.
+    Note, that ``|`` and ``:`` chars were mostly replaced with ``__`` and ``,``.
 
 *Old API requests*
 
@@ -68,19 +68,19 @@ are used for versioning (schema follows below):
     http://localhost:8000/api/articles/?id__in=1__2__3
     http://localhost:8000/api/articles/?location__geo_polygon=40,-70__30,-80__20,-90___name,myname__validation_method,IGNORE_MALFORMED
 
-- `SEPARATOR_LOOKUP_VALUE` has been removed. Use
-  `SEPARATOR_LOOKUP_COMPLEX_VALUE` and
-  `SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE` instead.
-- `SEPARATOR_LOOKUP_NAME` has been added.
-- The method `split_lookup_complex_value` has been removed. Use
-  `split_lookup_complex_value` instead.
+- ``SEPARATOR_LOOKUP_VALUE`` has been removed. Use
+  ``SEPARATOR_LOOKUP_COMPLEX_VALUE`` and
+  ``SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE`` instead.
+- ``SEPARATOR_LOOKUP_NAME`` has been added.
+- The method ``split_lookup_complex_value`` has been removed. Use
+  ``split_lookup_complex_value`` instead.
 - Default filter lookup option is added. In past, if no specific lookup was
   provided and there were multiple values for a single field to filter on, by
-  default `terms` filter was used. The `term` lookup was used by default
+  default ``terms`` filter was used. The ``term`` lookup was used by default
   in similar situation for a single value to filter on. It's now possible to
   declare default lookup which will be used when no lookup is given.
-- Removed deprecated `views` module. Import from `viewsets` instead.
-- Removed undocumented `get_count` helper from `helpers` module.
+- Removed deprecated ``views`` module. Import from ``viewsets`` instead.
+- Removed undocumented ``get_count`` helper from ``helpers`` module.
 
 0.10
 ----

@@ -93,7 +93,8 @@ Find documents which contain the exact term specified in the field specified.
 terms
 ^^^^^
 Find documents which contain any of the exact terms specified in the field
-specified.
+specified. Note, that multiple values are separated with double underscores
+`__`.
 
 .. code-block:: text
 
@@ -110,8 +111,6 @@ strings) in the range specified.
 .. code-block:: text
 
     http://localhost:8000/api/users/?age__range=16__67
-
-.. code-block:: text
 
 **From, to, boost**
 

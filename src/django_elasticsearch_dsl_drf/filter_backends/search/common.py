@@ -1,5 +1,5 @@
 """
-Search backend.
+Search backend. Most likely to be deprecated soon.
 """
 
 import operator

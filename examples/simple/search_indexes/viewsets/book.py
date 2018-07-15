@@ -17,6 +17,7 @@ from django_elasticsearch_dsl_drf.constants import (
 
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
+    CompoundSearchFilterBackend,
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
     PostFilterFilteringFilterBackend,
@@ -268,23 +269,6 @@ class BookDocumentViewSet(BaseDocumentViewSet,
         'summary_suggest': 'summary',
     }
 
-    # # More-like-this options
-    # more_like_this_options = {
-    #     'fields': (
-    #         'title.raw',
-    #         'summary.raw',
-    #         'description.raw',
-    #         'title',
-    #         'summary',
-    #         'description',
-    #         # 'authors',
-    #         # 'tags.raw',
-    #     ),
-    #     'min_term_freq': 2,
-    #     'max_query_terms': 5,
-    #     "unlike": ['chapter',],
-    # }
-
 
 class BookOrderingByScoreDocumentViewSet(BookDocumentViewSet):
     """Same as BookDocumentViewSet, but sorted by _score."""
@@ -353,6 +337,22 @@ class BookMoreLikeThisDocumentViewSet(BaseDocumentViewSet,
         # 'max_query_terms': 25,
         # "unlike": ['chapter', 'CHAPTER'],
     }
+
+
+class BookCompoundSearchBackendDocumentViewSet(BookDocumentViewSet):
+    """Book document view set based on compound search backend."""
+
+    filter_backends = [
+        FilteringFilterBackend,
+        PostFilterFilteringFilterBackend,
+        IdsFilterBackend,
+        OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
+        SearchFilterBackend,
+        FacetedSearchFilterBackend,
+        HighlightBackend,
+        SuggesterFilterBackend,
+    ]
 
 
 class BookFunctionalSuggesterDocumentViewSet(BaseDocumentViewSet,

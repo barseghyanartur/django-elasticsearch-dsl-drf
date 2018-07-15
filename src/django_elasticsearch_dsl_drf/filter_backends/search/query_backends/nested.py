@@ -16,7 +16,8 @@ __all__ = ('NestedQueryBackend',)
 class NestedQueryBackend(BaseSearchQueryBackend):
     """Nested query backend."""
 
-    def construct_search(self, request, view, search_backend):
+    @classmethod
+    def construct_search(cls, request, view, search_backend):
         """Construct search.
 
         :param request:

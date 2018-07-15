@@ -28,6 +28,17 @@ class BaseSearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     search_param = api_settings.SEARCH_PARAM
 
+    def get_search_query_params(self, request):
+        """Get search query params.
+
+        :param request: Django REST framework request.
+        :type request: rest_framework.request.Request
+        :return: List of search query params.
+        :rtype: list
+        """
+        query_params = request.query_params.copy()
+        return query_params.getlist(self.search_param, [])
+
     def get_query_backends(self, request, view):
         """Get query backends.
 
@@ -56,6 +67,7 @@ class BaseSearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 "`get_query_backends` method or define `query_backends`"
                 "property."
             )
+        return self.query_backends[:]
 
     def filter_queryset(self, request, queryset, view):
         """Filter the queryset.

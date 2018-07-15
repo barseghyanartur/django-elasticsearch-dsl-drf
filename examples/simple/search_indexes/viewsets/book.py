@@ -48,6 +48,7 @@ __all__ = (
     'BookFunctionalSuggesterDocumentViewSet',
     'BookMoreLikeThisDocumentViewSet',
     'BookDefaultFilterLookupDocumentViewSet',
+    'BookCompoundSearchBackendDocumentViewSet',
 )
 
 
@@ -348,7 +349,7 @@ class BookCompoundSearchBackendDocumentViewSet(BookDocumentViewSet):
         IdsFilterBackend,
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,
-        SearchFilterBackend,
+        CompoundSearchFilterBackend,
         FacetedSearchFilterBackend,
         HighlightBackend,
         SuggesterFilterBackend,

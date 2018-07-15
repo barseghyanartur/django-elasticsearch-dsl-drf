@@ -9,7 +9,8 @@ __all__ = ('BaseSearchQueryBackend',)
 class BaseSearchQueryBackend(object):
     """Search query backend."""
 
-    def construct_search(self, request, view, search_backend):
+    @classmethod
+    def construct_search(cls, request, view, search_backend):
         """Construct search.
 
         :param request:
@@ -19,5 +20,5 @@ class BaseSearchQueryBackend(object):
         """
         raise NotImplementedError(
             "You should implement `construct_search` method in your {} class"
-            "".format(self.__class__.__name__)
+            "".format(cls.__name__)
         )

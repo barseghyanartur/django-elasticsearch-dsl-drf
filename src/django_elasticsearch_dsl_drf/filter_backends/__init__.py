@@ -15,7 +15,11 @@ from .ordering import (
     GeoSpatialOrderingFilterBackend,
     OrderingFilterBackend,
 )
-from .search import SearchFilterBackend
+from .search import (
+    BaseSearchFilterBackend,
+    CompoundSearchFilterBackend,
+    SearchFilterBackend,
+)
 from .suggester import (
     SuggesterFilterBackend,
     FunctionalSuggesterFilterBackend,

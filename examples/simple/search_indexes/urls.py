@@ -5,6 +5,7 @@ from .viewsets import (
     AuthorDocumentViewSet,
     BookDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
+    BookCompoundSearchBackendDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
     BookMoreLikeThisDocumentViewSet,
     BookDefaultFilterLookupDocumentViewSet,
@@ -56,6 +57,12 @@ books_default_filter_lookup = router.register(
     r'books-default-filter-lookup',
     BookDefaultFilterLookupDocumentViewSet,
     base_name='bookdocument_default_filter_lookup'
+)
+
+books_compound_search_backend = router.register(
+    r'books-compound-search-backend',
+    BookCompoundSearchBackendDocumentViewSet,
+    base_name='bookdocument_compound_search_backend'
 )
 
 cities = router.register(

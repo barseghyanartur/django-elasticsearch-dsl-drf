@@ -2,9 +2,9 @@
 Search backends.
 """
 
-from .base import BaseSearchBackend
+from .base import BaseSearchFilterBackend
 from .common import SearchFilterBackend
-from .compound import CompoundSearchBackend
+from .compound import CompoundSearchFilterBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

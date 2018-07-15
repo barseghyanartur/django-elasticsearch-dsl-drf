@@ -1,11 +1,12 @@
 from .address import AddressDocumentViewSet
 from .author import AuthorDocumentViewSet
 from .book import (
+    BookCompoundSearchBackendDocumentViewSet,
+    BookDefaultFilterLookupDocumentViewSet,
     BookDocumentViewSet,
-    BookOrderingByScoreDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
     BookMoreLikeThisDocumentViewSet,
-    BookDefaultFilterLookupDocumentViewSet,
+    BookOrderingByScoreDocumentViewSet,
 )
 from .city import CityDocumentViewSet
 from .publisher import PublisherDocumentViewSet
@@ -13,10 +14,11 @@ from .publisher import PublisherDocumentViewSet
 __all__ = (
     'AddressDocumentViewSet',
     'AuthorDocumentViewSet',
+    'BookCompoundSearchBackendDocumentViewSet',
+    'BookDefaultFilterLookupDocumentViewSet',
     'BookDocumentViewSet',
     'BookFunctionalSuggesterDocumentViewSet',
     'BookMoreLikeThisDocumentViewSet',
-    'BookDefaultFilterLookupDocumentViewSet',
     'BookOrderingByScoreDocumentViewSet',
     'CityDocumentViewSet',
     'PublisherDocumentViewSet',

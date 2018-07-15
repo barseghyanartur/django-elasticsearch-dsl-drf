@@ -15,14 +15,14 @@ Docker
 .. code-block:: sh
 
     docker pull docker.elastic.co/elasticsearch/elasticsearch:5.5.3
-    docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:5.5.3
+    docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:5.5.3
 
 6.x
 ~~~
 .. code-block:: sh
 
     docker pull docker.elastic.co/elasticsearch/elasticsearch:6.3.0
-    docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:6.3.0
+    docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:6.3.0
 
 Vagrant
 -------

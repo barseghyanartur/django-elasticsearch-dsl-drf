@@ -8,11 +8,14 @@ import unittest
 
 from django.core.management import call_command
 
+from nine.versions import DJANGO_GTE_1_10
+
 import pytest
 
 from rest_framework import status
 
 from books import constants
+import factories
 from search_indexes.viewsets import BookDocumentViewSet
 
 from ..constants import (
@@ -28,6 +31,11 @@ from .base import (
     CORE_API_AND_CORE_SCHEMA_MISSING_MSG,
 )
 from .data_mixins import AddressesMixin, BooksMixin
+
+if DJANGO_GTE_1_10:
+    from django.urls import reverse
+else:
+    from django.core.urlresolvers import reverse
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering_common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -62,6 +70,11 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         cls.backend = FilteringFilterBackend()
         cls.view = BookDocumentViewSet()
 
+        cls.books_default_filter_lookup_url = reverse(
+            'bookdocument_default_filter_lookup-list',
+            kwargs={}
+        )
+
     # ***********************************************************************
     # ************************ Simple fields ********************************
     # ***********************************************************************
@@ -81,6 +94,32 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         data = {}
         response = self.client.get(
             url + '?{}={}'.format(field_name, value),
+            data
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(response.data['results']),
+            count
+        )
+
+    def _field_filter_multiple_values(self, url, field_name, values, count):
+        """Field filter multiple values.
+
+        Usage example:
+
+            >>> self._field_filter_multiple_values(
+            >>>     self.books_default_filter_lookup_url,
+            >>>     'authors',
+            >>>     ['Author 1', 'Author 2'],
+            >>>     3
+            >>> )
+        """
+        # url = self.base_url[:]
+        data = {}
+        params = '&'.join(['{}={}'.format(field_name, __v) for __v in values])
+        response = self.client.get(
+            url + '?{}'.format(params),
             data
         )
 
@@ -494,6 +533,30 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
             'ids',
             SEPARATOR_LOOKUP_COMPLEX_VALUE.join(__ids),
             self.published_count
+        )
+
+    def test_default_filter_lookup(self):
+        """Test default filter lookup.
+
+        Example:
+
+            http://localhost:8000/search/books-default-filter-lookup/
+                ?authors=Robin&authors=Luc
+        """
+        # Create two authors
+        author_1 = factories.AuthorFactory(name='Author1')
+        author_2 = factories.AuthorFactory(name='Author2')
+        authors = [author_1, author_2]
+        # Add them to 3 books
+        self.published[0].authors.add(*authors)
+        self.published[1].authors.add(*authors)
+        self.published[2].authors.add(*authors)
+        # Test
+        self._field_filter_multiple_values(
+            self.books_default_filter_lookup_url,
+            'authors',
+            authors,
+            3
         )
 
     # ***********************************************************************

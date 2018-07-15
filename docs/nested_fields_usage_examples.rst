@@ -681,7 +681,7 @@ the field name separated with ``|`` to the search term.
 
 .. code-block:: text
 
-    http://127.0.0.1:8000/search/addresses/?search=city.country.name|Armenia
+    http://127.0.0.1:8000/search/addresses/?search=city.country.name:Armenia
 
 Nested filtering
 ^^^^^^^^^^^^^^^^
@@ -980,7 +980,7 @@ Filter documents by field (``states``) "published" and "in_progress".
 
 .. code-block:: text
 
-    http://127.0.0.1:8000/search/addresses/?city__in=Yerevan|Dublin
+    http://127.0.0.1:8000/search/addresses/?city__in=Yerevan__Dublin
 
 Ordering
 ^^^^^^^^

@@ -98,11 +98,12 @@ class TestSearch(BaseRestFrameworkTestCase):
         cls.backend = SearchFilterBackend()
         cls.view = BookDocumentViewSet()
 
-    def _search_by_field(self, field_name, search_term):
+    def _search_by_field(self, field_name, search_term, url=None):
         """Search by field."""
         self.authenticate()
 
-        url = reverse('bookdocument-list', kwargs={})
+        if url is None:
+            url = reverse('bookdocument-list', kwargs={})
         data = {}
 
         # Should contain 20 results
@@ -121,7 +122,7 @@ class TestSearch(BaseRestFrameworkTestCase):
             self.special_count
         )
 
-    def _search_boost(self, search_term, ordering):
+    def _search_boost(self, search_term, ordering, url=None):
         """Search boost.
 
         In our book view, we have the following defined:
@@ -146,7 +147,8 @@ class TestSearch(BaseRestFrameworkTestCase):
         """
         self.authenticate()
 
-        url = reverse('bookdocument_ordered_by_score-list', kwargs={})
+        if url is None:
+            url = reverse('bookdocument_ordered_by_score-list', kwargs={})
         data = {}
 
         filtered_response = self.client.get(
@@ -159,7 +161,7 @@ class TestSearch(BaseRestFrameworkTestCase):
             result_item = filtered_response.data['results'][counter]
             self.assertEqual(result_item.id, ordering[counter])
 
-    def search_boost(self):
+    def search_boost(self, url=None):
         """Search boost.
 
         :return:
@@ -171,7 +173,8 @@ class TestSearch(BaseRestFrameworkTestCase):
                 self.non_lorem[0].pk,
                 self.non_lorem[1].pk,
                 self.non_lorem[2].pk,
-            ]
+            ],
+            url=url
         )
 
         # Search for "Pig and Pepper"
@@ -181,7 +184,8 @@ class TestSearch(BaseRestFrameworkTestCase):
                 self.non_lorem[3].pk,
                 self.non_lorem[4].pk,
                 self.non_lorem[5].pk,
-            ]
+            ],
+            url=url
         )
 
         # Search for "Who Stole the Tarts"
@@ -191,14 +195,21 @@ class TestSearch(BaseRestFrameworkTestCase):
                 self.non_lorem[6].pk,
                 self.non_lorem[7].pk,
                 self.non_lorem[8].pk,
-            ]
+            ],
+            url=url
         )
 
-    def _search_by_nested_field(self, search_term):
+    # def search_boost_compound(self):
+    #     url = reverse('bookdocument_ordered_by_score-list', kwargs={})
+    #     return self.search_boost(url=)
+
+    def _search_by_nested_field(self, search_term, url=None):
         """Search by field."""
         self.authenticate()
 
-        url = reverse('citydocument-list', kwargs={})
+        if url is None:
+            url = reverse('citydocument-list', kwargs={})
+
         data = {}
 
         # Should contain 20 results
@@ -217,18 +228,28 @@ class TestSearch(BaseRestFrameworkTestCase):
             self.switz_cities_count
         )
 
-    def test_search_by_field(self):
+    def test_search_by_field(self, url=None):
         """Search by field."""
         return self._search_by_field(
             'summary',
             'photography',
+            url=url
         )
 
-    def test_search_by_nested_field(self):
+    def test_compound_search_by_field(self):
+        url = reverse('bookdocument_compound_search_backend-list', kwargs={})
+        return self.test_search_by_field(url=url)
+
+    def test_search_by_nested_field(self, url=None):
         """Search by field."""
         return self._search_by_nested_field(
             'Wonderland',
+            url=url
         )
+
+    def test_compound_search_by_nested_field(self):
+        url = reverse('citydocument_compound_search_backend-list', kwargs={})
+        return self.test_search_by_nested_field(url=url)
 
     @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
                      CORE_API_AND_CORE_SCHEMA_MISSING_MSG)

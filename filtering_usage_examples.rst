@@ -93,7 +93,8 @@ Find documents which contain the exact term specified in the field specified.
 terms
 ^^^^^
 Find documents which contain any of the exact terms specified in the field
-specified.
+specified. Note, that multiple values are separated with double underscores
+`__`.
 
 .. code-block:: text
 

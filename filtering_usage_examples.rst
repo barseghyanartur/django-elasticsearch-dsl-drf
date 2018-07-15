@@ -111,8 +111,6 @@ strings) in the range specified.
 
     http://localhost:8000/api/users/?age__range=16__67
 
-.. code-block:: text
-
 **From, to, boost**
 
 .. code-block:: text

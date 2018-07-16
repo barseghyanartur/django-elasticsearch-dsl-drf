@@ -4,6 +4,9 @@ Query backends.
 
 from .base import BaseSearchQueryBackend
 from .match import MatchQueryBackend
+from .match_phrase import MatchPhraseQueryBackend
+from .match_phrase_prefix import MatchPhrasePrefixQueryBackend
+from .multi_match import MultiMatchQueryBackend
 from .nested import NestedQueryBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search.' \
@@ -14,5 +17,8 @@ __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'BaseSearchQueryBackend',
     'MatchQueryBackend',
+    'MatchPhraseQueryBackend',
+    'MatchPhrasePrefixQueryBackend',
+    'MultiMatchQueryBackend',
     'NestedQueryBackend',
 )

@@ -16,6 +16,8 @@ __all__ = ('NestedQueryBackend',)
 class NestedQueryBackend(BaseSearchQueryBackend):
     """Nested query backend."""
 
+    query_type = 'nested'
+
     @classmethod
     def construct_search(cls, request, view, search_backend):
         """Construct search.
@@ -43,7 +45,7 @@ class NestedQueryBackend(BaseSearchQueryBackend):
 
                 __queries.append(
                     Q(
-                        "nested",
+                        cls.query_type,
                         path=path,
                         query=six.moves.reduce(operator.or_, queries)
                     )

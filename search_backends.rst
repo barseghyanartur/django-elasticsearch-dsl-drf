@@ -7,8 +7,6 @@ Search backends
 .. code-block:: python
 
 
-
-
     class BaseDocumentViewSet(BaseDocumentViewSet):
         """Base BookDocument ViewSet."""
 

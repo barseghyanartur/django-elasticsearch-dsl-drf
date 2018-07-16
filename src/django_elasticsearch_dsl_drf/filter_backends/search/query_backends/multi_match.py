@@ -3,17 +3,18 @@ from elasticsearch_dsl.query import Q
 from .base import BaseSearchQueryBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search.' \
-            'query_backends.match'
+            'query_backends.multi_match'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('MatchQueryBackend',)
+__all__ = ('MultiMatchQueryBackend',)
 
 
-class MatchQueryBackend(BaseSearchQueryBackend):
-    """Match query backend."""
+class MultiMatchQueryBackend(BaseSearchQueryBackend):
+    """Multi match query backend."""
 
-    query_type = 'match'
+    query_type = 'multi_match'
+    query_options = {}
 
     @classmethod
     def construct_search(cls, request, view, search_backend):

@@ -15,6 +15,21 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.12
+----
+yyyy-mm-dd (not released yet)
+
+- New-style Search Filter Backends. Old style ``SearchFilterBackend`` is
+  still supported (until at least version 0.16), but is deprecated. Migrate to
+  ``CompoundSearchFilterBackend``. ``MultiMatchSearchFilterBackend``
+  introduced (the name speaks for itself).
+- From now on, your views would also work with model- and object-level
+  permissions of the Django REST Framework (such as ``DjangoModelPermissions``,
+  ``DjangoModelPermissionsOrAnonReadOnly`` and ``DjangoObjectPermissions``).
+  Correspondent model or object would be used for that. If you find it
+  incorrect in your case, write custom permissions and declare the explicitly
+  in your view-sets.
+
 0.11
 ----
 2018-07-15
@@ -81,12 +96,6 @@ are used for versioning (schema follows below):
   declare default lookup which will be used when no lookup is given.
 - Removed deprecated ``views`` module. Import from ``viewsets`` instead.
 - Removed undocumented ``get_count`` helper from ``helpers`` module.
-- From now on, your views would also work with model- and object-level
-  permissions of the Django REST Framework (such as ``DjangoModelPermissions``,
-  ``DjangoModelPermissionsOrAnonReadOnly`` and ``DjangoObjectPermissions``).
-  Correspondent model or object would be used for that. If you find it
-  incorrect in your case, write custom permissions and declare the explicitly
-  in your view-sets.
 
 0.10
 ----

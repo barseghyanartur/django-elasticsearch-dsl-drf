@@ -81,6 +81,12 @@ are used for versioning (schema follows below):
   declare default lookup which will be used when no lookup is given.
 - Removed deprecated ``views`` module. Import from ``viewsets`` instead.
 - Removed undocumented ``get_count`` helper from ``helpers`` module.
+- From now on, your views would also work with model- and object-level
+  permissions of the Django REST Framework (such as ``DjangoModelPermissions``,
+  ``DjangoModelPermissionsOrAnonReadOnly`` and ``DjangoObjectPermissions``).
+  Correspondent model or object would be used for that. If you find it
+  incorrect in your case, write custom permissions and declare the explicitly
+  in your view-sets.
 
 0.10
 ----

@@ -19,6 +19,7 @@ from .search import (
     BaseSearchFilterBackend,
     CompoundSearchFilterBackend,
     SearchFilterBackend,
+    MultiMatchSearchFilterBackend,
 )
 from .suggester import (
     SuggesterFilterBackend,

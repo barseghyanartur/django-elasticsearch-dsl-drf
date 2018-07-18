@@ -3,14 +3,16 @@ from rest_framework.routers import DefaultRouter
 from .viewsets import (
     AddressDocumentViewSet,
     AuthorDocumentViewSet,
-    BookDocumentViewSet,
-    BookOrderingByScoreDocumentViewSet,
     BookCompoundSearchBackendDocumentViewSet,
+    BookDefaultFilterLookupDocumentViewSet,
+    BookDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
     BookMoreLikeThisDocumentViewSet,
-    BookDefaultFilterLookupDocumentViewSet,
-    CityDocumentViewSet,
+    BookMultiMatchSearchFilterBackendDocumentViewSet,
+    BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
+    BookOrderingByScoreDocumentViewSet,
     CityCompoundSearchBackendDocumentViewSet,
+    CityDocumentViewSet,
     PublisherDocumentViewSet,
 )
 
@@ -64,6 +66,19 @@ books_compound_search_backend = router.register(
     r'books-compound-search-backend',
     BookCompoundSearchBackendDocumentViewSet,
     base_name='bookdocument_compound_search_backend'
+)
+
+books_compound_search_backend_ordered_by_score = router.register(
+    r'books-compound-search-backend-ordered-by-score',
+    BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
+    base_name='bookdocument_compound_search_backend_ordered_by_score'
+)
+
+
+books_compound_search_backend_ordered_by_score = router.register(
+    r'books-multi-match-search-backend',
+    BookMultiMatchSearchFilterBackendDocumentViewSet,
+    base_name='bookdocument_multi_match_search_backend'
 )
 
 cities = router.register(

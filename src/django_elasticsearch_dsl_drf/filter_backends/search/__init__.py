@@ -5,6 +5,8 @@ Search backends.
 from .base import BaseSearchFilterBackend
 from .common import SearchFilterBackend
 from .compound import CompoundSearchFilterBackend
+from .multi_match import MultiMatchSearchFilterBackend
+
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -13,5 +15,6 @@ __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'BaseSearchFilterBackend',
     'CompoundSearchFilterBackend',
+    'MultiMatchSearchFilterBackend',
     'SearchFilterBackend',
 )

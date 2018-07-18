@@ -344,7 +344,7 @@ LOGGING = {
             'backupCount': 99,
             'formatter': 'verbose',
         },
-        'debug_toolbar_force_log': {
+        'django_elasticsearch_dsl_drf_log': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': PROJECT_DIR("../../logs/debug_toolbar_force.log"),
@@ -365,10 +365,15 @@ LOGGING = {
             'propagate': False,
         },
         'books': {
-            'handlers': ['console', 'debug_toolbar_force_log'],
+            'handlers': ['console', 'django_elasticsearch_dsl_drf_log'],
             'level': 'DEBUG',
             'propagate': True,
         },
+        'django_elasticsearch_dsl_drf': {
+            'handlers': ['console', 'django_elasticsearch_dsl_drf_log'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
     },
 }
 

@@ -199,9 +199,12 @@ class TestSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-    # def search_boost_compound(self):
-    #     url = reverse('bookdocument_ordered_by_score-list', kwargs={})
-    #     return self.search_boost(url=)
+    def search_boost_compound(self):
+        url = reverse(
+            'bookdocument_compound_search_backend_ordered_by_score-list',
+            kwargs={}
+        )
+        return self.search_boost(url=url)
 
     def _search_by_nested_field(self, search_term, url=None):
         """Search by field."""

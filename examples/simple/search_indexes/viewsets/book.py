@@ -18,16 +18,17 @@ from django_elasticsearch_dsl_drf.constants import (
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
     CompoundSearchFilterBackend,
+    DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
-    PostFilterFilteringFilterBackend,
-    IdsFilterBackend,
-    DefaultOrderingFilterBackend,
-    OrderingFilterBackend,
-    SearchFilterBackend,
-    SuggesterFilterBackend,
     FunctionalSuggesterFilterBackend,
     HighlightBackend,
+    IdsFilterBackend,
+    MultiMatchSearchFilterBackend,
+    OrderingFilterBackend,
+    PostFilterFilteringFilterBackend,
+    SearchFilterBackend,
+    SuggesterFilterBackend,
 )
 from django_elasticsearch_dsl_drf.viewsets import (
     BaseDocumentViewSet,
@@ -49,10 +50,12 @@ __all__ = (
     'BookMoreLikeThisDocumentViewSet',
     'BookDefaultFilterLookupDocumentViewSet',
     'BookCompoundSearchBackendDocumentViewSet',
+    'BookOrderingByScoreCompoundSearchBackendDocumentViewSet',
+    'BookMultiMatchSearchFilterBackendDocumentViewSet',
 )
 
 
-class BaseDocumentViewSet(BaseDocumentViewSet):
+class BaseBookDocumentViewSet(BaseDocumentViewSet):
     """Base BookDocument ViewSet."""
 
     document = BookDocument
@@ -242,7 +245,7 @@ class BaseDocumentViewSet(BaseDocumentViewSet):
     }
 
 
-class BookDocumentViewSet(BaseDocumentViewSet,
+class BookDocumentViewSet(BaseBookDocumentViewSet,
                           SuggestMixin,
                           MoreLikeThisMixin):
     """The BookDocument view."""
@@ -309,7 +312,7 @@ class BookDefaultFilterLookupDocumentViewSet(BookDocumentViewSet):
     }
 
 
-class BookMoreLikeThisDocumentViewSet(BaseDocumentViewSet,
+class BookMoreLikeThisDocumentViewSet(BaseBookDocumentViewSet,
                                       MoreLikeThisMixin):
     """Same as BookDocumentViewSet, with more-like-this and no facets."""
 
@@ -356,7 +359,32 @@ class BookCompoundSearchBackendDocumentViewSet(BookDocumentViewSet):
     ]
 
 
-class BookFunctionalSuggesterDocumentViewSet(BaseDocumentViewSet,
+class BookOrderingByScoreCompoundSearchBackendDocumentViewSet(
+    BookDocumentViewSet
+):
+    """Same as BookDocumentViewSet, but sorted by _score."""
+
+    filter_backends = [
+        FilteringFilterBackend,
+        PostFilterFilteringFilterBackend,
+        IdsFilterBackend,
+        OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
+        CompoundSearchFilterBackend,
+        FacetedSearchFilterBackend,
+        HighlightBackend,
+        SuggesterFilterBackend,
+    ]
+
+    search_fields = {
+        'title': {'boost': 4},
+        'summary': {'boost': 2},
+        'description': None,
+    }
+    ordering = ('_score', 'id', 'title', 'price',)
+
+
+class BookFunctionalSuggesterDocumentViewSet(BaseBookDocumentViewSet,
                                              FunctionalSuggestMixin):
     """Same as BookDocumentViewSet, but uses functional suggester."""
 
@@ -394,3 +422,28 @@ class BookFunctionalSuggesterDocumentViewSet(BaseDocumentViewSet,
         # 'tag_suggest': 'tags',
         # 'summary_suggest': 'summary',
     }
+
+
+class BookMultiMatchSearchFilterBackendDocumentViewSet(
+    BookDocumentViewSet
+):
+    """Same as BookDocumentViewSet, but multi match."""
+
+    filter_backends = [
+        FilteringFilterBackend,
+        PostFilterFilteringFilterBackend,
+        IdsFilterBackend,
+        OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
+        MultiMatchSearchFilterBackend,
+        FacetedSearchFilterBackend,
+        HighlightBackend,
+        SuggesterFilterBackend,
+    ]
+
+    search_fields = {
+        'title': {'boost': 4},
+        'summary': {'boost': 2},
+        'description': None,
+    }
+    ordering = ('_score', 'id', 'title', 'price',)

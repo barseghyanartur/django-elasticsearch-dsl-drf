@@ -29,6 +29,7 @@ yyyy-mm-dd (not released yet)
   Correspondent model or object would be used for that. If you find it
   incorrect in your case, write custom permissions and declare the explicitly
   in your view-sets.
+- Fixed geo-spatial ``geo_distance`` ordering for Elastic 5.x. and 6.x.
 
 0.11
 ----

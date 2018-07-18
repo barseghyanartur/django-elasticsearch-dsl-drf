@@ -27,7 +27,7 @@ __all__ = (
 class MultiMatchSearchFilterBackend(BaseSearchFilterBackend):
     """Multi match search filter backend."""
 
-    search_param = 'search_multi'
+    search_param = 'search_multi_match'
 
     matching = MATCHING_OPTION_MUST
 

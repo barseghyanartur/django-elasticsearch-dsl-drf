@@ -138,13 +138,13 @@ Sample request
 ~~~~~~~~~~~~~~
 .. note::
 
-    Multiple search params (`search_multi`) are not supported. Even if you
-    provide multiple search params, the first one would be picked, having
+    Multiple search params (`search_multi_match`) are not supported. Even if
+    you provide multiple search params, the first one would be picked, having
     the rest simply ignored.
 
 .. code-block:: text
 
-    http://localhost:8000/search/books-multi-match-search-backend/?search_multi=debitis%20enim
+    http://localhost:8000/search/books-multi-match-search-backend/?search_multi_match=debitis%20enim
 
 Generated query
 ~~~~~~~~~~~~~~~

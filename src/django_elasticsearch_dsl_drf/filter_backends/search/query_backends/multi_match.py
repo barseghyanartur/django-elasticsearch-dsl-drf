@@ -48,14 +48,14 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
 
         Example:
 
-            /search/books/?search_multi=lorem ipsum
-            /search/books/?search_multi=title,summary:lorem ipsum
+            /search/books/?search_multi_match=lorem ipsum
+            /search/books/?search_multi_match=title,summary:lorem ipsum
 
         Note, that multiple searches are not supported (would not raise
         an exception, but would simply take only the first):
 
-            /search/books/?search_multi=title,summary:lorem ipsum
-                &search_multi=author,publisher=o'reily
+            /search/books/?search_multi_match=title,summary:lorem ipsum
+                &search_multi_match=author,publisher=o'reily
 
         In the view-set fields shall be defined in a very simple way. The
         only accepted argument would be boost (per field).
@@ -102,8 +102,7 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
             query_fields = []
 
             # If we're dealing with case like
-            # /search/books/?search_multi=title,summary:lorem ipsum \
-            # &search_multi=author,publisher=o'reily
+            # /search/books/?search_multi_match=title,summary:lorem ipsum
             if __len_values > 1:
                 _field, value = __values
                 fields = cls.split_lookup_complex_multiple_value(_field)
@@ -117,7 +116,7 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
                             query_fields.append(field)
 
             # If it's just a simple search like
-            # /search/books/?search_multi=lorem ipsum
+            # /search/books/?search_multi_match=lorem ipsum
             # Fields shall be defined in a very simple way.
             else:
                 # It's a dict, see example 1 (complex)

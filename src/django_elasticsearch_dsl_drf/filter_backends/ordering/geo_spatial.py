@@ -4,7 +4,6 @@ Geo-spatial ordering backend.
 
 from rest_framework.filters import BaseFilterBackend
 
-
 from ..mixins import FilterBackendMixin
 from ...constants import (
     GEO_DISTANCE_ORDERING_PARAM,
@@ -69,20 +68,22 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
             return {}
 
         params = {
-            field: {
-                'lat': __values[0],
-                'lon': __values[1],
+            '_geo_distance': {
+                field: {
+                    'lat': __values[0],
+                    'lon': __values[1],
+                }
             }
         }
 
         if __len_values > 2:
-            params['unit'] = __values[2]
+            params['_geo_distance']['unit'] = __values[2]
         else:
-            params['unit'] = 'm'
+            params['_geo_distance']['unit'] = 'm'
         if __len_values > 3:
-            params['distance_type'] = __values[3]
+            params['_geo_distance']['distance_type'] = __values[3]
         else:
-            params['distance_type'] = 'arc'
+            params['_geo_distance']['distance_type'] = 'arc'
 
         return params
 
@@ -153,7 +154,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
                     __key
                 )
                 __params = self.get_geo_distance_params(__value, __field_name)
-                __params['order'] = __direction
+                __params['_geo_distance']['order'] = __direction
                 __ordering_params.append(__params)
 
         return __ordering_params

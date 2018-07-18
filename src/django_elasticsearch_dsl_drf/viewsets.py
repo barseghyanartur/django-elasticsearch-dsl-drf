@@ -14,9 +14,10 @@ from elasticsearch_dsl import Search
 from elasticsearch_dsl.connections import connections
 from elasticsearch_dsl.query import MoreLikeThis
 
-from rest_framework.decorators import detail_route, list_route
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .pagination import PageNumberPagination
@@ -124,6 +125,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
     document_uid_field = 'id'
     document = None  # Re-define
     pagination_class = PageNumberPagination
+    # permission_classes = (AllowAny,)
 
     def __init__(self, *args, **kwargs):
         assert self.document is not None
@@ -140,7 +142,27 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
 
     def get_queryset(self):
         """Get queryset."""
-        return self.search.query()
+        queryset = self.search.query()
+        # Model- and object-permissions of the Django REST framework (
+        # at the moment of writing they are ``DjangoModelPermissions``,
+        # ``DjangoModelPermissionsOrAnonReadOnly`` and
+        # ``DjangoObjectPermissions``) require ``model`` attribute to be
+        # present in the queryset. Unfortunately we don't have that here.
+        # The following approach seems to fix that (pretty well), since
+        # model and object permissions would work out of the box (for the
+        # correspondent Django model/object). Alternative ways to solve this
+        # issue are: (a) set the ``_ignore_model_permissions`` to True on the
+        # ``BaseDocumentViewSet`` or (b) provide alternative permission classes
+        # that are almost identical to the above mentioned classes with
+        # the only difference that they know how to extract the model from the
+        # given queryset. If you think that chosen solution is incorrect,
+        # please make an issue or submit a pull request explaining the
+        # disadvantages (and ideally - propose  a better solution). Couple of
+        # pros for current solution: (1) works out of the box, (2) does not
+        # require modifications of current permissions (which would mean we
+        # would have to keep up with permission changes of the DRF).
+        queryset.model = self.document._doc_type.model
+        return queryset
 
     def get_object(self):
         """Get object."""

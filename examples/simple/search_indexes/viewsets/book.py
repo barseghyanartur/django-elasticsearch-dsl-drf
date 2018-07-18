@@ -447,3 +447,7 @@ class BookMultiMatchSearchFilterBackendDocumentViewSet(
         'description': None,
     }
     ordering = ('_score', 'id', 'title', 'price',)
+
+    multi_match_options = {
+        'type': 'phrase'
+    }

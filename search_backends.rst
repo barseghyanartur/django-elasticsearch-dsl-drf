@@ -171,3 +171,44 @@ Generated query
         "price"
       ]
     }
+
+Options
+~~~~~~~
+All standard multi match query options are available/tunable with help of
+``multi_match_options`` view property.
+
+Selective list of available options:
+
+- operator
+- type
+- analyzer
+- tie_breaker
+
+Type options
+^^^^^^^^^^^^
+
+See the `Elasticsearch docs
+<https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#type-phrase>`_
+for detailed explanation.
+
+- best_fields
+- most_fields
+- cross_fields
+- phrase
+- phrase_prefix
+
+**Example**
+
+.. code-block:: python
+
+    class BookMultiMatchSearchFilterBackendDocumentViewSet(DocumentViewSet):
+
+        # ...
+
+        multi_match_options = {
+            'type': 'phrase'
+        }
+
+Operator options
+^^^^^^^^^^^^^^^^
+Can be either ``and`` or ``or``.

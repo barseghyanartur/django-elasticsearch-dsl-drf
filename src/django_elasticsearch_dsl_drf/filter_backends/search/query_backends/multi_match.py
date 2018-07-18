@@ -16,7 +16,6 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
     """Multi match query backend."""
 
     query_type = 'multi_match'
-    query_options = {}
 
     @classmethod
     def get_field(cls, field, options):
@@ -36,6 +35,11 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
         if 'boost' in options:
             return '{}^{}'.format(field_name, options['boost'])
         return field_name
+
+    @classmethod
+    def get_query_options(cls, request, view, search_backend):
+        query_options = getattr(view, 'multi_match_options', {})
+        return query_options
 
     @classmethod
     def construct_search(cls, request, view, search_backend):
@@ -132,7 +136,12 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
 
             # The multi match query
             __queries.append(
-                Q(cls.query_type, query=search_term, fields=query_fields)
+                Q(
+                    cls.query_type,
+                    query=search_term,
+                    fields=query_fields,
+                    **cls.get_query_options(request, view, search_backend)
+                )
             )
 
         return __queries

@@ -296,7 +296,7 @@ multiple ``search`` query params.
 
 In order to search for multiple terms "reilly", "bloomsbury" in specific
 fields add multiple ``search`` query params and field names separated with
-``|`` to each of the search terms.
+``:`` to each of the search terms.
 
 .. code-block:: text
 
@@ -324,7 +324,7 @@ Filter documents by ``city`` "Yerevan" and "Groningen".
 
 .. code-block:: text
 
-    http://127.0.0.1:8080/search/publisher/?city__in=yerevan|groningen
+    http://127.0.0.1:8080/search/publisher/?city__in=yerevan__groningen
 
 **Filter document by a single field**
 

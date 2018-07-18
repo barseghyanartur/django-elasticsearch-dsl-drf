@@ -2,7 +2,7 @@ Installing Elasticsearch
 ========================
 For development and testing purposes, it's often handy to be able to
 quickly switch between different Elasticsearch versions. Since this packages
-supports 2.x, 5.x (and in nearest future - 6.x) branches, you could make use of
+supports 2.x, 5.x and 6.x branches, you could make use of
 the following boxes/containers for development and testing.
 
 For all containers/boxes mentioned below, no authentication is required (for

@@ -1,44 +1,162 @@
 ===============
 Search backends
 ===============
+Compound search filter backend
+------------------------------
+Compound search filter backend aims to replace old style `SearchFilterBackend`.
 
-**Viewset**
+**Sample view**
 
 .. code-block:: python
 
+    from django_elasticsearch_dsl_drf.filter_backends import (
+        DefaultOrderingFilterBackend,
+        CompoundSearchFilterBackend,
+        OrderingFilterBackend,
+    )
+    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
-    class BaseDocumentViewSet(BaseDocumentViewSet):
-        """Base BookDocument ViewSet."""
+    from .documents import BookDocument
+    from .serializers import BookDocumentSerializer
+
+    class BookCompoundSearchBackendDocumentViewSet(DocumentViewSet):
 
         document = BookDocument
-        # serializer_class = BookDocumentSerializer
-        serializer_class = BookDocumentSimpleSerializer
+        serializer_class = BookDocumentSerializer
         lookup_field = 'id'
+
         filter_backends = [
-            FilteringFilterBackend,
-            PostFilterFilteringFilterBackend,
-            IdsFilterBackend,
+            # ...
             OrderingFilterBackend,
             DefaultOrderingFilterBackend,
-            SearchFilterBackend,
-            FacetedSearchFilterBackend,
-            # SuggesterFilterBackend,
-            # FunctionalSuggesterFilterBackend,
-            HighlightBackend,
+            CompoundSearchFilterBackend,
+            # ...
         ]
-        # Define search fields
+
         search_fields = (
             'title',
             'description',
             'summary',
         )
 
-        search_nested_fields = {
-            'country': ['name'],
+        ordering = ('_score', 'id', 'title', 'price',)
+
+**Sample request**
+
+.. code-block:: text
+
+    http://localhost:8000/search/books-compound-search-backend/?search=enim
+
+**Generated query**
+
+.. code-block:: javascript
+
+    {
+      "from": 0,
+      "sort": [
+        "id",
+        "title",
+        "price"
+      ],
+      "size": 23,
+      "query": {
+        "bool": {
+          "should": [
+            {
+              "match": {
+                "title": {
+                  "query": "enim"
+                }
+              }
+            },
+            {
+              "match": {
+                "description": {
+                  "query": "enim"
+                }
+              }
+            },
+            {
+              "match": {
+                "summary": {
+                  "query": "enim"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+
+Multi match search filter backend
+---------------------------------
+Document and serializer definition are trivial (there are lots of examples
+in other sections).
+
+**Sample view**
+
+.. code-block:: python
+
+    from django_elasticsearch_dsl_drf.filter_backends import (
+        DefaultOrderingFilterBackend,
+        MultiMatchSearchFilterBackend,
+        OrderingFilterBackend,
+    )
+    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+
+    from .documents import BookDocument
+    from .serializers import BookDocumentSerializer
+
+
+    class BookMultiMatchSearchFilterBackendDocumentViewSet(DocumentViewSet):
+
+        document = BookDocument
+        serializer_class = BookDocumentSerializer
+        lookup_field = 'id'
+
+        filter_backends = [
+            # ...
+            OrderingFilterBackend,
+            DefaultOrderingFilterBackend,
+            MultiMatchSearchFilterBackend,
+            # ...
+        ]
+
+        search_fields = {
+            'title': {'boost': 4},
+            'summary': {'boost': 2},
+            'description': None,
         }
 
-        search_filter_backend_queries = [
-            MatchSearchQuery,
-            MultiMatchSearchQuery,
-            NestedSearchQuery,
-        ]
+        ordering = ('_score', 'id', 'title', 'price',)
+
+**Sample request**
+
+.. code-block:: text
+
+    http://localhost:8000/search/books-multi-match-search-backend/?search_multi=debitis%20enim
+
+**Generated query**
+
+.. code-block:: javascript
+
+    {
+      "from": 0,
+      "query": {
+        "multi_match": {
+          "query": "debitis enim",
+          "fields": [
+            "summary^2",
+            "description",
+            "title^4"
+          ]
+        }
+      },
+      "size": 38,
+      "sort": [
+        "_score",
+        "id",
+        "title",
+        "price"
+      ]
+    }

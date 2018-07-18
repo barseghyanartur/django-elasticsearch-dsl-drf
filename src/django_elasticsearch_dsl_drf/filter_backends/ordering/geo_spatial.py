@@ -86,6 +86,45 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         return params
 
+    def get_geo_spatial_field_name(self, request, view, name):
+        """Get geo-spatial field name.
+
+        We have to deal with a couple of situations here:
+
+        Example 1:
+
+         >>> geo_spatial_ordering_fields = {
+         >>>     'location': None,
+         >>> }
+
+        Example 2:
+
+        >>> geo_spatial_ordering_fields = {
+        >>>     'location': 'location',
+        >>> }
+
+        Example 3:
+
+        >>> geo_spatial_ordering_fields = {
+        >>>     'location': {
+        >>>         'field': 'location'
+        >>>     },
+        >>> }
+
+        :param request:
+        :param view:
+        :param name:
+        :return:
+        """
+        options = view.geo_spatial_ordering_fields[name]
+        if options is None:
+            return name
+        elif isinstance(options, dict):
+            if 'field' in options:
+                return options['field']
+        else:
+            return options
+
     def get_ordering_query_params(self, request, view):
         """Get ordering query params.
 
@@ -108,7 +147,11 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
             )
             __direction = 'desc' if query_param.startswith('-') else 'asc'
             if __key in view.geo_spatial_ordering_fields:
-                __field_name = view.geo_spatial_ordering_fields[__key] or __key
+                __field_name = self.get_geo_spatial_field_name(
+                    request,
+                    view,
+                    __key
+                )
                 __params = self.get_geo_distance_params(__value, __field_name)
                 __params['order'] = __direction
                 __ordering_params.append(__params)

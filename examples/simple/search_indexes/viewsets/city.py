@@ -77,7 +77,7 @@ class CityDocumentViewSet(DocumentViewSet):
     }
     # Define ordering fields
     geo_spatial_ordering_fields = {
-        'location': None,
+        'location': 'location',
     }
     # Specify default ordering
     ordering = (

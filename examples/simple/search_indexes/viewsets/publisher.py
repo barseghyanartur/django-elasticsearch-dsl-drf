@@ -83,7 +83,9 @@ class PublisherDocumentViewSet(DocumentViewSet):
     }
     # Define ordering fields
     geo_spatial_ordering_fields = {
-        'location': None,
+        'location': {
+            'field': 'location',
+        },
     }
     # Specify default ordering
     ordering = ('id', 'name',)

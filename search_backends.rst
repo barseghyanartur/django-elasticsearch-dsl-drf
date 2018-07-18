@@ -5,7 +5,8 @@ Compound search filter backend
 ------------------------------
 Compound search filter backend aims to replace old style `SearchFilterBackend`.
 
-**Sample view**
+Sample view
+~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -41,13 +42,15 @@ Compound search filter backend aims to replace old style `SearchFilterBackend`.
 
         ordering = ('_score', 'id', 'title', 'price',)
 
-**Sample request**
+Sample request
+~~~~~~~~~~~~~~
 
 .. code-block:: text
 
     http://localhost:8000/search/books-compound-search-backend/?search=enim
 
-**Generated query**
+Generated query
+~~~~~~~~~~~~~~~
 
 .. code-block:: javascript
 
@@ -93,7 +96,8 @@ Multi match search filter backend
 Document and serializer definition are trivial (there are lots of examples
 in other sections).
 
-**Sample view**
+Sample view
+~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -130,13 +134,20 @@ in other sections).
 
         ordering = ('_score', 'id', 'title', 'price',)
 
-**Sample request**
+Sample request
+~~~~~~~~~~~~~~
+.. note::
+
+    Multiple search params (`search_multi`) are not supported. Even if you
+    provide multiple search params, the first one would be picked, having
+    the rest simply ignored.
 
 .. code-block:: text
 
     http://localhost:8000/search/books-multi-match-search-backend/?search_multi=debitis%20enim
 
-**Generated query**
+Generated query
+~~~~~~~~~~~~~~~
 
 .. code-block:: javascript
 

@@ -37,11 +37,11 @@ class PublisherDocumentViewSet(DocumentViewSet):
     lookup_field = 'id'
     filter_backends = [
         FilteringFilterBackend,
-        OrderingFilterBackend,
+        # OrderingFilterBackend,
         SearchFilterBackend,
         GeoSpatialFilteringFilterBackend,
         GeoSpatialOrderingFilterBackend,
-        DefaultOrderingFilterBackend,
+        # DefaultOrderingFilterBackend,
         SuggesterFilterBackend,
         FunctionalSuggesterFilterBackend,
     ]
@@ -83,9 +83,7 @@ class PublisherDocumentViewSet(DocumentViewSet):
     }
     # Define ordering fields
     geo_spatial_ordering_fields = {
-        'location': {
-            'field': 'location',
-        },
+        'location': None,
     }
     # Specify default ordering
     ordering = ('id', 'name',)

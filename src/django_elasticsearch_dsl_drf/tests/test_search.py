@@ -84,12 +84,36 @@ class TestSearch(BaseRestFrameworkTestCase):
 
         cls.cities_count = 20
         cls.cities = factories.CityFactory.create_batch(cls.cities_count)
+
+        # Create 10 cities in a given country. The reason that we don't
+        # do create_batch here is that sometimes in the same test city name is
+        # generated twice and thus our concept of precise number matching
+        # fails. Before there's a better approach, this would stay so. The
+        # create_batch part (below) will remain commented out, until there's a
+        # better solution.
         cls.switzerland = factories.CountryFactory.create(name='Wonderland')
         cls.switz_cities_count = 10
-        cls.switz_cities = factories.CityFactory.create_batch(
-            cls.switz_cities_count,
-            country=cls.switzerland
-        )
+        cls.switz_cities_names = [
+            'Zurich',
+            'Geneva',
+            'Basel',
+            'Lausanne',
+            'Bern',
+            'Winterthur',
+            'Lucerne',
+            'St. Gallen',
+            'Lugano',
+            'Biel/Bienne',
+        ]
+        for switz_city in cls.switz_cities_names:
+            cls.switz_cities = factories.CityFactory(
+                name=switz_city,
+                country=cls.switzerland
+            )
+        # cls.switz_cities = factories.CityFactory.create_batch(
+        #     cls.switz_cities_count,
+        #     country=cls.switzerland
+        # )
         cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
         call_command('search_index', '--rebuild', '-f')

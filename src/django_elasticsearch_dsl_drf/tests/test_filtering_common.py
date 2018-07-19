@@ -551,6 +551,8 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         self.published[0].authors.add(*authors)
         self.published[1].authors.add(*authors)
         self.published[2].authors.add(*authors)
+        # Update the Elasticsearch index
+        call_command('search_index', '--rebuild', '-f')
         # Test
         self._field_filter_multiple_values(
             self.books_default_filter_lookup_url,

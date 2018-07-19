@@ -8,6 +8,8 @@ import unittest
 
 from django.core.management import call_command
 
+from elasticsearch.connection.base import TransportError
+
 from nine.versions import DJANGO_GTE_1_10
 
 import pytest
@@ -44,14 +46,18 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         """Set up."""
         cls.base_publisher_url = reverse('publisherdocument-list', kwargs={})
 
-    @pytest.mark.webtest
-    def test_field_filter_geo_distance(self):
+    def _test_field_filter_geo_distance(self, distance_type=None):
         """Field filter geo-distance.
 
-        Example:
+        Example (distance_type == None):
 
             http://localhost:8000
             /api/publisher/?location__geo_distance=1km__48.8549__2.3000
+
+        Example (distance_type == 'arc'):
+
+            http://localhost:8000
+            /api/publisher/?location__geo_distance=1km__48.8549__2.3000__arc
         """
         self.authenticate()
 
@@ -74,11 +80,12 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
 
         call_command('search_index', '--rebuild', '-f')
 
-        __params = '{distance}{separator}{lat}{separator}{lon}'.format(
+        __params = '{distance}{separator}{lat}{separator}{lon}{d_type}'.format(
             distance=_geo_distance,
             lat=_geo_origin.latitude,
             lon=_geo_origin.longitude,
-            separator=SEPARATOR_LOOKUP_COMPLEX_VALUE
+            separator=SEPARATOR_LOOKUP_COMPLEX_VALUE,
+            d_type='__{}'.format(distance_type) if distance_type else ''
         )
 
         url = self.base_publisher_url[:] + '?{}={}'.format(
@@ -91,6 +98,72 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # Should contain only 6 results
         self.assertEqual(len(response.data['results']), _geo_in_count + 1)
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_distance(self):
+        """Field filter geo-distance.
+
+        Example:
+
+            http://localhost:8000
+            /api/publisher/?location__geo_distance=1km__48.8549__2.3000
+
+        :return:
+        """
+        return self._test_field_filter_geo_distance()
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_distance_distance_type_arc(self):
+        """Field filter geo-distance.
+
+        Example:
+
+            http://localhost:8000
+            /api/publisher/?location__geo_distance=1km__48.8549__2.3000__arc
+
+        :return:
+        """
+        return self._test_field_filter_geo_distance(distance_type='arc')
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_distance_not_enough_args_fail(self):
+        """Field filter geo-distance. Fail test on not enough args.
+
+        Example:
+
+            http://localhost:8000
+            /api/publisher/?location__geo_distance=1km__48.8549
+
+        :return:
+        """
+        self.authenticate()
+        _geo_origin = factories.PublisherFactory.create(
+            **{
+                'latitude': 48.8549,
+                'longitude': 2.3000,
+            }
+        )
+        _geo_in_count = 5
+        _geo_distance = '1km'
+        _geo_in = factories.PublisherFactory.create_batch(
+            _geo_in_count,
+            **{
+                'latitude': 48.8570,
+                'longitude': 2.3005,
+            }
+        )
+        __params = '{distance}{separator}{lat}'.format(
+            distance=_geo_distance,
+            lat=_geo_origin.latitude,
+            separator=SEPARATOR_LOOKUP_COMPLEX_VALUE,
+        )
+        url = self.base_publisher_url[:] + '?{}={}'.format(
+            'location__geo_distance',
+            __params
+        )
+        data = {}
+        with self.assertRaises(TransportError) as context:
+            response = self.client.get(url, data)
 
     @pytest.mark.webtest
     def _test_field_filter_geo_polygon(self, field_name, points, count):

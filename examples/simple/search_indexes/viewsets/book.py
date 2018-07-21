@@ -44,14 +44,15 @@ from ..documents import BookDocument
 from ..serializers import BookDocumentSimpleSerializer
 
 __all__ = (
+    'BookCompoundSearchBackendDocumentViewSet',
+    'BookDefaultFilterLookupDocumentViewSet',
     'BookDocumentViewSet',
-    'BookOrderingByScoreDocumentViewSet',
     'BookFunctionalSuggesterDocumentViewSet',
     'BookMoreLikeThisDocumentViewSet',
-    'BookDefaultFilterLookupDocumentViewSet',
-    'BookCompoundSearchBackendDocumentViewSet',
-    'BookOrderingByScoreCompoundSearchBackendDocumentViewSet',
+    'BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet',
     'BookMultiMatchSearchFilterBackendDocumentViewSet',
+    'BookOrderingByScoreCompoundSearchBackendDocumentViewSet',
+    'BookOrderingByScoreDocumentViewSet',
 )
 
 
@@ -442,6 +443,38 @@ class BookMultiMatchSearchFilterBackendDocumentViewSet(
     ]
 
     search_fields = {
+        'title': None,
+        'summary': None,
+        'description': None,
+    }
+    ordering = ('_score', 'id', 'title', 'price',)
+
+    multi_match_options = {
+        'type': 'phrase',
+    }
+
+
+class BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet(
+    BookMultiMatchSearchFilterBackendDocumentViewSet
+):
+    """Same as parent, but uses `multi_match_search_fields` declarations.
+
+    Additionally, uses `phase_prefix`.
+    """
+
+    filter_backends = [
+        FilteringFilterBackend,
+        PostFilterFilteringFilterBackend,
+        IdsFilterBackend,
+        OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
+        MultiMatchSearchFilterBackend,
+        FacetedSearchFilterBackend,
+        HighlightBackend,
+        SuggesterFilterBackend,
+    ]
+
+    multi_match_search_fields = {
         'title': {'boost': 4},
         'summary': {'boost': 2},
         'description': None,
@@ -449,5 +482,5 @@ class BookMultiMatchSearchFilterBackendDocumentViewSet(
     ordering = ('_score', 'id', 'title', 'price',)
 
     multi_match_options = {
-        'type': 'phrase'
+        'type': 'phrase_prefix',
     }

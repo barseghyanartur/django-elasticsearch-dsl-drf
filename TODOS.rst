@@ -11,6 +11,9 @@ Must haves
 ==========
 .. code-block:: text
 
+    - Add tests for ``match_phrase`` and ``match_phrase_prefix`` search query
+      backends.
+    - Finish ``more-like-this`` view set integration.
     - Full support of all optional params of each native Elasticsearch filter,
       such as ``flags`` on ``regexp``.
     - Support ``mode`` argument in the ``OrderingFilterBackend``.

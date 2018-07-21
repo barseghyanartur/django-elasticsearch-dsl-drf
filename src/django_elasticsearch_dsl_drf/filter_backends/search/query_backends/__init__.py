@@ -1,5 +1,5 @@
 """
-Query backends.
+Search query backends.
 """
 
 from .base import BaseSearchQueryBackend

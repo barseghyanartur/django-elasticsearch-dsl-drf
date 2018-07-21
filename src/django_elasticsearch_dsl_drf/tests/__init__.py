@@ -14,6 +14,7 @@ from .test_ordering_common import TestOrdering
 from .test_ordering_geo_spatial import TestOrderingGeoSpatial
 from .test_pagination import TestPagination
 from .test_search import TestSearch
+from .test_search_multi_match import TestMultiMatchSearch
 from .test_serializers import TestSerializers
 from .test_suggesters import TestSuggesters
 from .test_views import TestViews
@@ -32,7 +33,8 @@ __all__ = (
     'TestFunctionalSuggesters',
     'TestHelpers',
     'TestHighlight',
-    'TestMoreLikeThis',
+    # 'TestMoreLikeThis',
+    'TestMultiMatchSearch',
     'TestOrdering',
     'TestOrderingGeoSpatial',
     'TestPagination',

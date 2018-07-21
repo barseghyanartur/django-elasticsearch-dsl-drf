@@ -204,6 +204,7 @@ Contents:
    installing_elasticsearch
    quick_start
    filtering_usage_examples
+   search_backends
    basic_usage_examples
    advanced_usage_examples
    nested_fields_usage_examples

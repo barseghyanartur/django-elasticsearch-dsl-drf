@@ -17,7 +17,7 @@ are used for versioning (schema follows below):
 
 0.12
 ----
-yyyy-mm-dd (not released yet)
+2018-07-21
 
 - New-style Search Filter Backends. Old style ``SearchFilterBackend`` is
   still supported (until at least version 0.16), but is deprecated. Migrate to
@@ -30,6 +30,7 @@ yyyy-mm-dd (not released yet)
   incorrect in your case, write custom permissions and declare the explicitly
   in your view-sets.
 - Fixed geo-spatial ``geo_distance`` ordering for Elastic 5.x. and 6.x.
+- Fixes occasionally failing tests.
 
 0.11
 ----

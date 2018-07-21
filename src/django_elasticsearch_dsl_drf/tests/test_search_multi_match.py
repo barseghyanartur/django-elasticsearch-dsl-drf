@@ -1,5 +1,5 @@
 """
-Test search backend.
+Test multi match search filter backend.
 """
 
 from __future__ import absolute_import
@@ -16,8 +16,10 @@ from rest_framework import status
 
 from books import constants
 import factories
-from search_indexes.viewsets import BookDocumentViewSet
-from ..filter_backends import SearchFilterBackend
+from search_indexes.viewsets import (
+    BookMultiMatchSearchFilterBackendDocumentViewSet
+)
+from ..filter_backends import MultiMatchSearchFilterBackend
 
 from .base import (
     BaseRestFrameworkTestCase,
@@ -30,18 +32,18 @@ if DJANGO_GTE_1_10:
 else:
     from django.core.urlresolvers import reverse
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_search'
+__title__ = 'django_elasticsearch_dsl_drf.tests.test_search_multi_match'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
-    'TestSearch',
+    'TestMultiMatchSearch',
 )
 
 
 @pytest.mark.django_db
-class TestSearch(BaseRestFrameworkTestCase):
-    """Test search."""
+class TestMultiMatchSearch(BaseRestFrameworkTestCase):
+    """Test multi match search."""
 
     pytestmark = pytest.mark.django_db
 
@@ -119,15 +121,19 @@ class TestSearch(BaseRestFrameworkTestCase):
         call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
-        cls.backend = SearchFilterBackend()
-        cls.view = BookDocumentViewSet()
+        cls.backend = MultiMatchSearchFilterBackend()
+        cls.view = BookMultiMatchSearchFilterBackendDocumentViewSet()
 
     def _search_by_field(self, search_term, num_results, url=None):
         """Search by field."""
         self.authenticate()
 
         if url is None:
-            url = reverse('bookdocument-list', kwargs={})
+            url = reverse(
+                'bookdocument_multi_match_search_backend-list',
+                kwargs={}
+            )
+
         data = {}
 
         # Should contain 20 results
@@ -137,7 +143,7 @@ class TestSearch(BaseRestFrameworkTestCase):
 
         # Should contain only 10 results
         filtered_response = self.client.get(
-            url + '?search={}'.format(search_term),
+            url + '?search_multi_match={}'.format(search_term),
             data
         )
         self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
@@ -172,11 +178,14 @@ class TestSearch(BaseRestFrameworkTestCase):
         self.authenticate()
 
         if url is None:
-            url = reverse('bookdocument_ordered_by_score-list', kwargs={})
+            url = reverse(
+                'bookdocument_multi_match_phrase_prefix_search_backend-list',
+                kwargs={}
+            )
         data = {}
 
         filtered_response = self.client.get(
-            url + '?search={}'.format(search_term),
+            url + '?search_multi_match={}'.format(search_term),
             data
         )
         self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
@@ -184,6 +193,14 @@ class TestSearch(BaseRestFrameworkTestCase):
         for counter, item_id in enumerate(ordering):
             result_item = filtered_response.data['results'][counter]
             self.assertEqual(result_item['id'], item_id)
+
+    def test_search_by_field(self, url=None):
+        """Search by field."""
+        return self._search_by_field(
+            search_term='Pool of Tears',
+            num_results=3,
+            url=url
+        )
 
     def test_search_boost(self, url=None):
         """Search boost.
@@ -206,6 +223,15 @@ class TestSearch(BaseRestFrameworkTestCase):
             search_term="Pig and Pepper",
             ordering=[
                 self.non_lorem[3].pk,
+            ],
+            url=url
+        )
+
+        # Search for "and Pepper"
+        self._search_boost(
+            search_term="and Pepper",
+            ordering=[
+                self.non_lorem[3].pk,
                 self.non_lorem[4].pk,
                 self.non_lorem[5].pk,
             ],
@@ -217,66 +243,30 @@ class TestSearch(BaseRestFrameworkTestCase):
             search_term="Who Stole the Tarts",
             ordering=[
                 self.non_lorem[6].pk,
+            ],
+            url=url
+        )
+
+        # Search for "Stole the Tarts"
+        self._search_boost(
+            search_term="Stole the Tarts",
+            ordering=[
+                self.non_lorem[6].pk,
+                self.non_lorem[7].pk,
+            ],
+            url=url
+        )
+
+        # Search for "the Tarts"
+        self._search_boost(
+            search_term="the Tarts",
+            ordering=[
+                self.non_lorem[6].pk,
                 self.non_lorem[7].pk,
                 self.non_lorem[8].pk,
             ],
             url=url
         )
-
-    def test_search_boost_compound(self):
-        url = reverse(
-            'bookdocument_compound_search_backend_ordered_by_score-list',
-            kwargs={}
-        )
-        return self.test_search_boost(url=url)
-
-    def _search_by_nested_field(self, search_term, url=None):
-        """Search by field."""
-        self.authenticate()
-
-        if url is None:
-            url = reverse('citydocument-list', kwargs={})
-
-        data = {}
-
-        # Should contain 20 results
-        response = self.client.get(url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), self.all_cities_count)
-
-        # Should contain only 10 results
-        filtered_response = self.client.get(
-            url + '?search={}'.format(search_term),
-            data
-        )
-        self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(filtered_response.data['results']),
-            self.switz_cities_count
-        )
-
-    def test_search_by_field(self, url=None):
-        """Search by field."""
-        return self._search_by_field(
-            search_term='photography',
-            num_results=self.special_count,
-            url=url
-        )
-
-    def test_compound_search_by_field(self):
-        url = reverse('bookdocument_compound_search_backend-list', kwargs={})
-        return self.test_search_by_field(url=url)
-
-    def test_search_by_nested_field(self, url=None):
-        """Search by field."""
-        return self._search_by_nested_field(
-            'Wonderland',
-            url=url
-        )
-
-    def test_compound_search_by_nested_field(self):
-        url = reverse('citydocument_compound_search_backend-list', kwargs={})
-        return self.test_search_by_nested_field(url=url)
 
     @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
                      CORE_API_AND_CORE_SCHEMA_MISSING_MSG)

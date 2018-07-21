@@ -54,6 +54,7 @@ class MultiMatchSearchFilterBackend(BaseSearchFilterBackend):
             )
 
         __queries = []
+
         for query_backend in self._get_query_backends(request, view):
             __queries.extend(
                 query_backend.construct_search(

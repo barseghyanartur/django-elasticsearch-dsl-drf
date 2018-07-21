@@ -9,6 +9,7 @@ from .viewsets import (
     BookFunctionalSuggesterDocumentViewSet,
     BookMoreLikeThisDocumentViewSet,
     BookMultiMatchSearchFilterBackendDocumentViewSet,
+    BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
     CityCompoundSearchBackendDocumentViewSet,
@@ -74,11 +75,16 @@ books_compound_search_backend_ordered_by_score = router.register(
     base_name='bookdocument_compound_search_backend_ordered_by_score'
 )
 
-
-books_compound_search_backend_ordered_by_score = router.register(
+books_multi_match_backend_ordered_by_score = router.register(
     r'books-multi-match-search-backend',
     BookMultiMatchSearchFilterBackendDocumentViewSet,
     base_name='bookdocument_multi_match_search_backend'
+)
+
+books_multi_match_phrase_prefix_backend_ordered_by_score = router.register(
+    r'books-multi-match-phrase-prefix-search-backend',
+    BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
+    base_name='bookdocument_multi_match_phrase_prefix_search_backend'
 )
 
 cities = router.register(

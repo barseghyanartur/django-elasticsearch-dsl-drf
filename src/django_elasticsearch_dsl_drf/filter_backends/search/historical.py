@@ -3,17 +3,18 @@ Search backend. Most likely to be deprecated soon.
 """
 
 import operator
-import six
+import warnings
 
 from django_elasticsearch_dsl import fields
 from elasticsearch_dsl.query import Q
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.settings import api_settings
+import six
 
 from ..mixins import FilterBackendMixin
 from ...compat import coreapi, coreschema
 
-__title__ = 'django_elasticsearch_dsl_drf.filter_backends.search.common'
+__title__ = 'django_elasticsearch_dsl_drf.filter_backends.search.historical'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
@@ -208,6 +209,12 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Updated queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
+        warnings.warn(
+            "{} is deprecated. Switch to `CompoundSearchFilterBackend`."
+            "".format(
+                self.__class__.__name__
+            )
+        )
         __queries = self.construct_search(request, view) + \
             self.construct_nested_search(request, view)
 

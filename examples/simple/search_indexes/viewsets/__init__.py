@@ -7,6 +7,7 @@ from .book import (
     BookFunctionalSuggesterDocumentViewSet,
     BookMoreLikeThisDocumentViewSet,
     BookMultiMatchSearchFilterBackendDocumentViewSet,
+    BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
 )
@@ -22,6 +23,7 @@ __all__ = (
     'BookFunctionalSuggesterDocumentViewSet',
     'BookMoreLikeThisDocumentViewSet',
     'BookMultiMatchSearchFilterBackendDocumentViewSet',
+    'BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet',
     'BookOrderingByScoreCompoundSearchBackendDocumentViewSet',
     'BookOrderingByScoreDocumentViewSet',
     'CityCompoundSearchBackendDocumentViewSet',

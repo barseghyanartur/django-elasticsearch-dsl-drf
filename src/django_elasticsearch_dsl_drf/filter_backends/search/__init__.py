@@ -1,10 +1,10 @@
 """
-Search backends.
+Search filter backends.
 """
 
 from .base import BaseSearchFilterBackend
-from .common import SearchFilterBackend
 from .compound import CompoundSearchFilterBackend
+from .historical import SearchFilterBackend
 from .multi_match import MultiMatchSearchFilterBackend
 
 

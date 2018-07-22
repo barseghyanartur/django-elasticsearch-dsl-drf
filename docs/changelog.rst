@@ -19,7 +19,7 @@ are used for versioning (schema follows below):
 ----
 yyyy-mm-dd (not released yet)
 
--
+- ``SimpleQueryStringSearchFilterBackend`` is implemented.
 
 0.12
 ----

@@ -370,32 +370,6 @@ Generated query 3
         "title",
         "price"
       ],
-      "highlight": {
-        "fields": {
-          "title": {
-            "pre_tags": [
-              "<b>"
-            ],
-            "post_tags": [
-              "</b>"
-            ]
-          }
-        }
-      },
-      "aggs": {
-        "_filter_publisher": {
-          "aggs": {
-            "publisher": {
-              "terms": {
-                "field": "publisher.raw"
-              }
-            }
-          },
-          "filter": {
-            "match_all": {}
-          }
-        }
-      },
       "from": 0,
       "size": 1
     }

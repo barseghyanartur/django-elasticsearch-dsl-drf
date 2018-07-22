@@ -17,10 +17,17 @@ are used for versioning (schema follows below):
 
 0.13
 ----
-2018-07-22
+2018-07-23
+
+.. note::
+
+    Release dedicated to Guido van Rossum, the former Python BDFL, who
+    resigned from his BDFL position recently. Guido knew it better than we all
+    do. His charisma, talent and leadership will be certainly missed a lot by
+    the community. Thumbs up again for the best BDFL ever.
 
 - The ``SimpleQueryStringSearchFilterBackend`` backend has been implemented.
-- Minor fixes in ``MultiMatchSearchFilterBackend`` backend.
+- Minor fixes in the ``MultiMatchSearchFilterBackend`` backend.
 
 0.12
 ----

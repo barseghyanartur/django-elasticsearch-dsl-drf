@@ -111,7 +111,7 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
             if __len_values > 1:
                 _field, value = __values
                 __search_term = value
-                fields = cls.split_lookup_complex_multiple_value(_field)
+                fields = search_backend.split_lookup_complex_multiple_value(_field)
                 for field in fields:
                     if field in view_search_fields:
                         if __is_complex:

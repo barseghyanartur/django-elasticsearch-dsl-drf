@@ -124,8 +124,8 @@ class TestMultiMatchSearch(BaseRestFrameworkTestCase):
         cls.backend = MultiMatchSearchFilterBackend()
         cls.view = BookMultiMatchSearchFilterBackendDocumentViewSet()
 
-    def _search_by_field(self, search_term, num_results, url=None):
-        """Search by field."""
+    def _search(self, search_term, num_results, url=None):
+        """Search."""
         self.authenticate()
 
         if url is None:
@@ -194,9 +194,9 @@ class TestMultiMatchSearch(BaseRestFrameworkTestCase):
             result_item = filtered_response.data['results'][counter]
             self.assertEqual(result_item['id'], item_id)
 
-    def test_search_by_field(self, url=None):
-        """Search by field."""
-        return self._search_by_field(
+    def test_search(self, url=None):
+        """Search."""
+        return self._search(
             search_term='Pool of Tears',
             num_results=3,
             url=url
@@ -207,7 +207,7 @@ class TestMultiMatchSearch(BaseRestFrameworkTestCase):
 
         :return:
         """
-        # Search for "The Pool of Tears"
+        # Search for: The Pool of Tears
         self._search_boost(
             search_term="The Pool of Tears",
             ordering=[
@@ -218,7 +218,7 @@ class TestMultiMatchSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-        # Search for "Pig and Pepper"
+        # Search for: Pig and Pepper
         self._search_boost(
             search_term="Pig and Pepper",
             ordering=[
@@ -227,7 +227,7 @@ class TestMultiMatchSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-        # Search for "and Pepper"
+        # Search for: and Pepper"
         self._search_boost(
             search_term="and Pepper",
             ordering=[
@@ -238,7 +238,7 @@ class TestMultiMatchSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-        # Search for "Who Stole the Tarts"
+        # Search for: Who Stole the Tarts
         self._search_boost(
             search_term="Who Stole the Tarts",
             ordering=[
@@ -247,7 +247,7 @@ class TestMultiMatchSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-        # Search for "Stole the Tarts"
+        # Search for: Stole the Tarts
         self._search_boost(
             search_term="Stole the Tarts",
             ordering=[
@@ -257,13 +257,40 @@ class TestMultiMatchSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-        # Search for "the Tarts"
+        # Search for: the Tarts
         self._search_boost(
             search_term="the Tarts",
             ordering=[
                 self.non_lorem[6].pk,
                 self.non_lorem[7].pk,
                 self.non_lorem[8].pk,
+            ],
+            url=url
+        )
+
+    def test_search_selected_fields(self, url=None):
+        """Search boost.
+
+        :return:
+        """
+        # Search for (only in `title` and `summary`): and Pepper
+        self._search(
+            search_term='title,summary:and Pepper',
+            num_results=2,
+            url=url
+        )
+
+    def test_search_boost_selected_fields(self, url=None):
+        """Search boost.
+
+        :return:
+        """
+        # Search for (only in `title` and `summary`): and Pepper
+        self._search_boost(
+            search_term='title,summary:and Pepper',
+            ordering=[
+                self.non_lorem[3].pk,
+                self.non_lorem[4].pk,
             ],
             url=url
         )

@@ -1,10 +1,7 @@
-"""Compound search backend."""
-import operator
+"""Multi match search filter backend."""
 import logging
 
 from django.core.exceptions import ImproperlyConfigured
-
-import six
 
 from ...constants import MATCHING_OPTION_MUST, MATCHING_OPTIONS
 from .base import BaseSearchFilterBackend

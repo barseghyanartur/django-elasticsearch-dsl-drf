@@ -10,6 +10,7 @@ from .book import (
     BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
+    BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
 )
 from .city import CityDocumentViewSet, CityCompoundSearchBackendDocumentViewSet
 from .publisher import PublisherDocumentViewSet
@@ -26,6 +27,7 @@ __all__ = (
     'BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet',
     'BookOrderingByScoreCompoundSearchBackendDocumentViewSet',
     'BookOrderingByScoreDocumentViewSet',
+    'BookSimpleQueryStringSearchFilterBackendDocumentViewSet',
     'CityCompoundSearchBackendDocumentViewSet',
     'CityDocumentViewSet',
     'PublisherDocumentViewSet',

@@ -18,12 +18,13 @@ from .ordering import (
 from .search import (
     BaseSearchFilterBackend,
     CompoundSearchFilterBackend,
-    SearchFilterBackend,
     MultiMatchSearchFilterBackend,
+    SearchFilterBackend,
+    SimpleQueryStringSearchFilterBackend,
 )
 from .suggester import (
-    SuggesterFilterBackend,
     FunctionalSuggesterFilterBackend,
+    SuggesterFilterBackend,
 )
 from .highlight import HighlightBackend
 

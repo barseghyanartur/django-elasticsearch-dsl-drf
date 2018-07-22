@@ -5,17 +5,17 @@ from elasticsearch_dsl.query import Q
 from .base import BaseSearchQueryBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search.' \
-            'query_backends.multi_match'
+            'query_backends.simple_query_string'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('MultiMatchQueryBackend',)
+__all__ = ('SimpleQueryStringQueryBackend',)
 
 
-class MultiMatchQueryBackend(BaseSearchQueryBackend):
-    """Multi match query backend."""
+class SimpleQueryStringQueryBackend(BaseSearchQueryBackend):
+    """Simple query string query backend."""
 
-    query_type = 'multi_match'
+    query_type = 'simple_query_string'
 
     @classmethod
     def get_field(cls, field, options):
@@ -38,7 +38,7 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
 
     @classmethod
     def get_query_options(cls, request, view, search_backend):
-        query_options = getattr(view, 'multi_match_options', {})
+        query_options = getattr(view, 'simple_query_string_options', {})
         return query_options
 
     @classmethod
@@ -52,21 +52,25 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
 
         Example:
 
-            /search/books/?search_multi_match=lorem ipsum
-            /search/books/?search_multi_match=title,summary:lorem ipsum
+            /search/books/?search_simple_query_string=
+                "fried eggs" %2B(eggplant | potato) -frittata
+            /search/books/?search_simple_query_string=
+                title,summary:"fried eggs" +(eggplant | potato) -frittata
 
         Note, that multiple searches are not supported (would not raise
         an exception, but would simply take only the first):
 
-            /search/books/?search_multi_match=title,summary:lorem ipsum
-                &search_multi_match=author,publisher=o'reily
+            /search/books/?search_simple_query_string=
+                title,summary:"fried eggs" +(eggplant | potato) -frittata
+                &search_simple_query_string=
+                author,publisher="fried eggs" +(eggplant | potato) -frittata
 
         In the view-set fields shall be defined in a very simple way. The
         only accepted argument would be boost (per field).
 
         Example 1 (complex):
 
-            multi_match_search_fields = {
+            simple_query_string_search_fields = {
                 'title': {'field': 'title.english', 'boost': 4},
                 'summary': {'boost': 2},
                 'description': None,
@@ -74,21 +78,31 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
 
         Example 2 (simple list):
 
-            multi_match_search_fields = (
+            simple_query_string_search_fields = (
                 'title',
                 'summary',
                 'description',
             )
 
+        Query examples:
+
+            http://localhost:8000/search
+                /books-simple-query-string-search-backend
+                /?search_simple_query_string=%22Pool%20of%20Tears%22
+
+            http://localhost:8000/search
+                /books-simple-query-string-search-backend
+                /?search_simple_query_string=%22Pool%20of%20Tears%22
+                -considering
 
         :param request:
         :param view:
         :param search_backend:
         :return:
         """
-        if hasattr(view, 'multi_match_search_fields'):
+        if hasattr(view, 'simple_query_string_search_fields'):
             view_search_fields = copy.copy(
-                getattr(view, 'multi_match_search_fields')
+                getattr(view, 'simple_query_string_search_fields')
             )
         else:
             view_search_fields = copy.copy(view.search_fields)

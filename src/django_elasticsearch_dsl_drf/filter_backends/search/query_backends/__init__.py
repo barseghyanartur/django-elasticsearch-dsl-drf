@@ -8,6 +8,7 @@ from .match_phrase import MatchPhraseQueryBackend
 from .match_phrase_prefix import MatchPhrasePrefixQueryBackend
 from .multi_match import MultiMatchQueryBackend
 from .nested import NestedQueryBackend
+from .simple_query_string import SimpleQueryStringQueryBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search.' \
             'query_backends'
@@ -21,4 +22,5 @@ __all__ = (
     'MatchPhrasePrefixQueryBackend',
     'MultiMatchQueryBackend',
     'NestedQueryBackend',
+    'SimpleQueryStringQueryBackend',
 )

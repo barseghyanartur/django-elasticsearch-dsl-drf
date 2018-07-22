@@ -15,6 +15,12 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.13
+----
+yyyy-mm-dd (not released yet)
+
+- ``SimpleQueryStringSearchFilterBackend`` is implemented.
+
 0.12
 ----
 2018-07-21

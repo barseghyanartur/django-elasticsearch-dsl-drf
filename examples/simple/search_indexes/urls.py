@@ -12,6 +12,7 @@ from .viewsets import (
     BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
+    BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
     CityCompoundSearchBackendDocumentViewSet,
     CityDocumentViewSet,
     PublisherDocumentViewSet,
@@ -21,18 +22,27 @@ __all__ = ('urlpatterns',)
 
 router = DefaultRouter()
 
+# **********************************************************
+# *********************** Addresses ************************
+# **********************************************************
 addresses = router.register(
     r'addresses',
     AddressDocumentViewSet,
     base_name='addressdocument'
 )
 
+# **********************************************************
+# ************************* Authors ************************
+# **********************************************************
 authors = router.register(
     r'authors',
     AuthorDocumentViewSet,
     base_name='authordocument'
 )
 
+# **********************************************************
+# ************************** Books *************************
+# **********************************************************
 books = router.register(
     r'books',
     BookDocumentViewSet,
@@ -75,7 +85,7 @@ books_compound_search_backend_ordered_by_score = router.register(
     base_name='bookdocument_compound_search_backend_ordered_by_score'
 )
 
-books_multi_match_backend_ordered_by_score = router.register(
+books_multi_match_backend = router.register(
     r'books-multi-match-search-backend',
     BookMultiMatchSearchFilterBackendDocumentViewSet,
     base_name='bookdocument_multi_match_search_backend'
@@ -86,6 +96,16 @@ books_multi_match_phrase_prefix_backend_ordered_by_score = router.register(
     BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
     base_name='bookdocument_multi_match_phrase_prefix_search_backend'
 )
+
+books_simple_query_string_backend = router.register(
+    r'books-simple-query-string-search-backend',
+    BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
+    base_name='bookdocument_simple_query_string_search_backend'
+)
+
+# **********************************************************
+# ************************* Cities *************************
+# **********************************************************
 
 cities = router.register(
     r'cities',
@@ -99,11 +119,19 @@ cities_compound_search_backend = router.register(
     base_name='citydocument_compound_search_backend'
 )
 
+# **********************************************************
+# *********************** Publishers ***********************
+# **********************************************************
+
 publishers = router.register(
     r'publishers',
     PublisherDocumentViewSet,
     base_name='publisherdocument'
 )
+
+# **********************************************************
+# ********************** URL patterns **********************
+# **********************************************************
 
 urlpatterns = [
     url(r'^', include(router.urls)),

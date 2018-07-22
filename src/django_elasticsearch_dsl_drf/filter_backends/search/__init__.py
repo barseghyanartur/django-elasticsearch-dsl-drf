@@ -6,7 +6,7 @@ from .base import BaseSearchFilterBackend
 from .compound import CompoundSearchFilterBackend
 from .historical import SearchFilterBackend
 from .multi_match import MultiMatchSearchFilterBackend
-
+from .simple_query_string import SimpleQueryStringSearchFilterBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -17,4 +17,5 @@ __all__ = (
     'CompoundSearchFilterBackend',
     'MultiMatchSearchFilterBackend',
     'SearchFilterBackend',
+    'SimpleQueryStringSearchFilterBackend',
 )

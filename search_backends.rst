@@ -34,7 +34,7 @@ Sample view
             # ...
         ]
 
-        search_fields = (
+        multi_match_search_fields = (
             'title',
             'description',
             'summary',
@@ -126,7 +126,7 @@ Sample view
             # ...
         ]
 
-        search_fields = {
+        multi_match_search_fields = {
             'title': {'boost': 4},
             'summary': {'boost': 2},
             'description': None,
@@ -212,3 +212,215 @@ for detailed explanation.
 Operator options
 ^^^^^^^^^^^^^^^^
 Can be either ``and`` or ``or``.
+
+Simple query string
+---------------------------------
+Document and serializer definition are trivial (there are lots of examples
+in other sections).
+
+Sample view
+~~~~~~~~~~~
+
+.. code-block:: python
+
+    from django_elasticsearch_dsl_drf.filter_backends import (
+        DefaultOrderingFilterBackend,
+        SimpleQueryStringSearchFilterBackend,
+        OrderingFilterBackend,
+    )
+    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+
+    from .documents import BookDocument
+    from .serializers import BookDocumentSerializer
+
+
+    class BookSimpleQueryStringSearchFilterBackendDocumentViewSet(DocumentViewSet):
+
+        document = BookDocument
+        serializer_class = BookDocumentSerializer
+        lookup_field = 'id'
+
+        filter_backends = [
+            # ...
+            OrderingFilterBackend,
+            DefaultOrderingFilterBackend,
+            SimpleQueryStringSearchFilterBackend,
+            # ...
+        ]
+
+        simple_query_string_search_fields = {
+            'title': {'boost': 4},
+            'summary': {'boost': 2},
+            'description': None,
+        }
+
+        ordering = ('_score', 'id', 'title', 'price',)
+
+Sample request 1
+~~~~~~~~~~~~~~~~
+.. note::
+
+    Multiple search params (`search_simple_query_string`) are not supported.
+    Even if you provide multiple search params, the first one would be picked,
+    having the rest simply ignored.
+
+.. code-block:: text
+
+    http://localhost:8000/search/books-simple-query-string-search-backend/?search_simple_query_string="chapter%20II"%20%2Bfender
+
+Generated query 1
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: javascript
+
+    {
+      "query": {
+        "simple_query_string": {
+          "query": "\"chapter II\" +fender",
+          "default_operator": "and",
+          "fields": [
+            "title",
+            "description",
+            "summary"
+          ]
+        }
+      },
+      "sort": [
+        "_score",
+        "id",
+        "title",
+        "price"
+      ],
+      "from": 0,
+      "size": 1
+    }
+
+Sample request 2
+~~~~~~~~~~~~~~~~
+.. note::
+
+    Multiple search params (`search_simple_query_string`) are not supported.
+    Even if you provide multiple search params, the first one would be picked,
+    having the rest simply ignored.
+
+.. code-block:: text
+
+    http://localhost:8000/search/books-simple-query-string-search-backend/?search_simple_query_string="chapter%20II"%20%2B(shutting%20|%20fender)
+
+Generated query 2
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: javascript
+
+    {
+      "query": {
+        "simple_query_string": {
+          "query": "\"chapter II\" +(shutting | fender)",
+          "default_operator": "and",
+          "fields": [
+            "title",
+            "description",
+            "summary"
+          ]
+        }
+      },
+      "sort": [
+        "_score",
+        "id",
+        "title",
+        "price"
+      ],
+      "from": 0,
+      "size": 2
+    }
+
+
+Sample request 3
+~~~~~~~~~~~~~~~~
+.. note::
+
+    Multiple search params (`search_simple_query_string`) are not supported.
+    Even if you provide multiple search params, the first one would be picked,
+    having the rest simply ignored.
+
+.. code-block:: text
+
+    http://localhost:8000/search/books-simple-query-string-search-backend/?search_simple_query_string=%22Pool%20of%20Tears%22%20-considering
+
+Generated query 3
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: javascript
+
+    {
+      "query": {
+        "simple_query_string": {
+          "query": "\"Pool of Tears\" -considering",
+          "default_operator": "and",
+          "fields": [
+            "title",
+            "description",
+            "summary"
+          ]
+        }
+      },
+      "sort": [
+        "_score",
+        "id",
+        "title",
+        "price"
+      ],
+      "highlight": {
+        "fields": {
+          "title": {
+            "pre_tags": [
+              "<b>"
+            ],
+            "post_tags": [
+              "</b>"
+            ]
+          }
+        }
+      },
+      "aggs": {
+        "_filter_publisher": {
+          "aggs": {
+            "publisher": {
+              "terms": {
+                "field": "publisher.raw"
+              }
+            }
+          },
+          "filter": {
+            "match_all": {}
+          }
+        }
+      },
+      "from": 0,
+      "size": 1
+    }
+
+Options
+~~~~~~~
+All standard multi match query options are available/tunable with help of
+``simple_query_string_options`` view property.
+
+Selective list of available options:
+
+- default_operator
+
+Default Operator options
+^^^^^^^^^^^^^^^^^^^^^^^^
+Can be either ``and`` or ``or``.
+
+**Example**
+
+.. code-block:: python
+
+    class BookSimpleQueryStringSearchFilterBackendDocumentViewSet(DocumentViewSet):
+
+        # ...
+
+        simple_query_string_options = {
+            "default_operator": "and",
+        }

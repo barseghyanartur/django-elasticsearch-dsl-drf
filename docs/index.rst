@@ -56,7 +56,8 @@ Main features and highlights
 - :doc:`Functional suggester filter backend <advanced_usage_examples>`.
 - :doc:`Pagination (Page number and limit/offset pagination) <advanced_usage_examples>`.
 - :doc:`Ids filter backend <advanced_usage_examples>`.
-- Multi match search filter backend.
+- :doc:`Multi match search filter backend <search_backends>`.
+- :doc:`Simple search query search filter backend <search_backends>`.
 
 Installation
 ============

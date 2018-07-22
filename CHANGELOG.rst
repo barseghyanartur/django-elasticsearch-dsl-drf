@@ -17,9 +17,10 @@ are used for versioning (schema follows below):
 
 0.13
 ----
-yyyy-mm-dd (not released yet)
+2018-07-22
 
-- ``SimpleQueryStringSearchFilterBackend`` is implemented.
+- The ``SimpleQueryStringSearchFilterBackend`` backend has been implemented.
+- Minor fixes in ``MultiMatchSearchFilterBackend`` backend.
 
 0.12
 ----

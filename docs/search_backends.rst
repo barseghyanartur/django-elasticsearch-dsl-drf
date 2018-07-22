@@ -213,8 +213,8 @@ Operator options
 ^^^^^^^^^^^^^^^^
 Can be either ``and`` or ``or``.
 
-Simple query string
----------------------------------
+Simple query string filter backend
+----------------------------------
 Document and serializer definition are trivial (there are lots of examples
 in other sections).
 

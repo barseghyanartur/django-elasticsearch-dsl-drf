@@ -13,14 +13,14 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 from .default import BookDocumentViewSet
 
 __all__ = (
-    'BookSimpleQueryStringSearchFilterBackendDocumentViewSet',
+    'BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet',
 )
 
 
-class BookSimpleQueryStringSearchFilterBackendDocumentViewSet(
+class BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet(
     BookDocumentViewSet
 ):
-    """Same as BookDocumentViewSet, but simple query string."""
+    """Same as BookDocumentViewSet, but simple query string and boost."""
 
     filter_backends = [
         FilteringFilterBackend,
@@ -34,8 +34,8 @@ class BookSimpleQueryStringSearchFilterBackendDocumentViewSet(
         SuggesterFilterBackend,
     ]
 
-    # Using traditional search_fields here.
-    search_fields = {
+    # Using dedicated search fields here
+    simple_query_string_search_fields = {
         'title': None,
         'summary': None,
         'description': None,

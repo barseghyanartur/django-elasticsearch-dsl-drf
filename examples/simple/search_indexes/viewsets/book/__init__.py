@@ -15,3 +15,6 @@ from .ordering_by_score_compound_search import (
 from .simple_query_string import (
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
 )
+from .simple_query_string_boost import (
+    BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
+)

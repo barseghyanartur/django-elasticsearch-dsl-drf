@@ -124,8 +124,8 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
         cls.backend = SimpleQueryStringSearchFilterBackend()
         cls.view = BookSimpleQueryStringSearchFilterBackendDocumentViewSet()
 
-    def _search_by_field(self, search_term, num_results, url=None):
-        """Search by field."""
+    def _search(self, search_term, num_results, url=None):
+        """Search."""
         self.authenticate()
 
         if url is None:
@@ -194,31 +194,31 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
             result_item = filtered_response.data['results'][counter]
             self.assertEqual(result_item['id'], item_id)
 
-    def test_search_by_field(self, url=None):
+    def test_search(self, url=None):
         """Search by field."""
         # Search for: Pig and Pepper
-        self._search_by_field(
+        self._search(
             search_term='Pig and Pepper',
             num_results=2,
             url=url
         )
 
         # Search for: "Pig and Pepper"
-        self._search_by_field(
+        self._search(
             search_term='"Pig and Pepper"',
             num_results=1,
             url=url
         )
 
         # Search for: "Pool of Tears"
-        self._search_by_field(
+        self._search(
             search_term='"Pool of Tears"',
             num_results=3,
             url=url
         )
 
         # Search for: "Pool of Tears" -considering
-        self._search_by_field(
+        self._search(
             search_term='"Pool of Tears" -considering',
             num_results=1,
             url=url
@@ -226,7 +226,7 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
 
         # Search for: "chapter II" +fender. Note, that `%2B` stands for `+`
         # symbol in the URL.
-        self._search_by_field(
+        self._search(
             search_term='"chapter II" %2Bfender',
             num_results=1,
             url=url
@@ -234,7 +234,7 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
 
         # Search for: "chapter II" +shutting. Note, that `%2B` stands for `+`
         # symbol in the URL.
-        self._search_by_field(
+        self._search(
             search_term='"chapter II" %2Bshutting',
             num_results=1,
             url=url
@@ -242,77 +242,136 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
 
         # Search for: "chapter II" +(shutting | fender). Note, that `%2B`
         # stands for `+` symbol in the URL.
-        self._search_by_field(
+        self._search(
             search_term='"chapter II" %2B(shutting | fender)',
             num_results=2,
             url=url
         )
 
-    # def test_search_boost(self, url=None):
-    #     """Search boost.
-    #
-    #     :return:
-    #     """
-    #     # Search for "The Pool of Tears"
-    #     self._search_boost(
-    #         search_term="The Pool of Tears",
-    #         ordering=[
-    #             self.non_lorem[0].pk,
-    #             self.non_lorem[1].pk,
-    #             self.non_lorem[2].pk,
-    #         ],
-    #         url=url
-    #     )
-    #
-    #     # Search for "Pig and Pepper"
-    #     self._search_boost(
-    #         search_term="Pig and Pepper",
-    #         ordering=[
-    #             self.non_lorem[3].pk,
-    #         ],
-    #         url=url
-    #     )
-    #
-    #     # Search for "and Pepper"
-    #     self._search_boost(
-    #         search_term="and Pepper",
-    #         ordering=[
-    #             self.non_lorem[3].pk,
-    #             self.non_lorem[4].pk,
-    #             self.non_lorem[5].pk,
-    #         ],
-    #         url=url
-    #     )
-    #
-    #     # Search for "Who Stole the Tarts"
-    #     self._search_boost(
-    #         search_term="Who Stole the Tarts",
-    #         ordering=[
-    #             self.non_lorem[6].pk,
-    #         ],
-    #         url=url
-    #     )
-    #
-    #     # Search for "Stole the Tarts"
-    #     self._search_boost(
-    #         search_term="Stole the Tarts",
-    #         ordering=[
-    #             self.non_lorem[6].pk,
-    #             self.non_lorem[7].pk,
-    #         ],
-    #         url=url
-    #     )
-    #
-    #     # Search for "the Tarts"
-    #     self._search_boost(
-    #         search_term="the Tarts",
-    #         ordering=[
-    #             self.non_lorem[6].pk,
-    #             self.non_lorem[7].pk,
-    #             self.non_lorem[8].pk,
-    #         ],
-    #         url=url
-    #     )
+    def test_search_boost(self, url=None):
+        """Search boost.
+
+        :return:
+        """
+        # Search for: Pig and Pepper
+        self._search_boost(
+            search_term='Pig and Pepper',
+            ordering=[
+                self.non_lorem[3].pk,
+                self.non_lorem[4].pk,
+            ],
+            url=url
+        )
+
+        # Search for: "Pig and Pepper"
+        self._search_boost(
+            search_term='"Pig and Pepper"',
+            ordering=[
+                self.non_lorem[3].pk,
+            ],
+            url=url
+        )
+
+        # Search for: "Pool of Tears"
+        self._search_boost(
+            search_term='"Pool of Tears"',
+            ordering=[
+                self.non_lorem[0].pk,
+                self.non_lorem[1].pk,
+                self.non_lorem[2].pk,
+            ],
+            url=url
+        )
+
+        # Search for: "Pool of Tears" -considering
+        self._search_boost(
+            search_term='"Pool of Tears" -considering',
+            ordering=[
+                self.non_lorem[0].pk,
+            ],
+            url=url
+        )
+
+        # Search for: "chapter II" +fender. Note, that `%2B` stands for `+`
+        self._search_boost(
+            search_term='"chapter II" %2Bfender',
+            ordering=[
+                self.non_lorem[2].pk,
+            ],
+            url=url
+        )
+
+        # Search for: "chapter II" +shutting. Note, that `%2B` stands for `+`
+        # symbol in the URL.
+        self._search_boost(
+            search_term='"chapter II" %2Bshutting',
+            ordering=[
+                self.non_lorem[1].pk,
+            ],
+            url=url
+        )
+
+        # Search for: "chapter II" +(shutting | fender). Note, that `%2B`
+        # stands for `+` symbol in the URL.
+        self._search_boost(
+            search_term='"chapter II" %2B(shutting | fender)',
+            ordering=[
+                self.non_lorem[2].pk,
+                self.non_lorem[1].pk,
+            ],
+            url=url
+        )
+
+    def test_search_alternative(self, url=None):
+        """Test search by field.
+
+        :param url:
+        :return:
+        """
+        url = reverse(
+            'bookdocument_simple_query_string_boost_search_backend-list',
+            kwargs={}
+        )
+        return self.test_search(url)
+
+    def test_search_boost_alternative(self, url=None):
+        """Search boost.
+
+        :return:
+        """
+        url = reverse(
+            'bookdocument_simple_query_string_boost_search_backend-list',
+            kwargs={}
+        )
+        return self.test_search_boost(url)
+
+    def test_search_selected_fields(self, url=None):
+        """Search boost.
+
+        :return:
+        """
+        # Search for: "chapter II" +fender. Note, that `%2B` stands for `+`
+        # symbol in the URL.
+        self._search(
+            search_term='title,summary:"Pool of Tears"',
+            num_results=2,
+            url=url
+        )
+
+    def test_search_boost_selected_fields(self, url=None):
+        """Search boost.
+
+        :return:
+        """
+        # Search for (only in `title` and `summary`): "Pool of Tears"
+        self._search_boost(
+            search_term='title,summary:"Pool of Tears"',
+            ordering=[
+                self.non_lorem[0].pk,
+                self.non_lorem[1].pk,
+            ],
+            url=url
+        )
 
     @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
                      CORE_API_AND_CORE_SCHEMA_MISSING_MSG)

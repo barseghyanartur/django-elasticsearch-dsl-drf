@@ -11,6 +11,7 @@ from .book import (
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
+    BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
 )
 from .city import CityDocumentViewSet, CityCompoundSearchBackendDocumentViewSet
 from .publisher import PublisherDocumentViewSet
@@ -28,6 +29,7 @@ __all__ = (
     'BookOrderingByScoreCompoundSearchBackendDocumentViewSet',
     'BookOrderingByScoreDocumentViewSet',
     'BookSimpleQueryStringSearchFilterBackendDocumentViewSet',
+    'BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet',
     'CityCompoundSearchBackendDocumentViewSet',
     'CityDocumentViewSet',
     'PublisherDocumentViewSet',

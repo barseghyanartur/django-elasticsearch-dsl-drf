@@ -116,6 +116,7 @@ class SimpleQueryStringQueryBackend(BaseSearchQueryBackend):
         for search_term in query_params[:1]:
             __values = search_backend.split_lookup_name(search_term, 1)
             __len_values = len(__values)
+            __search_term = search_term
 
             query_fields = []
 
@@ -123,7 +124,10 @@ class SimpleQueryStringQueryBackend(BaseSearchQueryBackend):
             # /search/books/?search_multi_match=title,summary:lorem ipsum
             if __len_values > 1:
                 _field, value = __values
-                fields = cls.split_lookup_complex_multiple_value(_field)
+                __search_term = value
+                fields = search_backend.split_lookup_complex_multiple_value(
+                    _field
+                )
                 for field in fields:
                     if field in view_search_fields:
                         if __is_complex:
@@ -152,7 +156,7 @@ class SimpleQueryStringQueryBackend(BaseSearchQueryBackend):
             __queries.append(
                 Q(
                     cls.query_type,
-                    query=search_term,
+                    query=__search_term,
                     fields=query_fields,
                     **cls.get_query_options(request, view, search_backend)
                 )

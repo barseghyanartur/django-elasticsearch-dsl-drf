@@ -31,6 +31,7 @@ __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestSuggesters',
+    'TestSuggestersEmptyIndex',
 )
 
 
@@ -312,6 +313,33 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
             }
         }
         self._test_suggesters(test_data, self.addresses_suggest_url)
+
+
+@pytest.mark.django_db
+class TestSuggestersEmptyIndex(BaseRestFrameworkTestCase, AddressesMixin):
+    """Test suggesters on empty index."""
+
+    pytestmark = pytest.mark.django_db
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up class."""
+        cls.authors_url = reverse(
+            'authordocument-suggest',
+            kwargs={}
+        )
+        # Suggest on empty index
+        call_command('search_index', '--delete', '-f')
+        call_command('search_index', '--create', '-f')
+
+    def test_suggesters_on_empty_index(self):
+        """Test suggesters phrase."""
+        response = self.client.get(
+            self.authors_url + '?name_suggest__completion=Ad',
+            {}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(bool(response.data))
 
 
 if __name__ == '__main__':

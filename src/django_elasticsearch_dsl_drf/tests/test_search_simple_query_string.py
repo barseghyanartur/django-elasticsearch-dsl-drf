@@ -20,6 +20,7 @@ from search_indexes.viewsets import (
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet
 )
 from ..filter_backends import SimpleQueryStringSearchFilterBackend
+from ..versions import ELASTICSEARCH_GTE_6_0
 
 from .base import (
     BaseRestFrameworkTestCase,
@@ -194,15 +195,8 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
             result_item = filtered_response.data['results'][counter]
             self.assertEqual(result_item['id'], item_id)
 
-    def test_search(self, url=None):
-        """Search by field."""
-        # Search for: Pig and Pepper
-        self._search(
-            search_term='Pig and Pepper',
-            num_results=2,
-            url=url
-        )
-
+    def test_search_with_quotes(self, url=None):
+        """Search with quotes."""
         # Search for: "Pig and Pepper"
         self._search(
             search_term='"Pig and Pepper"',
@@ -248,21 +242,25 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-    def test_search_boost(self, url=None):
+    @unittest.skipIf(condition=ELASTICSEARCH_GTE_6_0, reason="")
+    def test_search_without_quotes(self, url):
+        """Test search without quotes. This does not work on Elasticsearch 6.x.
+
+        :param url:
+        :return:
+        """
+        # Search for: Pig and Pepper
+        self._search(
+            search_term='Pig and Pepper',
+            num_results=2,
+            url=url
+        )
+
+    def test_search_with_quotes_boost(self, url=None):
         """Search boost.
 
         :return:
         """
-        # Search for: Pig and Pepper
-        self._search_boost(
-            search_term='Pig and Pepper',
-            ordering=[
-                self.non_lorem[3].pk,
-                self.non_lorem[4].pk,
-            ],
-            url=url
-        )
-
         # Search for: "Pig and Pepper"
         self._search_boost(
             search_term='"Pig and Pepper"',
@@ -322,7 +320,23 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-    def test_search_alternative(self, url=None):
+    @unittest.skipIf(condition=ELASTICSEARCH_GTE_6_0, reason="")
+    def test_search_without_quotes_boost(self, url=None):
+        """Search boost without quotes. Does not work on Elasticsearch 6.x.
+
+        :return:
+        """
+        # Search for: Pig and Pepper
+        self._search_boost(
+            search_term='Pig and Pepper',
+            ordering=[
+                self.non_lorem[3].pk,
+                self.non_lorem[4].pk,
+            ],
+            url=url
+        )
+
+    def test_search_with_quotes_alternative(self, url=None):
         """Test search by field.
 
         :param url:
@@ -332,9 +346,9 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
             'bookdocument_simple_query_string_boost_search_backend-list',
             kwargs={}
         )
-        return self.test_search(url)
+        return self.test_search_with_quotes(url)
 
-    def test_search_boost_alternative(self, url=None):
+    def test_search_with_quotes_boost_alternative(self, url=None):
         """Search boost.
 
         :return:
@@ -343,7 +357,7 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
             'bookdocument_simple_query_string_boost_search_backend-list',
             kwargs={}
         )
-        return self.test_search_boost(url)
+        return self.test_search_with_quotes_boost(url)
 
     def test_search_selected_fields(self, url=None):
         """Search boost.

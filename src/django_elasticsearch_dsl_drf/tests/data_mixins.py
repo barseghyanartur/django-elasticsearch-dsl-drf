@@ -167,6 +167,8 @@ class BooksMixin(object):
             }
         )
 
+        cls.rejected_count = cls.prefix_count + cls.no_tags_count
+
         cls.all_count = (
             cls.published_count +
             cls.in_progress_count +

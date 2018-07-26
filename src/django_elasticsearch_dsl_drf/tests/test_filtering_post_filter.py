@@ -515,7 +515,7 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
         no_args_response = self.client.get(url, data)
         self.assertEqual(no_args_response.status_code, status.HTTP_200_OK)
 
-        # Should contain 20 results
+        # Should contain `self.all_count` results
         self.assertEqual(len(no_args_response.data['results']), self.all_count)
 
         # Should contain 1 facets
@@ -529,13 +529,19 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
         facet_state_response = self.client.get(facet_state_url, data)
         self.assertEqual(facet_state_response.status_code, status.HTTP_200_OK)
 
-        # Should contain 20 results
+        # Should contain `self.all_count` results
         self.assertEqual(
             len(facet_state_response.data['results']), self.all_count
         )
 
         # Should contain 2 facets
         self.assertEqual(len(facet_state_response.data['facets']), 2)
+        # With 3 statuses
+        self.assertEqual(
+            len(facet_state_response.data['facets']
+                ['_filter_state']['state']['buckets']),
+            3
+        )
 
         self.assertIn('_filter_publisher', facet_state_response.data['facets'])
         self.assertIn(
@@ -591,10 +597,10 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
         # ******************* With facets filtered response ****************
         # ******************************************************************
 
-        facet_state_filered_url = url + '?facet=state&state=published'
+        facet_state_filtered_url = url + '?facet=state&state_pf=published'
         # Make request
         facet_state_filtered_response = self.client.get(
-            facet_state_filered_url,
+            facet_state_filtered_url,
             data
         )
         self.assertEqual(
@@ -602,7 +608,7 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
             status.HTTP_200_OK
         )
 
-        # Should contain 20 results
+        # Should contain `self.published_count` results
         self.assertEqual(
             len(facet_state_filtered_response.data['results']),
             self.published_count
@@ -610,11 +616,17 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
 
         # Should contain 2 facets
         self.assertEqual(len(facet_state_filtered_response.data['facets']), 2)
+        # With 3 statuses
+        self.assertEqual(
+            len(facet_state_filtered_response.data['facets']
+                ['_filter_state']['state']['buckets']),
+            3
+        )
 
         # Still same facets
         self.assertIn(
             {
-                "doc_count": 10,
+                "doc_count": self.published_count,
                 "key": "published"
             },
             facet_state_response.data['facets']
@@ -624,7 +636,7 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
         )
         self.assertIn(
             {
-                "doc_count": 10,
+                "doc_count": self.in_progress_count,
                 "key": "in_progress"
             },
             facet_state_response.data['facets']
@@ -634,7 +646,7 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
         )
         self.assertIn(
             {
-                "doc_count": 7,
+                "doc_count": self.rejected_count,
                 "key": "rejected"
             },
             facet_state_response.data['facets']

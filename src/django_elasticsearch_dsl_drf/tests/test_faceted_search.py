@@ -41,7 +41,7 @@ class TestFacetedSearch(BaseRestFrameworkTestCase):
 
     @classmethod
     def setUp(cls):
-        cls.published_count = 10
+        cls.published_count = 11
         cls.published = factories.BookFactory.create_batch(
             cls.published_count,
             **{
@@ -72,7 +72,7 @@ class TestFacetedSearch(BaseRestFrameworkTestCase):
         no_args_response = self.client.get(url, data)
         self.assertEqual(no_args_response.status_code, status.HTTP_200_OK)
 
-        # Should contain 20 results
+        # Should contain `self.all_count` results
         self.assertEqual(len(no_args_response.data['results']), self.all_count)
 
         # Should contain 1 facets
@@ -82,13 +82,19 @@ class TestFacetedSearch(BaseRestFrameworkTestCase):
         facet_state_response = self.client.get(facet_state_url, data)
         self.assertEqual(facet_state_response.status_code, status.HTTP_200_OK)
 
-        # Should contain 20 results
+        # Should contain `self.all_count` results
         self.assertEqual(
             len(facet_state_response.data['results']), self.all_count
         )
 
         # Should contain 2 facets
         self.assertEqual(len(facet_state_response.data['facets']), 2)
+        # With 2 state values
+        self.assertEqual(
+            len(facet_state_response.data['facets']
+                ['_filter_state']['state']['buckets']),
+            2
+        )
 
         self.assertIn('_filter_publisher', facet_state_response.data['facets'])
         self.assertIn(
@@ -111,7 +117,7 @@ class TestFacetedSearch(BaseRestFrameworkTestCase):
         # )
         self.assertIn(
             {
-                "doc_count": 10,
+                "doc_count": self.published_count,
                 "key": "published"
             },
             facet_state_response.data['facets']
@@ -121,7 +127,7 @@ class TestFacetedSearch(BaseRestFrameworkTestCase):
         )
         self.assertIn(
             {
-                "doc_count": 10,
+                "doc_count": self.not_published_count,
                 "key": "not_published"
             },
             facet_state_response.data['facets']
@@ -129,6 +135,28 @@ class TestFacetedSearch(BaseRestFrameworkTestCase):
             ['state']
             ['buckets']
         )
+
+        filtered_facet_state_url = url + '?facet=state&state={}'.format(
+            constants.BOOK_PUBLISHING_STATUS_PUBLISHED
+        )
+        # Make request
+        facet_state_response = self.client.get(filtered_facet_state_url, data)
+        self.assertEqual(facet_state_response.status_code, status.HTTP_200_OK)
+
+        # Should contain `self.all_count` results
+        self.assertEqual(
+            len(facet_state_response.data['results']), self.published_count
+        )
+
+        # Should contain 2 facets
+        self.assertEqual(len(facet_state_response.data['facets']), 2)
+        # With 1 state values
+        self.assertEqual(
+            len(facet_state_response.data['facets']
+                ['_filter_state']['state']['buckets']),
+            1
+        )
+
 
     def test_list_results_with_facets(self):
         """Test list results with facets."""

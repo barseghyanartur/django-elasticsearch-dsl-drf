@@ -963,7 +963,7 @@ Required imports
 .. code-block:: python
 
     from django.conf.urls import url, include
-    from rest_framework_extensions.routers import ExtendedDefaultRouter
+    from rest_framework.routers import DefaultRouter
 
     from .views import BookDocumentView
 
@@ -974,7 +974,7 @@ Router definition
 
 .. code-block:: python
 
-    router = ExtendedDefaultRouter()
+    router = DefaultRouter()
     books = router.register(r'books',
                             BookDocumentView,
                             base_name='bookdocument')

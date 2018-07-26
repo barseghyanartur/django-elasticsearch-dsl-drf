@@ -243,7 +243,7 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
         )
 
     @unittest.skipIf(condition=ELASTICSEARCH_GTE_6_0, reason="")
-    def test_search_without_quotes(self, url):
+    def test_search_without_quotes(self, url=None):
         """Test search without quotes. This does not work on Elasticsearch 6.x.
 
         :param url:
@@ -336,7 +336,7 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-    def test_search_with_quotes_alternative(self, url=None):
+    def test_search_with_quotes_alternative(self):
         """Test search by field.
 
         :param url:
@@ -348,7 +348,7 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
         )
         return self.test_search_with_quotes(url)
 
-    def test_search_with_quotes_boost_alternative(self, url=None):
+    def test_search_with_quotes_boost_alternative(self):
         """Search boost.
 
         :return:

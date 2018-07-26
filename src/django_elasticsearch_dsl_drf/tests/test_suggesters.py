@@ -339,7 +339,7 @@ class TestSuggestersEmptyIndex(BaseRestFrameworkTestCase, AddressesMixin):
             {}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse(bool(response.data))
+        self.assertFalse(bool(response.data.get('name_suggest__completion')))
 
 
 if __name__ == '__main__':

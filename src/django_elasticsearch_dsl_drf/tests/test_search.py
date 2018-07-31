@@ -17,6 +17,7 @@ from rest_framework import status
 from books import constants
 import factories
 from search_indexes.viewsets import BookDocumentViewSet
+from ..constants import SEPARATOR_LOOKUP_NAME
 from ..filter_backends import SearchFilterBackend
 
 from .base import (
@@ -122,7 +123,11 @@ class TestSearch(BaseRestFrameworkTestCase):
         cls.backend = SearchFilterBackend()
         cls.view = BookDocumentViewSet()
 
-    def _search_by_field(self, search_term, num_results, url=None):
+    def _search_by_field(self,
+                         search_term,
+                         num_results,
+                         url=None,
+                         search_field='search'):
         """Search by field."""
         self.authenticate()
 
@@ -135,18 +140,29 @@ class TestSearch(BaseRestFrameworkTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), self.all_count)
 
-        # Should contain only 10 results
-        filtered_response = self.client.get(
-            url + '?search={}'.format(search_term),
-            data
-        )
+        if isinstance(search_term, (list, tuple)):
+            _query_string = []
+            for _search_term in search_term:
+                _query_string.append(
+                    '{}={}'.format(search_field, _search_term)
+                )
+            filtered_url = url + '?' + '&'.join(_query_string)
+        else:
+            # Should contain only `num_results` results
+            filtered_url = url + '?search={}'.format(search_term)
+
+        filtered_response = self.client.get(filtered_url, data)
         self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
         self.assertEqual(
             len(filtered_response.data['results']),
             num_results
         )
 
-    def _search_boost(self, search_term, ordering, url=None):
+    def _search_boost(self,
+                      search_term,
+                      ordering,
+                      url=None,
+                      search_field='search'):
         """Search boost.
 
         In our book view, we have the following defined:
@@ -176,7 +192,7 @@ class TestSearch(BaseRestFrameworkTestCase):
         data = {}
 
         filtered_response = self.client.get(
-            url + '?search={}'.format(search_term),
+            url + '?{}={}'.format(search_field, search_term),
             data
         )
         self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
@@ -185,7 +201,7 @@ class TestSearch(BaseRestFrameworkTestCase):
             result_item = filtered_response.data['results'][counter]
             self.assertEqual(result_item['id'], item_id)
 
-    def test_search_boost(self, url=None):
+    def test_search_boost(self, url=None, search_field='search'):
         """Search boost.
 
         :return:
@@ -198,7 +214,8 @@ class TestSearch(BaseRestFrameworkTestCase):
                 self.non_lorem[1].pk,
                 self.non_lorem[2].pk,
             ],
-            url=url
+            url=url,
+            search_field=search_field
         )
 
         # Search for "Pig and Pepper"
@@ -209,7 +226,8 @@ class TestSearch(BaseRestFrameworkTestCase):
                 self.non_lorem[4].pk,
                 self.non_lorem[5].pk,
             ],
-            url=url
+            url=url,
+            search_field=search_field
         )
 
         # Search for "Who Stole the Tarts"
@@ -220,17 +238,21 @@ class TestSearch(BaseRestFrameworkTestCase):
                 self.non_lorem[7].pk,
                 self.non_lorem[8].pk,
             ],
-            url=url
+            url=url,
+            search_field=search_field
         )
 
-    def test_search_boost_compound(self):
+    def test_search_boost_compound(self, search_field='search'):
         url = reverse(
             'bookdocument_compound_search_backend_ordered_by_score-list',
             kwargs={}
         )
-        return self.test_search_boost(url=url)
+        return self.test_search_boost(url=url, search_field=search_field)
 
-    def _search_by_nested_field(self, search_term, url=None):
+    def _search_by_nested_field(self,
+                                search_term,
+                                url=None,
+                                search_field='search'):
         """Search by field."""
         self.authenticate()
 
@@ -246,7 +268,7 @@ class TestSearch(BaseRestFrameworkTestCase):
 
         # Should contain only 10 results
         filtered_response = self.client.get(
-            url + '?search={}'.format(search_term),
+            url + '?{}={}'.format(search_field, search_term),
             data
         )
         self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
@@ -255,24 +277,59 @@ class TestSearch(BaseRestFrameworkTestCase):
             self.switz_cities_count
         )
 
-    def test_search_by_field(self, url=None):
+    def test_search_by_field(self, url=None, search_field='search'):
         """Search by field."""
-        return self._search_by_field(
+        self._search_by_field(
             search_term='photography',
             num_results=self.special_count,
-            url=url
+            url=url,
+            search_field=search_field
+        )
+        self._search_by_field(
+            search_term='summary{}photography'.format(SEPARATOR_LOOKUP_NAME),
+            num_results=self.special_count,
+            url=url,
+            search_field=search_field
+        )
+
+    def test_search_by_field_multi_terms(self,
+                                         url=None,
+                                         search_field='search'):
+        """Search by field, multiple terms."""
+        self._search_by_field(
+            search_term=['photography', 'art'],
+            num_results=self.special_count,
+            url=url,
+            search_field=search_field
+        )
+        self._search_by_field(
+            search_term=[
+                'summary{}photography'.format(SEPARATOR_LOOKUP_NAME),
+                'summary{}art'.format(SEPARATOR_LOOKUP_NAME)
+            ],
+            num_results=self.special_count,
+            url=url,
+            search_field=search_field
         )
 
     def test_compound_search_by_field(self):
         url = reverse('bookdocument_compound_search_backend-list', kwargs={})
-        return self.test_search_by_field(url=url)
+        self.test_search_by_field(url=url)
+
+    def test_compound_search_by_field_multi_terms(self):
+        url = reverse('bookdocument_compound_search_backend-list', kwargs={})
+        return self.test_search_by_field_multi_terms(url=url)
 
     def test_search_by_nested_field(self, url=None):
         """Search by field."""
-        return self._search_by_nested_field(
+        self._search_by_nested_field(
             'Wonderland',
             url=url
         )
+        # self._search_by_nested_field(
+        #     'name{}Wonderland'.format(SEPARATOR_LOOKUP_NAME),
+        #     url=url
+        # )
 
     def test_compound_search_by_nested_field(self):
         url = reverse('citydocument_compound_search_backend-list', kwargs={})

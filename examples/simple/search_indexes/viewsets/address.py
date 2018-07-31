@@ -136,6 +136,9 @@ class AddressDocumentViewSet(DocumentViewSet):
         'city': {
             'field': 'city.name.raw',
             'enabled': True,
+            'options': {
+                'min_doc_count': 0,
+            }
         },
         'country': {
             'field': 'city.country.name.raw',

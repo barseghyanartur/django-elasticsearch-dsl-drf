@@ -2,6 +2,7 @@ from .address import AddressDocumentViewSet
 from .author import AuthorDocumentViewSet
 from .book import (
     BookCompoundSearchBackendDocumentViewSet,
+    BookCompoundSearchBoostSearchBackendDocumentViewSet,
     BookDefaultFilterLookupDocumentViewSet,
     BookDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
@@ -20,6 +21,7 @@ __all__ = (
     'AddressDocumentViewSet',
     'AuthorDocumentViewSet',
     'BookCompoundSearchBackendDocumentViewSet',
+    'BookCompoundSearchBoostSearchBackendDocumentViewSet',
     'BookDefaultFilterLookupDocumentViewSet',
     'BookDocumentViewSet',
     'BookFunctionalSuggesterDocumentViewSet',

@@ -5,6 +5,7 @@ Test wrappers.
 
 from __future__ import absolute_import, unicode_literals
 
+import json
 import unittest
 
 import pytest
@@ -84,3 +85,18 @@ class TestWrappers(unittest.TestCase):
         wrapper = dict_to_obj(self.mapping)
         mapping = obj_to_dict(wrapper)
         self.assertEqual(self.mapping, mapping)
+
+    def test_wrapper_as_json(self):
+        """Test :Wrapper:`as_json` property."""
+        wrapper = dict_to_obj(self.mapping)
+        self.assertEqual(
+            json.loads(wrapper.as_json),
+            json.loads(
+                '{"country": '
+                '{"name": "Netherlands", '
+                '"province": {'
+                '"name": "North Holland", '
+                '"city": {'
+                '"name": "Amsterdam"}}}}'
+            )
+        )

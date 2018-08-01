@@ -1,5 +1,8 @@
 from .base import *
 from .compound_search import BookCompoundSearchBackendDocumentViewSet
+from .compound_search_boost import (
+    BookCompoundSearchBoostSearchBackendDocumentViewSet,
+)
 from .default import BookDocumentViewSet
 from .default_filter_lookup import BookDefaultFilterLookupDocumentViewSet
 from .functional_suggester import BookFunctionalSuggesterDocumentViewSet

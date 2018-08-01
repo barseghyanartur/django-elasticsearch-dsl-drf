@@ -4,6 +4,7 @@ from .viewsets import (
     AddressDocumentViewSet,
     AuthorDocumentViewSet,
     BookCompoundSearchBackendDocumentViewSet,
+    BookCompoundSearchBoostSearchBackendDocumentViewSet,
     BookDefaultFilterLookupDocumentViewSet,
     BookDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
@@ -78,6 +79,12 @@ books_compound_search_backend = router.register(
     r'books-compound-search-backend',
     BookCompoundSearchBackendDocumentViewSet,
     base_name='bookdocument_compound_search_backend'
+)
+
+books_compound_search_boost_backend = router.register(
+    r'books-compound-search-boost-backend',
+    BookCompoundSearchBoostSearchBackendDocumentViewSet,
+    base_name='bookdocument_compound_search_boost_backend'
 )
 
 books_compound_search_backend_ordered_by_score = router.register(

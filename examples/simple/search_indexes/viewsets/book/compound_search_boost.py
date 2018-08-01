@@ -1,10 +1,10 @@
 from django_elasticsearch_dsl_drf.filter_backends import (
+    CompoundSearchFilterBackend,
     DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
     HighlightBackend,
     IdsFilterBackend,
-    MultiMatchSearchFilterBackend,
     OrderingFilterBackend,
     PostFilterFilteringFilterBackend,
     SuggesterFilterBackend,
@@ -13,14 +13,12 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 from .default import BookDocumentViewSet
 
 __all__ = (
-    'BookMultiMatchSearchFilterBackendDocumentViewSet',
+    'BookCompoundSearchBoostSearchBackendDocumentViewSet',
 )
 
 
-class BookMultiMatchSearchFilterBackendDocumentViewSet(
-    BookDocumentViewSet
-):
-    """Same as BookDocumentViewSet, but multi match."""
+class BookCompoundSearchBoostSearchBackendDocumentViewSet(BookDocumentViewSet):
+    """Book document view set based on compound search backend."""
 
     filter_backends = [
         FilteringFilterBackend,
@@ -28,19 +26,15 @@ class BookMultiMatchSearchFilterBackendDocumentViewSet(
         IdsFilterBackend,
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,
-        MultiMatchSearchFilterBackend,
+        CompoundSearchFilterBackend,
         FacetedSearchFilterBackend,
         HighlightBackend,
         SuggesterFilterBackend,
     ]
 
-    search_fields = (
-        'title',
-        'summary',
-        'description',
-    )
-    ordering = ('_score', 'id', 'title', 'price',)
-
-    multi_match_options = {
-        'type': 'phrase',
+    # Define search fields
+    search_fields = {
+        'title': {'boost': 2},
+        'description': None,
+        'summary': None,
     }

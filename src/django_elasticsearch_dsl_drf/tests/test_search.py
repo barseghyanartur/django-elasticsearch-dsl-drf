@@ -316,6 +316,12 @@ class TestSearch(BaseRestFrameworkTestCase):
         url = reverse('bookdocument_compound_search_backend-list', kwargs={})
         self.test_search_by_field(url=url)
 
+    def test_compound_search_boost_by_field(self):
+        url = reverse(
+            'bookdocument_compound_search_boost_backend-list', kwargs={}
+        )
+        self.test_search_by_field(url=url)
+
     def test_compound_search_by_field_multi_terms(self):
         url = reverse('bookdocument_compound_search_backend-list', kwargs={})
         return self.test_search_by_field_multi_terms(url=url)

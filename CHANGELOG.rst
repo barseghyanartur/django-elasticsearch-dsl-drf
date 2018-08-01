@@ -19,6 +19,7 @@ are used for versioning (schema follows below):
 ------
 yyyy-mm-dd (not yet released)
 
+- Unified the base ``BaseSearchFilterBackend`` class.
 - Minor fixes in docs.
 
 0.13.1

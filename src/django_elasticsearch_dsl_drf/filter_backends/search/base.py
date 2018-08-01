@@ -87,21 +87,41 @@ class BaseSearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 "options: {}".format(', '.join(MATCHING_OPTIONS))
             )
 
-        __queries = []
-        for query_backend in self._get_query_backends(request, view):
-            __queries.extend(
-                query_backend.construct_search(
-                    request=request,
-                    view=view,
-                    search_backend=self
+        __query_backends = self._get_query_backends(request, view)
+
+        if len(__query_backends) > 1:
+            __queries = []
+            for query_backend in __query_backends:
+                __queries.extend(
+                    query_backend.construct_search(
+                        request=request,
+                        view=view,
+                        search_backend=self
+                    )
                 )
+
+            if __queries:
+                queryset = queryset.query(
+                    'bool',
+                    **{self.matching: __queries}
+                )
+
+        elif len(__query_backends) == 1:
+            __query = __query_backends[0].construct_search(
+                request=request,
+                view=view,
+                search_backend=self
+            )
+            queryset = queryset.query('bool', **{self.matching: __query})
+
+        else:
+            raise ImproperlyConfigured(
+                "Search filter backend shall have at least one query_backend"
+                "specified either in `query_backends` property or "
+                "`get_query_backends` method. Make appropriate changes to"
+                "your {} class".format(self.__class__.__name__)
             )
 
-        if __queries:
-            queryset = queryset.query(
-                'bool',
-                **{self.matching: __queries}
-            )
         return queryset
 
     def get_coreschema_field(self, field):

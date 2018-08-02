@@ -157,7 +157,6 @@ class TestFacetedSearch(BaseRestFrameworkTestCase):
             1
         )
 
-
     def test_list_results_with_facets(self):
         """Test list results with facets."""
         return self._list_results_with_facets()

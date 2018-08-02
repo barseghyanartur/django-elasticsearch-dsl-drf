@@ -62,7 +62,9 @@ class MultiMatchSearchFilterBackend(BaseSearchFilterBackend):
     #         )
     #
     #     if __queries:
-    #         # LOGGER.debug(six.moves.reduce(operator.or_, __queries).to_dict())
+    #         # LOGGER.debug(
+    #         #     six.moves.reduce(operator.or_, __queries).to_dict()
+    #         # )
     #
     #         # Multiple multi match queries are not supported. We pick the
     #         # first one only.

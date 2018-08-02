@@ -2,8 +2,8 @@
 Suggester filtering backends.
 """
 
-from .functional import *
-from .native import *
+from .functional import FunctionalSuggesterFilterBackend
+from .native import SuggesterFilterBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.suggester'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

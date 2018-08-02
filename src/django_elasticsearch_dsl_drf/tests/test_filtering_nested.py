@@ -501,7 +501,9 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
     #         http://localhost:8000/api/users/?id__gte=10
     #     :return:
     #     """
-    #     return self._field_filter_gte_lte('id', self.in_progress[0].id, 'gte')
+    #     return self._field_filter_gte_lte(
+    #         'id', self.in_progress[0].id, 'gte'
+    #     )
     #
     # def test_field_filter_lt(self):
     #     """Field filter lt.
@@ -537,7 +539,9 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
     #         http://localhost:8000/api/users/?id__lte=10
     #     :return:
     #     """
-    #     return self._field_filter_gte_lte('id', self.in_progress[0].id, 'lte')
+    #     return self._field_filter_gte_lte(
+    #         'id', self.in_progress[0].id, 'lte'
+    #     )
     #
     # def test_ids_filter(self):
     #     """Test ids filter.

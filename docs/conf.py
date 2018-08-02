@@ -80,7 +80,12 @@ django.setup()
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.viewcode',
+    # 'rst2pdf.pdfbuilder',
+    'rinoh.frontend.sphinx',
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -226,14 +231,12 @@ htmlhelp_basename = 'django-elasticsearch-dsl-drfdoc'
 # -- Options for LaTeX output --------------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-# 'papersize': 'letterpaper',
-
-# The font size ('10pt', '11pt' or '12pt').
-# 'pointsize': '10pt',
-
-# Additional stuff for the LaTeX preamble.
-# 'preamble': '',
+    # The paper size ('letterpaper' or 'a4paper').
+    'papersize': 'letterpaper',
+    # The font size ('10pt', '11pt' or '12pt').
+    'pointsize': '10pt',
+    # Additional stuff for the LaTeX preamble.
+    'preamble': '',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -349,3 +352,16 @@ epub_copyright = u'2017, Artur Barseghyan <artur.barseghyan@gmail.com>'
 
 # Allow duplicate toc entries.
 # epub_tocdup = True
+
+# -- Options for PDF output ---------------------------------------------------
+import sys; sys.setrecursionlimit(3000)
+rinoh_documents = [
+    (
+        'index',
+        u'django-elasticsearch-dsl-drf Documentation',
+        u'django-elasticsearch-dsl-drf',
+        u'Artur Barseghyan <artur.barseghyan@gmail.com>',
+    )
+]
+# latex_paper_size = 'a4'
+# rinoh_paper_size = latex_paper_size

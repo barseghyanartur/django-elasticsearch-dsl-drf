@@ -2,7 +2,9 @@ from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 
 from ..documents import AddressDocument
 
-__all__ = ('AddressDocumentSerializer',)
+__all__ = (
+    'AddressDocumentSerializer',
+)
 
 
 class AddressDocumentSerializer(DocumentSerializer):

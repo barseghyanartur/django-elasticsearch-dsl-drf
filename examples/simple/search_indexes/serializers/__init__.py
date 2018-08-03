@@ -8,6 +8,7 @@ from .publisher import (
 )
 
 __all__ = (
+    'AddressDocumentSerializer',
     'AuthorDocumentSimpleSerializer',
     'BookDocumentSerializer',
     'BookDocumentSimpleSerializer',

@@ -16,15 +16,28 @@ Elasticsearch documents.
 Prerequisites
 =============
 
-- Django 1.8, 1.9, 1.10, 1.11 and 2.0.
-- Python 2.7, 3.4, 3.5, 3.6
+- Django 1.8, 1.9, 1.10, 1.11, 2.0 and 2.1.
+- Python 2.7, 3.4, 3.5, 3.6, 3.7
 - Elasticsearch 2.x, 5.x, 6.x
 
 Dependencies
 ============
 
-- `django-elasticsearch-dsl <https://pypi.python.org/pypi/django-elasticsearch-dsl>`_
-- `djangorestframework <https://pypi.python.org/pypi/djangorestframework>`_
+**elasticsearch and elasticsearch-dsl**
+
+Depending on your Elasticsearch version (either 2.x, 5.x or 6.x) you should
+use 2.x, 5.x or 6.x versions of the ``elasticsearch`` and ``elasticsearch-dsl``
+packages accordingly.
+
+**django-elasticsearch-dsl**
+
+You are advised to use the latest version of `django-elasticsearch-dsl
+<https://pypi.python.org/pypi/django-elasticsearch-dsl>`_.
+
+**djangorestframework**
+
+Initial version of this package was written for `djangorestframework
+<https://pypi.python.org/pypi/djangorestframework>`_ 3.6.2.
 
 Documentation
 =============
@@ -122,7 +135,7 @@ To test against specific environment, type:
 
 .. code-block:: sh
 
-    tox -e py36-django110
+    tox -e py37-django21
 
 To test just your working environment type:
 

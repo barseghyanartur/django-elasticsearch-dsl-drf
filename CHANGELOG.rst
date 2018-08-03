@@ -17,10 +17,17 @@ are used for versioning (schema follows below):
 
 0.13.2
 ------
-yyyy-mm-dd (not yet released)
+2018-08-03
 
+- Successfully tested against Python 3.7 and Django 2.1.
 - Unified the base ``BaseSearchFilterBackend`` class.
-- Minor fixes in docs.
+- Minor clean up and fixes in docs.
+- Upgrading test suite to modern versions (``pytest``, ``tox``,
+  ``factory_boy``, ``Faker``). Removing unused dependencies from
+  requirements (``drf-extensions``.
+- Fixed missing PDF generation in offline documentation (non ReadTheDocs).
+  The ``rst2pdf`` package (which does not support Python 3) has been replaced
+  with ``rinohtype`` package (which does support Python 3).
 
 0.13.1
 ------

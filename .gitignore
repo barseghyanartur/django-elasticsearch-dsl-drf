@@ -11,6 +11,7 @@
 *.py,cover
 .idea/
 /vagrant/.vagrant/
+.pytest_cache/
 
 MANIFEST.in~
 MIND_BUCKET.rst

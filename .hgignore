@@ -12,6 +12,7 @@ syntax: regexp
 \.py,cover
 \.idea/
 ^vagrant/\.vagrant
+^\.pytest_cache/
 
 ^MANIFEST\.in~
 ^tmp/

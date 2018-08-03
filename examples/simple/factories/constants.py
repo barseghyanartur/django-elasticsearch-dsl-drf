@@ -223,7 +223,7 @@ NON_FAKER_BOOK_CONTENT_OTHER = [
     {
         'title': "Then Gelsen entered.",
         'summary': "He saw that the rest of the watchbird.",
-        'description': """ 
+        'description': """
         Manufacturers were already present. There were six of them, not 
         counting himself, and the room was blue with expensive cigar smoke.
         "Hi, Charlie," one of them called as he came in.

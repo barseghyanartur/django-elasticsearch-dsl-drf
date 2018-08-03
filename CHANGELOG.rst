@@ -24,7 +24,7 @@ are used for versioning (schema follows below):
 - Minor clean up and fixes in docs.
 - Upgrading test suite to modern versions (``pytest``, ``tox``,
   ``factory_boy``, ``Faker``). Removing unused dependencies from
-  requirements (``drf-extensions``.
+  requirements (``drf-extensions``).
 - Fixed missing PDF generation in offline documentation (non ReadTheDocs).
   The ``rst2pdf`` package (which does not support Python 3) has been replaced
   with ``rinohtype`` package (which does support Python 3).

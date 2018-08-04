@@ -97,8 +97,15 @@ class MoreLikeThisMixin(object):
             view = request.parser_context['view']
             kwargs = copy.copy(getattr(view, 'more_like_this_options', {}))
             id_ = pk if pk else id
-            # obj = self.get_object()
+
+            # Use current queryset
             queryset = self.filter_queryset(self.get_queryset())
+            # Try to get fields from current serializer. Of course, on the
+            # Elasticsearch side if no ``fields`` value is given, ``_all`` is
+            # used, but since some serializers could contain less fields than
+            # available, this seems like the best approach. If you want to
+            # fall back to ``_all`` of Elasticsearch, provide ``_all`` as
+            # value for ``fields``.
             fields = kwargs.pop('fields', {})
             if not fields:
                 serializer_class = self.get_serializer_class()
@@ -114,9 +121,15 @@ class MoreLikeThisMixin(object):
                     **kwargs
                 )
             ).sort('_score')
-            return Response(queryset.execute().to_dict())
-            # page = self.paginate_queryset(queryset)
-            # return Response(page)
+
+            # Standard list-view implementation
+            page = self.paginate_queryset(queryset)
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
+
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(serializer.data)
 
 
 class BaseDocumentViewSet(ReadOnlyModelViewSet):

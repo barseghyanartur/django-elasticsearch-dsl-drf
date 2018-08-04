@@ -34,7 +34,7 @@ class BookMoreLikeThisDocumentViewSet(BaseBookDocumentViewSet,
         'fields': (
             'title.mlt',
             'summary.mlt',
-            # 'description.mlt',
+            'description.mlt',
             # 'title.raw',
             # 'summary.raw',
             # 'description.raw',

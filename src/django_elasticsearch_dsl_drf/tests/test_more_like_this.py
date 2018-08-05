@@ -6,6 +6,7 @@ Test more-like-this functionality.
 from __future__ import absolute_import, unicode_literals
 
 import unittest
+import logging
 
 from django.core.management import call_command
 
@@ -31,6 +32,8 @@ __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestMoreLikeThis',
 )
+
+LOGGER = logging.getLogger(__name__)
 
 
 @pytest.mark.django_db
@@ -64,12 +67,12 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
 
         # Alice book
         cls.books_url_1 = reverse(
-            'bookdocument-more-like-this',
+            'bookdocument_more_like_this-more-like-this',
             kwargs={'id': cls.books[0].id}
         )
         # Shekley book
         cls.books_url_2 = reverse(
-            'bookdocument-more-like-this',
+            'bookdocument_more_like_this-more-like-this',
             kwargs={'id': cls.books[-1].id}
         )
 
@@ -78,7 +81,6 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
     def _test_more_like_this(self, test_data, url):
         """Test more-like-this."""
         self.authenticate()
-
         data = {}
         response = self.client.get(
             url,

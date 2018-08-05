@@ -6,7 +6,10 @@ from .compound_search_boost import (
 from .default import BookDocumentViewSet
 from .default_filter_lookup import BookDefaultFilterLookupDocumentViewSet
 from .functional_suggester import BookFunctionalSuggesterDocumentViewSet
-from .more_like_this import BookMoreLikeThisDocumentViewSet
+from .more_like_this import (
+    BookMoreLikeThisDocumentViewSet,
+    BookMoreLikeThisNoOptionsDocumentViewSet,
+)
 from .multi_match import BookMultiMatchSearchFilterBackendDocumentViewSet
 from .multi_match_options_phrase_prefix import (
     BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,

@@ -76,6 +76,17 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
             kwargs={'id': cls.books[-1].id}
         )
 
+        # Alice book
+        cls.books_url_1_no_options = reverse(
+            'bookdocument_more_like_this_no_options-more-like-this',
+            kwargs={'id': cls.books[0].id}
+        )
+        # Shekley book
+        cls.books_url_2_no_options = reverse(
+            'bookdocument_more_like_this_no_options-more-like-this',
+            kwargs={'id': cls.books[-1].id}
+        )
+
         call_command('search_index', '--rebuild', '-f')
 
     def _test_more_like_this(self, test_data, url):
@@ -132,6 +143,7 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
             }
         }
         self._test_more_like_this(test_data, self.books_url_1)
+        self._test_more_like_this(test_data, self.books_url_1_no_options)
 
         # Testing books
         test_data = {
@@ -141,6 +153,7 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
             },
         }
         self._test_more_like_this(test_data, self.books_url_2)
+        self._test_more_like_this(test_data, self.books_url_2_no_options)
 
 
 if __name__ == '__main__':

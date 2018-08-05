@@ -13,6 +13,7 @@ from .base import BaseBookDocumentViewSet
 
 __all__ = (
     'BookMoreLikeThisDocumentViewSet',
+    'BookMoreLikeThisNoOptionsDocumentViewSet',
 )
 
 
@@ -45,3 +46,17 @@ class BookMoreLikeThisDocumentViewSet(BaseBookDocumentViewSet,
         # 'max_query_terms': 25,
         # "unlike": ['chapter', 'CHAPTER'],
     }
+
+
+class BookMoreLikeThisNoOptionsDocumentViewSet(BaseBookDocumentViewSet,
+                                               MoreLikeThisMixin):
+    """Same as BookDocumentViewSet, with more-like-this and no facets."""
+
+    filter_backends = [
+        FilteringFilterBackend,
+        PostFilterFilteringFilterBackend,
+        IdsFilterBackend,
+        OrderingFilterBackend,
+        # DefaultOrderingFilterBackend,
+        SearchFilterBackend,
+    ]

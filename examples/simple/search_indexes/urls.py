@@ -9,6 +9,7 @@ from .viewsets import (
     BookDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
     BookMoreLikeThisDocumentViewSet,
+    BookMoreLikeThisNoOptionsDocumentViewSet,
     BookMultiMatchSearchFilterBackendDocumentViewSet,
     BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
@@ -67,6 +68,12 @@ books_more_like_this = router.register(
     r'books-more-like-this',
     BookMoreLikeThisDocumentViewSet,
     base_name='bookdocument_more_like_this'
+)
+
+books_more_like_this_no_options = router.register(
+    r'books-more-like-this-no-options',
+    BookMoreLikeThisNoOptionsDocumentViewSet,
+    base_name='bookdocument_more_like_this_no_options'
 )
 
 books_default_filter_lookup = router.register(

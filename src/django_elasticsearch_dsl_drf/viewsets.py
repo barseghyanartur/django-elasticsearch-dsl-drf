@@ -100,27 +100,38 @@ class MoreLikeThisMixin(object):
 
             # Use current queryset
             queryset = self.filter_queryset(self.get_queryset())
-            # Try to get fields from current serializer. Of course, on the
+            # We do not try to get fields from current serializer. On the
             # Elasticsearch side if no ``fields`` value is given, ``_all`` is
-            # used, but since some serializers could contain less fields than
-            # available, this seems like the best approach. If you want to
-            # fall back to ``_all`` of Elasticsearch, provide ``_all`` as
-            # value for ``fields``.
-            fields = kwargs.pop('fields', {})
-            if not fields:
-                serializer_class = self.get_serializer_class()
-                fields = serializer_class.Meta.fields[:]
-            queryset = queryset.query(
-                MoreLikeThis(
-                    fields=fields,
-                    like={
-                        '_id': "{}".format(id_),
-                        '_index': "{}".format(self.index),
-                        '_type': "{}".format(self.mapping)
-                    },
-                    **kwargs
-                )
-            ).sort('_score')
+            # used, and although some serializers could contain less fields
+            # than available, this seems like the best approach. If you want to
+            # fall back to ``_all`` of Elasticsearch, leave it empty.
+            fields = kwargs.pop('fields', [])
+            # if not fields:
+            #     serializer_class = self.get_serializer_class()
+            #     fields = serializer_class.Meta.fields[:]
+            if fields:
+                queryset = queryset.query(
+                    MoreLikeThis(
+                        fields=fields,
+                        like={
+                            '_id': "{}".format(id_),
+                            '_index': "{}".format(self.index),
+                            '_type': "{}".format(self.mapping)
+                        },
+                        **kwargs
+                    )
+                ).sort('_score')
+            else:
+                queryset = queryset.query(
+                    MoreLikeThis(
+                        like={
+                            '_id': "{}".format(id_),
+                            '_index': "{}".format(self.index),
+                            '_type': "{}".format(self.mapping)
+                        },
+                        **kwargs
+                    )
+                ).sort('_score')
 
             # Standard list-view implementation
             page = self.paginate_queryset(queryset)

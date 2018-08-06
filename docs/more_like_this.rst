@@ -82,9 +82,9 @@ Generated query
 
 Options
 -------
-Pretty much `all more-like-this options
+Pretty much `all Elasticsearch more-like-this options
 <https://www.elastic.co/guide/en/elasticsearch/reference/5.5/query-dsl-mlt-query.html>`_
-available in Elasticsearch. You might be particularly interested in the
+available. You might be particularly interested in the
 following:
 
 - min_term_freq

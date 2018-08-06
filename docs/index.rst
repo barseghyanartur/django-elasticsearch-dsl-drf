@@ -71,6 +71,7 @@ Main features and highlights
 - :doc:`Ids filter backend <advanced_usage_examples>`.
 - :doc:`Multi match search filter backend <search_backends>`.
 - :doc:`Simple search query search filter backend <search_backends>`.
+- :doc:`More-like-this support (detail action) <more_like_this>`.
 
 Installation
 ============
@@ -223,7 +224,7 @@ Contents:
    basic_usage_examples
    advanced_usage_examples
    nested_fields_usage_examples
-   misc_usage_examples
+   more_like_this
    changelog
    django_elasticsearch_dsl_drf
 

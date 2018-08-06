@@ -8,4 +8,4 @@ cat basic_usage_examples.rst > docs/basic_usage_examples.rst
 cat advanced_usage_examples.rst > docs/advanced_usage_examples.rst
 cat nested_fields_usage_examples.rst > docs/nested_fields_usage_examples.rst
 cat filtering_usage_examples.rst > docs/filtering_usage_examples.rst
-cat misc_usage_examples.rst > docs/misc_usage_examples.rst
+cat more_like_this.rst > docs/more_like_this.rst

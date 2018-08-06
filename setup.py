@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = '0.13.2'
+version = '0.14'
 
 DOCS_TRANSFORMATIONS = (
     (
@@ -111,7 +111,6 @@ DOCS_TRANSFORMATIONS = (
         'advanced_usage_examples.html#ids-filter'
         '>`_'.format(version)
     ),
-
     (
         ':doc:`Multi match search filter backend <search_backends>`',
         '`Multi match search filter backend <'
@@ -124,6 +123,13 @@ DOCS_TRANSFORMATIONS = (
         '`Simple search query filter backend <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
         'search_backends.html#simple-query-string-filter-backend'
+        '>`_'.format(version)
+    ),
+    (
+        ':doc:`More-like-this support (detail action) <more_like_this>`',
+        '`More-like-this support (detail action) <'
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'more_like_this.html'
         '>`_'.format(version)
     ),
 )

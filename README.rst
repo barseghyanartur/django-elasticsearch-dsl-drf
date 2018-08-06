@@ -71,6 +71,7 @@ Main features and highlights
 - :doc:`Ids filter backend <advanced_usage_examples>`.
 - :doc:`Multi match search filter backend <search_backends>`.
 - :doc:`Simple search query search filter backend <search_backends>`.
+- :doc:`More-like-this support (detail action) <more_like_this>`.
 
 Installation
 ============

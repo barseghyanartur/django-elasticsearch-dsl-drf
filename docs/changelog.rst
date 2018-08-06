@@ -15,11 +15,11 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
-0.14.2
-------
-yyyy-mm-dd (not yet released)
+0.14
+----
+2018-08-06
 
-- More like this detail view.
+- More like this support through detail action.
 
 0.13.2
 ------

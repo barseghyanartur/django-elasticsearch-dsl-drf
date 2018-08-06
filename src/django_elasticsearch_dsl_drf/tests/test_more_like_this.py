@@ -45,32 +45,42 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
     @classmethod
     def setUpClass(cls):
         """Set up class."""
+        cls.lorem_books = factories.BookFactory.create_batch(200)
+
         cls.books = []
 
+        cls.alice_books = []
         for book_data in factories.constants.NON_FAKER_BOOK_CONTENT:
-            cls.books.append(
+            cls.alice_books.append(
                 factories.BookChapterFactory(
                     title=book_data['title'],
                     summary=book_data['summary'],
                     description=book_data['description'],
                 )
             )
+        cls.alice_books_ids = [__obj.id for __obj in cls.alice_books]
 
+        cls.sheckley_books = []
         for book_data in factories.constants.NON_FAKER_BOOK_CONTENT_OTHER:
-            cls.books.append(
+            cls.sheckley_books.append(
                 factories.BookNovelFactory(
                     title=book_data['title'],
                     summary=book_data['summary'],
                     description=book_data['description'],
                 )
             )
+        cls.sheckley_books_ids = [__obj.id for __obj in cls.sheckley_books]
+
+        cls.books = []
+        cls.books.extend(cls.alice_books)
+        cls.books.extend(cls.sheckley_books)
 
         # Alice book
         cls.books_url_1 = reverse(
             'bookdocument_more_like_this-more-like-this',
             kwargs={'id': cls.books[0].id}
         )
-        # Shekley book
+        # Sheckley book
         cls.books_url_2 = reverse(
             'bookdocument_more_like_this-more-like-this',
             kwargs={'id': cls.books[-1].id}
@@ -81,7 +91,7 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
             'bookdocument_more_like_this_no_options-more-like-this',
             kwargs={'id': cls.books[0].id}
         )
-        # Shekley book
+        # Sheckley book
         cls.books_url_2_no_options = reverse(
             'bookdocument_more_like_this_no_options-more-like-this',
             kwargs={'id': cls.books[-1].id}
@@ -89,8 +99,13 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
 
         call_command('search_index', '--rebuild', '-f')
 
-    def _test_more_like_this(self, test_data, url):
-        """Test more-like-this."""
+    def _test_more_like_this(self, test_data_ids, url, strict=True):
+        """Test more-like-this.
+
+        We can't really predict which result would it show as most relevant,
+        however we can for sure assume that no strange data shall appear
+        in between.
+        """
         self.authenticate()
         data = {}
         response = self.client.get(
@@ -98,62 +113,45 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
             data
         )
 
-        # for _suggester_field, _test_cases in test_data.items():
-        #
-        #     for _test_case, _expected_results in _test_cases.items():
-        #         # Check if response now is valid
-        #         response = self.client.get(
-        #             url + '?' + _suggester_field + '=' + _test_case,
-        #             data
-        #         )
-        #         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        #         self.assertIn(_suggester_field, response.data)
-        #         _unique_options = list(set([
-        #             __o['text']
-        #             for __o
-        #             in response.data[_suggester_field][0]['options']
-        #         ]))
-        #         self.assertEqual(
-        #             len(_unique_options),
-        #             len(_expected_results),
-        #             (_test_case, _expected_results)
-        #         )
-        #         self.assertEqual(
-        #             sorted(_unique_options),
-        #             sorted(_expected_results),
-        #             (_test_case, _expected_results)
-        #         )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        if strict:
+            response_ids = [int(__r['id']) for __r in response.data['results']]
+
+            self.assertFalse(
+                bool(
+                    set(response_ids) - set(test_data_ids)
+                )
+            )
 
     def test_more_like_this(self):
         """Test more-like-this."""
         # Testing publishers
-        test_data = {
-            'name_suggest__completion': {
-                'Ad': ['Addison–Wesley', 'Adis International'],
-                'Atl': ['Atlantic Books', 'Atlas Press'],
-                'Boo': ['Book League of America', 'Book Works', 'Booktrope'],
-            },
-            'country_suggest__completion': {
-                'Arm': ['Armenia'],
-                'Ar': ['Armenia', 'Argentina'],
-                'Bel': ['Belgium', 'Belarus'],
-                'Bur': ['Burkina Faso', 'Burundi'],
-                'Net': ['Netherlands'],
-                'Fra': [],
-            }
-        }
-        self._test_more_like_this(test_data, self.books_url_1)
-        self._test_more_like_this(test_data, self.books_url_1_no_options)
+        test_data_ids = []
+        test_data_ids.extend(self.alice_books_ids)
+        test_data_ids.extend(self.sheckley_books_ids)
 
-        # Testing books
-        test_data = {
-            'title_suggest__completion': {
-                'Aaa': ['Aaaaa Bbbb', 'Aaaaa Cccc', 'Aaaaa Dddd'],
-                'Bbb': [],
-            },
-        }
-        self._test_more_like_this(test_data, self.books_url_2)
-        self._test_more_like_this(test_data, self.books_url_2_no_options)
+        self._test_more_like_this(
+            test_data_ids,
+            self.books_url_1,
+            strict=True
+        )
+        self._test_more_like_this(
+            test_data_ids,
+            self.books_url_1_no_options,
+            strict=False
+        )
+
+        self._test_more_like_this(
+            test_data_ids,
+            self.books_url_2,
+            strict=True
+        )
+        self._test_more_like_this(
+            test_data_ids,
+            self.books_url_2_no_options,
+            strict=False
+        )
 
 
 if __name__ == '__main__':

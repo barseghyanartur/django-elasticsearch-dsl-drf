@@ -261,7 +261,7 @@ class BookChapter112Factory(BookChapterFactory):
 
 
 class BookNovelFactory(BookWithUniqueTitleFactory):
-    """Book novel factory - texts of Robert Shekley."""
+    """Book novel factory - texts of Robert Sheckley."""
 
     @post_generation
     def tags(obj, created, extracted, **kwargs):
@@ -270,6 +270,6 @@ class BookNovelFactory(BookWithUniqueTitleFactory):
             # Create from 1 to 7 ``Tag`` objects.
             amount = random.randint(1, 7)
             tags = TagGenreFactory.create_batch(amount, **kwargs)
-            tag = TagFactory(title='Shekley')
+            tag = TagFactory(title='Sheckley')
             tags.append(tag)
             obj.tags.add(*tags)

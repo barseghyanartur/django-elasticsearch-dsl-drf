@@ -1,12 +1,13 @@
 ===============
 Search backends
 ===============
+
 Compound search filter backend
-------------------------------
+==============================
 Compound search filter backend aims to replace old style `SearchFilterBackend`.
 
 Sample view
-~~~~~~~~~~~
+-----------
 
 .. code-block:: python
 
@@ -43,14 +44,14 @@ Sample view
         ordering = ('_score', 'id', 'title', 'price',)
 
 Sample request
-~~~~~~~~~~~~~~
+--------------
 
 .. code-block:: text
 
     http://localhost:8000/search/books-compound-search-backend/?search=enim
 
 Generated query
-~~~~~~~~~~~~~~~
+---------------
 
 .. code-block:: javascript
 
@@ -92,12 +93,12 @@ Generated query
     }
 
 Multi match search filter backend
----------------------------------
+=================================
 Document and serializer definition are trivial (there are lots of examples
 in other sections).
 
 Sample view
-~~~~~~~~~~~
+-----------
 
 .. code-block:: python
 
@@ -135,7 +136,7 @@ Sample view
         ordering = ('_score', 'id', 'title', 'price',)
 
 Sample request
-~~~~~~~~~~~~~~
+--------------
 .. note::
 
     Multiple search params (`search_multi_match`) are not supported. Even if
@@ -147,7 +148,7 @@ Sample request
     http://localhost:8000/search/books-multi-match-search-backend/?search_multi_match=debitis%20enim
 
 Generated query
-~~~~~~~~~~~~~~~
+---------------
 
 .. code-block:: javascript
 
@@ -173,7 +174,7 @@ Generated query
     }
 
 Options
-~~~~~~~
+-------
 All standard multi match query options are available/tunable with help of
 ``multi_match_options`` view property.
 
@@ -185,7 +186,7 @@ Selective list of available options:
 - tie_breaker
 
 Type options
-^^^^^^^^^^^^
+~~~~~~~~~~~~
 
 See the `Elasticsearch docs
 <https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html#type-phrase>`_
@@ -210,16 +211,16 @@ for detailed explanation.
         }
 
 Operator options
-^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~
 Can be either ``and`` or ``or``.
 
 Simple query string filter backend
-----------------------------------
+==================================
 Document and serializer definition are trivial (there are lots of examples
 in other sections).
 
 Sample view
-~~~~~~~~~~~
+-----------
 
 .. code-block:: python
 
@@ -257,7 +258,7 @@ Sample view
         ordering = ('_score', 'id', 'title', 'price',)
 
 Sample request 1
-~~~~~~~~~~~~~~~~
+----------------
 .. note::
 
     Multiple search params (`search_simple_query_string`) are not supported.
@@ -269,7 +270,7 @@ Sample request 1
     http://localhost:8000/search/books-simple-query-string-search-backend/?search_simple_query_string="chapter%20II"%20%2Bfender
 
 Generated query 1
-~~~~~~~~~~~~~~~~~
+-----------------
 
 .. code-block:: javascript
 
@@ -296,7 +297,7 @@ Generated query 1
     }
 
 Sample request 2
-~~~~~~~~~~~~~~~~
+----------------
 .. note::
 
     Multiple search params (`search_simple_query_string`) are not supported.
@@ -308,7 +309,7 @@ Sample request 2
     http://localhost:8000/search/books-simple-query-string-search-backend/?search_simple_query_string="chapter%20II"%20%2B(shutting%20|%20fender)
 
 Generated query 2
-~~~~~~~~~~~~~~~~~
+-----------------
 
 .. code-block:: javascript
 
@@ -336,7 +337,7 @@ Generated query 2
 
 
 Sample request 3
-~~~~~~~~~~~~~~~~
+----------------
 .. note::
 
     Multiple search params (`search_simple_query_string`) are not supported.
@@ -348,7 +349,7 @@ Sample request 3
     http://localhost:8000/search/books-simple-query-string-search-backend/?search_simple_query_string=%22Pool%20of%20Tears%22%20-considering
 
 Generated query 3
-~~~~~~~~~~~~~~~~~
+-----------------
 
 .. code-block:: javascript
 
@@ -375,7 +376,7 @@ Generated query 3
     }
 
 Options
-~~~~~~~
+-------
 All standard multi match query options are available/tunable with help of
 ``simple_query_string_options`` view property.
 
@@ -384,7 +385,7 @@ Selective list of available options:
 - default_operator
 
 Default Operator options
-^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~
 Can be either ``and`` or ``or``.
 
 **Example**

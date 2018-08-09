@@ -114,6 +114,9 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
             if 'options' not in faceted_search_fields[field]:
                 faceted_search_fields[field]['options'] = {}
 
+            if 'type' not in faceted_search_fields[field]:
+                faceted_search_fields[field]['type'] = 'filter'
+
         return faceted_search_fields
 
     def get_faceted_search_query_params(self, request):
@@ -167,10 +170,13 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
             if __field in faceted_search_query_params or __options['enabled']:
                 __facets.update(
                     {
-                        __field: faceted_search_fields[__field]['facet'](
-                            field=faceted_search_fields[__field]['field'],
-                            **faceted_search_fields[__field]['options']
-                        )
+                        __field: {
+                            'facet': faceted_search_fields[__field]['facet'](
+                                field=faceted_search_fields[__field]['field'],
+                                **faceted_search_fields[__field]['options']
+                            ),
+                            'type': faceted_search_fields[__field]['type'],
+                        }
                     }
                 )
         return __facets
@@ -185,7 +191,7 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
         """
         __facets = self.construct_facets(request, view)
         for __field, __facet in iteritems(__facets):
-            agg = __facet.get_aggregation()
+            agg = __facet['facet'].get_aggregation()
             agg_filter = Q('match_all')
 
             # TODO: Implement
@@ -194,11 +200,18 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
             #         continue
             #     agg_filter &= __filter
 
-            queryset.aggs.bucket(
-                '_filter_' + __field,
-                'filter',
-                filter=agg_filter
-            ).bucket(__field, agg)
+            if __facet['type'] == 'global':
+                queryset.aggs.bucket(
+                    '_filter_' + __field,
+                    __facet['type']
+                ).bucket(__field, agg)
+            else:
+                queryset.aggs.bucket(
+                    '_filter_' + __field,
+                    __facet['type'],
+                    filter=agg_filter
+                ).bucket(__field, agg)
+
         return queryset
 
     def filter_queryset(self, request, queryset, view):

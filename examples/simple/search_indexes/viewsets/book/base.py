@@ -190,6 +190,7 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
         'publisher': {
             'field': 'publisher.raw',
             'enabled': True,
+            'type': 'global',
         },
         'publication_date': {
             'field': 'publication_date',

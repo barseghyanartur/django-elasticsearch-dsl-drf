@@ -53,6 +53,7 @@ Generated query
 ---------------
 
 .. code-block:: javascript
+
     {
        "from":0,
        "query":{

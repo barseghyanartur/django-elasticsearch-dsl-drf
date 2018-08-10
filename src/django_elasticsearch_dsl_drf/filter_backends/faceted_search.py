@@ -114,8 +114,8 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
             if 'options' not in faceted_search_fields[field]:
                 faceted_search_fields[field]['options'] = {}
 
-            if 'type' not in faceted_search_fields[field]:
-                faceted_search_fields[field]['type'] = 'filter'
+            faceted_search_fields[field]['global'] = \
+                faceted_search_fields[field].get('global', False)
 
         return faceted_search_fields
 
@@ -175,7 +175,7 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
                                 field=faceted_search_fields[__field]['field'],
                                 **faceted_search_fields[__field]['options']
                             ),
-                            'type': faceted_search_fields[__field]['type'],
+                            'global': faceted_search_fields[__field]['global'],
                         }
                     }
                 )
@@ -200,15 +200,15 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
             #         continue
             #     agg_filter &= __filter
 
-            if __facet['type'] == 'global':
+            if __facet['global']:
                 queryset.aggs.bucket(
                     '_filter_' + __field,
-                    __facet['type']
+                    'global'
                 ).bucket(__field, agg)
             else:
                 queryset.aggs.bucket(
                     '_filter_' + __field,
-                    __facet['type'],
+                    'filter',
                     filter=agg_filter
                 ).bucket(__field, agg)
 

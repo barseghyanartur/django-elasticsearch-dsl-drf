@@ -4,6 +4,7 @@ Tests.
 from .test_faceted_search import TestFacetedSearch
 from .test_filtering_common import TestFilteringCommon
 from .test_filtering_geo_spatial import TestFilteringGeoSpatial
+from .test_filtering_global_aggregations import TestFilteringGlobalAggregations
 from .test_filtering_nested import TestFilteringNested
 from .test_filtering_post_filter import TestFilteringPostFilter
 from .test_functional_suggesters import TestFunctionalSuggesters
@@ -29,6 +30,7 @@ __all__ = (
     'TestFacetedSearch',
     'TestFilteringCommon',
     'TestFilteringGeoSpatial',
+    'TestFilteringGlobalAggregations',
     'TestFilteringNested',
     'TestFilteringPostFilter',
     'TestFunctionalSuggesters',

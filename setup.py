@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = '0.14'
+version = '0.15'
 
 DOCS_TRANSFORMATIONS = (
     (
@@ -130,6 +130,13 @@ DOCS_TRANSFORMATIONS = (
         '`More-like-this support (detail action) <'
         'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
         'more_like_this.html'
+        '>`_'.format(version)
+    ),
+    (
+        ':doc:`Global aggregations support <global_aggregations>`',
+        '`Global aggregations support <'
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'global_aggregations.html'
         '>`_'.format(version)
     ),
 )

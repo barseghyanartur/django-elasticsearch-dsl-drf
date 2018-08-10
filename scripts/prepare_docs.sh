@@ -9,3 +9,4 @@ cat advanced_usage_examples.rst > docs/advanced_usage_examples.rst
 cat nested_fields_usage_examples.rst > docs/nested_fields_usage_examples.rst
 cat filtering_usage_examples.rst > docs/filtering_usage_examples.rst
 cat more_like_this.rst > docs/more_like_this.rst
+cat global_aggregations.rst > docs/global_aggregations.rst

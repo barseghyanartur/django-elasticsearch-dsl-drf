@@ -72,6 +72,7 @@ Main features and highlights
 - :doc:`Multi match search filter backend <search_backends>`.
 - :doc:`Simple search query search filter backend <search_backends>`.
 - :doc:`More-like-this support (detail action) <more_like_this>`.
+- :doc:`Global aggregations support <global_aggregations>`.
 
 Installation
 ============

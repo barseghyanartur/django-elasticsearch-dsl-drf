@@ -187,6 +187,11 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
     ordering = ('id', 'title', 'price',)
     faceted_search_fields = {
         'state': 'state.raw',
+        'state_global': {
+            'field': 'state.raw',
+            # 'enabled': True,
+            'global': True,
+        },
         'publisher': {
             'field': 'publisher.raw',
             'enabled': True,

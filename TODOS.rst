@@ -13,15 +13,18 @@ Must haves
 
     - Add tests for ``match_phrase`` and ``match_phrase_prefix`` search query
       backends.
-    - Finish ``more-like-this`` view set integration.
     - Full support of all optional params of each native Elasticsearch filter,
       such as ``flags`` on ``regexp``.
     - Support ``mode`` argument in the ``OrderingFilterBackend``.
-    - Think of making more-like-this a functional filter.
-    - Add support for geo spatial search/filtering/ordering.
     - Improve documentation.
     - Added tests for nested fields suggesters in functional suggester backend.
     - Implement phrase and term filters for functional suggester backend.
+    - Implement ``regexp`` filter.
+    - Implement ``fuzzy`` filter.
+    - Implement ``type`` filter.
+    + Finish ``more-like-this`` view set integration.
+    + Think of making more-like-this a functional filter.
+    + Add support for geo spatial search/filtering/ordering.
     + Implement aggregations (faceted search) filtering.
     + Document geo spatial filtering.
     + Skip suggestions functionality in all actions except the dedicated
@@ -54,9 +57,6 @@ Must haves
     + Implement ``exists`` filter.
     + Implement ``prefix`` filter.
     + Implement ``wildcard`` filter.
-    - Implement ``regexp`` filter.
-    - Implement ``fuzzy`` filter.
-    - Implement ``type`` filter.
     + Implement ``ids`` filter.
     + Implement ``contains`` filter.
     + Implement ``in`` filter.

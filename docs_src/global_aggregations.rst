@@ -35,8 +35,8 @@ Sample view
         ]
 
         faceted_search_fields = {
-            'publisher': {
-                'field': 'publisher.raw',
+            'state_global': {
+                'field': 'state.raw',
                 'enabled': True,
                 'global': True,  # This makes the aggregation global
             },

@@ -125,6 +125,14 @@ class PublisherDocumentViewSet(DocumentViewSet):
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             # 'serializer_field': 'name',
         },
+        'name_match_suggest': {
+            'field': 'name',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+            # 'serializer_field': 'name',
+        },
         'city_suggest': {
             'field': 'city.raw',
             'suggesters': [

@@ -86,6 +86,14 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         )
         cls.publishers.append(
             factories.PublisherFactory(
+                name='Strip Books of America',
+                city='Chelmsford',
+                state_province='South East',
+                country='Burkina Faso',
+            )
+        )
+        cls.publishers.append(
+            factories.PublisherFactory(
                 name='Book Works',
                 city='Chester',
                 state_province='South West',
@@ -138,6 +146,17 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                         'And stood awhile in thought.',
                 publisher__name='Antares',
                 publisher__country='Armenia',
+            )
+        )
+        cls.books.append(
+            factories.BookFactory(
+                title='Eeeee Ffff',
+                summary='He took his vorpal sword in his hand,'
+                        'Long time the manxome foe he sought --'
+                        'So rested he by the Tumtum tree,'
+                        'And stood awhile in thought.',
+                publisher__name='Strip Books of America',
+                publisher__country='Burkina Faso',
             )
         )
 
@@ -223,6 +242,14 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                 'Ad': ['Addison–Wesley', 'Adis International'],
                 'Atl': ['Atlantic Books', 'Atlas Press'],
                 'Boo': ['Book League of America', 'Book Works', 'Booktrope'],
+                'Stri': ['Strip Books of America'],
+            },
+            'name_match_suggest__completion_match': {
+                'Strip': ['Strip Books of America', ],
+                'America': [
+                    'Strip Books of America',
+                    'Book League of America',
+                ],
             },
             'country_suggest__completion_prefix': {
                 'Arm': ['Armenia'],
@@ -237,6 +264,8 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         test_data.update(
             {
                 'name_suggest': test_data['name_suggest__completion_prefix'],
+                'name_match_suggest':
+                    test_data['name_match_suggest__completion_match'],
                 'country_suggest':
                     test_data['country_suggest__completion_prefix'],
             }

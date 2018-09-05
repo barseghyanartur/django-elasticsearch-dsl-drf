@@ -821,7 +821,7 @@ Required imports
         DefaultOrderingFilterBackend,
         SearchFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.viewsets import BaseDocumentViewSet
+    from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
 
     from .documents import BookDocument, PublisherDocument
     from .serializers import BookDocumentSerializer

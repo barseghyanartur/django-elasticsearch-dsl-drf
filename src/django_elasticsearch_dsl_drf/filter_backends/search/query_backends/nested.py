@@ -34,32 +34,43 @@ class NestedQueryBackend(BaseSearchQueryBackend):
             __len_values = len(__values)
             if __len_values > 1:
                 field, value = __values
-                if field in view.search_fields:
-                    # Initial kwargs for the match query
+                if field in view.search_nested_fields:
+                    # Initial kwargs for the nested query
                     field_kwargs = {field: {'query': value}}
                     # In case if we deal with structure 2
-                    if isinstance(view.search_nested_fields, dict):
-                        extra_field_kwargs = view.search_fields[field]
-                        if extra_field_kwargs:
-                            field_kwargs[field].update(extra_field_kwargs)
+
+                    extra_field_kwargs = view.search_nested_fields[field]
+                    if extra_field_kwargs:
+                        field_kwargs[field].update(extra_field_kwargs)
+                    path = extra_field_kwargs.pop('path')
+
                     # The match query
                     __queries.append(
-                        Q(cls.query_type, **field_kwargs)
+                        Q(
+                            cls.query_type,
+                            path=path,
+                            **field_kwargs
+                        )
                     )
             else:
                 for field in view.search_nested_fields:
-                    # Initial kwargs for the match query
+                    # Initial kwargs for the nested query
                     field_kwargs = {field: {'query': search_term}}
 
                     # In case if we deal with structure 2
-                    if isinstance(view.search_nested_fields, dict):
-                        extra_field_kwargs = view.search_fields[field]
-                        if extra_field_kwargs:
-                            field_kwargs[field].update(extra_field_kwargs)
+
+                    extra_field_kwargs = view.search_nested_fields[field]
+                    if extra_field_kwargs:
+                        field_kwargs[field].update(extra_field_kwargs)
+                    path = extra_field_kwargs.pop('path')
 
                     # The match query
                     __queries.append(
-                        Q(cls.query_type, **field_kwargs)
+                        Q(
+                            cls.query_type,
+                            path=path,
+                            **field_kwargs
+                        )
                     )
         return __queries
 

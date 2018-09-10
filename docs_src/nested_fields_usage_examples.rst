@@ -900,7 +900,10 @@ Sample view
         )
 
         search_nested_fields = {
-            'country': ['name'],
+            'country': {
+                'path': 'country',
+                'fields': ['name'],
+            }
         }
 
         # Define filtering fields

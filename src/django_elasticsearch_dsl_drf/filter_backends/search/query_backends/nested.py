@@ -22,56 +22,110 @@ class NestedQueryBackend(BaseSearchQueryBackend):
     def construct_search(cls, request, view, search_backend):
         """Construct search.
 
+        Dictionary key is the GET param name. The path option stands for the
+        path in Elasticsearch.
+
+        Type 1:
+
+            search_nested_fields = {
+                'country': {
+                    'path': 'country',
+                    'fields': ['name'],
+                },
+                'city': {
+                    'path': 'country.city',
+                    'fields': ['name'],
+                },
+            }
+
+        Type 2:
+
+            search_nested_fields = {
+                'country': {
+                    'path': 'country',
+                    'fields': [{'name': {'boost': 2}}]
+                },
+                'city': {
+                    'path': 'country.city',
+                    'fields': [{'name': {'boost': 2}}]
+                },
+            }
+
         :param request:
         :param view:
         :param search_backend:
         :return:
         """
+        if not hasattr(view, 'search_nested_fields'):
+            return []
+
         query_params = search_backend.get_search_query_params(request)
         __queries = []
+
         for search_term in query_params:
             __values = search_backend.split_lookup_name(search_term, 1)
             __len_values = len(__values)
             if __len_values > 1:
-                field, value = __values
-                if field in view.search_nested_fields:
-                    # Initial kwargs for the nested query
-                    field_kwargs = {field: {'query': value}}
-                    # In case if we deal with structure 2
+                label, value = __values
+                if label in view.search_nested_fields:
+                    options = view.search_nested_fields.get(label)
+                    path = options.get('path')
 
-                    extra_field_kwargs = view.search_nested_fields[field]
-                    if extra_field_kwargs:
-                        field_kwargs[field].update(extra_field_kwargs)
-                    path = extra_field_kwargs.pop('path')
+                    queries = []
+                    for _field in options.get('fields', []):
+                        # In case if we deal with structure 2
+                        if isinstance(_field, dict):
+                            # TODO: take options (ex: boost) into consideration
+                            field = "{}.{}".format(path, _field['name'])
+                        # In case if we deal with structure 1
+                        else:
+                            field = "{}.{}".format(path, _field)
 
-                    # The match query
+                        field_kwargs = {
+                            field: value
+                        }
+
+                        queries = [
+                            Q("match", **field_kwargs)
+                        ]
+
                     __queries.append(
                         Q(
                             cls.query_type,
                             path=path,
-                            **field_kwargs
+                            query=six.moves.reduce(operator.or_, queries)
                         )
                     )
             else:
-                for field in view.search_nested_fields:
-                    # Initial kwargs for the nested query
-                    field_kwargs = {field: {'query': search_term}}
+                for label, options in view.search_nested_fields.items():
+                    queries = []
+                    path = options.get('path')
 
-                    # In case if we deal with structure 2
+                    for _field in options.get('fields', []):
+                        # In case if we deal with structure 2
+                        if isinstance(_field, dict):
+                            # TODO: take options (ex: boost) into consideration
+                            field = "{}.{}".format(path, _field['name'])
+                        # In case if we deal with structure 1
+                        else:
+                            field = "{}.{}".format(path, _field)
 
-                    extra_field_kwargs = view.search_nested_fields[field]
-                    if extra_field_kwargs:
-                        field_kwargs[field].update(extra_field_kwargs)
-                    path = extra_field_kwargs.pop('path')
+                        field_kwargs = {
+                            field: search_term
+                        }
 
-                    # The match query
+                        queries.append(
+                            Q("match", **field_kwargs)
+                        )
+
                     __queries.append(
                         Q(
                             cls.query_type,
                             path=path,
-                            **field_kwargs
+                            query=six.moves.reduce(operator.or_, queries)
                         )
                     )
+
         return __queries
 
     @classmethod

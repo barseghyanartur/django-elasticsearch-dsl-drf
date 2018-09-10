@@ -113,12 +113,26 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         query_params = self.get_search_query_params(request)
         __queries = []
         for search_term in query_params:
-            for path, _fields in view.search_nested_fields.items():
+            for label, options in view.search_nested_fields.items():
                 queries = []
-                for field in _fields:
-                    field_key = "{}.{}".format(path, field)
+                path = options.get('path')
+
+                for _field in options.get('fields', []):
+
+                    # In case if we deal with structure 2
+                    if isinstance(_field, dict):
+                        # TODO: take options (such as boost) into consideration
+                        field = "{}.{}".format(path, _field['name'])
+                    # In case if we deal with structure 1
+                    else:
+                        field = "{}.{}".format(path, _field)
+
+                    field_kwargs = {
+                        field: search_term
+                    }
+
                     queries.append(
-                        Q("match", **{field_key: search_term})
+                        Q("match", **field_kwargs)
                     )
 
                 __queries.append(

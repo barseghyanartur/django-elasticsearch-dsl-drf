@@ -51,7 +51,11 @@ class CityDocumentViewSet(DocumentViewSet):
     )
 
     search_nested_fields = {
-        'country': ['name'],
+        # 'country': ['name'],
+        'country': {
+            'path': 'country',
+            'fields': ['name'],
+        },
     }
 
     # Define filtering fields
@@ -117,3 +121,11 @@ class CityCompoundSearchBackendDocumentViewSet(CityDocumentViewSet):
         DefaultOrderingFilterBackend,
         SuggesterFilterBackend,
     ]
+
+    # search_nested_fields = {
+    #     # 'country': ['name'],
+    #     'country': {
+    #         'path': 'country',
+    #         'fields': ['name'],
+    #     },
+    # }

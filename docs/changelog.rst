@@ -15,6 +15,44 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.16
+----
+2018-09-10
+
+.. note:
+
+    This release contains minor backwards incompatible changes. You might
+    need to update your code if you have been making use of nested search.
+
+*Old way of declaring nested search fields*
+
+.. code-block:: python
+
+    search_nested_fields = {
+        'country': ['name'],
+        'country.city': ['name'],
+    }
+
+*New way of declaring nested search fields*
+
+.. code-block:: python
+
+    search_nested_fields = {
+        'country': {
+            'path': 'country',
+            'fields': ['name'],
+        },
+        'city': {
+            'path': 'country.city',
+            'fields': ['name'],
+        },
+    }
+
+- Changes in nested search. This affects usage of both historical
+  ``SearchFilterBackend`` and ``CompoundSearchFilterBackend``. Update your code
+  accordingly.
+- Take meta property ``using`` of the document ``Meta`` into consideration.
+
 0.15.1
 ------
 2018-08-22

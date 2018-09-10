@@ -154,7 +154,9 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
     def __init__(self, *args, **kwargs):
         assert self.document is not None
 
-        self.client = connections.get_connection()
+        self.client = connections.get_connection(
+            self.document._doc_type.using
+        )
         self.index = self.document._doc_type.index
         self.mapping = self.document._doc_type.mapping.properties.name
         self.search = Search(

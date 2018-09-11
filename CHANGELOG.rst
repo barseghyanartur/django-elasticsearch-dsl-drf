@@ -19,7 +19,7 @@ are used for versioning (schema follows below):
 ----
 2018-09-10
 
-.. note:
+.. note::
 
     This release contains minor backwards incompatible changes. You might
     need to update your code if you have been making use of nested search.

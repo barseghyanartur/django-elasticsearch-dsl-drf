@@ -130,7 +130,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>>         FunctionalSuggesterFilterBackend,
         >>>     ]
         >>>     # Suggester fields
-        >>>     suggester_fields = {
+        >>>     functional_suggester_fields = {
         >>>         'name_suggest': {
         >>>             'field': 'name.suggest',
         >>>             'suggesters': [
@@ -232,6 +232,21 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
     #     )
 
     @classmethod
+    def apply_query_size(cls, queryset, options):
+        """Apply query size.
+
+        :param queryset:
+        :param options:
+        :return:
+        """
+        if 'size' in options['options']:
+            queryset = queryset.extra(
+                from_=options['options'].get('from', 0),
+                size=options['options']['size']
+            )
+        return queryset
+
+    @classmethod
     def apply_suggester_completion_prefix(cls,
                                           suggester_name,
                                           queryset,
@@ -256,6 +271,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
             'prefix',
             **{options['field']: value}
         )
+        queryset = cls.apply_query_size(queryset, options)
         return queryset
 
     @classmethod
@@ -283,6 +299,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
             'match',
             **{options['field']: value}
         )
+        queryset = cls.apply_query_size(queryset, options)
         return queryset
 
     def get_suggester_query_params(self, request, view):
@@ -313,12 +330,17 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
                 valid_suggesters = suggester_fields[field_name]['suggesters']
 
+                suggester_options = {}
+
                 # If we have default suggester given use it as a default and
                 # do not require further suffix specification.
                 default_suggester = None
                 if 'default_suggester' in suggester_fields[field_name]:
                     default_suggester = \
                         suggester_fields[field_name]['default_suggester']
+
+                if 'options' in suggester_fields[field_name]:
+                    suggester_options = suggester_fields[field_name]['options']
 
                 if suggester_param is None \
                         or suggester_param in valid_suggesters:
@@ -360,6 +382,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                             ),
                             'type': view.mapping,
                             'serializer_field': serializer_field,
+                            'options': suggester_options,
                         }
         return suggester_query_params
 

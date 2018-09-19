@@ -118,7 +118,8 @@ class TestFilteringGlobalAggregations(BaseRestFrameworkTestCase,
         self.assertIn(
             'buckets',
             facet_state_response.data['facets']
-                ['_filter_state_global']['state_global']
+                                     ['_filter_state_global']
+                                     ['state_global']
         )
         # self.assertIn(
         #     'buckets',

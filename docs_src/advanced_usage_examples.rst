@@ -1975,6 +1975,10 @@ functionality). Thus, it might be written as short as:
                     FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
                 ],
                 'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+                'options': {
+                    'size': 25,
+                    'from': 0,
+                }
             },
             'title_suggest_match': {
                 'field': 'title.edge_ngram_completion',
@@ -1982,6 +1986,12 @@ functionality). Thus, it might be written as short as:
                 'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
             }
         }
+
+.. note::
+
+    Note, that in ``functional_suggester_fields['title_suggest']['options']``
+    there are two params: ``size`` and ``from``. They control the query size
+    and the offset of the generated functional suggest query.
 
 Highlighting
 ------------

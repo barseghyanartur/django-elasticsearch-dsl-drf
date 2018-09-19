@@ -47,6 +47,10 @@ class BookFunctionalSuggesterDocumentViewSet(BaseBookDocumentViewSet,
                 FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
             ],
             'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            'options': {
+                'size': 100,
+                'from': 0,
+            }
             # 'serializer_field': 'title',
         },
         'title_suggest_match': {

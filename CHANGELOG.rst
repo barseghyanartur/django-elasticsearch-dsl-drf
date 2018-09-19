@@ -19,7 +19,7 @@ are used for versioning (schema follows below):
 ------
 2018-09-18
 
-- Make it possible to control the size of the functional queries.
+- Make it possible to control the size of the functional suggester queries.
 
 0.16
 ----

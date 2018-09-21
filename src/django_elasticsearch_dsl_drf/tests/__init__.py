@@ -14,6 +14,7 @@ from .test_highlight import TestHighlight
 from .test_ordering_common import TestOrdering
 from .test_ordering_geo_spatial import TestOrderingGeoSpatial
 from .test_pagination import TestPagination
+from .test_pip_helpers import TestPipHelpers
 from .test_search import TestSearch
 from .test_search_multi_match import TestMultiMatchSearch
 from .test_search_simple_query_string import TestSimpleQueryStringSearch
@@ -42,6 +43,7 @@ __all__ = (
     'TestOrdering',
     'TestOrderingGeoSpatial',
     'TestPagination',
+    'TestPipHelpers',
     'TestSearch',
     'TestSerializers',
     'TestSuggesters',

@@ -23,7 +23,7 @@ __all__ = (
 
 @pytest.mark.django_db
 class TestWrappers(unittest.TestCase):
-    """Test helpers."""
+    """Test wrappers."""
 
     @classmethod
     def setUpClass(cls):

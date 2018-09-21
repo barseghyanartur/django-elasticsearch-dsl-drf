@@ -24,7 +24,7 @@ def get_installed_packages(with_versions=False):
     """
     reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'])
     if with_versions:
-        return set([r.decode().split('==') for r in reqs.split()])
+        return set([tuple(r.decode().split('==')) for r in reqs.split()])
     else:
         return set([r.decode().split('==')[0] for r in reqs.split()])
 

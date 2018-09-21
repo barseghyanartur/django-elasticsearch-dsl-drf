@@ -15,11 +15,18 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.16.2
+------
+2018-09-21
+
+- Tested yet untested ``pip_helpers`` module.
+- More tests.
+
 0.16.1
 ------
 2018-09-18
 
-- Make it possible to control the size of the functional queries.
+- Make it possible to control the size of the functional suggester queries.
 
 0.16
 ----

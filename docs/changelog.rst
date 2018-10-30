@@ -15,6 +15,18 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.16.3
+------
+2018-10-31
+
+.. note::
+
+    Release dedicated to Charles Aznavour.
+
+- Make it possible to ignore certain Elastic exceptions by providing the
+  appropriate ``ignore`` argument (on the view level). Default behaviour is
+  intact. Set it to a list of integers (error codes) if you need it so.
+
 0.16.2
 ------
 2018-09-21

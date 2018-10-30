@@ -150,6 +150,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
     document = None  # Re-define
     pagination_class = PageNumberPagination
     # permission_classes = (AllowAny,)
+    ignore = []
 
     def __init__(self, *args, **kwargs):
         assert self.document is not None
@@ -205,7 +206,12 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
             )
 
         if lookup_url_kwarg == 'id':
-            obj = self.document.get(id=self.kwargs[lookup_url_kwarg])
+            get_kwargs = {'id': self.kwargs[lookup_url_kwarg]}
+            if self.ignore:
+                get_kwargs.update({'ignore': self.ignore})
+            obj = self.document.get(**get_kwargs)
+            if not obj and self.ignore:
+                raise Http404("No result matches the given query.")
             return DictionaryProxy(obj.to_dict())
         else:
             queryset = queryset.filter(

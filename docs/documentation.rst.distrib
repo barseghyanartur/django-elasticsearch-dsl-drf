@@ -18,7 +18,7 @@ Contents:
    nested_fields_usage_examples
    more_like_this
    global_aggregations
-   demo
+   configuration_tweaks
    changelog
    django_elasticsearch_dsl_drf
 

@@ -8,6 +8,7 @@ from .viewsets import (
     BookDefaultFilterLookupDocumentViewSet,
     BookDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
+    BookIgnoreIndexErrorsDocumentViewSet,
     BookMoreLikeThisDocumentViewSet,
     BookMoreLikeThisNoOptionsDocumentViewSet,
     BookMultiMatchSearchFilterBackendDocumentViewSet,
@@ -62,6 +63,13 @@ books_functional_suggester = router.register(
     r'books-functional-suggester',
     BookFunctionalSuggesterDocumentViewSet,
     base_name='bookdocument_functional_suggester'
+)
+
+
+books_ignore_index_errors = router.register(
+    r'books-ignore-index-errors',
+    BookIgnoreIndexErrorsDocumentViewSet,
+    base_name='bookdocument_ignore_index_errors'
 )
 
 books_more_like_this = router.register(

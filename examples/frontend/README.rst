@@ -40,6 +40,20 @@ To run 6.3.2 using Docker, do:
     docker pull docker.elastic.co/elasticsearch/elasticsearch:6.3.2
     docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:6.3.2
 
+Build Elasticsearch index
+-------------------------
+First, create some test data:
+
+.. code-block:: sh
+
+    ./scripts/create_test_data.sh
+
+Then build Elasticsearch index:
+
+.. code-block:: sh
+
+    ./scripts/rebuild_index.sh
+
 Install React requirements
 --------------------------
 Note, that you should be using NodeJS > 7.5.

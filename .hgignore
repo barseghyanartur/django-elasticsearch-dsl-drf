@@ -13,6 +13,7 @@ syntax: regexp
 \.idea/
 ^vagrant/\.vagrant
 ^\.pytest_cache/
+node_modules/
 
 ^MANIFEST\.in~
 ^tmp/
@@ -37,3 +38,4 @@ syntax: regexp
 ^dist/
 ^src/django_elasticsearch_dsl_drf\.egg-info
 \.DS_Store
+^examples/frontend/node_modules/

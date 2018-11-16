@@ -13,6 +13,7 @@
 /vagrant/.vagrant/
 .pytest_cache/
 
+node_modules/
 MANIFEST.in~
 MIND_BUCKET.rst
 codebin/
@@ -38,3 +39,4 @@ codebin/
 /src/django_elasticsearch_dsl_drf/filter_backends/aggregations.py
 #/examples/simple/settings/__init__.py
 /examples/simple/settings/local_settings.py
+yarn.lock

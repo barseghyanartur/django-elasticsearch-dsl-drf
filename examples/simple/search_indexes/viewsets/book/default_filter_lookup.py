@@ -30,6 +30,7 @@ class BookDefaultFilterLookupDocumentViewSet(BookDocumentViewSet):
             ],
             'default_lookup': LOOKUP_FILTER_TERM,
         },
+        'publisher': 'publisher.raw',
     }
 
     faceted_search_fields = {

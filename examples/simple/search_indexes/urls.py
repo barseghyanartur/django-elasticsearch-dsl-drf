@@ -7,16 +7,17 @@ from .viewsets import (
     BookCompoundSearchBoostSearchBackendDocumentViewSet,
     BookDefaultFilterLookupDocumentViewSet,
     BookDocumentViewSet,
+    BookFrontendDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
     BookIgnoreIndexErrorsDocumentViewSet,
     BookMoreLikeThisDocumentViewSet,
     BookMoreLikeThisNoOptionsDocumentViewSet,
-    BookMultiMatchSearchFilterBackendDocumentViewSet,
     BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
+    BookMultiMatchSearchFilterBackendDocumentViewSet,
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
-    BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
+    BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
     CityCompoundSearchBackendDocumentViewSet,
     CityDocumentViewSet,
     PublisherDocumentViewSet,
@@ -65,6 +66,11 @@ books_functional_suggester = router.register(
     base_name='bookdocument_functional_suggester'
 )
 
+books_frontend = router.register(
+    r'books-frontend',
+    BookFrontendDocumentViewSet,
+    base_name='bookdocument_frontend'
+)
 
 books_ignore_index_errors = router.register(
     r'books-ignore-index-errors',

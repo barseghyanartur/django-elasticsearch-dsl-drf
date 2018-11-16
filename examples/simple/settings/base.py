@@ -208,6 +208,7 @@ else:
 _MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -240,6 +241,7 @@ INSTALLED_APPS = [
     # Third party apps
     'rest_framework',  # REST framework
     'django_elasticsearch_dsl',  # Elasticsearch integration
+    'corsheaders',  # For React demo
 
     # This app
     'django_elasticsearch_dsl_drf',
@@ -268,6 +270,9 @@ ELASTICSEARCH_DSL = {
         'timeout': 30,
     },
 }
+
+# CORS headers config
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Name of the Elasticsearch index
 ELASTICSEARCH_INDEX_NAMES = {

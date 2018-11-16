@@ -7,6 +7,7 @@ from .default import BookDocumentViewSet
 from .default_filter_lookup import BookDefaultFilterLookupDocumentViewSet
 from .functional_suggester import BookFunctionalSuggesterDocumentViewSet
 from .ignore_index_errors import BookIgnoreIndexErrorsDocumentViewSet
+from .frontend import BookFrontendDocumentViewSet
 from .more_like_this import (
     BookMoreLikeThisDocumentViewSet,
     BookMoreLikeThisNoOptionsDocumentViewSet,

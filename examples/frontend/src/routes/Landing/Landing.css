@@ -1,0 +1,10 @@
+body {
+    background-color: #f9f9f9;
+}
+
+.landing-wrapper {
+    width: 500px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 200px auto;
+}

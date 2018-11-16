@@ -1,0 +1,37 @@
+body {
+    background-color: #f9f9f9;
+}
+
+.search-wrapper {
+    width: 90%;
+    text-align: center;
+    vertical-align: middle;
+    margin: 200px auto;
+}
+
+.search-wrapper .top-wrapper {
+    width: 90%px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 200px auto;
+}
+
+.search-wrapper .main-wrapper {
+    width: 90%px;
+    text-align: center;
+}
+
+
+.search-wrapper .main-wrapper .filters-wrapper {
+    float: left;
+    /*border: #000 1px solid;*/
+    width: 20%;
+    text-align: left;
+}
+
+.search-wrapper .main-wrapper .results-wrapper {
+    float: right;
+    /*border: #000 1px solid;*/
+    width: 70%;
+    text-align: left;
+}

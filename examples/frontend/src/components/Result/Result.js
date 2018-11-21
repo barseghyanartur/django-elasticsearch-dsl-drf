@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 
 import './Result.css';
 
@@ -22,11 +23,13 @@ class Result extends React.Component {
     }
 
     render() {
-        const { id, title, state, authors, isbn, summary, tags } = this.props;
+        const { id, title, state, authors, isbn, summary, tags, globalState } = this.props;
         return (
             <Fragment>
                 <div className="result-wrapper">
-                    <h3>{title}</h3>
+                    <Link to={`/${id}`} globalState={globalState}>
+                        <h3>{title}</h3>
+                    </Link>
                     {/*
                     <p>{summary}</p>
                     <span className="tags">{this.renderList(tags)}</span>

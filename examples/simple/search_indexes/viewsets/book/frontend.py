@@ -10,22 +10,26 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_QUERY_ISNULL,
     LOOKUP_QUERY_LT,
     LOOKUP_QUERY_LTE,
+    SUGGESTER_COMPLETION,
+    SUGGESTER_PHRASE,
+    SUGGESTER_TERM,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
     DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
-    FunctionalSuggesterFilterBackend,
     HighlightBackend,
     IdsFilterBackend,
     OrderingFilterBackend,
     PostFilterFilteringFilterBackend,
     SearchFilterBackend,
     SuggesterFilterBackend,
+    FunctionalSuggesterFilterBackend,
 )
 from django_elasticsearch_dsl_drf.viewsets import (
-    BaseDocumentViewSet,
+    DocumentViewSet,
 )
+from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
 
 from elasticsearch_dsl import DateHistogramFacet, RangeFacet
 
@@ -37,7 +41,13 @@ __all__ = (
 )
 
 
-class BookFrontendDocumentViewSet(BaseDocumentViewSet):
+class CustomPageNumberPagination(PageNumberPagination):
+    """This is needed in order to make page size customisation possible."""
+
+    page_size_query_param = 'page_size'
+
+
+class BookFrontendDocumentViewSet(DocumentViewSet):
     """Frontend BookDocument ViewSet.
 
     From the name you can guess that it's all about React frontend demo.
@@ -45,6 +55,7 @@ class BookFrontendDocumentViewSet(BaseDocumentViewSet):
 
     document = BookDocument
     serializer_class = BookDocumentSimpleSerializer
+    pagination_class = CustomPageNumberPagination
     lookup_field = 'id'
     filter_backends = [
         FilteringFilterBackend,
@@ -153,6 +164,10 @@ class BookFrontendDocumentViewSet(BaseDocumentViewSet):
     post_filter_fields = {
         'publisher': 'publisher.raw',
         'status': 'state.raw',
+        'price': 'price',
+        'publication_date': {
+            'field': 'publication_date',
+        },
         'tags': {
             'field': 'tags',
             'lookups': [
@@ -184,7 +199,7 @@ class BookFrontendDocumentViewSet(BaseDocumentViewSet):
         'publication_date': 'publication_date',
     }
     # Specify default ordering
-    ordering = ('id', 'title', 'price',)
+    ordering = ('_score', 'id', 'title', 'price',)
     faceted_search_fields = {
         'status': {
             'field': 'state.raw',
@@ -199,6 +214,7 @@ class BookFrontendDocumentViewSet(BaseDocumentViewSet):
         'publication_date': {
             'field': 'publication_date',
             'facet': DateHistogramFacet,
+            # 'enabled': True,
             'options': {
                 'interval': 'year',
             }
@@ -208,23 +224,50 @@ class BookFrontendDocumentViewSet(BaseDocumentViewSet):
             'facet': RangeFacet,
             'options': {
                 'ranges': [
-                    ("<10", (None, 10)),
-                    ("11-20", (11, 20)),
-                    ("20-50", (20, 50)),
-                    (">50", (50, None)),
+                    ("0__10", (0, 10)),
+                    ("11__20", (11, 20)),
+                    ("20__50", (20, 50)),
+                    ("50__999999", (50, 999999)),
                 ]
             }
         },
         'price': {
             # 'field': 'price',
             'facet': RangeFacet,
+            'enabled': True,
             'options': {
                 'ranges': [
-                    ("<10", (None, 10)),
-                    ("11-20", (11, 20)),
-                    ("20-50", (20, 50)),
-                    (">50", (50, None)),
+                    ("0__9.99", (0, 9.99)),
+                    ("10__19.99", (10, 19.99)),
+                    ("20__49.99", (20, 49.99)),
+                    ("50__999999", (50, 999999)),
                 ]
             }
         },
+    }
+    # Suggester fields
+    suggester_fields = {
+        'title_suggest': {
+            'field': 'title.suggest',
+            'default_suggester': SUGGESTER_COMPLETION,
+        },
+        'title_suggest_edge_ngram': {
+            'field': 'title.edge_ngram_completion',
+            'default_suggester': SUGGESTER_TERM,
+            'suggesters': [
+                SUGGESTER_PHRASE,
+                SUGGESTER_TERM,
+            ],
+        },
+        'title_suggest_mlt': {
+            'field': 'title.mlt',
+            'default_suggester': SUGGESTER_TERM,
+            'suggesters': [
+                SUGGESTER_PHRASE,
+                SUGGESTER_TERM,
+            ],
+        },
+        'publisher_suggest': 'publisher.suggest',
+        'tag_suggest': 'tags.suggest',
+        'summary_suggest': 'summary',
     }

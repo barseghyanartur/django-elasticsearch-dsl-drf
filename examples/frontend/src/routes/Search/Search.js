@@ -1,13 +1,24 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import Autosuggest from 'react-autosuggest'
+import { debounce } from 'throttle-debounce'
+
 import './Search.css';
 import api from '../../api';
+import constants from '../../constants';
 import { getQueryStringParams } from '../../helpers';
 import Result from '../../components/Result/Result';
 import Filter from '../../components/Filter/Filter';
+import Pagination from '../../components/Pagination/Pagination';
 
 
 class Search extends React.Component {
+
+    static propTypes = {
+        history: PropTypes.object,
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -17,18 +28,21 @@ class Search extends React.Component {
             next: null,
             previous: null,
             results: [],
-            page: 0,
+            page: 1,
             count: 0,
+            suggestions: [],
         };
         this.onSubmit = this.onSubmit.bind(this);
         this.onButtonClick = this.onButtonClick.bind(this);
         this.doSearch = this.doSearch.bind(this);
-        this.onChange = this.onChange.bind(this);
+//        this.onChange = this.onChange.bind(this);
         this.renderResults = this.renderResults.bind(this);
         this.renderFilters = this.renderFilters.bind(this);
-        this.updateFilter = this.updateFilter.bind(this);
         this.resetFilters = this.resetFilters.bind(this);
         this.updateFilters = this.updateFilters.bind(this);
+        this.renderPagination = this.renderPagination.bind(this);
+        this.updatePageNumber = this.updatePageNumber.bind(this);
+        this.resetPageNumber = this.resetPageNumber.bind(this);
     }
 
     componentWillMount() {
@@ -36,97 +50,120 @@ class Search extends React.Component {
         if (queryParams.query) {
             this.setState({query: queryParams.query});
         }
+
+        // Suggest
+        this.onSuggestionsFetchRequested = debounce(
+            500,
+            this.onSuggestionsFetchRequested
+        );
+        // END suggest
     }
 
-    doSearch() {
-        console.log('this.state.filters!!!!!!!!!!', this.state.filters);
+    /**
+     * Render suggestions.
+     */
+    renderSuggestion = suggestion => {
+        return (
+            <div className="result">
+                <div>{suggestion}</div>
+            </div>
+        )
+    };
+
+    /**
+     * Suggestions.
+     */
+    suggestOnChange = (event, { newValue }) => {
+        this.setState({ query: newValue });
+    };
+
+    /**
+     * Suggestions.
+     */
+    onSuggestionsFetchRequested = ({ value }) => {
+        api.suggest(value)
+           .then(res => {
+               console.log('res: ', res);
+               let results = [];
+               res.data[constants.api.suggester].map(s => {
+                    s.options.map(h => {
+                        results.push(h.text);
+                    });
+               });
+               this.setState({ suggestions: results });
+           });
+    };
+
+    /**
+     * Suggestions.
+     */
+    onSuggestionsClearRequested = () => {
+        this.setState({ suggestions: [] });
+    };
+
+    /**
+     * Get suggestion value.
+     */
+    getSuggestionValue = (suggestion) => {
+        return suggestion;
+    };
+
+    componentDidMount() {
+        const { query, results } = this.state;
+        if (query && this.state.results.length === 0) {
+            this.doSearch();
+        }
+    }
+
+    /**
+     * Sends a request to the search backend (REST framework), then
+     * updates the state.
+     */
+    doSearch(page=null) {
         const filters = this.updateFilters();
-        api.searchBooks(this.state.query, filters)
-        .then((result) => {
-            this.setState({
-                facets: result.data.facets,
-                next: result.data.next,
-                previous: result.data.previous,
-                results: result.data.results,
-                count: result.data.count,
-            });
-        });
+        const currentPage = page || this.state.page;
+        api.search(this.state.query, filters, currentPage)
+           .then((result) => {
+               this.setState({
+                   facets: result.data.facets,
+                   next: result.data.next,
+                   previous: result.data.previous,
+                   results: result.data.results,
+                   count: result.data.count,
+               });
+           });
     }
 
+    /**
+     * Rest filters.
+     */
     resetFilters() {
-        this.setState({filters: {}});
+        this.setState({
+            filters: {},
+            page: 1,
+        });
         this.refs.filtersForm.reset();
 
     }
 
+    /**
+     * Search button click handler. Resets filter and performs the search.
+     */
     onButtonClick(event) {
         event.preventDefault();
+        this.props.history.push(`/?query=${this.state.query}`);
         this.resetFilters();
         this.doSearch();
-    }
-
-    /**
-     * Update specific filter.
-     */
-    updateFilter(filterName, filterValue, remove=false) {
-//        console.log('updateFilter');
-//        console.log('filterName: ', filterName);
-//        console.log('filterValue: ', filterValue);
-//        console.log('remove: ', remove);
-//        let filters = {...this.state.filters};
-//        console.log('filters (in state): ', filters);
-//
-//        // Filters are stored in the state `filters` in the following way:
-//        // filters: {
-//        //      'publisher': {
-//        //          'Publisher 1': true,
-//        //          'Publisher 2': true,
-//        //          'Publisher 3': true,
-//        //      },
-//        //      'state': {
-//        //          'published': true,
-//        //          'rejected': true,
-//        //      }
-//        // Object way was chosen in order to make it simpler to
-//        // add/remove/change.
-//        // In the example above, "publisher" and "state" are `filterName`.
-//        // "Publisher 1", "Publisher 2", "Publisher 3", "published" and
-//        // "rejected" are values (for "publisher" and "state").
-//
-//        // When we deal with filter which already exists in the state.
-//        if (filterName in filters) {
-//            console.log('filters[filterName]: ', filters[filterName]);
-//            if (filterValue in filters[filterName]) {
-//                // If "Publisher 1" was already there and remove is triggered.
-//                if (remove) {
-//                    let filterOptions = {...filters[filterName]}
-//                    delete filterOptions[filterValue];
-//                    filters[filterName] = filterOptions;
-//                    console.log('setting state 1: ', {filters: filters});
-//                    this.setState({filters: filters});
-//                }
-//            } else {
-//                // If "Publisher 1" was already there and now "Publisher 2"
-//                // arrives, we simply append "Publisher 2".
-//                filters[filterName][filterValue] = true;
-//                console.log('setting state 2: ', {filters: filters});
-//                this.setState(filters: filters);
-//            }
-//        } else {
-//            if (!remove) {
-//                filters[filterName] = {[filterValue]: true};
-//                console.log('setting state 3: ', {filters: filters});
-//                this.setState({filters: filters});
-//            }
-//        }
     }
 
     /**
      * Update all filters.
      */
     updateFilters() {
-        let filters = {}
-        const formFilters = [].filter.call(document.getElementsByTagName('input'), (c) => c.checked).map(c => [c.name, c.value]);
+        let filters = {};
+        const formFilters = [].filter.call(
+            document.getElementsByTagName('input'), (c) => c.checked
+        ).map(c => [c.name, c.value]);
         formFilters.map((f) => {
             let filterName = f[0];
             let filterValue = f[1];
@@ -139,32 +176,44 @@ class Search extends React.Component {
                 filters[filterName] = {[filterValue]: true};
             }
         });
-        this.setState({filters: filters});
+        this.setState({
+            filters: filters,
+        });
         return filters;
     }
 
+    /**
+     * On form submit handler.
+     */
     onSubmit(event) {
         event.preventDefault();
         this.props.updateQuery(this.state.query);
         this.doSearch();
     }
 
-    onChange(event) {
-        event.preventDefault();
-        this.setState({
-            [event.currentTarget.name]: event.currentTarget.value
-        });
-    }
+//    /**
+//     * Search query field handler.
+//     */
+//    onChange(event) {
+//        event.preventDefault();
+//        this.setState({
+//            [event.currentTarget.name]: event.currentTarget.value
+//        });
+//    }
 
+    /**
+     * Render results.
+     */
     renderResults() {
         const { results, count, query } = this.state;
+        const self = this;
         return (
             <Fragment>
                 {count} hits that match your search criteria: {query}
                 {
                     results.map(
                         function(result, index) {
-                            return <Result key={index} {...result} />;
+                            return <Result key={index} {...result} globalState={self.state} />;
                         }
                     )
                 }
@@ -172,10 +221,13 @@ class Search extends React.Component {
         )
     }
 
+    /**
+     * Render filters.
+     */
     renderFilters() {
         const { facets } = this.state;
-        const doUpdateFilter = this.updateFilter;
         const doSearch = this.doSearch;
+        const resetPageNumber = this.resetPageNumber;
         return (
             <Fragment>
                 Results follow...
@@ -189,8 +241,8 @@ class Search extends React.Component {
                                     <Filter
                                         key={index}
                                         {...filter}
-                                        updateFilter={doUpdateFilter}
                                         doSearch={doSearch}
+                                        resetPageNumber={resetPageNumber}
                                     />
                                 </Fragment>
                             );
@@ -202,7 +254,52 @@ class Search extends React.Component {
         )
     }
 
+    /**
+     * Update page number in the state and does the search.
+     */
+    updatePageNumber(page) {
+        this.setState({page});
+        this.doSearch(page);
+    }
+
+    /**
+     * Set page number to 1.
+     */
+    resetPageNumber() {
+        this.setState({page: 1});
+    }
+
+    /**
+     * Render pagination.
+     */
+    renderPagination() {
+        if (this.state.count > constants.api.searchPageSize) {
+            return (
+                <Fragment>
+                    <Pagination count={this.state.count}
+                                pageSize={constants.api.searchPageSize}
+                                updatePageNumber={this.updatePageNumber}
+                                currentPage={this.state.page}
+                    />
+                </Fragment>
+            )
+       }
+    }
+
+    /**
+     * Render the Search component.
+     */
     render() {
+        // Suggestions
+        const { query, suggestions } = this.state;
+
+        const inputProps = {
+            placeholder: 'customer name or short code',
+            value: query,
+            onChange: this.suggestOnChange,
+        };
+        // END suggestions
+
         const { updateQuery } = this.props;
         return (
             <Fragment>
@@ -210,13 +307,26 @@ class Search extends React.Component {
                     <div className="top-wrapper">
                         <h2>Search form</h2>
                         <form onSubmit={this.onSubmit}>
+                            {/*
                             <label>Query</label>
                             <input key="query"
                                    name="query"
                                    defaultValue={this.state.query}
                                    onChange={this.onChange} />
+                            */}
+                            <div className="query-wrapper">
+                                <Autosuggest
+                                    suggestions={suggestions}
+                                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                    getSuggestionValue={this.getSuggestionValue}
+                                    renderSuggestion={this.renderSuggestion}
+                                    inputProps={inputProps}
+                                />
+                            </div>
 
                             <button
+                                className="search-button"
                                 type="submit"
                                 onClick={this.onButtonClick}>
                                 Search
@@ -229,12 +339,14 @@ class Search extends React.Component {
                             {this.renderFilters()}
                         </div>
                         <div className="results-wrapper">
+                            <div className="inner">
                             <h2>Results</h2>
                             {this.renderResults()}
+                            {this.renderPagination()}
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </Fragment>
         )
     }

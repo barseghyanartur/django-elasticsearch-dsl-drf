@@ -4,8 +4,10 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import "picnic/picnic.min.css";
 
 import Search from './routes/Search/Search';
+import Detail from './routes/Detail/Detail';
 
 import logo from './logo.svg';
 import './App.css';
@@ -27,7 +29,8 @@ class App extends Component {
     render() {
     return (
         <BrowserRouter>
-            <Switch>
+            {/*<Switch>*/}
+            <div>
                 <Route
                     exact path="/"
                     component={
@@ -38,7 +41,9 @@ class App extends Component {
                               />
                     }
                 />
-            </Switch>
+                <Route exact path="/:id" component={Detail} />
+            {/*</Switch>*/}
+            </div>
         </BrowserRouter>
     );
     }

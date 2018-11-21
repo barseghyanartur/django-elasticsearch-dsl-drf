@@ -2,7 +2,6 @@ from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_COMPLETION,
     SUGGESTER_PHRASE,
     SUGGESTER_TERM,
-
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
     DefaultOrderingFilterBackend,

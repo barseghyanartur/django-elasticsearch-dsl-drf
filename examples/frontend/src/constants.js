@@ -1,9 +1,16 @@
 const constants = {
   api: {
-    url: 'https://019e5327.ngrok.io', // django-elasticsearch-dsl-drf URL host
-    booksRoute: '/search/books-frontend/', // Books route
-    booksRouteParams: 'facet=publisher&facet=status', // Default params
+    url: 'http://localhost:8000', // django-elasticsearch-dsl-drf URL host
+    searchRoute: '/search/books-frontend/', // Search route
+    searchRouteParams: 'facet=publisher' + // Default search params
+                       '&facet=status' +
+                       '&facet=price' +
+                       '&facet=publication_date',
+    rangeFilters: ['price', 'publication_date',],
+    searchPageSize: 10,
+    suggestionsRoute: '/search/books-frontend/suggest/', // Suggestions route
+    suggester: 'title_suggest',
   }
-}
+};
 
 export default constants;

@@ -11,3 +11,4 @@ cat docs_src/filtering_usage_examples.rst > docs/filtering_usage_examples.rst
 cat docs_src/more_like_this.rst > docs/more_like_this.rst
 cat docs_src/configuration_tweaks.rst > docs/configuration_tweaks.rst
 cat docs_src/global_aggregations.rst > docs/global_aggregations.rst
+cat examples/frontend/README.rst > docs/frontend_demo.rst

@@ -15,14 +15,12 @@ Elasticsearch documents.
 
 Prerequisites
 =============
-
 - Django 1.8, 1.9, 1.10, 1.11, 2.0 and 2.1.
 - Python 2.7, 3.4, 3.5, 3.6, 3.7
 - Elasticsearch 2.x, 5.x, 6.x
 
 Dependencies
 ============
-
 **elasticsearch and elasticsearch-dsl**
 
 Depending on your Elasticsearch version (either 2.x, 5.x or 6.x) you should
@@ -39,9 +37,14 @@ You are advised to use the latest version of `django-elasticsearch-dsl
 Initial version of this package was written for `djangorestframework
 <https://pypi.python.org/pypi/djangorestframework>`_ 3.6.2.
 
+Demo
+====
+There's a frontend demo (React based) is available. See the `dedicated docs
+<https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/frontend/README.rst>`_
+for more information.
+
 Documentation
 =============
-
 Documentation is available on `Read the Docs
 <http://django-elasticsearch-dsl-drf.readthedocs.io/>`_.
 
@@ -76,7 +79,6 @@ Main features and highlights
 
 Installation
 ============
-
 (1) Install latest stable version from PyPI:
 
     .. code-block:: sh
@@ -115,7 +117,6 @@ Installation
 
 Quick start
 ===========
-
 Perhaps the easiest way to get acquainted with ``django-elasticsearch-dsl-drf``
 is to read the :doc:`quick start tutorial <quick_start>`.
 
@@ -124,7 +125,6 @@ with very low knowledge entry level.
 
 Testing
 =======
-
 Project is covered with tests.
 
 To test with all supported Python/Django versions type:
@@ -166,7 +166,6 @@ install the test requirements:
 
 Writing documentation
 =====================
-
 Keep the following hierarchy.
 
 .. code-block:: text
@@ -195,17 +194,14 @@ Keep the following hierarchy.
 
 License
 =======
-
 GPL 2.0/LGPL 2.1
 
 Support
 =======
-
 For any issues contact me at the e-mail given in the `Author`_ section.
 
 Author
 ======
-
 Artur Barseghyan <artur.barseghyan@gmail.com>
 
 Project documentation
@@ -228,6 +224,8 @@ Contents:
    more_like_this
    global_aggregations
    configuration_tweaks
+   demo
+   frontend_demo
    changelog
    django_elasticsearch_dsl_drf
 

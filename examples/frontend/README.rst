@@ -3,6 +3,14 @@ frontend demo for django-elasticsearch-dsl-drf
 ==============================================
 Frontend demo for django-elasticsearch-dsl-drf
 
+Based on `Book
+<https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/books/models/book.py>`_
+model, `BookDocument
+<https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/documents/book.py>`_
+and `BookFrontendDocumentViewSet
+<https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/simple/search_indexes/viewsets/book/frontend.py>`_
+viewset.
+
 Quick start
 ===========
 From the project root directory.

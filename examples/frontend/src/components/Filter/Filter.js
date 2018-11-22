@@ -66,7 +66,8 @@ class Filter extends React.Component {
                             // Remove the `option.doc_count > 0 &&` part from
                             // the next line if you want to have null results
                             // options as well.
-                            return (option.doc_count > 0 &&
+                            let showFacet = constants.api.showZeroCountFacets ? true : option.doc_count > 0;
+                            return (showFacet &&
                                 <div key={index} className="filter-checkbox">
                                     <label>
                                         <input

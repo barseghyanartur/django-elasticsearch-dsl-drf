@@ -10,6 +10,7 @@ const constants = {
     searchPageSize: 10,
     suggestionsRoute: '/search/books-frontend/suggest/', // Suggestions route
     suggester: 'title_suggest',
+    showZeroCountFacets: true,
   }
 };
 

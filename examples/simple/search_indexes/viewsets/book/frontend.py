@@ -106,19 +106,19 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
                 LOOKUP_FILTER_TERMS,
             ],
         },
-        'title_f': 'title.raw',
-        'summary_f': 'summary',
-        'publisher_f': 'publisher.raw',
+        'title': 'title.raw',
+        'summary': 'summary',
+        'publisher': 'publisher.raw',
         'publication_date_f': 'publication_date',
-        'state_f': 'state.raw',
-        'isbn_f': 'isbn.raw',
+        'status': 'state.raw',
+        'isbn': 'isbn.raw',
         'price_f': {
             'field': 'price.raw',
             'lookups': [
                 LOOKUP_FILTER_RANGE,
             ],
         },
-        'pages_f': {
+        'pages': {
             'field': 'pages',
             'lookups': [
                 LOOKUP_FILTER_RANGE,
@@ -128,7 +128,7 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
                 LOOKUP_QUERY_LTE,
             ],
         },
-        'stock_count_f': {
+        'stock_count': {
             # 'field': 'stock_count',
             'lookups': [
                 LOOKUP_FILTER_RANGE,
@@ -137,36 +137,6 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
                 LOOKUP_QUERY_LT,
                 LOOKUP_QUERY_LTE,
             ],
-        },
-        'tags_f': {
-            'field': 'tags',
-            'lookups': [
-                LOOKUP_FILTER_TERMS,
-                LOOKUP_FILTER_PREFIX,
-                LOOKUP_FILTER_WILDCARD,
-                LOOKUP_QUERY_IN,
-                LOOKUP_QUERY_EXCLUDE,
-                LOOKUP_QUERY_ISNULL,
-            ],
-        },
-        'tags.raw_f': {
-            'field': 'tags.raw',
-            'lookups': [
-                LOOKUP_FILTER_TERMS,
-                LOOKUP_FILTER_PREFIX,
-                LOOKUP_FILTER_WILDCARD,
-                LOOKUP_QUERY_IN,
-                LOOKUP_QUERY_EXCLUDE,
-            ],
-        },
-    }
-    # Post filter fields, copy filters as they are valid
-    post_filter_fields = {
-        'publisher': 'publisher.raw',
-        'status': 'state.raw',
-        'price': 'price',
-        'publication_date': {
-            'field': 'publication_date',
         },
         'tags': {
             'field': 'tags',
@@ -180,6 +150,36 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
             ],
         },
         'tags.raw': {
+            'field': 'tags.raw',
+            'lookups': [
+                LOOKUP_FILTER_TERMS,
+                LOOKUP_FILTER_PREFIX,
+                LOOKUP_FILTER_WILDCARD,
+                LOOKUP_QUERY_IN,
+                LOOKUP_QUERY_EXCLUDE,
+            ],
+        },
+    }
+    # Post filter fields, copy filters as they are valid
+    post_filter_fields = {
+        'publisher_pf': 'publisher.raw',
+        'status_pf': 'state.raw',
+        'price': 'price',
+        'publication_date': {
+            'field': 'publication_date',
+        },
+        'tags_pf': {
+            'field': 'tags',
+            'lookups': [
+                LOOKUP_FILTER_TERMS,
+                LOOKUP_FILTER_PREFIX,
+                LOOKUP_FILTER_WILDCARD,
+                LOOKUP_QUERY_IN,
+                LOOKUP_QUERY_EXCLUDE,
+                LOOKUP_QUERY_ISNULL,
+            ],
+        },
+        'tags.raw_pf': {
             'field': 'tags.raw',
             'lookups': [
                 LOOKUP_FILTER_TERMS,
@@ -205,19 +205,34 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
             'field': 'state.raw',
             'enabled': True,
             # 'global': True,
+            'options': {
+                "min_doc_count": 0,
+                "size": 20000,
+                "order": {
+                    "_term": "asc"
+                },
+            },
         },
         'publisher': {
             'field': 'publisher.raw',
             'enabled': True,
             # 'global': True,
+            'options': {
+                "min_doc_count": 0,
+                "size": 20000,
+                "order": {
+                    "_term": "asc"
+                },
+            },
         },
         'publication_date': {
             'field': 'publication_date',
             'facet': DateHistogramFacet,
-            # 'enabled': True,
+            # 'global': True,
+            'enabled': True,
             'options': {
                 'interval': 'year',
-            }
+            },
         },
         'pages_count': {
             'field': 'pages',
@@ -228,7 +243,7 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
                     ("11__20", (11, 20)),
                     ("20__50", (20, 50)),
                     ("50__999999", (50, 999999)),
-                ]
+                ],
             }
         },
         'price': {
@@ -241,8 +256,8 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
                     ("10__19.99", (10, 19.99)),
                     ("20__49.99", (20, 49.99)),
                     ("50__999999", (50, 999999)),
-                ]
-            }
+                ],
+            },
         },
     }
     # Suggester fields

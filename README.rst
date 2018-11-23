@@ -49,6 +49,12 @@ To bootstrap evaluation, clone the repository locally and run `docker-compose`.
 
     docker-compose up
 
+It will set up:
+
+- Elasticsearch on `http://localhost:9200 <http://localhost:9200>`_
+- Django REST framework on `http://localhost:8000 <http://localhost:8000>`_
+- React on `http://localhost:3000 <http://localhost:3000>`_
+
 Documentation
 =============
 Documentation is available on `Read the Docs

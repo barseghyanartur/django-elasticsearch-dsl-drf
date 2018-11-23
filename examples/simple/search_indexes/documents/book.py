@@ -17,7 +17,7 @@ INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 INDEX.settings(
     number_of_shards=1,
     number_of_replicas=1,
-    blocks={'read_only_allow_delete': True},
+    blocks={'read_only_allow_delete': False},
     # read_only_allow_delete=False
 )
 

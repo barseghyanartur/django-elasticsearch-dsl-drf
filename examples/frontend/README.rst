@@ -35,7 +35,7 @@ To install requirements for 6.x, do:
 
 .. code-block:: sh
 
-    pip install examples/requirements/elastic_6x.txt
+    pip install -r examples/requirements/elastic_6x.txt
 
 Run Elasticsearch
 -----------------

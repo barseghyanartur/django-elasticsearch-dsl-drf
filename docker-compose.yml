@@ -24,13 +24,19 @@ services:
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
-    command: bash -l -c "python3.6 examples/simple/manage.py search_index --rebuild -f --settings=settings.docker && python3.6 examples/simple/manage.py runserver 0.0.0.0:8000 --settings=settings.docker"
+#    command: bash -l -c "python3.6 examples/simple/manage.py search_index --rebuild -f --settings=settings.docker && python3.6 examples/simple/manage.py runserver 0.0.0.0:8000 --settings=settings.docker"
     volumes:
       - .:/backend
     ports:
       - "8000:8000"
     depends_on:
     - elasticsearch
+    links:
+      - elasticsearch:elasticsearch
+    entrypoint:
+      - /backend/docker/backend/entrypoint.sh
+    environment:
+      - DJANGO_SETTINGS_MODULE=settings.docker
 
   frontend:
     container_name: django_elasticsearch_dsl_drf_frontend

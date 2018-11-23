@@ -43,6 +43,12 @@ There's a frontend demo (React based) is available. See the `dedicated docs
 <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/frontend/README.rst>`_
 for more information.
 
+To bootstrap evaluation, clone the repository locally and run `docker-compose`.
+
+.. code-block:: sh
+
+    docker-compose up
+
 Documentation
 =============
 Documentation is available on `Read the Docs

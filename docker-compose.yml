@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+
+  elasticsearch:
+    build:
+      context: .
+      dockerfile: ./docker/elasticsearch/Dockerfile
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
+    container_name: elasticsearch
+    volumes:
+    - esdata:/usr/share/elasticsearch/data
+    ports:
+    - 9200:9200
+    - 9300:9300
+    environment:
+    - bootstrap.memory_lock=true
+    - xpack.security.enabled=false
+    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+
+  backend:
+    container_name: django_elasticsearch_dsl_drf_backend
+    image: django_elasticsearch_dsl_drf_backend:latest
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    command: bash -l -c "python3.6 examples/simple/manage.py runserver 0.0.0.0:8000 --settings=settings.docker && python3.6 examples/simple/manage.py search_index --rebuild -f --settings=settings.docker"
+    volumes:
+      - .:/backend
+    ports:
+      - "8000:8000"
+    depends_on:
+    - elasticsearch
+
+  frontend:
+    container_name: django_elasticsearch_dsl_drf_frontend
+    image: django_elasticsearch_dsl_drf_frontend:latest
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile
+    command: bash -l -c "cd /frontend/examples/frontend/ && yarn dev"
+    volumes:
+      - .:/frontend
+      - /frontend/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+      - elasticsearch
+
+volumes:
+  data:
+  esdata:

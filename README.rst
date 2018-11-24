@@ -39,7 +39,7 @@ Initial version of this package was written for `djangorestframework
 
 Demo
 ====
-There's a frontend demo (React based) is available. See the `dedicated docs
+A frontend demo (React based) is available. See the `dedicated docs
 <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/frontend/README.rst>`_
 for more information.
 

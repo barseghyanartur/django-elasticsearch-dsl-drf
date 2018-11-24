@@ -9,7 +9,7 @@ DEV = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/backend/examples/db/example.db',
+        'NAME': '/backend/examples/db/docker.db',
         'USER': 'postgres',
         'PASSWORD': 'test',
         'HOST': '',

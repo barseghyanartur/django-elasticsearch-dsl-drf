@@ -1,0 +1,13 @@
+.benchmarks
+.pytest_cache
+.tox
+build
+codebin
+dist
+docs
+docs_src
+forks
+htmlcov
+node_modules
+releases
+vagrant

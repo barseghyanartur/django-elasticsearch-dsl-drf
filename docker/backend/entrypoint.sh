@@ -10,6 +10,14 @@ echo "Apply database migrations"
 
 # Create search index
 echo "Create search index"
+./examples/simple/manage.py search_index --create -f --settings=settings.docker
+
+# Create test data
+echo "Apply database migrations"
+./examples/simple/manage.py books_create_test_data --settings=settings.docker
+
+# Create search index
+echo "Create search index"
 ./examples/simple/manage.py search_index --rebuild -f --settings=settings.docker
 
 # Start server

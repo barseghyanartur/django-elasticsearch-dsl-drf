@@ -128,6 +128,9 @@ class BookDocument(DocType):
         multi=True
     )
 
+    # Date created
+    created = fields.DateField()
+
     null_field = StringField(attr='null_field_indexing')
 
     class Meta(object):

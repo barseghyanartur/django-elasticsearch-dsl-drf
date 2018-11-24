@@ -25,6 +25,7 @@ class BookDocumentSerializer(serializers.Serializer):
     price = serializers.FloatField(read_only=True)
     pages = serializers.IntegerField(read_only=True)
     stock_count = serializers.IntegerField(read_only=True)
+    created = serializers.DateTimeField(read_only=True)
     tags = serializers.SerializerMethodField()
 
     # Used in testing of `isnull` functional filter.
@@ -48,6 +49,7 @@ class BookDocumentSerializer(serializers.Serializer):
             'pages',
             'stock_count',
             'tags',
+            'created',
             'null_field',  # Used in testing of `isnull` functional filter.
         )
         read_only_fields = fields
@@ -106,6 +108,7 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
             'pages',
             'stock_count',
             'tags',
+            'created',
             'highlight',  # Used in highlight tests
             'null_field',  # Used in testing of `isnull` functional filter.
         )

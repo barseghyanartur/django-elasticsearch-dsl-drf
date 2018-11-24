@@ -56,6 +56,7 @@ class BaseBookFactory(DjangoModelFactory):
     pages = LazyAttribute(
         lambda __x: random.randint(10, 200)
     )
+    created = Faker('date_time')
 
     class Meta(object):
         """Meta class."""

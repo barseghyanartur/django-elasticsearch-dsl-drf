@@ -38,6 +38,7 @@ class Book(models.Model):
         related_name='books',
         blank=True
     )
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     class Meta(object):
         """Meta options."""

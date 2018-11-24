@@ -20,5 +20,3 @@ RUN pip install -r /backend/requirements/dev.txt
 RUN pip install -r /backend/requirements/elastic_6x.txt
 COPY . /backend/
 RUN python /backend/setup.py develop
-#RUN python /backend/examples/simple/manage.py books_create_test_data --settings=settings.docker
-#RUN python /backend/examples/simple/manage.py search_index --rebuild -f --settings=settings.docker

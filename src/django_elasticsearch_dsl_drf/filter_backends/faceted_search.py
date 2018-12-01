@@ -25,7 +25,7 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
         >>>     FacetedSearchFilterBackend
         >>> )
         >>> from elasticsearch_dsl import TermsFacet, DateHistogramFacet
-        >>> from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+        >>> from django_elasticsearch_dsl_drf.viewsets import BaseDocumentViewSet
         >>>
         >>> # Local article document definition
         >>> from .documents import ArticleDocument

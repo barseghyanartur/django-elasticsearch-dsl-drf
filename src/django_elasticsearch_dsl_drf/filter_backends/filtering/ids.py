@@ -45,7 +45,7 @@ class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>> from django_elasticsearch_dsl_drf.filter_backends import (
         >>>     IdsFilterBackend
         >>> )
-        >>> from django_elasticsearch_dsl_drf.views import BaseDocumentViewSet
+        >>> from django_elasticsearch_dsl_drf.viewsets import BaseDocumentViewSet
         >>>
         >>> # Local article document definition
         >>> from .documents import ArticleDocument

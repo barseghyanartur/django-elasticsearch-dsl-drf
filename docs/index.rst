@@ -39,9 +39,21 @@ Initial version of this package was written for `djangorestframework
 
 Demo
 ====
-There's a frontend demo (React based) is available. See the `dedicated docs
+A frontend demo (React based) is available. See the `dedicated docs
 <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/frontend/README.rst>`_
 for more information.
+
+To bootstrap evaluation, clone the repository locally and run `docker-compose`.
+
+.. code-block:: sh
+
+    docker-compose up
+
+It will set up:
+
+- Elasticsearch on `http://localhost:9200 <http://localhost:9200>`_
+- Django REST framework on `http://localhost:8000 <http://localhost:8000>`_
+- React on `http://localhost:3000 <http://localhost:3000>`_
 
 Documentation
 =============

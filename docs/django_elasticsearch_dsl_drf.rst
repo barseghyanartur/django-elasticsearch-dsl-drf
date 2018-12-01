@@ -61,6 +61,14 @@ django\_elasticsearch\_dsl\_drf.pagination module
     :undoc-members:
     :show-inheritance:
 
+django\_elasticsearch\_dsl\_drf.pip\_helpers module
+---------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.pip_helpers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 django\_elasticsearch\_dsl\_drf.serializers module
 --------------------------------------------------
 
@@ -77,10 +85,10 @@ django\_elasticsearch\_dsl\_drf.utils module
     :undoc-members:
     :show-inheritance:
 
-django\_elasticsearch\_dsl\_drf.views module
---------------------------------------------
+django\_elasticsearch\_dsl\_drf.versions module
+-----------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.views
+.. automodule:: django_elasticsearch_dsl_drf.versions
     :members:
     :undoc-members:
     :show-inheritance:

@@ -9,6 +9,7 @@ Subpackages
     django_elasticsearch_dsl_drf.filter_backends.aggregations
     django_elasticsearch_dsl_drf.filter_backends.filtering
     django_elasticsearch_dsl_drf.filter_backends.ordering
+    django_elasticsearch_dsl_drf.filter_backends.search
     django_elasticsearch_dsl_drf.filter_backends.suggester
 
 Submodules
@@ -34,14 +35,6 @@ django\_elasticsearch\_dsl\_drf.filter\_backends.mixins module
 --------------------------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.filter_backends.mixins
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-django\_elasticsearch\_dsl\_drf.filter\_backends.search module
---------------------------------------------------------------
-
-.. automodule:: django_elasticsearch_dsl_drf.filter_backends.search
     :members:
     :undoc-members:
     :show-inheritance:

@@ -44,6 +44,14 @@ django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_geo\_spatial module
     :undoc-members:
     :show-inheritance:
 
+django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_global\_aggregations module
+----------------------------------------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.tests.test_filtering_global_aggregations
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_nested module
 --------------------------------------------------------------------
 
@@ -84,6 +92,14 @@ django\_elasticsearch\_dsl\_drf.tests.test\_highlight module
     :undoc-members:
     :show-inheritance:
 
+django\_elasticsearch\_dsl\_drf.tests.test\_more\_like\_this module
+-------------------------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.tests.test_more_like_this
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 django\_elasticsearch\_dsl\_drf.tests.test\_ordering\_common module
 -------------------------------------------------------------------
 
@@ -108,10 +124,34 @@ django\_elasticsearch\_dsl\_drf.tests.test\_pagination module
     :undoc-members:
     :show-inheritance:
 
+django\_elasticsearch\_dsl\_drf.tests.test\_pip\_helpers module
+---------------------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.tests.test_pip_helpers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 django\_elasticsearch\_dsl\_drf.tests.test\_search module
 ---------------------------------------------------------
 
 .. automodule:: django_elasticsearch_dsl_drf.tests.test_search
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+django\_elasticsearch\_dsl\_drf.tests.test\_search\_multi\_match module
+-----------------------------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.tests.test_search_multi_match
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+django\_elasticsearch\_dsl\_drf.tests.test\_search\_simple\_query\_string module
+--------------------------------------------------------------------------------
+
+.. automodule:: django_elasticsearch_dsl_drf.tests.test_search_simple_query_string
     :members:
     :undoc-members:
     :show-inheritance:

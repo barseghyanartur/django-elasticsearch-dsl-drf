@@ -1391,12 +1391,12 @@ And finally we can narrow our suggestions as follows:
 
 **Sample request**
 
+In the example below we have filtered suggestions by tags "Art" and "Comics"
+having boosted "Comics" by 2.0.
+
 .. code-block:: text
 
-    GET http://localhost:8000/search/books-frontend/suggest/
-        ?title_suggest_context=M
-        &title_suggest_tag=Art
-        &title_suggest_tag=Comics__2.0
+    GET http://localhost:8000/search/books-frontend/suggest/?title_suggest_context=M&title_suggest_tag=Art&title_suggest_tag=Comics__2.0
 
 Term and Phrase suggestions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -180,6 +180,105 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         return filter_fields
 
     @classmethod
+    def get_suggester_context(cls, field, suggester_name, request, view):
+        """Get suggester context.
+
+        Given the following definition (in ViewSets):
+
+            >>> # Suggester fields
+            >>> suggester_fields = {
+            >>>     'title_suggest': {
+            >>>         'field': 'title.suggest',
+            >>>         'default_suggester': SUGGESTER_COMPLETION,
+            >>>     },
+            >>>     'title_suggest_context': {
+            >>>         'field': 'title.suggest_context',
+            >>>         'default_suggester': SUGGESTER_COMPLETION,
+            >>>         'completion_options': {
+            >>>             'filters': {
+            >>>                 'title_suggest_tag': 'tag',
+            >>>                 'title_suggest_state': 'state',
+            >>>                 'title_suggest_publisher': 'publisher',
+            >>>             },
+            >>>             'size': 10,
+            >>>         }
+            >>>     },
+            >>> }
+
+        http://localhost:8000/search/books-frontend/suggest/?title_suggest_context=M
+
+        When talking about the queries made, we have the following. Multiple
+        values per field are combined with OR:
+
+            >>> completion={
+            >>>     'field': options['field'],
+            >>>     'size': 10,
+            >>>     'contexts': {
+            >>>         'tag': ['History', 'Drama'],
+            >>>     }
+            >>> }
+
+        The following works with OR as well, so it seems we have OR only.
+        However, the following construction is more handy, since it allows
+        us to play with boosting nicely. Also, it allows to provide `prefix`
+        param (which in case of the example given below means that suggestions
+        shall match both categories with "Child", "Children", "Childrend's").
+        Simply put it's treated as `prefix`, rather than `term`.
+
+            >>> completion={
+            >>>     'field': options['field'],
+            >>>     'size': 10,
+            >>>     'contexts': {
+            >>>         'tag': [
+            >>>             {'context': 'History'},
+            >>>             {'context': 'Drama', 'boost': 2},
+            >>>             {'context': 'Children', 'prefix': True},
+            >>>         ],
+            >>>     },
+            >>> }
+
+        :return:
+        """
+        from collections import defaultdict
+        contexts = {}
+        query_params = request.query_params.copy()
+        # /search/books-frontend/suggest/
+        # ?title_suggest_context=M
+        # &title_suggest_tag=Art__2.0
+        # &title_suggest_tag=Documentary__2.0
+        # &title_suggest_publisher=Apress
+        # query_params:
+        # <QueryDict: {
+        #   'title_suggest_context': ['M'],
+        #   'title_suggest_tag': ['Art__2.0', 'Documentary__2.0'],
+        #   'title_suggest_publisher': ['Apress']
+        # }>
+        for query_param, context_field \
+                in field['completion_options']['filters'].items():
+            context_field_query = defaultdict(list)
+            for context_field_value in query_params.getlist(query_param, []):
+                context_field_value_parts = cls.split_lookup_filter(
+                    context_field_value,
+                    maxsplit=1
+                )
+                if len(context_field_value_parts) == 1:
+                    context_field_query[context_field].append(
+                        {
+                            'context': context_field_value_parts[0],
+                        }
+                    )
+                elif len(context_field_value_parts) == 2:
+                    context_field_query[context_field].append(
+                        {
+                            'context': context_field_value_parts[0],
+                            'boost': context_field_value_parts[1]
+                        }
+                    )
+
+            contexts.update(context_field_query)
+        return contexts
+
+    @classmethod
     def apply_suggester_term(cls, suggester_name, queryset, options, value):
         """Apply `term` suggester.
 
@@ -240,10 +339,17 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Modified queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
+        completion_kwargs = {
+            'field': options['field'],
+        }
+        if 'size' in options:
+            completion_kwargs['size'] = options['size']
+        if 'contexts' in options:
+            completion_kwargs['contexts'] = options['contexts']
         return queryset.suggest(
             suggester_name,
             value,
-            completion={'field': options['field']}
+            completion=completion_kwargs
         )
 
     def get_suggester_query_params(self, request, view):
@@ -298,6 +404,7 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                     ]
 
                     if values:
+                        __sug_field = suggester_fields[field_name]
                         suggester_query_params[query_param] = {
                             'suggester': suggester_param,
                             'values': values,
@@ -305,8 +412,23 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                 'field',
                                 field_name
                             ),
-                            'type': view.mapping
+                            'type': view.mapping,
                         }
+
+                        if (
+                            suggester_param == SUGGESTER_COMPLETION
+                            and 'completion_options' in __sug_field
+                            and 'filters' in __sug_field['completion_options']
+
+                        ):
+                            suggester_query_params[query_param]['contexts'] = \
+                                self.get_suggester_context(
+                                    suggester_fields[field_name],
+                                    suggester_param,
+                                    request,
+                                    view
+                                )
+
         return suggester_query_params
 
     def filter_queryset(self, request, queryset, view):

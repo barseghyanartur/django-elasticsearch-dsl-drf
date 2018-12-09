@@ -19,10 +19,19 @@ Docker
 
 6.x
 ~~~
+**6.3.2**
+
 .. code-block:: sh
 
     docker pull docker.elastic.co/elasticsearch/elasticsearch:6.3.2
     docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:6.3.2
+
+**6.4.0**
+
+.. code-block:: sh
+
+    docker pull docker.elastic.co/elasticsearch/elasticsearch:6.4.0
+    docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:6.4.0
 
 Vagrant
 -------

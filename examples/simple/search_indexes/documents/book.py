@@ -43,6 +43,25 @@ class BookDocument(DocType):
         fields={
             'raw': KeywordField(),
             'suggest': fields.CompletionField(),
+            'suggest_context': fields.CompletionField(
+                contexts=[
+                    {
+                        "name": "tag",
+                        "type": "category",
+                        "path": "tags.raw",
+                    },
+                    {
+                        "name": "state",
+                        "type": "category",
+                        "path": "state.raw",
+                    },
+                    {
+                        "name": "publisher",
+                        "type": "category",
+                        "path": "publisher.raw",
+                    },
+                ]
+            ),
             'edge_ngram_completion': StringField(
                 analyzer=edge_ngram_completion
             ),

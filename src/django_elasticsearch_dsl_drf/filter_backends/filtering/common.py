@@ -58,7 +58,9 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>> from django_elasticsearch_dsl_drf.filter_backends import (
         >>>     FilteringFilterBackend
         >>> )
-        >>> from django_elasticsearch_dsl_drf.viewsets import BaseDocumentViewSet
+        >>> from django_elasticsearch_dsl_drf.viewsets import (
+        >>>     BaseDocumentViewSet,
+        >>> )
         >>>
         >>> # Local article document definition
         >>> from .documents import ArticleDocument

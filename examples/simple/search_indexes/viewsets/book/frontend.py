@@ -266,6 +266,23 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
             'field': 'title.suggest',
             'default_suggester': SUGGESTER_COMPLETION,
         },
+        'title_suggest_context': {
+            'field': 'title.suggest_context',
+            'default_suggester': SUGGESTER_COMPLETION,
+            # We want to be able to filter the completion filter
+            # results on the following params: tag, state and publisher.
+            # We also want to provide the size value.
+            # See the "https://www.elastic.co/guide/en/elasticsearch/
+            # reference/6.1/suggester-context.html" for the reference.
+            'completion_options': {
+                'filters': {
+                    'title_suggest_tag': 'tag',
+                    'title_suggest_state': 'state',
+                    'title_suggest_publisher': 'publisher',
+                },
+                'size': 10,
+            }
+        },
         'title_suggest_edge_ngram': {
             'field': 'title.edge_ngram_completion',
             'default_suggester': SUGGESTER_TERM,

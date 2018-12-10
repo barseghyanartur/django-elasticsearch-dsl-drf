@@ -1305,14 +1305,16 @@ view set.
 
 Context suggesters
 ^^^^^^^^^^^^^^^^^^
-The completion suggester considers all documents in the index, but it is often
-desirable to serve suggestions filtered and/or boosted by some criteria. For
-example, you want to suggest song titles filtered by certain artists or you
-want to boost song titles based on their genre. Note, that context suggesters
-only work for `completion` (thus, not for `term` or `phrase`).
+Note, that context suggesters only work for `completion` (thus, not for `term`
+or `phrase`).
 
 `category` context
 ++++++++++++++++++
+The completion suggester considers all documents in the index, but it is often
+desirable to serve suggestions filtered and/or boosted by some criteria. For
+example, you want to suggest song titles filtered by certain artists or you
+want to boost song titles based on their genre.
+
 In that case, the document definition should be altered as follows:
 
 **Document definition**
@@ -1402,6 +1404,9 @@ having boosted "Comics" by 2.0.
 
 `geo` context
 +++++++++++++
+Geo context allows to get suggestions within a certain distance from a
+specified geo location.
+
 In that case, the document definition should be altered as follows:
 
 **Document definition**

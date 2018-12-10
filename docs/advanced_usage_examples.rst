@@ -1303,6 +1303,192 @@ view set.
         ]
     }
 
+Context suggesters
+^^^^^^^^^^^^^^^^^^
+Note, that context suggesters only work for `completion` (thus, not for `term`
+or `phrase`).
+
+`category` context
+++++++++++++++++++
+The completion suggester considers all documents in the index, but it is often
+desirable to serve suggestions filtered and/or boosted by some criteria. For
+example, you want to suggest song titles filtered by certain artists or you
+want to boost song titles based on their genre.
+
+In that case, the document definition should be altered as follows:
+
+**Document definition**
+
+.. code-block:: python
+
+    class BookDocument(DocType):
+
+        # ...
+
+        title = StringField(
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField(),
+                'suggest': fields.CompletionField(),
+                'suggest_context': fields.CompletionField(
+                    contexts=[
+                        {
+                            "name": "tag",
+                            "type": "category",
+                            # The `path` value shall be pointing to an
+                            # existing field of current document, which shall
+                            # be used for filtering.
+                            "path": "tags.raw",
+                        },
+                    ]
+                ),
+            }
+        )
+
+        # Tags
+        tags = StringField(
+            attr='tags_indexing',
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField(multi=True),
+                'suggest': fields.CompletionField(multi=True),
+            },
+            multi=True
+        )
+
+        # ...
+
+ViewSet should altered as follows:
+
+**ViewSet definition**
+
+.. code-block:: python
+
+    class BookFrontendDocumentViewSet(DocumentViewSet):
+
+        # ...
+
+        # Suggester fields
+        suggester_fields = {
+            'title_suggest_context': {
+                'field': 'title.suggest_context',
+                'default_suggester': SUGGESTER_COMPLETION,
+                # We want to be able to filter the completion filter
+                # results on the following params: tag, state and publisher.
+                # We also want to provide the size value.
+                # See the "https://www.elastic.co/guide/en/elasticsearch/
+                # reference/6.1/suggester-context.html" for the reference.
+                'completion_options': {
+                    'filters': {
+                        # The `tag` has been defined as `name` value in the
+                        # `suggest_context` of the `BookDocument`.
+                        'title_suggest_tag': 'tag',
+                    },
+                    'size': 10,
+                }
+            },
+        }
+
+        # ...
+
+And finally we can narrow our suggestions as follows:
+
+**Sample request**
+
+In the example below we have filtered suggestions by tags "Art" and "Comics"
+having boosted "Comics" by 2.0.
+
+.. code-block:: text
+
+    GET http://localhost:8000/search/books-frontend/suggest/?title_suggest_context=M&title_suggest_tag=Art&title_suggest_tag=Comics__2.0
+
+`geo` context
++++++++++++++
+Geo context allows to get suggestions within a certain distance from a
+specified geo location.
+
+In that case, the document definition should be altered as follows:
+
+**Document definition**
+
+.. code-block:: python
+
+    class AddressDocument(DocType):
+
+        # ...
+
+        street = StringField(
+            analyzer=html_strip,
+            fields={
+                'raw': KeywordField(),
+                'suggest': fields.CompletionField(),
+                'suggest_context': fields.CompletionField(
+                    contexts=[
+                        {
+                            "name": "loc",
+                            "type": "geo",
+                            "path": "location",
+                            "precision": "100km",
+                        },
+                    ]
+                ),
+            }
+        )
+
+        location = fields.GeoPointField(
+            attr='location_field_indexing',
+        )
+
+        # ...
+
+ViewSet should altered as follows:
+
+**ViewSet definition**
+
+.. code-block:: python
+
+    class BookFrontendDocumentViewSet(DocumentViewSet):
+
+        # ...
+
+        # Suggester fields
+        suggester_fields = {
+            'street_suggest_context': {
+                'field': 'street.suggest_context',
+                'default_suggester': SUGGESTER_COMPLETION,
+                # We want to be able to filter the completion filter
+                # results on the following params: tag, state and publisher.
+                # We also want to provide the size value.
+                # See the "https://www.elastic.co/guide/en/elasticsearch/
+                # reference/6.1/suggester-context.html" for the reference.
+                'completion_options': {
+                    'geo_filters': {
+                        'title_suggest_loc': 'loc',
+                    },
+                    'size': 10,
+                }
+            },
+        }
+
+        # ...
+
+And finally we can narrow our suggestions as follows:
+
+**Sample request**
+
+In the example below we have filtered suggestions within 8000km distance
+from geo-point (-30, -100).
+
+.. code-block:: text
+
+    GET http://localhost:8000/search/addresses-frontend/suggest/?street_suggest_context=L&title_suggest_loc=-30__-100__8000km
+
+Same query with boosting as well (boost value 2.0):
+
+.. code-block:: text
+
+    GET http://localhost:8000/search/addresses-frontend/suggest/?street_suggest_context=L&title_suggest_loc=-30__-100__8000km__2.0
+
 Term and Phrase suggestions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 While for the ``completion`` suggesters to work the ``CompletionField`` shall

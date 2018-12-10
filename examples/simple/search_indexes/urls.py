@@ -21,6 +21,7 @@ from .viewsets import (
     CityCompoundSearchBackendDocumentViewSet,
     CityDocumentViewSet,
     PublisherDocumentViewSet,
+    FrontAddressDocumentViewSet,
 )
 
 __all__ = ('urlpatterns',)
@@ -34,6 +35,12 @@ addresses = router.register(
     r'addresses',
     AddressDocumentViewSet,
     base_name='addressdocument'
+)
+
+addresses_frontend = router.register(
+    r'addresses-frontend',
+    FrontAddressDocumentViewSet,
+    base_name='addressdocument_frontend'
 )
 
 # **********************************************************

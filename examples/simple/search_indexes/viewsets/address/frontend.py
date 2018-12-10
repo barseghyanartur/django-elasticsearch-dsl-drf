@@ -19,20 +19,20 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
-from ..backends import NestedContinentsBackend
-from ..documents import AddressDocument
-from ..serializers import AddressDocumentSerializer
+from ...backends import NestedContinentsBackend
+from ...documents import AddressDocument
+from ...serializers import FrontendAddressDocumentSerializer
 
 __all__ = (
-    'AddressDocumentViewSet',
+    'FrontAddressDocumentViewSet',
 )
 
 
-class AddressDocumentViewSet(DocumentViewSet):
+class FrontAddressDocumentViewSet(DocumentViewSet):
     """The AddressDocument view."""
 
     document = AddressDocument
-    serializer_class = AddressDocumentSerializer
+    serializer_class = FrontendAddressDocumentSerializer
     lookup_field = 'id'
     filter_backends = [
         FacetedSearchFilterBackend,
@@ -116,6 +116,22 @@ class AddressDocumentViewSet(DocumentViewSet):
             'suggesters': [
                 SUGGESTER_COMPLETION,
             ],
+
+        },
+        'street_suggest_context': {
+            'field': 'street.suggest_context',
+            'default_suggester': SUGGESTER_COMPLETION,
+            # We want to be able to filter the completion filter
+            # results on the following params: tag, state and publisher.
+            # We also want to provide the size value.
+            # See the "https://www.elastic.co/guide/en/elasticsearch/
+            # reference/6.1/suggester-context.html" for the reference.
+            'completion_options': {
+                'geo_filters': {
+                    'title_suggest_loc': 'loc',
+                },
+                'size': 10,
+            }
         },
         'city_suggest': {
             'field': 'city.name.suggest',

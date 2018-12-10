@@ -1,4 +1,7 @@
-from .address import AddressDocumentSerializer
+from .address import (
+    AddressDocumentSerializer,
+    FrontendAddressDocumentSerializer,
+)
 from .author import AuthorDocumentSimpleSerializer
 from .book import BookDocumentSerializer, BookDocumentSimpleSerializer
 from .city import CityDocumentSerializer
@@ -13,6 +16,7 @@ __all__ = (
     'BookDocumentSerializer',
     'BookDocumentSimpleSerializer',
     'CityDocumentSerializer',
+    'FrontendAddressDocumentSerializer',
     'PublisherDocumentSerializer',
     'PublisherDocumentSimpleSerializer',
 )

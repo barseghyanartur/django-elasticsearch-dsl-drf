@@ -237,45 +237,133 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
             >>>     },
             >>> }
 
+        Sample query for `category` filter:
+
+            /search/books-frontend/suggest/
+            ?title_suggest_context=M
+            &title_suggest_tag=Art__2.0
+            &title_suggest_tag=Documentary__2.0__prefix
+            &title_suggest_publisher=Apress
+
+        The query params would be:
+
+            query_params:
+            <QueryDict: {
+              'title_suggest_context': ['M'],
+              'title_suggest_tag': ['Art__2.0', 'Documentary__2.0__prefix'],
+              'title_suggest_publisher': ['Apress']
+            }>
+
+        Sample query for `geo` filter:
+
+            /search/address/suggest/
+            ?street_suggest_context=M
+            &street_suggest_loc=43.66__-79.22__2.0__10000km
+
+        The query params would be:
+
+            query_params:
+            <QueryDict: {
+              'street_suggest_context': ['M'],
+              'street_suggest_loc': ['Art__43.66__-79.22__2.0__10000km'],
+            }>
+
         :return:
         """
         from collections import defaultdict
         contexts = {}
         query_params = request.query_params.copy()
-        # /search/books-frontend/suggest/
-        # ?title_suggest_context=M
-        # &title_suggest_tag=Art__2.0
-        # &title_suggest_tag=Documentary__2.0
-        # &title_suggest_publisher=Apress
-        # query_params:
-        # <QueryDict: {
-        #   'title_suggest_context': ['M'],
-        #   'title_suggest_tag': ['Art__2.0', 'Documentary__2.0'],
-        #   'title_suggest_publisher': ['Apress']
-        # }>
+
+        # Processing `category` filters:
         for query_param, context_field \
-                in field['completion_options']['filters'].items():
+                in field['completion_options'].get('filters', {}).items():
             context_field_query = defaultdict(list)
             for context_field_value in query_params.getlist(query_param, []):
                 context_field_value_parts = cls.split_lookup_filter(
                     context_field_value,
-                    maxsplit=1
+                    maxsplit=2
                 )
-                if len(context_field_value_parts) == 1:
+                # Case `&title_suggest_tag=Documentary__2.0__prefix`
+                if len(context_field_value_parts) == 3:
                     context_field_query[context_field].append(
                         {
                             'context': context_field_value_parts[0],
+                            'boost': context_field_value_parts[1],
+                            'prefix': True,
                         }
                     )
+                # Case `&title_suggest_tag=Documentary__2.0` or
+                # `&title_suggest_tag=Documentary__prefix`.
                 elif len(context_field_value_parts) == 2:
+                    if context_field_value_parts[1] == 'prefix':
+                        context_field_query[context_field].append(
+                            {
+                                'context': context_field_value_parts[0],
+                                'prefix': True,
+                            }
+                        )
+                    else:
+                        context_field_query[context_field].append(
+                            {
+                                'context': context_field_value_parts[0],
+                                'boost': context_field_value_parts[1],
+                            }
+                        )
+                # Case `&title_suggest_tag=Documentary`.
+                elif len(context_field_value_parts) == 1:
                     context_field_query[context_field].append(
                         {
                             'context': context_field_value_parts[0],
-                            'boost': context_field_value_parts[1]
                         }
                     )
 
             contexts.update(context_field_query)
+
+        # Processing `geo` filters:
+        for query_param, context_field \
+                in field['completion_options'].get('geo_filters', {}).items():
+            context_field_query = defaultdict(list)
+            for context_field_value in query_params.getlist(query_param, []):
+                context_field_value_parts = cls.split_lookup_filter(
+                    context_field_value,
+                    maxsplit=3
+                )
+                # Case `&street_suggest_loc=43.66__-79.22__2.0__10000km`
+                if len(context_field_value_parts) == 4:
+                    context_field_query[context_field].append(
+                        {
+                            'context': {
+                                'lat': context_field_value_parts[0],
+                                'lon': context_field_value_parts[1],
+                            },
+                            'precision': context_field_value_parts[2],
+                            'boost': context_field_value_parts[3],
+                        }
+                    )
+                # Case `&street_suggest_loc=43.66__-79.22__10000km`.
+                elif len(context_field_value_parts) == 3:
+                    context_field_query[context_field].append(
+                        {
+                            'context': {
+                                'lat': context_field_value_parts[0],
+                                'lon': context_field_value_parts[1],
+                            },
+                            'precision': context_field_value_parts[2],
+                        }
+                    )
+                # Case `&street_suggest_loc=43.66__-79.22`.
+                elif len(context_field_value_parts) == 2:
+                    context_field_query[context_field].append(
+                        {
+                            'context': {
+                                'lat': context_field_value_parts[0],
+                                'lon': context_field_value_parts[1],
+                            },
+                        }
+                    )
+
+            contexts.update(context_field_query)
+
         return contexts
 
     @classmethod
@@ -404,7 +492,7 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                     ]
 
                     if values:
-                        __sug_field = suggester_fields[field_name]
+                        __s_fld = suggester_fields[field_name]
                         suggester_query_params[query_param] = {
                             'suggester': suggester_param,
                             'values': values,
@@ -417,8 +505,12 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
                         if (
                             suggester_param == SUGGESTER_COMPLETION
-                            and 'completion_options' in __sug_field
-                            and 'filters' in __sug_field['completion_options']
+                            and 'completion_options' in __s_fld
+                            and (
+                                'filters' in __s_fld['completion_options']
+                                or
+                                'geo_filters' in __s_fld['completion_options']
+                            )
 
                         ):
                             suggester_query_params[query_param]['contexts'] = \

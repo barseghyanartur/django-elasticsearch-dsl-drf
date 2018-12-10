@@ -42,6 +42,16 @@ class AddressDocument(DocType):
         fields={
             'raw': KeywordField(),
             'suggest': fields.CompletionField(),
+            'suggest_context': fields.CompletionField(
+                contexts=[
+                    {
+                        "name": "loc",
+                        "type": "geo",
+                        "path": "location",
+                        "precision": "100km",
+                    },
+                ]
+            ),
         }
     )
 
@@ -152,7 +162,9 @@ class AddressDocument(DocType):
         }
     )
 
-    location = fields.GeoPointField(attr='location_field_indexing')
+    location = fields.GeoPointField(
+        attr='location_field_indexing',
+    )
 
     class Meta(object):
         """Meta options."""

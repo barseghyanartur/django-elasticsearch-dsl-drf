@@ -1,4 +1,4 @@
-from .address import AddressDocumentViewSet
+from .address import AddressDocumentViewSet, FrontAddressDocumentViewSet
 from .author import AuthorDocumentViewSet
 from .book import (
     BookCompoundSearchBackendDocumentViewSet,
@@ -41,4 +41,5 @@ __all__ = (
     'CityCompoundSearchBackendDocumentViewSet',
     'CityDocumentViewSet',
     'PublisherDocumentViewSet',
+    'FrontAddressDocumentViewSet',
 )

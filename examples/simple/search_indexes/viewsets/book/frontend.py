@@ -268,6 +268,9 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
         },
         'title_suggest_context': {
             'field': 'title.suggest_context',
+            'suggesters': [
+                SUGGESTER_COMPLETION,
+            ],
             'default_suggester': SUGGESTER_COMPLETION,
             # We want to be able to filter the completion filter
             # results on the following params: tag, state and publisher.
@@ -275,7 +278,7 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
             # See the "https://www.elastic.co/guide/en/elasticsearch/
             # reference/6.1/suggester-context.html" for the reference.
             'completion_options': {
-                'filters': {
+                'category_filters': {
                     'title_suggest_tag': 'tag',
                     'title_suggest_state': 'state',
                     'title_suggest_publisher': 'publisher',

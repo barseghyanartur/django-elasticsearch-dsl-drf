@@ -276,7 +276,8 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         # Processing `category` filters:
         for query_param, context_field \
-                in field['completion_options'].get('filters', {}).items():
+                in field['completion_options'].get('category_filters',
+                                                   {}).items():
             context_field_query = defaultdict(list)
             for context_field_value in query_params.getlist(query_param, []):
                 context_field_value_parts = cls.split_lookup_filter(
@@ -492,7 +493,7 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                     ]
 
                     if values:
-                        __s_fld = suggester_fields[field_name]
+                        _sf = suggester_fields[field_name]
                         suggester_query_params[query_param] = {
                             'suggester': suggester_param,
                             'values': values,
@@ -505,13 +506,12 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
                         if (
                             suggester_param == SUGGESTER_COMPLETION
-                            and 'completion_options' in __s_fld
+                            and 'completion_options' in _sf
                             and (
-                                'filters' in __s_fld['completion_options']
+                                'category_filters' in _sf['completion_options']
                                 or
-                                'geo_filters' in __s_fld['completion_options']
+                                'geo_filters' in _sf['completion_options']
                             )
-
                         ):
                             suggester_query_params[query_param]['contexts'] = \
                                 self.get_suggester_context(

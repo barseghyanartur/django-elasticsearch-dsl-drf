@@ -1379,7 +1379,7 @@ ViewSet should altered as follows:
                 # See the "https://www.elastic.co/guide/en/elasticsearch/
                 # reference/6.1/suggester-context.html" for the reference.
                 'completion_options': {
-                    'filters': {
+                    'category_filters': {
                         # The `tag` has been defined as `name` value in the
                         # `suggest_context` of the `BookDocument`.
                         'title_suggest_tag': 'tag',

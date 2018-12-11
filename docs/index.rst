@@ -169,6 +169,13 @@ Or:
 
     ./manage.py test django_elasticsearch_dsl_drf.tests.test_ordering
 
+To run a single test class in a given test module in your working environment
+type:
+
+.. code-block:: sh
+
+    ./runtests.py src/django_elasticsearch_dsl_drf/tests/test_suggesters.py::TestSuggesters
+
 It's assumed that you have all the requirements installed. If not, first
 install the test requirements:
 

@@ -30,6 +30,7 @@ __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2018 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
+    'TestContextSuggesters',
     'TestSuggesters',
     'TestSuggestersEmptyIndex',
 )
@@ -155,6 +156,11 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
             kwargs={}
         )
 
+        cls.books_suggest_context_url = reverse(
+            'bookdocument_frontend-suggest',
+            kwargs={}
+        )
+
         cls.authors = []
         cls.authors.append(
             factories.AuthorFactory(
@@ -193,9 +199,10 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         for _suggester_field, _test_cases in test_data.items():
 
             for _test_case, _expected_results in _test_cases.items():
+                _url = url + '?' + _suggester_field + '=' + _test_case
                 # Check if response now is valid
                 response = self.client.get(
-                    url + '?' + _suggester_field + '=' + _test_case,
+                    _url,
                     data
                 )
                 self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -208,12 +215,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                 self.assertEqual(
                     len(_unique_options),
                     len(_expected_results),
-                    (_test_case, _expected_results)
-                )
-                self.assertEqual(
-                    sorted(_unique_options),
-                    sorted(_expected_results),
-                    (_test_case, _expected_results)
+                    (_url, _test_case, _expected_results)
                 )
 
     def test_suggesters_completion(self):
@@ -339,7 +341,131 @@ class TestSuggestersEmptyIndex(BaseRestFrameworkTestCase, AddressesMixin):
             {}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse(bool(response.data.get('name_suggest__completion')))
+        self.assertFalse(bool(response.data))
+        # self.assertFalse(bool(response.data.get('name_suggest__completion')))
+
+
+@pytest.mark.django_db
+class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
+    """Test context suggesters."""
+
+    pytestmark = pytest.mark.django_db
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up class."""
+        cls.books = []
+        cls.books.append(
+            factories.BookFactory(
+                title='Ccccc Bbbb',
+                summary='`Twas brillig, and the slithy toves '
+                        'Did gyre and gimble in the wabe. '
+                        'All mimsy were the borogoves '
+                        'And the mome raths outgrabe.',
+                publisher__name='Antares',
+                publisher__country='Armenia',
+            )
+        )
+        cls.books.append(
+            factories.BookFactory(
+                title='Ccccc Cccc',
+                summary='"Beware the Jabberwock, my son! '
+                        'The jaws that bite, the claws that catch! '
+                        'Beware the Jubjub bird, and shun '
+                        'The frumious Bandersnatch!',
+                publisher__name='Antares',
+                publisher__country='Armenia',
+            )
+        )
+        cls.books.append(
+            factories.BookFactory(
+                title='Ccccc Dddd',
+                summary='He took his vorpal sword in his hand,'
+                        'Long time the manxome foe he sought --'
+                        'So rested he by the Tumtum tree,'
+                        'And stood awhile in thought.',
+                publisher__name='Antares',
+                publisher__country='Armenia',
+            )
+        )
+        cls.books.append(
+            factories.BookFactory(
+                title='Ccccc Eeee',
+                summary='He took his vorpal sword in his hand,'
+                        'Long time the manxome foe he sought --'
+                        'So rested he by the Tumtum tree,'
+                        'And stood awhile in thought.',
+                publisher__name='Mario',
+                publisher__country='US',
+            )
+        )
+
+        cls.books += factories.BookFactory.create_batch(
+            10,
+            publisher__name='Oxford University Press',
+            publisher__city='Yerevan',
+            publisher__state_province='Ararat',
+            publisher__country='Ireland',
+        )
+
+        cls.books_suggest_context_url = reverse(
+            'bookdocument_frontend-suggest',
+            kwargs={}
+        )
+
+        call_command('search_index', '--rebuild', '-f')
+
+    def _test_suggesters_completion_context(self, test_data, url):
+        """Test suggesters completion context."""
+        self.authenticate()
+
+        data = {}
+
+        for _suggester_field, _test_cases in test_data.items():
+
+            for _test_case, _test_data in _test_cases.items():
+                _url = url + '?' + _suggester_field + '=' + _test_case
+                for _query_param, _value in _test_data['filters'].items():
+                    _url += '&{}={}'.format(_query_param, _value)
+                # Check if response now is valid
+                response = self.client.get(
+                    _url,
+                    data
+                )
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertIn(_suggester_field, response.data)
+                _unique_options = list(set([
+                    __o['text']
+                    for __o
+                    in response.data[_suggester_field][0]['options']
+                ]))
+                self.assertEqual(
+                    len(_unique_options),
+                    len(_test_data['expected_results']),
+                    (_url, _test_case, _test_data['expected_results'])
+                )
+
+    def test_suggesters_completion_context(self):
+        """Test suggesters completion context."""
+        # Testing books
+        test_data = {
+            'title_suggest_context': {
+                'Ccc': {
+                    'expected_results': [
+                        'Ccccc Bbbb',
+                        'Ccccc Cccc',
+                        'Ccccc Dddd',
+                    ],
+                    'filters': {
+                        'title_suggest_publisher': 'Antares',
+                    }
+                },
+            },
+        }
+        self._test_suggesters_completion_context(
+            test_data,
+            self.books_suggest_context_url
+        )
 
 
 if __name__ == '__main__':

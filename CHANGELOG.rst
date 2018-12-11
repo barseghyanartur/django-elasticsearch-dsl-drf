@@ -15,6 +15,17 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.17
+----
+2018-12-12
+
+.. note::
+
+    Release supported by `whythawk <https://github.com/whythawk>`_.
+
+- Added support for context suggesters (`category` and `geo`).
+- Added support for `size` attribute on suggesters.
+
 0.16.3
 ------
 2018-10-31

@@ -354,6 +354,7 @@ class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
     @classmethod
     def setUpClass(cls):
         """Set up class."""
+        # Books
         cls.books = []
         cls.books.append(
             factories.BookFactory(
@@ -413,6 +414,70 @@ class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
             kwargs={}
         )
 
+        # Addresses
+        cls.addresses = []
+        cls.addresses.append(
+            factories.AddressFactory(
+                street='Halabyan',
+                city__name='Yerevan',
+                latitude=40.0742719,
+                longitude=44.1930605,
+            )
+        )
+        cls.addresses.append(
+            factories.AddressFactory(
+                street='Hambardzumyan',
+                city__name='Yerevan',
+                latitude=40.01,
+                longitude=44.01,
+            )
+        )
+        cls.addresses.append(
+            factories.AddressFactory(
+                street='Haghartsin',
+                city__name='Yerevan',
+                latitude=39.92,
+                longitude=43.92,
+            )
+        )
+        cls.addresses.append(
+            factories.AddressFactory(
+                street='Hamazaspyan',
+                city__name='Tatev',
+                latitude=39.3793612,
+                longitude=46.2480006,
+            )
+        )
+        cls.addresses.append(
+            factories.AddressFactory(
+                street='Harazatyan',
+                city__name='Tatev',
+                latitude=39.3793612,
+                longitude=46.2480006,
+            )
+        )
+        cls.addresses.append(
+            factories.AddressFactory(
+                street='Hardewijk',
+                city__name='Groningen',
+                latitude=53.2246892,
+                longitude=6.56429,
+            )
+        )
+        cls.addresses.append(
+            factories.AddressFactory(
+                street='Haringstraat',
+                city__name='Groningen',
+                latitude=53.2246892,
+                longitude=6.56429,
+            )
+        )
+
+        cls.addresses_suggest_context_url = reverse(
+            'addressdocument_frontend-suggest',
+            kwargs={}
+        )
+
         call_command('search_index', '--rebuild', '-f')
 
     def _test_suggesters_completion_context(self, test_data, url):
@@ -465,6 +530,28 @@ class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         self._test_suggesters_completion_context(
             test_data,
             self.books_suggest_context_url
+        )
+
+        # Testing addresses
+        test_data = {
+            'street_suggest_context': {
+                'Ha': {
+                    'expected_results': [
+                        'Halabyan',
+                        'Hambardzumyan',
+                        'Haghartsin',
+                        'Hamazaspyan',
+                        'Harazatyan',
+                    ],
+                    'filters': {
+                        'title_suggest_loc': '40__44__1000km',
+                    }
+                },
+            },
+        }
+        self._test_suggesters_completion_context(
+            test_data,
+            self.addresses_suggest_context_url
         )
 
 

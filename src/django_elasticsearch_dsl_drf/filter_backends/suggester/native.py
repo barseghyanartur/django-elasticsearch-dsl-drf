@@ -504,6 +504,13 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                             'type': view.mapping,
                         }
 
+                        if 'options' in _sf and 'size' in _sf['options']:
+                            suggester_query_params[query_param].update(
+                                {
+                                    'size': _sf['options']['size']
+                                }
+                            )
+
                         if (
                             suggester_param == SUGGESTER_COMPLETION
                             and 'completion_options' in _sf

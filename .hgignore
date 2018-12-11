@@ -14,6 +14,7 @@ syntax: regexp
 ^vagrant/\.vagrant
 ^\.pytest_cache/
 node_modules/
+yarn-error\.log
 
 ^MANIFEST\.in~
 ^tmp/

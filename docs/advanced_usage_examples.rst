@@ -1782,11 +1782,17 @@ Example for ``phrase`` suggester:
                     SUGGESTER_PHRASE,
                 ]
                 'default_suggester': SUGGESTER_COMPLETION,
+                'options': {
+                    'size': 10,  # Number of suggestions to retrieve.
+                },
             },
             'publisher_suggest': 'publisher.suggest',
             'tag_suggest': 'tags.suggest',
             'summary_suggest': 'summary',
         }
+
+Note, that by default the number of suggestions is limited to 5. If you need
+more suggestions, add 'options` dictionary with `size` provided, as show above.
 
 Sample requests/responses
 ^^^^^^^^^^^^^^^^^^^^^^^^^

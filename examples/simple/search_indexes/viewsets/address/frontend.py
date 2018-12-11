@@ -116,10 +116,15 @@ class FrontAddressDocumentViewSet(DocumentViewSet):
             'suggesters': [
                 SUGGESTER_COMPLETION,
             ],
-
+            'options': {
+                'size': 10,
+            },
         },
         'street_suggest_context': {
             'field': 'street.suggest_context',
+            'suggesters': [
+                SUGGESTER_COMPLETION,
+            ],
             'default_suggester': SUGGESTER_COMPLETION,
             # We want to be able to filter the completion filter
             # results on the following params: tag, state and publisher.
@@ -130,8 +135,10 @@ class FrontAddressDocumentViewSet(DocumentViewSet):
                 'geo_filters': {
                     'title_suggest_loc': 'loc',
                 },
+            },
+            'options': {
                 'size': 10,
-            }
+            },
         },
         'city_suggest': {
             'field': 'city.name.suggest',

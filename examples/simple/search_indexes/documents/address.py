@@ -2,6 +2,7 @@ from django.conf import settings
 
 from django_elasticsearch_dsl import DocType, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
+from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
 
 from books.models import Address
 
@@ -36,23 +37,30 @@ class AddressDocument(DocType):
     # ********************************************************************
     # *********************** Main data fields for search ****************
     # ********************************************************************
+    __street_fields = {
+        'raw': KeywordField(),
+        'suggest': fields.CompletionField(),
 
+    }
+
+    if ELASTICSEARCH_GTE_5_0:
+        __street_fields.update(
+            {
+                'suggest_context': fields.CompletionField(
+                    contexts=[
+                        {
+                            "name": "loc",
+                            "type": "geo",
+                            "path": "location",
+                            "precision": "1000km",
+                        },
+                    ]
+                ),
+            }
+        )
     street = StringField(
         analyzer=html_strip,
-        fields={
-            'raw': KeywordField(),
-            'suggest': fields.CompletionField(),
-            'suggest_context': fields.CompletionField(
-                contexts=[
-                    {
-                        "name": "loc",
-                        "type": "geo",
-                        "path": "location",
-                        "precision": "100km",
-                    },
-                ]
-            ),
-        }
+        fields=__street_fields
     )
 
     house_number = StringField(analyzer=html_strip)

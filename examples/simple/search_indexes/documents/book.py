@@ -3,6 +3,7 @@ from django.conf import settings
 from django_elasticsearch_dsl import DocType, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
+from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
 
 from books.models import Book
 
@@ -37,36 +38,43 @@ class BookDocument(DocType):
     # ********************************************************************
     # *********************** Main data fields for search ****************
     # ********************************************************************
+    __title_fields = {
+        'raw': KeywordField(),
+        'suggest': fields.CompletionField(),
+        'edge_ngram_completion': StringField(
+            analyzer=edge_ngram_completion
+        ),
+        'mlt': StringField(analyzer='english'),
+    }
+
+    if ELASTICSEARCH_GTE_5_0:
+        __title_fields.update(
+            {
+                'suggest_context': fields.CompletionField(
+                    contexts=[
+                        {
+                            "name": "tag",
+                            "type": "category",
+                            "path": "tags.raw",
+                        },
+                        {
+                            "name": "state",
+                            "type": "category",
+                            "path": "state.raw",
+                        },
+                        {
+                            "name": "publisher",
+                            "type": "category",
+                            "path": "publisher.raw",
+                        },
+                    ]
+                ),
+            }
+        )
 
     title = StringField(
         analyzer=html_strip,
-        fields={
-            'raw': KeywordField(),
-            'suggest': fields.CompletionField(),
-            'suggest_context': fields.CompletionField(
-                contexts=[
-                    {
-                        "name": "tag",
-                        "type": "category",
-                        "path": "tags.raw",
-                    },
-                    {
-                        "name": "state",
-                        "type": "category",
-                        "path": "state.raw",
-                    },
-                    {
-                        "name": "publisher",
-                        "type": "category",
-                        "path": "publisher.raw",
-                    },
-                ]
-            ),
-            'edge_ngram_completion': StringField(
-                analyzer=edge_ngram_completion
-            ),
-            'mlt': StringField(analyzer='english'),
-        }
+        fields=__title_fields
     )
 
     description = StringField(

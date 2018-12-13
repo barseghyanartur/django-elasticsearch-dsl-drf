@@ -1384,8 +1384,10 @@ ViewSet should altered as follows:
                         # `suggest_context` of the `BookDocument`.
                         'title_suggest_tag': 'tag',
                     },
-                    'size': 10,
-                }
+                },
+                'options': {
+                    'size': 10,  # By default, number of results is 5.
+                },
             },
         }
 
@@ -1428,9 +1430,12 @@ In that case, the document definition should be altered as follows:
                             "name": "loc",
                             "type": "geo",
                             "path": "location",
-                            "precision": "100km",
+                            # You could also optionally add precision value.
+                            # However, this is not required and can be
+                            # specified in the query during runtime.
+                            # "precision": "100km",
                         },
-                    ]
+                    ],
                 ),
             }
         )
@@ -1465,7 +1470,9 @@ ViewSet should altered as follows:
                     'geo_filters': {
                         'title_suggest_loc': 'loc',
                     },
-                    'size': 10,
+                },
+                'options': {
+                    'size': 10,  # By default, number of results is 5.
                 }
             },
         }
@@ -1483,7 +1490,7 @@ from geo-point (-30, -100).
 
     GET http://localhost:8000/search/addresses-frontend/suggest/?street_suggest_context=L&title_suggest_loc=-30__-100__8000km
 
-Same query with boosting as well (boost value 2.0):
+Same query with boosting (boost value 2.0):
 
 .. code-block:: text
 

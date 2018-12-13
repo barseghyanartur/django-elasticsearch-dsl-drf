@@ -17,6 +17,7 @@ from rest_framework import status
 
 import factories
 
+from ..versions import ELASTICSEARCH_GTE_5_0, ELASTICSEARCH_GTE_6_0
 from .base import BaseRestFrameworkTestCase
 from .data_mixins import AddressesMixin
 
@@ -341,10 +342,16 @@ class TestSuggestersEmptyIndex(BaseRestFrameworkTestCase, AddressesMixin):
             {}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse(bool(response.data))
-        # self.assertFalse(bool(response.data.get('name_suggest__completion')))
+
+        if ELASTICSEARCH_GTE_6_0:
+            self.assertFalse(bool(response.data))
+        else:
+            self.assertFalse(
+                bool(response.data.get('name_suggest__completion'))
+            )
 
 
+@unittest.skipIf(not ELASTICSEARCH_GTE_5_0, 'ES >=5.x only')
 @pytest.mark.django_db
 class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
     """Test context suggesters."""
@@ -392,12 +399,12 @@ class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         cls.books.append(
             factories.BookFactory(
                 title='Ccccc Eeee',
-                summary='He took his vorpal sword in his hand,'
+                summary='She took his zorpal blade in his hand,'
                         'Long time the manxome foe he sought --'
                         'So rested he by the Tumtum tree,'
                         'And stood awhile in thought.',
-                publisher__name='Mario',
-                publisher__country='US',
+                # publisher__name='Mario',
+                # publisher__country='US',
             )
         )
 
@@ -544,7 +551,11 @@ class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                         'Harazatyan',
                     ],
                     'filters': {
-                        'title_suggest_loc': '40__44__1000km',
+                        'title_suggest_loc': (
+                            '40__44__1000km'
+                            if ELASTICSEARCH_GTE_6_0
+                            else '40__44'
+                        ),
                     }
                 },
             },

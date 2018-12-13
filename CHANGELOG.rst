@@ -15,6 +15,14 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.17.1
+------
+2018-12-12
+
+- Skipping the new context suggester tests for Elasticsearch 2.x and a number
+  of other 2.x related fixes in tests.
+- A number of 5.x fixes in tests.
+
 0.17
 ----
 2018-12-12
@@ -23,7 +31,9 @@ are used for versioning (schema follows below):
 
     Release supported by `whythawk <https://github.com/whythawk>`_.
 
-- Added support for context suggesters (`category` and `geo`).
+- Added support for context suggesters (`category` and `geo`). Note, that
+  this functionality is available for Elasticsearch 5.x and 6.x (thus, not
+  for Elasticsearch 2.x).
 - Added support for `size` attribute on suggesters.
 
 0.16.3

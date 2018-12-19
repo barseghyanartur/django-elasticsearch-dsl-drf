@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 cd examples/simple/
-./manage.py search_index --populate -f
+./manage.py search_index --populate -f --settings=settings.dev "$@"

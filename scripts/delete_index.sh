@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 cd examples/simple/
-./manage.py search_index --delete -f "$@"
+./manage.py search_index --delete -f --settings=settings.dev "$@"

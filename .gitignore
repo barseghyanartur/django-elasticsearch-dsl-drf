@@ -17,6 +17,7 @@ node_modules/
 MANIFEST.in~
 MIND_BUCKET.rst
 codebin/
+codebin.py
 /tmp/
 .zip
 /demo/

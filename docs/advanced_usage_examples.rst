@@ -1108,6 +1108,9 @@ the following way:
                 'suggesters': [
                     SUGGESTER_COMPLETION,
                 ],
+                'options': {
+                    'size': 20,  # Override default number of suggestions
+                },
             },
             'city_suggest': {
                 'field': 'city.suggest',
@@ -1473,7 +1476,7 @@ ViewSet should altered as follows:
                 },
                 'options': {
                     'size': 10,  # By default, number of results is 5.
-                }
+                },
             },
         }
 

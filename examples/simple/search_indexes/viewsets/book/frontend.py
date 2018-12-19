@@ -265,6 +265,9 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
         'title_suggest': {
             'field': 'title.suggest',
             'default_suggester': SUGGESTER_COMPLETION,
+            'options': {
+                'size': 20,
+            },
         },
         'title_suggest_context': {
             'field': 'title.suggest_context',
@@ -283,8 +286,10 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
                     'title_suggest_state': 'state',
                     'title_suggest_publisher': 'publisher',
                 },
-                'size': 10,
-            }
+            },
+            'options': {
+                'size': 20,
+            },
         },
         'title_suggest_edge_ngram': {
             'field': 'title.edge_ngram_completion',

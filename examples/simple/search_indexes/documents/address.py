@@ -178,3 +178,4 @@ class AddressDocument(DocType):
         """Meta options."""
 
         model = Address  # The model associate with this DocType
+        parallel_indexing = True

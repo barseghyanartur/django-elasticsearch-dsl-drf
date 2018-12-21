@@ -82,3 +82,4 @@ class PublisherDocument(DocType):
         """Meta options."""
 
         model = Publisher  # The model associate with this DocType
+        parallel_indexing = True

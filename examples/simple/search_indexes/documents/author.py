@@ -65,3 +65,4 @@ class AuthorDocument(DocType):
         """Meta options."""
 
         model = Author  # The model associate with this DocType
+        parallel_indexing = True

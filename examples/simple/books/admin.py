@@ -52,7 +52,7 @@ class OrderAdmin(admin.ModelAdmin):
 class BookAdmin(admin.ModelAdmin):
     """Book admin."""
 
-    list_display = ('title', 'isbn', 'price', 'publication_date')
+    list_display = ('id', 'title', 'isbn', 'price', 'publication_date')
     search_fields = ('title',)
     filter_horizontal = ('authors', 'tags',)
 
@@ -61,7 +61,7 @@ class BookAdmin(admin.ModelAdmin):
 class AuthorAdmin(admin.ModelAdmin):
     """Author admin."""
 
-    list_display = ('name', 'email',)
+    list_display = ('id', 'name', 'email',)
     search_fields = ('name',)
 
 
@@ -69,7 +69,7 @@ class AuthorAdmin(admin.ModelAdmin):
 class PublisherAdmin(admin.ModelAdmin):
     """Publisher admin."""
 
-    list_display = ('name', 'latitude', 'longitude',)
+    list_display = ('id', 'name', 'latitude', 'longitude',)
     list_editable = ('latitude', 'longitude',)
     search_fields = ('name',)
 
@@ -78,7 +78,7 @@ class PublisherAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     """Tag admin."""
 
-    list_display = ('title',)
+    list_display = ('id', 'title',)
     search_fields = ('title',)
 
 
@@ -86,7 +86,8 @@ class TagAdmin(admin.ModelAdmin):
 class AddressAdmin(admin.ModelAdmin):
     """Address admin."""
 
-    list_display = ('street', 'house_number', 'latitude', 'longitude',)
+    list_display = ('id', 'street', 'house_number', 'zip_code', 'latitude',
+                    'longitude', 'city',)
     list_editable = ('latitude', 'longitude',)
     search_fields = ('street',)
 
@@ -95,7 +96,7 @@ class AddressAdmin(admin.ModelAdmin):
 class CityAdmin(admin.ModelAdmin):
     """City admin."""
 
-    list_display = ('name', 'latitude', 'longitude',)
+    list_display = ('id', 'name', 'latitude', 'longitude',)
     list_editable = ('latitude', 'longitude',)
     search_fields = ('name',)
 
@@ -104,7 +105,7 @@ class CityAdmin(admin.ModelAdmin):
 class CountryAdmin(admin.ModelAdmin):
     """Country admin."""
 
-    list_display = ('name', 'latitude', 'longitude',)
+    list_display = ('id', 'name', 'latitude', 'longitude',)
     list_editable = ('latitude', 'longitude',)
     search_fields = ('name',)
 
@@ -113,6 +114,6 @@ class CountryAdmin(admin.ModelAdmin):
 class ContinentAdmin(admin.ModelAdmin):
     """Continent admin."""
 
-    list_display = ('name', 'latitude', 'longitude',)
+    list_display = ('id', 'name', 'latitude', 'longitude',)
     list_editable = ('latitude', 'longitude',)
     search_fields = ('name',)

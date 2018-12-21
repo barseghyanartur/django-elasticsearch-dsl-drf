@@ -164,6 +164,7 @@ class BookDocument(DocType):
         """Meta options."""
 
         model = Book  # The model associate with this DocType
+        parallel_indexing = True
 
     def prepare_summary(self, instance):
         """Prepare summary."""

@@ -101,3 +101,4 @@ class CityDocument(DocType):
         """Meta options."""
 
         model = City  # The model associate with this DocType
+        parallel_indexing = True

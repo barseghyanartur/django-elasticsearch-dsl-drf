@@ -60,6 +60,7 @@ class FrontAddressDocumentViewSet(DocumentViewSet):
         'id': None,
         'city': 'city.name.raw',
         'country': 'city.country.name.raw',
+        'zip_code': 'zip_code.raw',
     }
     post_filter_fields = {
         'city_pf': 'city.name.raw',
@@ -116,6 +117,7 @@ class FrontAddressDocumentViewSet(DocumentViewSet):
             'suggesters': [
                 SUGGESTER_COMPLETION,
             ],
+            'default_suggester': SUGGESTER_COMPLETION,
             'options': {
                 'size': 10,
             },
@@ -151,7 +153,17 @@ class FrontAddressDocumentViewSet(DocumentViewSet):
             'suggesters': [
                 SUGGESTER_COMPLETION,
             ],
-        }
+        },
+        'zip_code_suggest': {
+            'field': 'zip_code.suggest',
+            'suggesters': [
+                SUGGESTER_COMPLETION,
+            ],
+            'default_suggester': SUGGESTER_COMPLETION,
+            'options': {
+                'size': 10,
+            },
+        },
     }
 
     # Facets

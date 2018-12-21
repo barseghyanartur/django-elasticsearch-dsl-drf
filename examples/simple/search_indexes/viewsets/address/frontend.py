@@ -3,11 +3,13 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_GEO_POLYGON,
     LOOKUP_FILTER_GEO_BOUNDING_BOX,
     SUGGESTER_COMPLETION,
+    FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
     DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
+    FunctionalSuggesterFilterBackend,
     GeoSpatialFilteringFilterBackend,
     GeoSpatialOrderingFilterBackend,
     NestedFilteringFilterBackend,
@@ -46,6 +48,7 @@ class FrontAddressDocumentViewSet(DocumentViewSet):
         PostFilterFilteringFilterBackend,
         DefaultOrderingFilterBackend,
         SuggesterFilterBackend,
+        FunctionalSuggesterFilterBackend,
     ]
     pagination_class = LimitOffsetPagination
     # Define search fields
@@ -163,6 +166,16 @@ class FrontAddressDocumentViewSet(DocumentViewSet):
             'options': {
                 'size': 10,
             },
+        },
+    }
+
+    # Functional suggester fields
+    functional_suggester_fields = {
+        'zip_code_suggest': {
+            'field': 'zip_code.raw',
+            'suggesters': [FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            # 'serializer_field': 'title',
         },
     }
 

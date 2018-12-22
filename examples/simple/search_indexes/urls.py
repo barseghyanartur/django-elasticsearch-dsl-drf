@@ -8,6 +8,7 @@ from .viewsets import (
     BookDefaultFilterLookupDocumentViewSet,
     BookDocumentViewSet,
     BookFrontendDocumentViewSet,
+    BookCustomDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
     BookIgnoreIndexErrorsDocumentViewSet,
     BookMoreLikeThisDocumentViewSet,
@@ -77,6 +78,12 @@ books_frontend = router.register(
     r'books-frontend',
     BookFrontendDocumentViewSet,
     base_name='bookdocument_frontend'
+)
+
+books_custom = router.register(
+    r'books-custom',
+    BookCustomDocumentViewSet,
+    base_name='bookdocument_custom'
 )
 
 books_ignore_index_errors = router.register(

@@ -1,3 +1,4 @@
+from django.utils.decorators import classonlymethod
 from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_PREFIX,
     LOOKUP_FILTER_RANGE,
@@ -33,11 +34,14 @@ from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
 
 from elasticsearch_dsl import DateHistogramFacet, RangeFacet
 
+from rest_framework.decorators import detail_route, list_route
+
 from ...documents import BookDocument
 from ...serializers import BookDocumentSimpleSerializer
 
 __all__ = (
     'BookFrontendDocumentViewSet',
+    'BookCustomDocumentViewSet',
 )
 
 
@@ -311,3 +315,64 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
         'tag_suggest': 'tags.suggest',
         'summary_suggest': 'summary',
     }
+
+
+class BookCustomDocumentViewSet(BookFrontendDocumentViewSet):
+
+    @classonlymethod
+    def as_view(cls, actions=None, **initkwargs):
+        # No request object is available here
+        print('as_view')
+        print('actions: ', actions)
+        print('initkwargs: ', initkwargs)
+        return super(BookCustomDocumentViewSet, cls).as_view(
+            actions,
+            **initkwargs
+        )
+
+    def retrieve(self, request, *args, **kwargs):
+        # Used for detail routes, like
+        # http://localhost:8000/search/books-custom/999999/
+        print('retrieve')
+        print('request: ', request)
+        print('args: ', args)
+        print('kwargs: ', kwargs)
+        return super(BookCustomDocumentViewSet, self).retrieve(
+            request,
+            *args,
+            **kwargs
+        )
+
+    def list(self, request, *args, **kwargs):
+        # Used for list routes, like
+        # http://localhost:8000/search/books-custom/
+        print('list')
+        print('request: ', request)
+        print('args: ', args)
+        print('kwargs: ', kwargs)
+        return super(BookCustomDocumentViewSet, self).list(
+            request,
+            *args,
+            **kwargs
+        )
+
+    @list_route()
+    def suggest(self, request):
+        # Used for suggest routes, like
+        # http://localhost:8000/search/books-custom/suggest/?title_suggest=A
+        print('suggest')
+        print('request: ', request)
+        return super(BookCustomDocumentViewSet, self).suggest(
+            request
+        )
+
+    @list_route()
+    def functional_suggest(self, request):
+        # Used for functional suggest routes, like
+        # http://localhost:8000/search/books-custom/functional_suggest/
+        # ?title_suggest=A
+        print('functional_suggest')
+        print('request: ', request)
+        return super(BookCustomDocumentViewSet, self).suggest(
+            request
+        )

@@ -9,6 +9,7 @@ from rest_framework.settings import api_settings
 
 from ...compat import coreapi
 from ...compat import coreschema
+from ...compat import nested_sort_entry
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.ordering.common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -20,7 +21,57 @@ __all__ = (
 )
 
 
-class OrderingFilterBackend(BaseFilterBackend):
+class OrderingMixin(object):
+    @classmethod
+    def prepare_ordering_fields(cls, view):
+        """Prepare ordering fields.
+
+        :param view: View.
+        :type view: rest_framework.viewsets.ReadOnlyModelViewSet
+        :return: Ordering options.
+        :rtype: dict
+        """
+        ordering_fields = view.ordering_fields.copy()
+        for field, options in ordering_fields.items():
+            if options is None or isinstance(options, string_types):
+                ordering_fields[field] = {
+                    'field': options or field
+                }
+            elif 'field' not in ordering_fields[field]:
+                ordering_fields[field]['field'] = field
+        return ordering_fields
+
+    @classmethod
+    def transform_ordering_params(cls, ordering_params, ordering_fields):
+        """Transform ordering fields to elasticsearch-dsl Search.sort()
+         dictionary parameters.
+
+        :param ordering_params: List of fields to order by.
+        :param ordering_fields: Prepared ordering fields
+        :type: list of str
+        :type: dict
+        :return: Ordering parameters.
+        :rtype: list
+        """
+        _ordering_params = []
+        for ordering_param in ordering_params:
+            key = ordering_param.lstrip('-')
+            direction = 'desc' if ordering_param.startswith('-') else 'asc'
+            if key in ordering_fields:
+                field = ordering_fields[key]
+                entry = {
+                    field['field']: {
+                        'order': direction,
+                    }
+                }
+                if 'path' in field:
+                    entry[field['field']].update(
+                        nested_sort_entry(field['path']))
+                _ordering_params.append(entry)
+        return _ordering_params
+
+
+class OrderingFilterBackend(BaseFilterBackend, OrderingMixin):
     """Ordering filter backend for Elasticsearch.
 
     Example:
@@ -44,37 +95,26 @@ class OrderingFilterBackend(BaseFilterBackend):
         >>>     serializer_class = ArticleDocumentSerializer
         >>>     filter_backends = [OrderingFilterBackend,]
         >>>     ordering_fields = {
-        >>>         'id': 'id',
+        >>>         'id': None,
         >>>         'title': 'title.raw',
         >>>         'date_submitted': 'date_submitted',
-        >>>         'state': {
-        >>>             'field': 'state.raw',
+        >>>         'continent': {
+        >>>             'field': 'continent.name.raw',
+        >>>             'path': 'continent',
+        >>>         }
+        >>>         'country': {
+        >>>             'field': 'continent.country.name.raw',
+        >>>             'path': 'continent.country',
+        >>>         }
+        >>>         'city': {
+        >>>             'field': 'continent.country.city.name.raw',
+        >>>             'path': 'continent.country.city',
         >>>         }
         >>>     }
-        >>>     ordering = ('id', 'name',)
+        >>>     ordering = ('id', 'title',)
     """
 
     ordering_param = api_settings.ORDERING_PARAM
-
-    # TODO: Either use or remove.
-    # @classmethod
-    # def prepare_ordering_fields(cls, view):
-    #     """Prepare ordering fields.
-    #
-    #     :param view: View.
-    #     :type view: rest_framework.viewsets.ReadOnlyModelViewSet
-    #     :return: Ordering options.
-    #     :rtype: dict
-    #     """
-    #     ordering_fields = view.ordering_fields
-    #     for field, options in ordering_fields.items():
-    #         if options is None or isinstance(options, string_types):
-    #             ordering_fields[field] = {
-    #                 'field': options or field
-    #             }
-    #         elif 'field' not in ordering_fields[field]:
-    #             ordering_fields[field]['field'] = field
-    #     return ordering_fields
 
     def get_ordering_query_params(self, request, view):
         """Get ordering query params.
@@ -89,16 +129,8 @@ class OrderingFilterBackend(BaseFilterBackend):
         # TODO: Support `mode` argument.
         query_params = request.query_params.copy()
         ordering_query_params = query_params.getlist(self.ordering_param, [])
-        __ordering_params = []
-        # Remove invalid ordering query params
-        for query_param in ordering_query_params:
-            __key = query_param.lstrip('-')
-            __direction = '-' if query_param.startswith('-') else ''
-            if __key in view.ordering_fields:
-                __field_name = view.ordering_fields[__key] or __key
-                __ordering_params.append(
-                    '{}{}'.format(__direction, __field_name)
-                )
+        # ordering_fields is always dict
+        ordering_fields = self.prepare_ordering_fields(view)
 
         # This is no longer needed. If you want to have a fallback, make use
         # of ``DefaultOrderingFilterBackend``.
@@ -106,7 +138,8 @@ class OrderingFilterBackend(BaseFilterBackend):
         # if not __ordering_params:
         #     return self.get_default_ordering_params(view)
 
-        return __ordering_params
+        return self.transform_ordering_params(ordering_query_params,
+                                              ordering_fields)
 
     # @classmethod
     # def get_default_ordering_params(cls, view):
@@ -160,7 +193,7 @@ class OrderingFilterBackend(BaseFilterBackend):
         ]
 
 
-class DefaultOrderingFilterBackend(BaseFilterBackend):
+class DefaultOrderingFilterBackend(BaseFilterBackend, OrderingMixin):
     """Default ordering filter backend for Elasticsearch.
 
     Make sure this is your last ordering backend.
@@ -190,14 +223,23 @@ class DefaultOrderingFilterBackend(BaseFilterBackend):
         >>>         OrderingFilterBackend,
         >>>     ]
         >>>     ordering_fields = {
-        >>>         'id': 'id',
+        >>>         'id': None,
         >>>         'title': 'title.raw',
         >>>         'date_submitted': 'date_submitted',
-        >>>         'state': {
-        >>>             'field': 'state.raw',
+        >>>         'continent': {
+        >>>             'field': 'continent.name.raw',
+        >>>             'path': 'continent',
+        >>>         }
+        >>>         'country': {
+        >>>             'field': 'continent.country.name.raw',
+        >>>             'path': 'continent.country',
+        >>>         }
+        >>>         'city': {
+        >>>             'field': 'continent.country.city.name.raw',
+        >>>             'path': 'continent.country.city',
         >>>         }
         >>>     }
-        >>>     ordering = 'name'
+        >>>     ordering = 'city'
     """
 
     ordering_param = api_settings.ORDERING_PARAM
@@ -239,7 +281,17 @@ class DefaultOrderingFilterBackend(BaseFilterBackend):
         """
         ordering = getattr(view, 'ordering', None)
         if isinstance(ordering, string_types):
-            return [ordering]
+            ordering = [ordering]
+        # For backwards compatibility require
+        # default ordering to be keys in ordering_fields not field value
+        # in order to be properly transformed
+        if ordering is not None \
+                and hasattr(view, 'ordering_fields') \
+                and view.ordering_fields is not None \
+                and all(field in view.ordering_fields for field in ordering):
+            return cls.transform_ordering_params(ordering,
+                                                 cls.prepare_ordering_fields(
+                                                     view))
         return ordering
 
     def filter_queryset(self, request, queryset, view):

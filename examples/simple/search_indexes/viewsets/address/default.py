@@ -95,8 +95,18 @@ class AddressDocumentViewSet(DocumentViewSet):
     ordering_fields = {
         'id': None,
         'street': None,
-        'city': 'city.name.raw',
-        'country': 'city.country.name.raw',
+        'continent': {
+            'field': 'continent.name.raw',
+            'path': 'continent',
+        },
+        'country': {
+            'field': 'continent.country.name.raw',
+            'path': 'continent.country',
+        },
+        'city': {
+            'field': 'continent.country.city.name.raw',
+            'path': 'continent.country.city',
+        },
         'zip_code': None,
     }
     # Define ordering fields
@@ -106,8 +116,8 @@ class AddressDocumentViewSet(DocumentViewSet):
     # Specify default ordering
     ordering = (
         'id',
-        'street.raw',
-        'city.name.raw',
+        'street',
+        'city',
     )
     # Suggester fields
     suggester_fields = {

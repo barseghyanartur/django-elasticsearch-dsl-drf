@@ -144,10 +144,16 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
         __ordering_params = []
         # Remove invalid ordering query params
         for query_param in ordering_query_params:
-            __key, __value = FilterBackendMixin.split_lookup_complex_value(
-                query_param.lstrip('-'),
-                maxsplit=1,
-            )
+            try:
+                __key, __value = FilterBackendMixin.split_lookup_complex_value(
+                    query_param.lstrip('-'),
+                    maxsplit=1,
+                )
+            # Probably using both
+            # OrderingFilterBackend/DefaultOrderingFilterBackend
+            # and GeoSpatialOrderingFilterBackend
+            except ValueError:
+                break
             __direction = 'desc' if query_param.startswith('-') else 'asc'
             if __key in view.geo_spatial_ordering_fields:
                 __field_name = self.get_geo_spatial_field_name(

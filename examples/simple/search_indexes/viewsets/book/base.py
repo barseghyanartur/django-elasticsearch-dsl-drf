@@ -179,7 +179,7 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
     ordering_fields = {
         'id': 'id',
         'title': 'title.raw',
-        'price': 'price.raw',
+        'price': 'price',
         'state': 'state.raw',
         'publication_date': 'publication_date',
     }

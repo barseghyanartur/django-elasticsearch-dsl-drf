@@ -288,7 +288,8 @@ class DefaultOrderingFilterBackend(BaseFilterBackend, OrderingMixin):
         if ordering is not None \
                 and hasattr(view, 'ordering_fields') \
                 and view.ordering_fields is not None \
-                and all(field in view.ordering_fields for field in ordering):
+                and all(field.lstrip('-') in view.ordering_fields
+                        for field in ordering):
             return cls.transform_ordering_params(ordering,
                                                  cls.prepare_ordering_fields(
                                                      view))

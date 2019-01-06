@@ -268,6 +268,9 @@ class TestOrdering(BaseRestFrameworkTestCase):
     def test_address_default_order_by(self):
         return self._order_by_default_field('id', self.addresses_url)
 
+    def test_address_default_order_by_descending(self):
+        return self._order_by_default_field('-id', self.addresses_url)
+
     def test_address_default_nested_order_by(self):
         return self._order_by_default_field('city.name', self.addresses_url,
                                             nested=True)

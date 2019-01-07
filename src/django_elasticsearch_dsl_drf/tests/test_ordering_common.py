@@ -109,7 +109,10 @@ class TestOrdering(BaseRestFrameworkTestCase):
         cls.backend = OrderingFilterBackend()
         cls.view = BookDocumentViewSet()
 
-    def _order_by_field(self, field_name, url, check_ordering=True,
+    def _order_by_field(self,
+                        field_name,
+                        url,
+                        check_ordering=True,
                         nested_resp_key=None):
         """Order by field.
 
@@ -266,10 +269,14 @@ class TestOrdering(BaseRestFrameworkTestCase):
                                     check_ordering=False)
 
     def test_address_default_order_by(self):
+        """Test if default ordering on addresses is correct (asc)."""
         return self._order_by_default_field('id', self.addresses_url)
 
-    def test_address_default_order_by_descending(self):
-        return self._order_by_default_field('-id', self.addresses_url)
+    # def test_address_default_order_by_descending(self):
+    #     """Test if default ordering on ??? is correct (desc)."""
+    #     # TODO: Define an endpoint where default ordering would be
+    #     # desc and test on that.
+    #     return self._order_by_default_field('-id', self.addresses_url)
 
     def test_address_default_nested_order_by(self):
         return self._order_by_default_field('city.name', self.addresses_url,

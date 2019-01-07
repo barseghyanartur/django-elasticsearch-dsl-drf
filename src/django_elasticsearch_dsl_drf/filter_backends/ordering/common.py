@@ -290,9 +290,10 @@ class DefaultOrderingFilterBackend(BaseFilterBackend, OrderingMixin):
                 and view.ordering_fields is not None \
                 and all(field.lstrip('-') in view.ordering_fields
                         for field in ordering):
-            return cls.transform_ordering_params(ordering,
-                                                 cls.prepare_ordering_fields(
-                                                     view))
+            return cls.transform_ordering_params(
+                ordering,
+                cls.prepare_ordering_fields(view)
+            )
         return ordering
 
     def filter_queryset(self, request, queryset, view):

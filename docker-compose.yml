@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: ./docker/elasticsearch/Dockerfile
     image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
-    container_name: elasticsearch
+    container_name: django_elasticsearch_dsl_drf_elasticsearch
     volumes:
     - esdata:/usr/share/elasticsearch/data
     ports:

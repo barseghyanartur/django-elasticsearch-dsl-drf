@@ -410,7 +410,7 @@ Settings
 .. note::
 
     In the examples below the ``search_indexes.documents.book`` and
-    ``search_indexes.documents.publisher`` are the pythonic file path to
+    ``search_indexes.documents.publisher`` are the pythonic file paths to
     modules where documents are defined.
 
 *settings/base.py*

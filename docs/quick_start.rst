@@ -407,7 +407,17 @@ recommended.
 Settings
 ^^^^^^^^
 
+.. note::
+
+    In the examples below the ``search_indexes.documents.book`` and
+    ``search_indexes.documents.publisher`` are the pythonic file path to
+    modules where documents are defined.
+
 *settings/base.py*
+
+.. note::
+
+    In this example, ``book`` and ``publisher`` are Elasticsearch index names.
 
 .. code-block:: python
 
@@ -418,6 +428,11 @@ Settings
     }
 
 *settings/testing.py*
+
+.. note::
+
+    In this example, ``test_book`` and ``test_publisher`` are Elasticsearch
+    index names.
 
 .. code-block:: python
 
@@ -440,7 +455,7 @@ Settings
 Document index
 ^^^^^^^^^^^^^^
 
-*search_indexes/documents/books.py*
+*search_indexes/documents/book.py*
 
 .. code-block:: python
 

@@ -837,6 +837,7 @@ Required imports
         SearchFilterBackend,
     )
     from django_elasticsearch_dsl_drf.viewsets import BaseDocumentViewSet
+    from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
 
     from .documents import BookDocument, PublisherDocument
     from .serializers import BookDocumentSerializer
@@ -853,6 +854,7 @@ ViewSet definition
 
         document = BookDocument
         serializer_class = BookDocumentSerializer
+        pagination_class = PageNumberPagination
         lookup_field = 'id'
         filter_backends = [
             FilteringFilterBackend,

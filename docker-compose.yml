@@ -42,12 +42,12 @@ services:
     container_name: django_elasticsearch_dsl_drf_frontend
     image: django_elasticsearch_dsl_drf_frontend:latest
     build:
-      context: .
-      dockerfile: ./docker/frontend/Dockerfile
-    command: bash -l -c "cd /frontend/examples/frontend/ && yarn dev"
+      context: ./examples/frontend/
+      dockerfile: ../../docker/frontend/Dockerfile
+    command: bash -l -c "cd /frontend/ && yarn dev"
     volumes:
-      - .:/frontend
-      - /frontend/node_modules
+      - ./examples/frontend/:/frontend
+      - node_modules:/frontend/node_modules
     ports:
       - "3000:3000"
     depends_on:
@@ -57,3 +57,4 @@ services:
 volumes:
   data:
   esdata:
+  node_modules:

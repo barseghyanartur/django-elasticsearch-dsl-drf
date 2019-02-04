@@ -6,7 +6,7 @@ RUN apt-get install -y nano
 
 RUN mkdir /frontend
 
-ADD examples/frontend/package.json /frontend/
+ADD package.json /frontend/
 ADD . /frontend/
 
 WORKDIR /frontend

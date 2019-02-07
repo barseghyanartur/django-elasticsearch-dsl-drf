@@ -15,6 +15,7 @@ from .viewsets import (
     BookMoreLikeThisNoOptionsDocumentViewSet,
     BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
     BookMultiMatchSearchFilterBackendDocumentViewSet,
+    BookPermissionsDocumentViewSet,
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
@@ -78,6 +79,12 @@ books_frontend = router.register(
     r'books-frontend',
     BookFrontendDocumentViewSet,
     base_name='bookdocument_frontend'
+)
+
+books_permissions = router.register(
+    r'books-permissions',
+    BookPermissionsDocumentViewSet,
+    base_name='bookdocument_permissions'
 )
 
 books_custom = router.register(

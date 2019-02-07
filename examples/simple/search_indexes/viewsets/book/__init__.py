@@ -20,6 +20,7 @@ from .ordering_by_score import BookOrderingByScoreDocumentViewSet
 from .ordering_by_score_compound_search import (
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
 )
+from .permissions import BookPermissionsDocumentViewSet
 from .simple_query_string import (
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
 )

@@ -210,6 +210,10 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
             if self.ignore:
                 get_kwargs.update({'ignore': self.ignore})
             obj = self.document.get(**get_kwargs)
+
+            # May raise a permission denied
+            self.check_object_permissions(self.request, obj)
+
             if not obj and self.ignore:
                 raise Http404("No result matches the given query.")
             return DictionaryProxy(obj.to_dict())
@@ -222,6 +226,10 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
             count = queryset.count()
             if count == 1:
                 obj = queryset.execute().hits.hits[0]['_source']
+
+                # May raise a permission denied
+                self.check_object_permissions(self.request, obj)
+
                 return DictionaryProxy(obj)
 
             elif count > 1:

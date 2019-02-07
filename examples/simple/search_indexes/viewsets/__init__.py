@@ -15,6 +15,7 @@ from .book import (
     BookMultiMatchSearchFilterBackendDocumentViewSet,
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
+    BookPermissionsDocumentViewSet,
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
 )
@@ -38,6 +39,7 @@ __all__ = (
     'BookMultiMatchSearchFilterBackendDocumentViewSet',
     'BookOrderingByScoreCompoundSearchBackendDocumentViewSet',
     'BookOrderingByScoreDocumentViewSet',
+    'BookPermissionsDocumentViewSet',
     'BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet',
     'BookSimpleQueryStringSearchFilterBackendDocumentViewSet',
     'CityCompoundSearchBackendDocumentViewSet',

@@ -17,7 +17,7 @@ are used for versioning (schema follows below):
 
 0.17.3
 ------
-yyyy-mm-dd (not yet released)
+2019-02-08 (not yet released)
 
 - Obey object permissions.
 

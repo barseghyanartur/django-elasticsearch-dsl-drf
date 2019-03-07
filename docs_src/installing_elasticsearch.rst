@@ -10,6 +10,14 @@ Elasticsearch).
 
 Docker
 ------
+2.x
+~~~
+
+.. code-block:: sh
+
+    docker pull elasticsearch:2.4.6
+    docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" elasticsearch:2.4.6
+
 5.x
 ~~~
 .. code-block:: sh

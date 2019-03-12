@@ -27,3 +27,4 @@ from .simple_query_string import (
 from .simple_query_string_boost import (
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
 )
+from .source import BookSourceSearchBackendDocumentViewSet

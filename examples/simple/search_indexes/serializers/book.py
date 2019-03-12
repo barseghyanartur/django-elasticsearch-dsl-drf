@@ -6,6 +6,7 @@ from ..documents import BookDocument
 __all__ = (
     'BookDocumentSerializer',
     'BookDocumentSimpleSerializer',
+    'BookDocumentSourceSerializer',
 )
 
 
@@ -122,3 +123,16 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
         if hasattr(obj.meta, 'score'):
             return obj.meta.score
         return None
+
+
+class BookDocumentSourceSerializer(DocumentSerializer):
+    """Serializer used for the Book document with BookSourceViewSet."""
+
+    class Meta(object):
+        """Meta options."""
+
+        document = BookDocument
+        fields = (
+            'id',
+            'title',
+        )

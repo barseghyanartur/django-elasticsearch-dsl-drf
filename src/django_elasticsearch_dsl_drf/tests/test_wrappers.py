@@ -14,7 +14,7 @@ from ..wrappers import obj_to_dict, dict_to_obj
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_wrappers'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2018 Artur Barseghyan'
+__copyright__ = '2017-2019 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestWrappers',

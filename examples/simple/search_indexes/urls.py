@@ -20,6 +20,7 @@ from .viewsets import (
     BookOrderingByScoreDocumentViewSet,
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
+    BookSourceSearchBackendDocumentViewSet,
     CityCompoundSearchBackendDocumentViewSet,
     CityDocumentViewSet,
     PublisherDocumentViewSet,
@@ -133,6 +134,12 @@ books_compound_search_backend_ordered_by_score = router.register(
     r'books-compound-search-backend-ordered-by-score',
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     base_name='bookdocument_compound_search_backend_ordered_by_score'
+)
+
+books_source_search_backend = router.register(
+    r'books-source',
+    BookSourceSearchBackendDocumentViewSet,
+    base_name='bookdocument_source'
 )
 
 books_multi_match_backend = router.register(

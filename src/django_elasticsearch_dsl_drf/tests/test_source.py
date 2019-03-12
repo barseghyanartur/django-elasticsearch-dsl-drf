@@ -23,18 +23,18 @@ if DJANGO_GTE_1_10:
 else:
     from django.core.urlresolvers import reverse
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_highlight'
+__title__ = 'django_elasticsearch_dsl_drf.tests.test_source'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2019 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
-    'TestHighlight',
+    'TestSource',
 )
 
 
 @pytest.mark.django_db
-class TestHighlight(BaseRestFrameworkTestCase):
-    """Test highlight."""
+class TestSource(BaseRestFrameworkTestCase):
+    """Test source."""
 
     pytestmark = pytest.mark.django_db
 
@@ -63,41 +63,36 @@ class TestHighlight(BaseRestFrameworkTestCase):
 
         call_command('search_index', '--rebuild', '-f')
 
-    def _list_results_with_highlights(self):
-        """List results with facets."""
+    def _list_results(self):
+        """List results."""
         self.authenticate()
 
-        url = reverse('bookdocument-list', kwargs={}) + '?search=twenty'
-        all_highlights_url = url + '&highlight=summary&highlight=description'
+        url = reverse('bookdocument_source-list', kwargs={}) + '?search=twenty'
 
         # Make request
-        no_args_response = self.client.get(url, {})
-        self.assertEqual(no_args_response.status_code, status.HTTP_200_OK)
+        response = self.client.get(url, {})
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK
+        )
 
         # Should contain 10 results
         self.assertEqual(
-            len(no_args_response.data['results']), self.special_books_count)
-
-        for result in no_args_response.data['results']:
-            self.assertEqual(list(result['highlight'].keys()), ['title'])
-
-        # Make request
-        all_highlights_response = self.client.get(all_highlights_url, {})
-        self.assertEqual(
-            all_highlights_response.status_code, status.HTTP_200_OK)
-
-        # Should contain 20 results
-        self.assertEqual(
-            len(all_highlights_response.data['results']),
-            self.special_books_count,
+            len(response.data['results']),
+            self.special_books_count
         )
-        for result in all_highlights_response.data['results']:
-            self.assertEqual(set(['title', 'description', 'summary']),
-                             set(result['highlight'].keys()))
 
-    def test_list_results_with_highlights(self):
-        """Test list results with facets."""
-        return self._list_results_with_highlights()
+        expected_keys = {'id', 'title'}
+        # Should only contain 'id' and 'title'.
+        for result in response.data['results']:
+            self.assertEqual(
+                expected_keys,
+                set(result.keys())
+            )
+
+    def test_list_results(self):
+        """Test list results."""
+        return self._list_results()
 
 
 if __name__ == '__main__':

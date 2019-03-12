@@ -20,7 +20,7 @@ from .versions import ELASTICSEARCH_GTE_6_0
 
 __title__ = 'django_elasticsearch_dsl_drf.pagination'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2018 Artur Barseghyan'
+__copyright__ = '2017-2019 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'LimitOffsetPagination',

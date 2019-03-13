@@ -168,7 +168,7 @@ class BookDocument(DocType):
 
     def prepare_summary(self, instance):
         """Prepare summary."""
-        return instance.summary[:32766]
+        return instance.summary[:32766] if instance.summary else None
 
     def prepare_authors(self, instance):
         """Prepare authors."""

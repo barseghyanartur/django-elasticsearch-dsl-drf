@@ -19,6 +19,7 @@ Contents:
    more_like_this
    global_aggregations
    configuration_tweaks
+   source_backend
    demo
    frontend_demo
    changelog

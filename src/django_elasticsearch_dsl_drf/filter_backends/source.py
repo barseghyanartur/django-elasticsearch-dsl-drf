@@ -64,7 +64,7 @@ class SourceBackend(BaseFilterBackend):
         :return: Updated queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
-        if view.source:
+        if getattr(view, 'source', None) is not None:
             queryset = queryset.source(view.source)
 
         return queryset

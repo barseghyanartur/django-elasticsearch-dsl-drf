@@ -139,6 +139,13 @@ DOCS_TRANSFORMATIONS = (
         'global_aggregations.html'
         '>`_'.format(version)
     ),
+    (
+        ':doc:`Source filter backend <source_backend>`',
+        '`Source filter backend <'
+        'http://django-elasticsearch-dsl-drf.readthedocs.io/en/{}/'
+        'source_backend.html'
+        '>`_'.format(version)
+    ),
 )
 
 try:

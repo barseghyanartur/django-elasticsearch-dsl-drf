@@ -140,7 +140,7 @@ class BaseSearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         return [] if not search_fields else [
             coreapi.Field(
-                name='search',
+                name=self.search_param,
                 required=False,
                 location='query',
                 schema=coreschema.String(

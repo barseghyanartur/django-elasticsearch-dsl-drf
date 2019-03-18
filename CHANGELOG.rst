@@ -20,6 +20,7 @@ are used for versioning (schema follows below):
 yyyy-mm-dd (not yet released).
 
 - Minor fixes.
+- Dropping Python 3.4 support.
 
 0.17.4
 ------

@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = '0.17.4'
+version = '0.17.5'
 
 DOCS_TRANSFORMATIONS = (
     (
@@ -182,7 +182,6 @@ setup(
     long_description=readme,
     classifiers=[
         "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",

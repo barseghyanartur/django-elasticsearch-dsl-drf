@@ -2,6 +2,7 @@
 -r test.txt
 
 Django>=1.8,<1.9
+django-cors-headers==2.4.0
 django-debug-toolbar==1.4
 django-debug-toolbar-force==0.1.1
 django-elasticsearch-debug-toolbar==1.0.4

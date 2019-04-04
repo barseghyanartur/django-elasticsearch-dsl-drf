@@ -12,15 +12,26 @@ from faker.providers import BaseProvider
 from .files import get_temporary_file
 
 __all__ = (
-    'Faker',
     'DjangoFileProvider',
+    'EnGbFaker',
+    'Faker',
+    'NlNlFaker',
 )
 
 
-class Faker(OriginalFaker):
+class NlNlFaker(OriginalFaker):
     """Override to change the default locale."""
 
     _DEFAULT_LOCALE = 'nl_NL'
+
+
+Faker = NlNlFaker
+
+
+class EnGbFaker(OriginalFaker):
+    """Override to change the default locale."""
+
+    _DEFAULT_LOCALE = 'en_GB'
 
 
 class DjangoFileProvider(BaseProvider):

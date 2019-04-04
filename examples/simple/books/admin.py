@@ -11,6 +11,7 @@ from .models import (
     OrderLine,
     Publisher,
     Tag,
+    Location,
 )
 
 __all__ = (
@@ -99,6 +100,31 @@ class CityAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'latitude', 'longitude',)
     list_editable = ('latitude', 'longitude',)
     search_fields = ('name',)
+
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    """Location admin."""
+
+    list_display = (
+        'id',
+        'group',
+        'latitude',
+        'longitude',
+        'address_street',
+        'address_no',
+        'postcode',
+        'address_town',
+    )
+    search_fields = (
+        'group',
+        'postcode',
+        'address_street',
+        'address_town',
+        'authority_name',
+        'slug',
+    )
+    list_filter = ('occupation_status', 'group',)
 
 
 @admin.register(Country)

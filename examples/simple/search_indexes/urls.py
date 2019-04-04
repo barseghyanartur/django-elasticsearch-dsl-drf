@@ -23,6 +23,7 @@ from .viewsets import (
     BookSourceSearchBackendDocumentViewSet,
     CityCompoundSearchBackendDocumentViewSet,
     CityDocumentViewSet,
+    LocationDocumentViewSet,
     PublisherDocumentViewSet,
     FrontAddressDocumentViewSet,
 )
@@ -180,6 +181,16 @@ cities_compound_search_backend = router.register(
     r'cities-compound-search-backend',
     CityCompoundSearchBackendDocumentViewSet,
     base_name='citydocument_compound_search_backend'
+)
+
+# **********************************************************
+# *********************** Locations ************************
+# **********************************************************
+
+locations = router.register(
+    r'locations',
+    LocationDocumentViewSet,
+    base_name='locationdocument'
 )
 
 # **********************************************************

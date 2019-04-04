@@ -281,6 +281,7 @@ ELASTICSEARCH_INDEX_NAMES = {
     'search_indexes.documents.book': 'book',
     'search_indexes.documents.city': 'city',
     'search_indexes.documents.publisher': 'publisher',
+    'search_indexes.documents.location': 'location',
 }
 
 LOGIN_URL = '/en/accounts/login/'

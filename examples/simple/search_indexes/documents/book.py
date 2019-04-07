@@ -165,6 +165,8 @@ class BookDocument(DocType):
 
         model = Book  # The model associate with this DocType
         parallel_indexing = True
+        # queryset_pagination = 500000  # This will split the queryset
+        #                               # into parts while indexing
 
     def prepare_summary(self, instance):
         """Prepare summary."""

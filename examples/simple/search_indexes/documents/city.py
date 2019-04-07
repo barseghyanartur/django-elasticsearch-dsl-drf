@@ -102,3 +102,5 @@ class CityDocument(DocType):
 
         model = City  # The model associate with this DocType
         parallel_indexing = True
+        # queryset_pagination = 500000  # This will split the queryset
+        #                               # into parts while indexing

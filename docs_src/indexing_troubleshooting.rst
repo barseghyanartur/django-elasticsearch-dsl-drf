@@ -14,7 +14,7 @@ exceptions.
 
 To do that, make a new settings file (`indexing`) and add the following:
 
-*indexing.py*
+*settings/indexing.py*
 
 .. code-block:: python
 
@@ -85,13 +85,19 @@ Install it as follows:
 In order to make use of it, define set `parallel_indexing` to True on the
 document meta.
 
+*yourapp/documents.py*
+
 .. code-block:: python
 
-    class Meta(object):
-        """Meta options."""
+    class LocationDocument(DocType):
 
-        model = Location  # The model associate with this DocType
-        parallel_indexing = True
+        # ...
+
+        class Meta(object):
+            """Meta options."""
+
+            model = Location
+            parallel_indexing = True
 
 Limit the number of items indexed at once
 -----------------------------------------
@@ -101,10 +107,53 @@ sliced instead. So, if you have 2 million records in your queryset and you
 wish to index them by chunks of 20 thousands at once, specify the
 `queryset_pagination` on the document meta:
 
+*yourapp/documents.py*
+
 .. code-block:: python
 
-    class Meta(object):
-        """Meta options."""
+    class LocationDocument(DocType):
 
-        model = Location  # The model associate with this DocType
-        queryset_pagination = 20000
+        # ...
+
+        class Meta(object):
+            """Meta options."""
+
+            model = Location
+            queryset_pagination = 20000
+
+You may even make it dynamic based on the settings loaded. So, for instance,
+you may have it set to None in production (if you were happy with how things
+were) and provide a certain value for it in the dedicated indexing
+settings (as already has been mentioned above).
+
+*settings/base.py*
+
+.. code-block:: python
+
+    # Main/production settings
+    ELASTICSEARCH_DSL_QUERYSET_PAGINATION = None
+
+*settings/indexing.py*
+
+.. code-block:: python
+
+    # Indexing only settings
+    ELASTICSEARCH_DSL_QUERYSET_PAGINATION = 200000
+
+*yourapp/documents.py*
+
+.. code-block:: python
+
+    from django.conf import settings
+
+    # ...
+
+    class LocationDocument(DocType):
+
+        # ...
+
+        class Meta(object):
+            """Meta options."""
+
+            model = Location
+            parallel_indexing = settings.ELASTICSEARCH_DSL_QUERYSET_PAGINATION

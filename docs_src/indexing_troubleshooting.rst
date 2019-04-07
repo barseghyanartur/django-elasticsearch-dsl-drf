@@ -119,7 +119,7 @@ wish to index them by chunks of 20 thousands at once, specify the
             """Meta options."""
 
             model = Location
-            queryset_pagination = 20000
+            queryset_pagination = 1000
 
 You may even make it dynamic based on the settings loaded. So, for instance,
 you may have it set to None in production (if you were happy with how things
@@ -138,7 +138,7 @@ settings (as already has been mentioned above).
 .. code-block:: python
 
     # Indexing only settings
-    ELASTICSEARCH_DSL_QUERYSET_PAGINATION = 200000
+    ELASTICSEARCH_DSL_QUERYSET_PAGINATION = 1000
 
 *yourapp/documents.py*
 
@@ -156,4 +156,4 @@ settings (as already has been mentioned above).
             """Meta options."""
 
             model = Location
-            parallel_indexing = settings.ELASTICSEARCH_DSL_QUERYSET_PAGINATION
+            queryset_pagination = settings.ELASTICSEARCH_DSL_QUERYSET_PAGINATION

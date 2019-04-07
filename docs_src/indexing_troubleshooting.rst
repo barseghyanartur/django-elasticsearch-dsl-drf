@@ -4,8 +4,8 @@ When indexing lots of data (millions of records), you might get timeout
 exceptions.
 
 A couple of possible solutions (complimentary) are listed below. All of them
-are independent and not strictly related to each other. Thus, you may use just
-just one or a couple or all of them. It's totally up to you.
+are independent and not strictly related to each other. Thus, you may just use
+one or a couple or all of them. It's totally up to you.
 
 Timeout
 -------
@@ -14,13 +14,17 @@ exceptions.
 
 To do that, make a new settings file (`indexing`) and add the following:
 
+*indexing.py*
+
 .. code-block:: python
 
-    # Elasticsearch configuration
+    from .base import *  # Import from your main/production settings.
+
+    # Override the elasticsearch configuration and provide a custom timeout
     ELASTICSEARCH_DSL = {
         'default': {
             'hosts': 'localhost:9200',
-            'timeout': 60,
+            'timeout': 60,  # Custom timeout
         },
     }
 

@@ -265,6 +265,7 @@ Contents:
    global_aggregations
    configuration_tweaks
    source_backend
+   indexing_troubleshooting
    demo
    frontend_demo
    changelog

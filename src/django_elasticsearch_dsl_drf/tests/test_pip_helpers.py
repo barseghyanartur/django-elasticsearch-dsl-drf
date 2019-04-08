@@ -55,7 +55,7 @@ class TestPipHelpers(unittest.TestCase):
         :return:
         """
         installed_packages = get_installed_packages(with_versions=True)
-        django_version = '{}.{}.{}'.format(*django.VERSION[:3])
+        django_version = django.get_version()
         self.assertIn(('Django', django_version), installed_packages)
 
     def test_check_if_installed(self):

@@ -66,4 +66,4 @@ class AuthorDocument(DocType):
 
         model = Author  # The model associate with this DocType
         parallel_indexing = True
-        queryset_pagination = 50  # This stands for `chunk_size`
+        # queryset_pagination = 50  # This stands for `chunk_size`

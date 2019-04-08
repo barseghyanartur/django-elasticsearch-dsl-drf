@@ -7,6 +7,11 @@ A couple of possible solutions (complimentary) are listed below. All of them
 are independent and not strictly related to each other. Thus, you may just use
 one or a couple or all of them. It's totally up to you.
 
+If you want to test what works best for you, use `this test dataset (Postgres)
+<https://drive.google.com/open?id=1EvMfloWRWoLYpJaybhKEAqrBtus8ZeGQ>`_
+containing 1.8 million location records for
+`search_indexes.documents.location.LocationDocument` document.
+
 Timeout
 -------
 For re-indexing, you might want to increase the timeout to avoid time-out

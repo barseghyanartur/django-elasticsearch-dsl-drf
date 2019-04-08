@@ -295,6 +295,9 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
     def _test_field_filter_geo_bounding_box(self, points, count):
         """Private helper test field filter geo-bounding-box.
 
+        For testing use
+        http://bboxfinder.com/#40.070000,43.870000,41.110000,44.870000
+
         Example:
 
             http://localhost:8000/api/articles/

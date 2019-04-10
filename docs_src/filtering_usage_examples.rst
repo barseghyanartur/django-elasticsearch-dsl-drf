@@ -145,6 +145,8 @@ multi-character wildcards (*)
 
     http://localhost:8000/api/articles/?title__wildcard=*elusional*
 
+Should match: `delusional insanity`.
+
 ids
 ^^^
 Find documents with the specified type and IDs.
@@ -174,6 +176,13 @@ filters/lookups are implemented:
 contains
 ^^^^^^^^
 Case-insensitive containment test.
+
+.. code-block:: text
+
+    http://localhost:8000/api/articles/?state__contains=lishe
+
+
+Should match: `published`, `not published`, `needs polishing`.
 
 in
 ^^
@@ -221,6 +230,8 @@ Case-sensitive starts-with.
 
     http://localhost:8000/api/articles/?tags__startswith=bio
 
+Should match: `biography`, `bio mechanics`
+
 endswith
 ^^^^^^^^
 Case-sensitive ends-with.
@@ -228,6 +239,8 @@ Case-sensitive ends-with.
 .. code-block:: text
 
     http://localhost:8000/api/articles/?state__endswith=lished
+
+Should match: `published`, `not published`.
 
 isnull
 ^^^^^^

@@ -9,6 +9,7 @@ Contents:
    :maxdepth: 20
 
    index
+   dependencies
    installing_elasticsearch
    quick_start
    filtering_usage_examples
@@ -21,6 +22,7 @@ Contents:
    configuration_tweaks
    source_backend
    indexing_troubleshooting
+   faq
    demo
    frontend_demo
    changelog

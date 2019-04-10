@@ -32,7 +32,7 @@ Can we use Django REST Framework ``serializers.ModelSerializer`` directly?
 
 **Answer**
 
-Yes. `Read the docs
+No, but you could use ``serializers.Serializer``. `Read the docs
 <https://django-elasticsearch-dsl-drf.readthedocs.io/en/latest/quick_start.html?highlight=serializer#serializer-definition>`_.
 
 **Question**

@@ -13,72 +13,16 @@ You are expected to use `django-elasticsearch-dsl
 <https://pypi.python.org/pypi/django-elasticsearch-dsl>`_ for defining your
 Elasticsearch documents.
 
+Documentation
+=============
+Documentation is available on `Read the Docs
+<http://django-elasticsearch-dsl-drf.readthedocs.io/>`_.
+
 Prerequisites
 =============
 - Django 1.8, 1.9, 1.10, 1.11, 2.0, 2.1 and 2.2.
 - Python 2.7, 3.5, 3.6, 3.7
 - Elasticsearch 2.x, 5.x, 6.x
-
-Dependencies
-============
-**elasticsearch and elasticsearch-dsl**
-
-Depending on your Elasticsearch version (either 2.x, 5.x or 6.x) you should
-use 2.x, 5.x or 6.x versions of the ``elasticsearch`` and ``elasticsearch-dsl``
-packages accordingly.
-
-**django-elasticsearch-dsl**
-
-You are advised to use the latest version of `django-elasticsearch-dsl
-<https://pypi.python.org/pypi/django-elasticsearch-dsl>`_.
-
-**djangorestframework**
-
-Initial version of this package was written for `djangorestframework
-<https://pypi.python.org/pypi/djangorestframework>`_ 3.6.2.
-
-Tested with the following versions of Django/Django REST Framework:
-
-+--------+-----------------------+
-| Django | Django REST Framework |
-+--------+-----------------------+
-| 1.8    | 3.6.2                 |
-+--------+-----------------------+
-| 1.9    | 3.6.2                 |
-+--------+-----------------------+
-| 1.10   | 3.6.2                 |
-+--------+-----------------------+
-| 1.11   | 3.7.7                 |
-+--------+-----------------------+
-| 2.0    | 3.7.7                 |
-+--------+-----------------------+
-| 2.1    | 3.8.2                 |
-+--------+-----------------------+
-| 2.2    | 3.9.2                 |
-+--------+-----------------------+
-
-Demo
-====
-A frontend demo (React based) is available. See the `dedicated docs
-<https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/frontend/README.rst>`_
-for more information.
-
-To bootstrap evaluation, clone the repository locally and run `docker-compose`.
-
-.. code-block:: sh
-
-    docker-compose up
-
-It will set up:
-
-- Elasticsearch on `http://localhost:9200 <http://localhost:9200>`_
-- Django REST framework on `http://localhost:8000 <http://localhost:8000>`_
-- React on `http://localhost:3000 <http://localhost:3000>`_
-
-Documentation
-=============
-Documentation is available on `Read the Docs
-<http://django-elasticsearch-dsl-drf.readthedocs.io/>`_.
 
 Main features and highlights
 ============================
@@ -109,6 +53,24 @@ Main features and highlights
 - :doc:`More-like-this support (detail action) <more_like_this>`.
 - :doc:`Global aggregations support <global_aggregations>`.
 - :doc:`Source filter backend <source_backend>`.
+
+Demo
+====
+A frontend demo (React based) is available. See the `dedicated docs
+<https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/frontend/README.rst>`_
+for more information.
+
+To bootstrap evaluation, clone the repository locally and run `docker-compose`.
+
+.. code-block:: sh
+
+    docker-compose up
+
+It will set up:
+
+- Elasticsearch on `http://localhost:9200 <http://localhost:9200>`_
+- Django REST framework on `http://localhost:8000 <http://localhost:8000>`_
+- React on `http://localhost:3000 <http://localhost:3000>`_
 
 Installation
 ============
@@ -254,6 +216,7 @@ Contents:
    :maxdepth: 20
 
    index
+   dependencies
    installing_elasticsearch
    quick_start
    filtering_usage_examples
@@ -266,6 +229,7 @@ Contents:
    configuration_tweaks
    source_backend
    indexing_troubleshooting
+   faq
    demo
    frontend_demo
    changelog

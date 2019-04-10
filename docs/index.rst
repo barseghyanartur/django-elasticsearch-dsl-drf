@@ -18,6 +18,8 @@ Documentation
 Documentation is available on `Read the Docs
 <http://django-elasticsearch-dsl-drf.readthedocs.io/>`_.
 
+Make sure to read `FAQ <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/docs/faq.rst>`_.
+
 Prerequisites
 =============
 - Django 1.8, 1.9, 1.10, 1.11, 2.0, 2.1 and 2.2.

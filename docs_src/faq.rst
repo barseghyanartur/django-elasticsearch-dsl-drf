@@ -28,6 +28,8 @@ To mention a couple:
 
 **Question**
 
+Can we use Django REST Framework ``serializers.ModelSerializer`` directly?
+
 **Answer**
 
 Yes. `Read the docs

@@ -31,6 +31,9 @@ matrix:
   - env: TOX_ENV=py37-django22
     python: 3.7
 
+before_install:
+  - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.16.deb && sudo dpkg -i --force-confnew elasticsearch-5.6.16.deb && sudo service elasticsearch restart
+
 install: pip install -r examples/requirements/test.txt
 
 before_script:

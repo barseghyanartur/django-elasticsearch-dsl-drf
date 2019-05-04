@@ -37,4 +37,3 @@ before_script:
   - sleep 10
 
 script: tox -e $TOX_ENV
-

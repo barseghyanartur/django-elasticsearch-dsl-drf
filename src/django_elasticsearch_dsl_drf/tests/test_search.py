@@ -83,8 +83,8 @@ class TestSearch(BaseRestFrameworkTestCase):
             cls.special_count + cls.lorem_count + cls.non_lorem_count
         )
 
-        cls.cities_count = 20
-        cls.cities = factories.CityFactory.create_batch(cls.cities_count)
+        cls.cities = list(set(factories.DutchCityFactory.create_batch(100)))
+        cls.cities_count = len(cls.cities)
 
         # Create 10 cities in a given country. The reason that we don't
         # do create_batch here is that sometimes in the same test city name is
@@ -93,24 +93,17 @@ class TestSearch(BaseRestFrameworkTestCase):
         # create_batch part (below) will remain commented out, until there's a
         # better solution.
         cls.switzerland = factories.CountryFactory.create(name='Wonderland')
-        cls.switz_cities_count = 10
-        cls.switz_cities_names = [
-            'Zurich',
-            'Geneva',
-            'Basel',
-            'Lausanne',
-            'Bern',
-            'Winterthur',
-            'Lucerne',
-            'St. Gallen',
-            'Lugano',
-            'Biel/Bienne',
-        ]
-        for switz_city in cls.switz_cities_names:
-            cls.switz_cities = factories.CityFactory(
-                name=switz_city,
-                country=cls.switzerland
+        cls.switz_cities_names = factories.SWISS_CITIES
+
+        cls.switz_cities = list(
+            set(
+                factories.SwissCityFactory.create_batch(
+                    size=100,
+                    country=cls.switzerland
+                )
             )
+        )
+        cls.switz_cities_count = len(cls.switz_cities)
         # cls.switz_cities = factories.CityFactory.create_batch(
         #     cls.switz_cities_count,
         #     country=cls.switzerland

@@ -15,6 +15,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.17.7
+------
+2019-xx-xx (not-yet-released)
+
+- Prevent unicode errors in tests on Python 2.7.
+- Fixes in occasionally failing search test (`test_search`).
+
 0.17.6
 ------
 2019-04-08

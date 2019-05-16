@@ -19,8 +19,15 @@ are used for versioning (schema follows below):
 ------
 2019-xx-xx (not-yet-released)
 
+.. note::
+
+    Support for Django 1.8, 1.9 and 1.10 will be dropped in the next release.
+    As usual, compatibility shims won't be removed directly. The change
+    will affect the test matrix only first.
+
 - Prevent unicode errors in tests on Python 2.7.
 - Fixes in occasionally failing search test (`test_search`).
+- Working travis.
 
 0.17.6
 ------

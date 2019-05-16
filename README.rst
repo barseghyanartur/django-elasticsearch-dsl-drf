@@ -13,6 +13,18 @@ You are expected to use `django-elasticsearch-dsl
 <https://pypi.python.org/pypi/django-elasticsearch-dsl>`_ for defining your
 Elasticsearch documents.
 
+.. image:: https://img.shields.io/pypi/v/django-elasticsearch-dsl-drf.svg
+   :target: https://pypi.python.org/pypi/django-elasticsearch-dsl-drf
+   :alt: PyPI Version
+
+.. image:: https://img.shields.io/travis/barseghyanartur/django-elasticsearch-dsl-drf/master.svg
+   :target: http://travis-ci.org/barseghyanartur/django-elasticsearch-dsl-drf
+   :alt: Build Status
+
+.. image:: https://img.shields.io/badge/license-GPL--2.0--only%20OR%20LGPL--2.1--or--later-blue.svg
+   :target: https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/#License
+   :alt: GPL-2.0-only OR LGPL-2.1-or-later
+
 Documentation
 =============
 Documentation is available on `Read the Docs
@@ -198,7 +210,7 @@ Keep the following hierarchy.
 
 License
 =======
-GPL 2.0/LGPL 2.1
+GPL-2.0-only OR LGPL-2.1-or-later
 
 Support
 =======

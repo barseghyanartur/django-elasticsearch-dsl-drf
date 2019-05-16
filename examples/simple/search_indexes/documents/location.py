@@ -2,6 +2,7 @@ from django.conf import settings
 from django_elasticsearch_dsl import DocType, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
+from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
 from elasticsearch_dsl import analyzer
 
 from books.models import Location
@@ -29,127 +30,168 @@ class LocationDocument(DocType):
     """
     Location document.
     """
-    full = fields.StringField(
-        analyzer=html_strip,
-        fields={
+    # Full fields
+    __full_fields = {
             "raw": KeywordField(),
-            "suggest": fields.CompletionField(),
-            "context": fields.CompletionField(
-                contexts=[
-                    {
-                        "name": "category",
-                        "type": "category",
-                        "path": "category.raw",
-                    },
-                    {
-                        "name": "occupied",
-                        "type": "category",
-                        "path": "occupied.raw",
-                    },
-                ]
-            ),
             # edge_ngram_completion
             "q": StringField(
                 analyzer=edge_ngram_completion
-                ),
-        }
-    )
-    partial = fields.StringField(
-        analyzer=html_strip,
-        fields={
-            "raw": KeywordField(),
-            "suggest": fields.CompletionField(),
-            "context": fields.CompletionField(
-                contexts=[
-                    {
-                        "name": "category",
-                        "type": "category",
-                        "path": "category.raw",
-                    },
-                    {
-                        "name": "occupied",
-                        "type": "category",
-                        "path": "occupied.raw",
-                    },
-                ]
-            ),
-            # edge_ngram_completion
-            "q": StringField(
-                analyzer=edge_ngram_completion
-                ),
-        }
-    )
-    postcode = fields.StringField(
-        analyzer=html_strip,
-        fields={
-            "raw": KeywordField(),
-            "suggest": fields.CompletionField(),
-            "context": fields.CompletionField(
-                contexts=[
-                    {
-                        "name": "category",
-                        "type": "category",
-                        "path": "category.raw",
-                    },
-                    {
-                        "name": "occupied",
-                        "type": "category",
-                        "path": "occupied.raw",
-                    },
-                ]
             ),
         }
+
+    if ELASTICSEARCH_GTE_5_0:
+        __full_fields.update(
+            {
+                "suggest": fields.CompletionField(),
+                "context": fields.CompletionField(
+                    contexts=[
+                        {
+                            "name": "category",
+                            "type": "category",
+                            "path": "category.raw",
+                        },
+                        {
+                            "name": "occupied",
+                            "type": "category",
+                            "path": "occupied.raw",
+                        },
+                    ]
+                ),
+
+            }
+        )
+
+    full = StringField(
+        analyzer=html_strip,
+        fields=__full_fields
     )
-    number = fields.StringField(
+
+    # Partial fields
+    __partial_fields = {
+        "raw": KeywordField(),
+        # edge_ngram_completion
+        "q": StringField(
+            analyzer=edge_ngram_completion
+            ),
+    }
+    if ELASTICSEARCH_GTE_5_0:
+        __partial_fields.update(
+            {
+                "suggest": fields.CompletionField(),
+                "context": fields.CompletionField(
+                    contexts=[
+                        {
+                            "name": "category",
+                            "type": "category",
+                            "path": "category.raw",
+                        },
+                        {
+                            "name": "occupied",
+                            "type": "category",
+                            "path": "occupied.raw",
+                        },
+                    ]
+                ),
+            }
+        )
+    partial = StringField(
+        analyzer=html_strip,
+        fields=__partial_fields
+    )
+
+    # Postcode
+    __postcode_fields = {
+        "raw": KeywordField(),
+    }
+    if ELASTICSEARCH_GTE_5_0:
+        __postcode_fields.update(
+            {
+                "suggest": fields.CompletionField(),
+                "context": fields.CompletionField(
+                    contexts=[
+                        {
+                            "name": "category",
+                            "type": "category",
+                            "path": "category.raw",
+                        },
+                        {
+                            "name": "occupied",
+                            "type": "category",
+                            "path": "occupied.raw",
+                        },
+                    ]
+                ),
+            }
+        )
+    postcode = StringField(
+        analyzer=html_strip,
+        fields=__postcode_fields
+    )
+
+    # Number
+    number = StringField(
         attr="address_no",
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
         }
     )
-    address = fields.StringField(
+
+    # Address
+    address = StringField(
         attr="address_street",
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
         }
     )
-    town = fields.StringField(
+
+    # Town
+    town = StringField(
         attr="address_town",
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
         }
     )
-    authority = fields.StringField(
+
+    # Authority
+    authority = StringField(
         attr="authority_name",
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
         }
     )
+
     # URL fields /geocode/slug
-    geocode = fields.StringField(
+    geocode = StringField(
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
         }
     )
-    slug = fields.StringField(
+
+    # Slug
+    slug = StringField(
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
         }
     )
-    # Filter fields
-    category = fields.StringField(
+
+    # ********************* Filter fields **********************
+    # Category
+    category = StringField(
         attr="group",
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
         }
     )
-    occupied = fields.StringField(
+
+    # Occupied
+    occupied = StringField(
         attr="occupation_status_text",
         analyzer=html_strip,
         fields={

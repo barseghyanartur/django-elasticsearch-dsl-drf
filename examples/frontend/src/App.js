@@ -27,25 +27,25 @@ class App extends Component {
     }
 
     render() {
-    return (
-        <BrowserRouter>
-            {/*<Switch>*/}
-            <div>
-                <Route
-                    exact path="/"
-                    component={
-                        () => <Search
-                                updateQuery={this.updateQuery}
-                                { ...this.props }
-                                { ...this.state }
-                              />
-                    }
-                />
-                <Route exact path="/:id" component={Detail} />
-            {/*</Switch>*/}
-            </div>
-        </BrowserRouter>
-    );
+        return (
+            <BrowserRouter>
+                {/*<Switch>*/}
+                <div>
+                    <Route
+                        exact path="/"
+                        component={
+                            () => <Search
+                                    updateQuery={this.updateQuery}
+                                    { ...this.props }
+                                    { ...this.state }
+                                  />
+                        }
+                    />
+                    <Route exact path="/:id" component={Detail} />
+                {/*</Switch>*/}
+                </div>
+            </BrowserRouter>
+        );
     }
 }
 

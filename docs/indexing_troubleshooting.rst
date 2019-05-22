@@ -3,7 +3,7 @@ Indexing troubleshooting
 When indexing lots of data (millions of records), you might get timeout
 exceptions.
 
-A couple of possible solutions (complimentary) are listed below. All of them
+A couple of possible solutions (complementary) are listed below. All of them
 are independent and not strictly related to each other. Thus, you may just use
 one or a couple or all of them. It's totally up to you.
 

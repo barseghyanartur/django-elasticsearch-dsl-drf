@@ -65,7 +65,7 @@ this case):
 Use parallel indexing
 ---------------------
 Parallel indexing speeds things up (drastically). In my tests I got a speedup
-boost of 66 percent on 1.6 million records.
+boost of 66 percent on 1.8 million records.
 
 Note, that this feature is (yet) *only available in the forked versions*
 `barseghyanartur/django-elasticsearch-dsl

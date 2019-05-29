@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = '0.17.6'
+version = '0.17.7'
 
 DOCS_TRANSFORMATIONS = (
     (
@@ -200,7 +200,7 @@ setup(
     url='https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/',
     package_dir={'': 'src'},
     packages=find_packages(where='./src'),
-    license='GPL 2.0/LGPL 2.1',
+    license='GPL-2.0-only OR LGPL-2.1-or-later',
     install_requires=(install_requires + extras_require),
     tests_require=tests_require,
     include_package_data=True,

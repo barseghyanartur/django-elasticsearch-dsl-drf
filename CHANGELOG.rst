@@ -17,7 +17,7 @@ are used for versioning (schema follows below):
 
 0.17.7
 ------
-2019-xx-xx (not-yet-released)
+2019-05-30
 
 .. note::
 
@@ -29,6 +29,7 @@ are used for versioning (schema follows below):
 - Fixes in occasionally failing search test (``test_search`` and
   ``test_filtering_geo_spatial``).
 - Working travis.
+- Fixed issue with errors on empty ``ids`` filter.
 
 0.17.6
 ------

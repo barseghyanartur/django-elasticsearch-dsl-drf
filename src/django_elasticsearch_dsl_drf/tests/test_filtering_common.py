@@ -535,6 +535,20 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
             self.published_count
         )
 
+    def test_ids_empty_filter(self):
+        """Test ids filter with empty value. This should not fail.
+
+        Example:
+
+            http://localhost:8000/api/articles/?ids=
+        """
+        __ids = []
+        return self._field_filter_value(
+            'ids',
+            SEPARATOR_LOOKUP_COMPLEX_VALUE.join(__ids),
+            0
+        )
+
     def test_default_filter_lookup(self):
         """Test default filter lookup.
 

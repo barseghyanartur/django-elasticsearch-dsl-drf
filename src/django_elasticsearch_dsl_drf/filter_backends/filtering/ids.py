@@ -88,11 +88,11 @@ class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         query_params = self.get_ids_query_params(request)
-        __ids = []
-        for __id in query_params:
-            __values = self.split_lookup_complex_value(__id)
-            __ids += __values
-        return __ids
+        _ids = []
+        for _id in query_params:
+            _values = self.split_lookup_complex_value(_id)
+            _ids += _values
+        return _ids
 
     def filter_queryset(self, request, queryset, view):
         """Filter the queryset.
@@ -109,8 +109,10 @@ class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
         __ids = self.get_ids_values(request, view)
 
         if __ids:
+            _ids = [_i for _i in __ids if _i]
             queryset = queryset.query(
                 'ids',
-                **{'values': __ids, 'type': view.mapping}
+                **{'values': _ids, 'type': view.mapping}
             )
+
         return queryset

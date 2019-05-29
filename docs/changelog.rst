@@ -26,7 +26,8 @@ are used for versioning (schema follows below):
     will affect the test matrix only first.
 
 - Prevent unicode errors in tests on Python 2.7.
-- Fixes in occasionally failing search test (`test_search`).
+- Fixes in occasionally failing search test (``test_search`` and
+  ``test_filtering_geo_spatial``).
 - Working travis.
 
 0.17.6

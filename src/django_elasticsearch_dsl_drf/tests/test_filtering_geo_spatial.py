@@ -4,6 +4,7 @@ Test geo-spatial filtering backend.
 
 from __future__ import absolute_import
 
+from time import sleep
 import unittest
 
 from django.core.management import call_command
@@ -33,6 +34,8 @@ __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestFilteringGeoSpatial',
 )
+
+WAIT_FOR_INDEX = 2
 
 
 @pytest.mark.django_db
@@ -79,6 +82,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         )
 
         call_command('search_index', '--rebuild', '-f')
+        sleep(WAIT_FOR_INDEX)
 
         __params = '{distance}{separator}{lat}{separator}{lon}{d_type}'.format(
             distance=_geo_distance,
@@ -152,6 +156,10 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
                 'longitude': 2.3005,
             }
         )
+
+        call_command('search_index', '--rebuild', '-f')
+        sleep(WAIT_FOR_INDEX)
+
         __params = '{distance}{separator}{lat}'.format(
             distance=_geo_distance,
             lat=_geo_origin.latitude,
@@ -209,6 +217,9 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
                 )
             )
 
+        call_command('search_index', '--rebuild', '-f')
+        sleep(WAIT_FOR_INDEX)
+
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), count)
@@ -227,7 +238,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             (15.99, 46.31),
             (26.54, 42.42),
         ]
-        call_command('search_index', '--rebuild', '-f')
+
         return self._test_field_filter_geo_polygon(
             field_name='location__geo_polygon',
             points=valid_points,
@@ -246,7 +257,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             (-6.50, 78.42),
             (-56.42, 82.78),
         ]
-        call_command('search_index', '--rebuild', '-f')
+
         return self._test_field_filter_geo_polygon(
             field_name='location__geo_polygon',
             points=invalid_points,
@@ -265,7 +276,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             (15.99, 46.31),
             (26.54, 42.42),
         ]
-        call_command('search_index', '--rebuild', '-f')
+
         return self._test_field_filter_geo_polygon(
             field_name='location_2__geo_polygon',
             points=valid_points,
@@ -284,7 +295,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             (-6.50, 78.42),
             (-56.42, 82.78),
         ]
-        call_command('search_index', '--rebuild', '-f')
+
         return self._test_field_filter_geo_polygon(
             field_name='location_2__geo_polygon',
             points=invalid_points,
@@ -336,6 +347,9 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
                 )
             )
 
+        call_command('search_index', '--rebuild', '-f')
+        sleep(WAIT_FOR_INDEX)
+
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), count)
@@ -354,7 +368,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             (44.32, 40.51),
             (44.60, 40.40),
         ]
-        call_command('search_index', '--rebuild', '-f')
+
         return self._test_field_filter_geo_bounding_box(
             points=valid_points,
             count=4
@@ -374,7 +388,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             (45.20, 39.93),
             (43.71, 41.29),
         ]
-        call_command('search_index', '--rebuild', '-f')
+
         return self._test_field_filter_geo_bounding_box(
             points=invalid_points,
             count=0

@@ -32,10 +32,15 @@ try:
 except Exception as e:
     version = '0.1'
     project = u'django-elasticsearch-dsl-drf'
-    copyright = u'2017, Artur Barseghyan <artur.barseghyan@gmail.com>'
+    copyright = u'2019, Artur Barseghyan <artur.barseghyan@gmail.com>'
 
 # -- Django configuration ------------------------------------------------------
+
+os.environ["DJANGO_SETTINGS_MODULE"] = "settings.dev"
 import django
+
+django.setup()
+
 from django.conf import settings
 
 if not settings.configured:

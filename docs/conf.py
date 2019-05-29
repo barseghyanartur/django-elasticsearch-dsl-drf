@@ -40,44 +40,6 @@ import django
 
 django.setup()
 
-from django.conf import settings
-
-if not settings.configured:
-    INSTALLED_APPS = list(example_settings.INSTALLED_APPS)
-
-    configure_kwargs = {
-        'DATABASES': example_settings.DATABASES,
-        'INSTALLED_APPS': INSTALLED_APPS,
-        'MEDIA_ROOT': example_settings.MEDIA_ROOT,
-        'MEDIA_URL': example_settings.MEDIA_URL,
-        'MIDDLEWARE_CLASSES': example_settings.MIDDLEWARE_CLASSES,
-        'ROOT_URLCONF': example_settings.ROOT_URLCONF,
-        'SECRET_KEY': example_settings.SECRET_KEY,
-        'SITE_ID': example_settings.SITE_ID,
-        'STATICFILES_DIRS': example_settings.STATICFILES_DIRS,
-        'STATICFILES_FINDERS': example_settings.STATICFILES_FINDERS,
-        'STATIC_URL': example_settings.STATIC_URL,
-        'STATIC_ROOT': example_settings.STATIC_ROOT,
-        'ELASTICSEARCH_DSL': example_settings.ELASTICSEARCH_DSL,
-        'ELASTICSEARCH_INDEX_NAMES':
-            example_settings.ELASTICSEARCH_INDEX_NAMES,
-    }
-
-    if versions.DJANGO_GTE_1_8:
-        configure_kwargs.update({'TEMPLATES':example_settings.TEMPLATES})
-    else:
-        configure_kwargs.update({
-            'TEMPLATE_CONTEXT_PROCESSORS':
-                example_settings.TEMPLATE_CONTEXT_PROCESSORS,
-            'TEMPLATE_DIRS': example_settings.TEMPLATE_DIRS,
-            'TEMPLATE_LOADERS': example_settings.TEMPLATE_LOADERS,
-        })
-
-    settings.configure(**configure_kwargs)
->>>>>>> 814e1a8ea251b3d9a9dbd3012384de6045dcbbf3
-
-django.setup()
-
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.

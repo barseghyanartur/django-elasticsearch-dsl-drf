@@ -67,3 +67,13 @@ How can I sync my database with Elasticsearch indexes.
 
 It's documented `here <https://django-elasticsearch-dsl-drf.readthedocs.io/en/latest/quick_start.html#sample-partial-sync-using-custom-signals>`_.
 
+**Question**
+
+I keep getting ``[FORBIDDEN/12/index read-only / allow delete (api)]`` error
+when  saving models despite having ``blocks={'read_only_allow_delete': None}``,
+in settings.
+
+**Answer**
+
+Once of the possible reasons for the mentioned symptom might be `low disk space
+<https://discuss.elastic.co/t/forbidden-12-index-read-only-allow-delete-api/110282>`_.

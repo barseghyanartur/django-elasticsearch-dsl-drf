@@ -200,6 +200,7 @@ class TestFunctionalSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
 
         cls.created_addresses()
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
     def _test_suggesters(self, test_data, url):

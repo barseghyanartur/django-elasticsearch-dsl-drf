@@ -81,6 +81,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
             }
         }
 
+        cls.sleep()
         # Update the Elasticsearch index
         call_command('search_index', '--rebuild', '-f')
 

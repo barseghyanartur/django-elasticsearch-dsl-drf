@@ -11,6 +11,22 @@ packages accordingly.
 You are advised to use the latest version of `django-elasticsearch-dsl
 <https://pypi.python.org/pypi/django-elasticsearch-dsl>`_.
 
+The following versions have been tested and work well together:
+
++---------------+-------------------+--------------------------+
+| elasticsearch | elasticsearch-dsl | django-elasticsearch-dsl |
++---------------+-------------------+--------------------------+
+| 2.4.1         | 2.2.0             | 0.5.1                    |
++---------------+-------------------+--------------------------+
+| 5.4.0         | 5.3.0             | 0.5.1                    |
++---------------+-------------------+--------------------------+
+| 6.3.0         | 6.1.0             | 0.5.1                    |
++---------------+-------------------+---------------------------
+
+As of 2019-05-30, latest versions of ``elasticsearch`` and ``elasticsearch-dsl``
+do not work well together with ``django-elasticsearch-dsl`` (for which the
+latter is to "blame").
+
 **djangorestframework**
 
 Initial version of this package was written for `djangorestframework

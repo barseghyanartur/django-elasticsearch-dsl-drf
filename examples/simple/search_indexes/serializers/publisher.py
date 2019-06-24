@@ -20,6 +20,7 @@ class PublisherDocumentSerializer(serializers.Serializer):
     country = serializers.CharField(read_only=True)
     website = serializers.CharField(read_only=True)
     location = serializers.SerializerMethodField()
+    sort_value = serializers.SerializerMethodField()
 
     class Meta(object):
         """Meta options."""
@@ -59,6 +60,13 @@ class PublisherDocumentSerializer(serializers.Serializer):
             return obj.location.to_dict()
         except Exception:
             return {}
+
+    def get_sort_value(self, obj):
+        """Represent sort value."""
+        try:
+            return obj.meta.sort._l_[0]
+        except Exception:
+            return None
 
 
 class PublisherDocumentSimpleSerializer(DocumentSerializer):

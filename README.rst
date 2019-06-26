@@ -25,6 +25,9 @@ Elasticsearch documents.
    :target: https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/#License
    :alt: GPL-2.0-only OR LGPL-2.1-or-later
 
+.. image:: https://codecov.io/gh/barseghyanartur/django-elasticsearch-dsl-drf/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/barseghyanartur/django-elasticsearch-dsl-drf
+
 Documentation
 =============
 Documentation is available on `Read the Docs

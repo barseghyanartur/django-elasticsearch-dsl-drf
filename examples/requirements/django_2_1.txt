@@ -7,5 +7,5 @@ django-debug-toolbar>=1.9.1
 django-debug-toolbar-force>=0.1.3
 django-elasticsearch-debug-toolbar>=1.2.0
 django-ormex>=0.2
-djangorestframework==3.8.2
+djangorestframework==3.9.3
 sqlparse>=0.2.2

@@ -34,7 +34,7 @@ from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
 
 from elasticsearch_dsl import DateHistogramFacet, RangeFacet
 
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import action
 
 from ...documents import BookDocument
 from ...serializers import BookDocumentSimpleSerializer
@@ -356,7 +356,7 @@ class BookCustomDocumentViewSet(BookFrontendDocumentViewSet):
             **kwargs
         )
 
-    @list_route()
+    @action(detail=False)
     def suggest(self, request):
         # Used for suggest routes, like
         # http://localhost:8000/search/books-custom/suggest/?title_suggest=A
@@ -366,7 +366,7 @@ class BookCustomDocumentViewSet(BookFrontendDocumentViewSet):
             request
         )
 
-    @list_route()
+    @action(detail=False)
     def functional_suggest(self, request):
         # Used for functional suggest routes, like
         # http://localhost:8000/search/books-custom/functional_suggest/

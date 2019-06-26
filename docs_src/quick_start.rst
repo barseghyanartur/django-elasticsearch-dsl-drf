@@ -994,7 +994,7 @@ Router definition
     router = DefaultRouter()
     books = router.register(r'books',
                             BookDocumentView,
-                            base_name='bookdocument')
+                            basename='bookdocument')
 
 URL patterns
 ~~~~~~~~~~~~

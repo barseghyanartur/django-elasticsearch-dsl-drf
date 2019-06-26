@@ -8,12 +8,6 @@ language: python
 matrix:
   fast_finish: true
   include:
-  - env: TOX_ENV=py27-django18
-    python: 2.7
-  - env: TOX_ENV=py27-django19
-    python: 2.7
-  - env: TOX_ENV=py27-django110
-    python: 2.7
   - env: TOX_ENV=py27-django111
     python: 2.7
   - env: TOX_ENV=py35-django20

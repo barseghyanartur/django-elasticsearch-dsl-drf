@@ -41,6 +41,16 @@ Docker
     docker pull docker.elastic.co/elasticsearch/elasticsearch:6.4.0
     docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:6.4.0
 
+7.x
+~~~
+**7.1.1**
+
+.. code-block:: sh
+
+    docker pull docker.elastic.co/elasticsearch/elasticsearch:7.1.1
+    docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:7.1.1
+
+
 Vagrant
 -------
 2.x

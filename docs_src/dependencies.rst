@@ -11,12 +11,30 @@ packages accordingly.
 You are advised to use the latest version of `django-elasticsearch-dsl
 <https://pypi.python.org/pypi/django-elasticsearch-dsl>`_.
 
-**djangorestframework**
+**Django/ Django REST Framework**
 
 Initial version of this package was written for `djangorestframework
 <https://pypi.python.org/pypi/djangorestframework>`_ 3.6.2.
 
-Tested with the following versions of Django/Django REST Framework:
+Starting from version 0.18 support for Django versions prior 1.11 and
+Django REST Framework versions prior 3.9 has been dropped.
+
+Current compatibility matrix is:
+
++--------+-----------------------+
+| Django | Django REST Framework |
++--------+-----------------------+
+| 1.11   | 3.9.3                 |
++--------+-----------------------+
+| 2.0    | 3.9.3                 |
++--------+-----------------------+
+| 2.1    | 3.9.3                 |
++--------+-----------------------+
+| 2.2    | 3.9.3                 |
++--------+-----------------------+
+
+The version 0.17.7 has been tested with the following versions of
+Django and Django REST Framework:
 
 +--------+-----------------------+
 | Django | Django REST Framework |

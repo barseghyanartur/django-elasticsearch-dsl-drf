@@ -15,7 +15,7 @@ from elasticsearch_dsl.connections import connections
 from elasticsearch_dsl.query import MoreLikeThis
 
 from rest_framework import status
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
@@ -39,7 +39,7 @@ __all__ = (
 class SuggestMixin(object):
     """Suggest mixin."""
 
-    @list_route()
+    @action(detail=False)
     def suggest(self, request):
         """Suggest functionality."""
         queryset = self.filter_queryset(self.get_queryset())
@@ -56,7 +56,7 @@ class SuggestMixin(object):
 class FunctionalSuggestMixin(object):
     """Functional suggest mixin."""
 
-    @list_route()
+    @action(detail=False)
     def functional_suggest(self, request):
         """Functional suggest functionality.
 
@@ -86,7 +86,7 @@ class FunctionalSuggestMixin(object):
 class MoreLikeThisMixin(object):
     """More-like-this mixin."""
 
-    @detail_route()
+    @action(detail=True)
     def more_like_this(self, request, pk=None, id=None):
         """More-like-this functionality detail view.
 

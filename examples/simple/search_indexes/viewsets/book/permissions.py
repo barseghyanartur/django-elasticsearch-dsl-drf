@@ -34,7 +34,7 @@ from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
 
 from elasticsearch_dsl import DateHistogramFacet, RangeFacet
 
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import BasePermission
 from ...documents import BookDocument

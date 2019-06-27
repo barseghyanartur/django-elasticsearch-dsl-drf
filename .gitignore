@@ -12,6 +12,7 @@
 .idea/
 /vagrant/.vagrant/
 .pytest_cache/
+/coverage.xml
 
 node_modules/
 MANIFEST.in~

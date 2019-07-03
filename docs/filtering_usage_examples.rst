@@ -286,9 +286,5 @@ for sample models/views/serializers.
 
 Additionally, see:
 
-- `Basic usage examples
-  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/docs/basic_usage_examples.rst>`_
-- `Advanced usage examples
-  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/docs/advanced_usage_examples.rst>`_
-- `Misc usage examples
-  <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/docs/misc_usage_examples.rst>`_
+- :doc:`Basic usage examples <basic_usage_examples>`
+- :doc:`Advanced usage examples <advanced_usage_examples>`

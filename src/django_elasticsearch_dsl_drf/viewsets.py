@@ -223,9 +223,11 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
                 **{self.document_uid_field: self.kwargs[lookup_url_kwarg]}
             )
 
-            count = queryset.count()
+            hits = queryset.execute().hits.hits
+            count = len(hits)
+
             if count == 1:
-                obj = queryset.execute().hits.hits[0]['_source']
+                obj = hits[0]['_source']
 
                 # May raise a permission denied
                 self.check_object_permissions(self.request, obj)

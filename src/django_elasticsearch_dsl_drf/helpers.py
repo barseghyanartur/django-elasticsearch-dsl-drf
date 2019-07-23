@@ -34,7 +34,7 @@ def get_document_for_model(model):
     """
     documents = registry.get_documents()
     for document in documents:
-        if model == document._doc_type.model:
+        if model == document.Django.model:
             return document
 
 
@@ -49,7 +49,7 @@ def get_index_and_mapping_for_model(model):
     document = get_document_for_model(model)
     if document is not None:
         return (
-            document._doc_type.index,
+            document.Index.name,
             document._doc_type.mapping.properties.name
         )
 

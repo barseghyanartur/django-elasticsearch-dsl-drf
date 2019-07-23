@@ -879,7 +879,7 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 required=False,
                 location='query',
                 schema=self.get_coreschema_field(
-                    document._doc_type._fields().get(field_name)
+                    document._fields.get(field_name)
                 )
             )
             for field_name in filter_fields

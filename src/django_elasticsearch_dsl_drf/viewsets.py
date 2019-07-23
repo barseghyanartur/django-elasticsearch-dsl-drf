@@ -156,9 +156,9 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
         assert self.document is not None
 
         self.client = connections.get_connection(
-            self.document._doc_type.using
+            self.document._get_using()
         )
-        self.index = self.document._doc_type.index
+        self.index = self.document.Index.name
         self.mapping = self.document._doc_type.mapping.properties.name
         self.search = Search(
             using=self.client,
@@ -188,7 +188,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
         # pros for current solution: (1) works out of the box, (2) does not
         # require modifications of current permissions (which would mean we
         # would have to keep up with permission changes of the DRF).
-        queryset.model = self.document._doc_type.model
+        queryset.model = self.document.Django.model
         return queryset
 
     def get_object(self):

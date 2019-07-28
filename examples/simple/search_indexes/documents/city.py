@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from django_elasticsearch_dsl import DocType, Index, fields
+from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
 from books.models import City
@@ -22,7 +22,7 @@ INDEX.settings(
 
 
 @INDEX.doc_type
-class CityDocument(DocType):
+class CityDocument(Document):
     """City Elasticsearch document.
 
     This document has been created purely for testing out complex fields.
@@ -97,10 +97,10 @@ class CityDocument(DocType):
     )
     # integer_dict_indexing
 
-    class Meta(object):
-        """Meta options."""
+    class Django(object):
+        model = City  # The model associate with this Document
 
-        model = City  # The model associate with this DocType
+    class Meta(object):
         parallel_indexing = True
         # queryset_pagination = 50  # This will split the queryset
         #                           # into parts while indexing

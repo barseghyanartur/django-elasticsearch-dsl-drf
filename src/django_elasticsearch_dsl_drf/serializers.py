@@ -10,7 +10,7 @@ from collections import OrderedDict
 
 from django.core.exceptions import ImproperlyConfigured
 
-from django_elasticsearch_dsl import fields, DocType
+from django_elasticsearch_dsl import fields, Document
 
 from rest_framework import serializers
 from rest_framework.fields import empty
@@ -150,9 +150,9 @@ class DocumentSerializer(
                 "Meta class."
             )
 
-        if not issubclass(self.Meta.document, (DocType,)):
+        if not issubclass(self.Meta.document, (Document,)):
             raise ImproperlyConfigured(
-                "You must subclass the serializer 'document' from the DocType"
+                "You must subclass the serializer 'document' from the Document"
                 "class."
             )
 

@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from django_elasticsearch_dsl import DocType, Index, fields
+from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
 
@@ -20,7 +20,7 @@ INDEX.settings(
 
 
 @INDEX.doc_type
-class AuthorDocument(DocType):
+class AuthorDocument(Document):
     """Author Elasticsearch document."""
 
     id = fields.IntegerField(attr='id')
@@ -61,9 +61,9 @@ class AuthorDocument(DocType):
 
     headshot = StringField(attr='headshot_indexing')
 
-    class Meta(object):
-        """Meta options."""
+    class Django(object):
+        model = Author  # The model associate with this Document
 
-        model = Author  # The model associate with this DocType
+    class Meta(object):
         parallel_indexing = True
         # queryset_pagination = 50  # This stands for `chunk_size`

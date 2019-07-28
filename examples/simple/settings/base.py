@@ -2,7 +2,7 @@
 import os
 import sys
 
-from nine import versions
+from django_nine import versions
 
 from .core import PROJECT_DIR, gettext
 

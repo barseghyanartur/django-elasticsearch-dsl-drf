@@ -30,7 +30,7 @@ def get_document_for_model(model):
     :param model: Model to get document index for.
     :type model: Subclass of `django.db.models.Model`.
     :return: Document index for the given model.
-    :rtype: Subclass of `django_elasticsearch_dsl.DocType`.
+    :rtype: Subclass of `django_elasticsearch_dsl.Document`.
     """
     documents = registry.get_documents()
     for document in documents:
@@ -49,7 +49,7 @@ def get_index_and_mapping_for_model(model):
     document = get_document_for_model(model)
     if document is not None:
         return (
-            document.Index.name,
+            document._index._name,
             document._doc_type.mapping.properties.name
         )
 

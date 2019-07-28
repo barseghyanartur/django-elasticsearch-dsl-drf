@@ -158,7 +158,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
         self.client = connections.get_connection(
             self.document._get_using()
         )
-        self.index = self.document.Index.name
+        self.index = self.document._index._name
         self.mapping = self.document._doc_type.mapping.properties.name
         self.search = Search(
             using=self.client,

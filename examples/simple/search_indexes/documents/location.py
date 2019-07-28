@@ -1,5 +1,5 @@
 from django.conf import settings
-from django_elasticsearch_dsl import DocType, Index, fields
+from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
 from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
@@ -26,7 +26,7 @@ html_strip = analyzer(
 
 
 @INDEX.doc_type
-class LocationDocument(DocType):
+class LocationDocument(Document):
     """
     Location document.
     """
@@ -204,10 +204,10 @@ class LocationDocument(DocType):
     revenue = fields.FloatField(attr="revenue")
     coordinates = fields.GeoPointField(attr="location_field_indexing")
 
-    class Meta(object):
-        """Meta options."""
+    class Django(object):
+        model = Location  # The model associate with this Document
 
-        model = Location  # The model associate with this DocType
+    class Meta(object):
         parallel_indexing = True
         queryset_pagination = 50  # This will split the queryset
                                   # into parts while indexing

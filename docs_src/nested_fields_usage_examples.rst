@@ -335,7 +335,7 @@ Document index
 
     from django.conf import settings
 
-    from django_elasticsearch_dsl import DocType, Index, fields
+    from django_elasticsearch_dsl import Document, Index, fields
     from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
     from books.models import Address
@@ -352,7 +352,7 @@ Document index
     )
 
     @INDEX.doc_type
-    class AddressDocument(DocType):
+    class AddressDocument(Document):
         """Address Elasticsearch document."""
 
         # In different parts of the code different fields are used. There are
@@ -484,7 +484,7 @@ Document index
         class Meta(object):
             """Meta options."""
 
-            model = Address  # The model associate with this DocType
+            model = Address  # The model associate with this Document
 
 Sample serializer
 -----------------
@@ -765,7 +765,7 @@ Sample document
 
     from django.conf import settings
 
-    from django_elasticsearch_dsl import DocType, Index, fields
+    from django_elasticsearch_dsl import Document, Index, fields
     from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
     from books.models import City
@@ -782,7 +782,7 @@ Sample document
 
 
     @INDEX.doc_type
-    class CityDocument(DocType):
+    class CityDocument(Document):
         """City Elasticsearch document.
 
         This document has been created purely for testing out complex fields.
@@ -847,7 +847,7 @@ Sample document
         class Meta(object):
             """Meta options."""
 
-            model = City  # The model associate with this DocType
+            model = City  # The model associate with this Document
 
 Sample view
 +++++++++++

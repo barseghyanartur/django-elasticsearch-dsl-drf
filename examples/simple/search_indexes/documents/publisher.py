@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from django_elasticsearch_dsl import DocType, Index, fields
+from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
 
@@ -20,7 +20,7 @@ INDEX.settings(
 
 
 @INDEX.doc_type
-class PublisherDocument(DocType):
+class PublisherDocument(Document):
     """Publisher Elasticsearch document."""
 
     id = fields.IntegerField(attr='id')
@@ -78,10 +78,10 @@ class PublisherDocument(DocType):
     # Location
     location = fields.GeoPointField(attr='location_field_indexing')
 
-    class Meta(object):
-        """Meta options."""
+    class Django(object):
+        model = Publisher  # The model associate with this Document
 
-        model = Publisher  # The model associate with this DocType
+    class Meta(object):
         parallel_indexing = True
         # queryset_pagination = 50  # This will split the queryset
         #                           # into parts while indexing

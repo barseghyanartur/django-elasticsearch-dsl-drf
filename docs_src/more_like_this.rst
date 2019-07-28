@@ -12,7 +12,7 @@ Sample document
 
     from django.conf import settings
 
-    from django_elasticsearch_dsl import DocType, Index, fields
+    from django_elasticsearch_dsl import Document, Index, fields
     from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
     from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
 
@@ -31,7 +31,7 @@ Sample document
 
 
     @INDEX.doc_type
-    class BookDocument(DocType):
+    class BookDocument(Document):
 
         # ID
         id = fields.IntegerField(attr='id')
@@ -69,7 +69,7 @@ Sample document
         class Meta(object):
             """Meta options."""
 
-            model = Book  # The model associate with this DocType
+            model = Book  # The model associate with this Document
 
         def prepare_summary(self, instance):
             """Prepare summary."""

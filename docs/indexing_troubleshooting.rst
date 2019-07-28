@@ -94,7 +94,7 @@ document meta.
 
 .. code-block:: python
 
-    class LocationDocument(DocType):
+    class LocationDocument(Document):
 
         # ...
 
@@ -116,7 +116,7 @@ wish to index them by chunks of 20 thousands at once, specify the
 
 .. code-block:: python
 
-    class LocationDocument(DocType):
+    class LocationDocument(Document):
 
         # ...
 
@@ -153,7 +153,7 @@ settings (as already has been mentioned above).
 
     # ...
 
-    class LocationDocument(DocType):
+    class LocationDocument(Document):
 
         # ...
 

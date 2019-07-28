@@ -77,7 +77,7 @@ Sample document
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl import DocType, Index, fields
+    from django_elasticsearch_dsl import Document, Index, fields
     from elasticsearch_dsl import analyzer
 
     from books.models import Publisher
@@ -92,7 +92,7 @@ Sample document
 
 
     @PUBLISHER_INDEX.doc_type
-    class PublisherDocument(DocType):
+    class PublisherDocument(Document):
         """Publisher Elasticsearch document."""
 
         id = fields.IntegerField(attr='id')
@@ -135,7 +135,7 @@ Sample document
         class Meta(object):
             """Meta options."""
 
-            model = Publisher  # The model associate with this DocType
+            model = Publisher  # The model associate with this Document
 
 
 Sample serializer

@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from django_elasticsearch_dsl import DocType, Index, fields
+from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
 
@@ -23,7 +23,7 @@ INDEX.settings(
 
 
 @INDEX.doc_type
-class AddressDocument(DocType):
+class AddressDocument(Document):
     """Address Elasticsearch document."""
 
     # In different parts of the code different fields are used. There are
@@ -174,10 +174,10 @@ class AddressDocument(DocType):
         attr='location_field_indexing',
     )
 
-    class Meta(object):
-        """Meta options."""
+    class Django(object):
+        model = Address  # The model associate with this Document
 
-        model = Address  # The model associate with this DocType
+    class Meta(object):
         parallel_indexing = True
         # queryset_pagination = 500000  # This will split the queryset
         #                               # into parts while indexing

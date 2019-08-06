@@ -9,7 +9,7 @@ import unittest
 from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
 
-from django_elasticsearch_dsl import DocType, Index, fields
+from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
 import pytest
@@ -43,7 +43,7 @@ class TestSerializers(BaseRestFrameworkTestCase):
         )
 
         @index.doc_type
-        class UserDocument(DocType):
+        class UserDocument(Document):
             """For testing purposes."""
 
             id = fields.IntegerField(attr='id')
@@ -81,10 +81,8 @@ class TestSerializers(BaseRestFrameworkTestCase):
 
             date_joined = fields.DateField()
 
-            class Meta(object):
-                """Meta options."""
-
-                model = User  # The model associate with this DocType
+            class Django(object):
+                model = User  # The model associate with this Document
 
         return UserDocument
 

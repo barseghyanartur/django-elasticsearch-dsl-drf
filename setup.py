@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = '0.18'
+version = '0.19'
 
 DOCS_TRANSFORMATIONS = (
     (
@@ -157,7 +157,7 @@ except:
 
 install_requires = [
     'six>=1.9',
-    'django-nine>=0.1.10',
+    'django-nine>=0.2',
     'django-elasticsearch-dsl>=0.3',
     'elasticsearch-dsl',
     'elasticsearch',

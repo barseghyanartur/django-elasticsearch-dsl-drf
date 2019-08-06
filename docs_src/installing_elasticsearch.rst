@@ -5,6 +5,11 @@ quickly switch between different Elasticsearch versions. Since this packages
 supports 2.x, 5.x and 6.x branches, you could make use of
 the following boxes/containers for development and testing.
 
+.. note::
+
+    As of ``django-elasticsearch-dsl-drf`` 0.19, support for Elasticsearch
+    versions prior 6.x has been dropped.
+
 For all containers/boxes mentioned below, no authentication is required (for
 Elasticsearch).
 

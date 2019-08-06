@@ -234,7 +234,7 @@ Document index
 .. code-block:: python
 
     from django.conf import settings
-    from django_elasticsearch_dsl import DocType, Index, fields
+    from django_elasticsearch_dsl import Document, Index, fields
     from elasticsearch_dsl import analyzer
 
     from books.models import Book
@@ -257,7 +257,7 @@ Document index
 
 
     @INDEX.doc_type
-    class BookDocument(DocType):
+    class BookDocument(Document):
         """Book Elasticsearch document."""
 
         id = fields.IntegerField(attr='id')
@@ -326,7 +326,7 @@ Document index
         class Meta(object):
             """Meta options."""
 
-            model = Book  # The model associate with this DocType
+            model = Book  # The model associate with this Document
 
 Sample serializer
 -----------------
@@ -964,7 +964,7 @@ documents using ``fields.CompletionField``.
 
     from django.conf import settings
 
-    from django_elasticsearch_dsl import DocType, Index, fields
+    from django_elasticsearch_dsl import Document, Index, fields
 
     from books.models import Publisher
 
@@ -979,7 +979,7 @@ documents using ``fields.CompletionField``.
 
 
     @INDEX.doc_type
-    class PublisherDocument(DocType):
+    class PublisherDocument(Document):
         """Publisher Elasticsearch document."""
 
         id = fields.IntegerField(attr='id')
@@ -1028,7 +1028,7 @@ documents using ``fields.CompletionField``.
         class Meta(object):
             """Meta options."""
 
-            model = Publisher  # The model associate with this DocType
+            model = Publisher  # The model associate with this Document
 
 After that the ``name.suggest``, ``city.suggest``, ``state_province.suggest``
 and ``country.suggest`` fields would be available for suggestions feature.
@@ -1324,7 +1324,7 @@ In that case, the document definition should be altered as follows:
 
 .. code-block:: python
 
-    class BookDocument(DocType):
+    class BookDocument(Document):
 
         # ...
 
@@ -1418,7 +1418,7 @@ In that case, the document definition should be altered as follows:
 
 .. code-block:: python
 
-    class AddressDocument(DocType):
+    class AddressDocument(Document):
 
         # ...
 
@@ -1513,7 +1513,7 @@ Document definition
 
     from django.conf import settings
 
-    from django_elasticsearch_dsl import DocType, Index, fields
+    from django_elasticsearch_dsl import Document, Index, fields
 
     from books.models import Book
 
@@ -1527,7 +1527,7 @@ Document definition
     )
 
     @INDEX.doc_type
-    class BookDocument(DocType):
+    class BookDocument(Document):
         """Book Elasticsearch document."""
         # ID
         id = fields.IntegerField(attr='id')
@@ -1608,7 +1608,7 @@ Document definition
         class Meta(object):
             """Meta options."""
 
-            model = Book  # The model associate with this DocType
+            model = Book  # The model associate with this Document
 
 ViewSet definition
 ^^^^^^^^^^^^^^^^^^
@@ -2022,7 +2022,7 @@ The following example indicates Ngram analyzer/filter usage.
 .. code-block:: python
 
     from django.conf import settings
-    from django_elasticsearch_dsl import DocType, Index, fields
+    from django_elasticsearch_dsl import Document, Index, fields
 
     from elasticsearch_dsl import analyzer
     from elasticsearch_dsl.analysis import token_filter
@@ -2052,7 +2052,7 @@ The following example indicates Ngram analyzer/filter usage.
     )
 
     @INDEX.doc_type
-    class BookDocument(DocType):
+    class BookDocument(Document):
         """Book Elasticsearch document."""
 
         # In different parts of the code different fields are used. There are
@@ -2083,7 +2083,7 @@ The following example indicates Ngram analyzer/filter usage.
         class Meta(object):
             """Meta options."""
 
-            model = Book  # The model associate with this DocType
+            model = Book  # The model associate with this Document
 
 ViewSet definition
 ~~~~~~~~~~~~~~~~~~

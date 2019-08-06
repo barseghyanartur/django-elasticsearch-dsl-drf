@@ -393,7 +393,7 @@ Required imports
 .. code-block:: python
 
     from django.conf import settings
-    from django_elasticsearch_dsl import DocType, Index, fields
+    from django_elasticsearch_dsl import Document, Index, fields
     from elasticsearch_dsl import analyzer
 
     from books.models import Book
@@ -488,7 +488,7 @@ Document definition
 .. code-block:: python
 
     @INDEX.doc_type
-    class BookDocument(DocType):
+    class BookDocument(Document):
         """Book Elasticsearch document."""
 
         id = fields.IntegerField(attr='id')
@@ -557,7 +557,7 @@ Document definition
         class Meta(object):
             """Meta options."""
 
-            model = Book  # The model associate with this DocType
+            model = Book  # The model associate with this Document
 
 Syncing Django's database with Elasticsearch indexes
 ----------------------------------------------------
@@ -1081,7 +1081,7 @@ Change your development settings in the following way:
 
 .. code-block:: python
 
-    MIDDLEWARE_CLASSES += (
+    MIDDLEWARE += (
         'debug_toolbar.middleware.DebugToolbarMiddleware',
         'debug_toolbar_force.middleware.ForceDebugToolbarMiddleware',
     )

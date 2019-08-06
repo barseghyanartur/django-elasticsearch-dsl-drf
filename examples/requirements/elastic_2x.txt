@@ -1,2 +1,3 @@
 elasticsearch==2.4.1
 elasticsearch-dsl==2.2.0
+django-elasticsearch-dsl==0.5.1

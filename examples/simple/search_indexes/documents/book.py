@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from django_elasticsearch_dsl import DocType, Index, fields
+from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
 from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
@@ -24,7 +24,7 @@ INDEX.settings(
 
 
 @INDEX.doc_type
-class BookDocument(DocType):
+class BookDocument(Document):
     """Book Elasticsearch document."""
 
     # In different parts of the code different fields are used. There are
@@ -160,10 +160,10 @@ class BookDocument(DocType):
 
     null_field = StringField(attr='null_field_indexing')
 
-    class Meta(object):
-        """Meta options."""
+    class Django(object):
+        model = Book  # The model associate with this Document
 
-        model = Book  # The model associate with this DocType
+    class Meta(object):
         parallel_indexing = True
         # queryset_pagination = 50  # This will split the queryset
         #                           # into parts while indexing
@@ -175,3 +175,4 @@ class BookDocument(DocType):
     def prepare_authors(self, instance):
         """Prepare authors."""
         return [author.name for author in instance.authors.all()]
+

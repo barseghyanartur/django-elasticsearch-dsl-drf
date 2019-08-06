@@ -2,7 +2,7 @@ Dependencies
 ============
 **elasticsearch and elasticsearch-dsl**
 
-Depending on your Elasticsearch version (either 2.x, 5.x or 6.x) you should
+Depending on your ``Elasticsearch`` version (either 2.x, 5.x or 6.x) you should
 use 2.x, 5.x or 6.x versions of the ``elasticsearch`` and ``elasticsearch-dsl``
 packages accordingly.
 
@@ -27,13 +27,17 @@ As of 2019-05-30, latest versions of ``elasticsearch`` and ``elasticsearch-dsl``
 do not work well together with ``django-elasticsearch-dsl`` (for which the
 latter is to "blame").
 
+As of ``django-elasticsearch-dsl-drf`` 0.19, support for Elasticsearch versions
+prior 6.x has been dropped.
+
 **Django/ Django REST Framework**
 
 Initial version of this package was written for `djangorestframework
 <https://pypi.python.org/pypi/djangorestframework>`_ 3.6.2.
 
-Starting from version 0.18 support for Django versions prior 1.11 and
-Django REST Framework versions prior 3.9 has been dropped.
+Starting from ``django-elasticsearch-dsl-drf`` version 0.18, support for
+``Django`` versions prior 1.11 and ``Django REST Framework`` versions prior 3.9
+has been dropped.
 
 Current compatibility matrix is:
 

@@ -15,6 +15,20 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.19
+----
+2019-08-06
+
+.. note::
+
+    Dropping support for Elasticsearch versions prior 6.x. This is unfortunate,
+    but this project depends on the upstream ``django-elasticsearch-dsl`` where
+    as of version 6.4.x the support for older Elasticsearch versions was
+    dropped. Use ``django-elasticsearch-dsl-drf`` version 0.18 if you need
+    to work with 5.x or 2.x.
+
+- Dropping support for Elasticsearch versions prior to 6.x.
+
 0.18
 ----
 2019-06-26

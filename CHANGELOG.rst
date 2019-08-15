@@ -15,6 +15,12 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.20
+----
+2019-08-16
+
+- Adding Elasticsearch 7.x support.
+
 0.19
 ----
 2019-08-06

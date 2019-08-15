@@ -28,6 +28,7 @@ Official Elastic docs:
 
 from rest_framework.filters import BaseFilterBackend
 
+from ...versions import ELASTICSEARCH_LTE_6_0
 from ..mixins import FilterBackendMixin
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering.ids'
@@ -107,12 +108,18 @@ class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         __ids = self.get_ids_values(request, view)
-
         if __ids:
             _ids = [_i for _i in __ids if _i]
+            _qs_kwargs = {'values': _ids}
+            # Prior 7.x ``type`` argument was accepted. Starting from 7.x
+            # it has been deprecated. As long as 6.x is supported, this
+            # should stay.
+            if ELASTICSEARCH_LTE_6_0:
+                _qs_kwargs.update({'type': view.mapping})
+
             queryset = queryset.query(
                 'ids',
-                **{'values': _ids, 'type': view.mapping}
+                **_qs_kwargs
             )
 
         return queryset

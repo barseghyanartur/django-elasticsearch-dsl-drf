@@ -1,1 +1,1 @@
--r elastic_7x.txt
+-r elastic_6x.txt

@@ -9,6 +9,8 @@ from collections import OrderedDict
 
 from django.core import paginator as django_paginator
 
+from elasticsearch_dsl.utils import AttrDict
+
 from rest_framework import pagination
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
@@ -35,7 +37,10 @@ class Page(django_paginator.Page):
 
     def __init__(self, object_list, number, paginator, facets):
         self.facets = facets
-        self.count = object_list.hits.total
+        if isinstance(object_list.hits.total, AttrDict):
+            self.count = object_list.hits.total.value
+        else:
+            self.count = object_list.hits.total
         super(Page, self).__init__(object_list, number, paginator)
 
 
@@ -199,6 +204,8 @@ class PageNumberPagination(pagination.PageNumberPagination):
         return Response(OrderedDict(self.get_paginated_response_context(data)))
 
     def get_count(self, es_response):
+        if isinstance(es_response.hits.total, AttrDict):
+            return es_response.hits.total.value
         return es_response.hits.total
 
 
@@ -263,6 +270,7 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         self.facets = getattr(resp, 'aggregations', None)
 
         self.count = self.get_count(resp)
+
         if self.count > self.limit and self.template is not None:
             self.display_page_controls = True
 
@@ -315,4 +323,6 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         return Response(OrderedDict(self.get_paginated_response_context(data)))
 
     def get_count(self, es_response):
+        if isinstance(es_response.hits.total, AttrDict):
+            return es_response.hits.total.value
         return es_response.hits.total

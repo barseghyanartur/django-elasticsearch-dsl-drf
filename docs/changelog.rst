@@ -17,7 +17,7 @@ are used for versioning (schema follows below):
 
 0.20
 ----
-2019-08-16
+2019-08-17
 
 - Adding Elasticsearch 7.x support.
 

@@ -122,7 +122,7 @@ def more_like_this(obj,
         >>>     ['title', 'description', 'summary']
         >>> )
     """
-    _index, _mapping = get_index_and_mapping_for_model(obj._meta.model)
+    _index, _ = get_index_and_mapping_for_model(obj._meta.model)
     if _index is None:
         return None
 
@@ -151,8 +151,7 @@ def more_like_this(obj,
             fields=fields,
             like={
                 '_id': "{}".format(obj.pk),
-                '_index': "{}".format(_index),
-                '_type': "{}".format(_mapping)
+                '_index': "{}".format(_index)
             },
             **kwargs
         )

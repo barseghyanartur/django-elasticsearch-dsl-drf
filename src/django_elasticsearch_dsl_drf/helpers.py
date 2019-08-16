@@ -11,6 +11,7 @@ from elasticsearch_dsl.query import MoreLikeThis
 
 from six import PY3
 
+from .versions import ELASTICSEARCH_GTE_7_0
 
 __title__ = 'django_elasticsearch_dsl_drf.helpers'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -146,14 +147,17 @@ def more_like_this(obj,
     if max_doc_freq is not None:
         kwargs['max_doc_freq'] = max_doc_freq
 
+    _like_options = {
+        '_id': "{}".format(obj.pk),
+        '_index': "{}".format(_index),
+    }
+    if not ELASTICSEARCH_GTE_7_0:
+        _like_options.update({'_type': "{}".format(_mapping)})
+
     return _search.query(
         MoreLikeThis(
             fields=fields,
-            like={
-                '_id': "{}".format(obj.pk),
-                '_index': "{}".format(_index),
-                '_type': "{}".format(_mapping)
-            },
+            like=_like_options,
             **kwargs
         )
     )

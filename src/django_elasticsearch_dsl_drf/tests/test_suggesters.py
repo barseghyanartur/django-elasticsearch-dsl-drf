@@ -17,7 +17,11 @@ from rest_framework import status
 
 import factories
 
-from ..versions import ELASTICSEARCH_GTE_5_0, ELASTICSEARCH_GTE_6_0
+from ..versions import (
+    ELASTICSEARCH_GTE_5_0,
+    ELASTICSEARCH_GTE_6_0,
+    ELASTICSEARCH_GTE_7_0,
+)
 from .base import BaseRestFrameworkTestCase
 from .data_mixins import AddressesMixin
 
@@ -342,8 +346,11 @@ class TestSuggestersEmptyIndex(BaseRestFrameworkTestCase, AddressesMixin):
             {}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        if ELASTICSEARCH_GTE_6_0:
+        if ELASTICSEARCH_GTE_7_0:
+            self.assertTrue(
+                bool(response.data.get('name_suggest__completion'))
+            )
+        elif ELASTICSEARCH_GTE_6_0:
             self.assertFalse(bool(response.data))
         else:
             self.assertFalse(

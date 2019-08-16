@@ -5,6 +5,7 @@ __all__ = (
     'html_strip',
 )
 
+# The ``standard`` filter has been removed in Elasticsearch 7.x.
 if ELASTICSEARCH_GTE_7_0:
     _filters = ["lowercase", "stop", "snowball"]
 else:

@@ -2,9 +2,21 @@ Dependencies
 ============
 **elasticsearch and elasticsearch-dsl**
 
-Depending on your ``Elasticsearch`` version (either 2.x, 5.x or 6.x) you should
-use 2.x, 5.x or 6.x versions of the ``elasticsearch`` and ``elasticsearch-dsl``
-packages accordingly.
+Depending on your ``Elasticsearch`` version (either 2.x, 5.x, 6.x or 7.x) you
+should use 2.x, 5.x, 6.x or 7.x versions of the ``elasticsearch`` and
+``elasticsearch-dsl`` packages accordingly.
+
+Current compatibility matrix is:
+
++--------------+---------------+
+| This package | Elasticsearch |
++--------------+---------------+
+| 0.20         | 6.x, 7.x      |
++--------------+---------------+
+| 0.19         | 6.x           |
++--------------+---------------+
+| 0.18         | 2.x, 5.x, 6.x |
++--------------+---------------+
 
 **django-elasticsearch-dsl**
 

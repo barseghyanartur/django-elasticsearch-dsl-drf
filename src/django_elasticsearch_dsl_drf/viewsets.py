@@ -22,6 +22,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .pagination import PageNumberPagination
 from .utils import DictionaryProxy
+from .versions import ELASTICSEARCH_GTE_7_0
 
 __title__ = 'django_elasticsearch_dsl_drf.viewsets'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -231,8 +232,12 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
 
                 # May raise a permission denied
                 self.check_object_permissions(self.request, obj)
+                if ELASTICSEARCH_GTE_7_0:
+                    dictionary_proxy = DictionaryProxy(obj.to_dict())
+                else:
+                    dictionary_proxy = DictionaryProxy(obj)
 
-                return DictionaryProxy(obj)
+                return dictionary_proxy
 
             elif count > 1:
                 raise Http404(

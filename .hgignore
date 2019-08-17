@@ -15,6 +15,7 @@ syntax: regexp
 ^\.pytest_cache/
 node_modules/
 yarn-error\.log
+^coverage\.xml
 
 ^MANIFEST\.in~
 ^tmp/

@@ -23,6 +23,22 @@ Current compatibility matrix is:
 You are advised to use the latest version of `django-elasticsearch-dsl
 <https://pypi.python.org/pypi/django-elasticsearch-dsl>`_.
 
+The following versions have been tested and work well together:
+
++---------------+-------------------+--------------------------+
+| elasticsearch | elasticsearch-dsl | django-elasticsearch-dsl |
++---------------+-------------------+--------------------------+
+| 2.4.1         | 2.2.0             | 0.5.1                    |
++---------------+-------------------+--------------------------+
+| 5.4.0         | 5.3.0             | 0.5.1                    |
++---------------+-------------------+--------------------------+
+| 6.3.0         | 6.1.0             | 0.5.1                    |
++---------------+-------------------+---------------------------
+| 6.3.0         | 6.4.0             | 6.4.2                    |
++---------------+-------------------+---------------------------
+| 7.0.2         | 7.0.0             | 7.0.0                    |
++---------------+-------------------+---------------------------
+
 As of ``django-elasticsearch-dsl-drf`` 0.19, support for Elasticsearch versions
 prior 6.x has been dropped.
 

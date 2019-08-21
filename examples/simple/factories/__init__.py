@@ -9,3 +9,4 @@ from .books_location import *
 from .books_order import *
 from .books_orderline import *
 from .books_publisher import *
+from .books_tag import *

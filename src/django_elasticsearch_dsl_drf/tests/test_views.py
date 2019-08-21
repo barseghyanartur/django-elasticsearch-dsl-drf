@@ -42,6 +42,7 @@ class TestViews(BaseRestFrameworkTestCase):
     def setUpClass(cls):
         """Set up class."""
         cls.books = factories.BookWithoutTagsAndOrdersFactory.create_batch(20)
+        cls.tags = factories.TagGenreFactory.create_batch(20)
 
         call_command('search_index', '--rebuild', '-f')
 
@@ -69,6 +70,16 @@ class TestViews(BaseRestFrameworkTestCase):
                 response.data[__field],
                 getattr(__obj, __field)
             )
+
+    def test_detail_view_with_custom_lookup(self):
+        """Test detail view with a custom lookup field."""
+        __obj = self.tags[0]
+        url = reverse('tagdocument-detail', kwargs={'title': __obj.title})
+        data = {}
+
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['id'], __obj.title)
 
 
 if __name__ == '__main__':

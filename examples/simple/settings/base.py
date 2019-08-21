@@ -279,6 +279,7 @@ ELASTICSEARCH_INDEX_NAMES = {
     'search_indexes.documents.address': 'address',
     'search_indexes.documents.author': 'author',
     'search_indexes.documents.book': 'book',
+    'search_indexes.documents.tag': 'tag',
     'search_indexes.documents.city': 'city',
     'search_indexes.documents.publisher': 'publisher',
     'search_indexes.documents.location': 'location',

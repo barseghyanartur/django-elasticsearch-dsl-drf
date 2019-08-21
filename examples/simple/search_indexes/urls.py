@@ -26,6 +26,7 @@ from .viewsets import (
     LocationDocumentViewSet,
     PublisherDocumentViewSet,
     FrontAddressDocumentViewSet,
+    TagDocumentViewSet,
 )
 
 __all__ = ('urlpatterns',)
@@ -201,6 +202,16 @@ router.register(
     r'publishers',
     PublisherDocumentViewSet,
     basename='publisherdocument'
+)
+
+# *********************************************************
+# ************************* Tags **************************
+# *********************************************************
+
+router.register(
+    r'tags',
+    TagDocumentViewSet,
+    basename='tagdocument'
 )
 
 # **********************************************************

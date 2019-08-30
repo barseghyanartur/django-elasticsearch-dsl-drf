@@ -72,6 +72,9 @@ Main features and highlights
 - :doc:`Global aggregations support <global_aggregations>`.
 - :doc:`Source filter backend <source_backend>`.
 
+Do you need a similar tool for GraphQL? Check `graphene-elastic
+<https://github.com/barseghyanartur/graphene-elastic>`__.
+
 Demo
 ====
 A frontend demo (React based) is available. See the `dedicated docs

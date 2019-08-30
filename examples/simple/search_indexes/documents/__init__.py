@@ -4,6 +4,7 @@ from .book import BookDocument
 from .city import CityDocument
 from .publisher import PublisherDocument
 from .location import LocationDocument
+from .tag import TagDocument
 
 __all___ = (
     'AddressDocument',
@@ -11,4 +12,5 @@ __all___ = (
     'BookDocument',
     'CityDocument',
     'PublisherDocument',
+    'TagDocument',
 )

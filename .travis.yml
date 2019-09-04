@@ -36,3 +36,7 @@ before_script:
   - sleep 10
 
 script: travis_retry tox -e $TOX_ENV
+
+after_success:
+  - pip install coveralls
+  - coveralls

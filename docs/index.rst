@@ -17,6 +17,10 @@ Elasticsearch documents.
    :target: https://pypi.python.org/pypi/django-elasticsearch-dsl-drf
    :alt: PyPI Version
 
+.. image:: https://img.shields.io/pypi/pyversions/django-elasticsearch-dsl-drf.svg
+    :target: https://pypi.python.org/pypi/django-elasticsearch-dsl-drf/
+    :alt: Supported Python versions
+
 .. image:: https://img.shields.io/travis/barseghyanartur/django-elasticsearch-dsl-drf/master.svg
    :target: http://travis-ci.org/barseghyanartur/django-elasticsearch-dsl-drf
    :alt: Build Status
@@ -27,6 +31,7 @@ Elasticsearch documents.
 
 .. image:: https://coveralls.io/repos/github/barseghyanartur/django-elasticsearch-dsl-drf/badge.svg?branch=master
     :target: https://coveralls.io/github/barseghyanartur/django-elasticsearch-dsl-drf?branch=master
+    :alt: Coverage
 
 Documentation
 =============

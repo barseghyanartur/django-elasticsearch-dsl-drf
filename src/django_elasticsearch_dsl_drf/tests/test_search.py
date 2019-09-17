@@ -4,6 +4,7 @@ Test search backend.
 
 from __future__ import absolute_import
 
+from time import sleep
 import unittest
 
 from django.core.management import call_command
@@ -37,6 +38,7 @@ __copyright__ = '2017-2019 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestSearch',
+    'TestSearchCustomCases',
 )
 
 
@@ -350,6 +352,80 @@ class TestSearch(BaseRestFrameworkTestCase):
         fields = [f.required for f in fields]
         for field in fields:
             self.assertFalse(field)
+
+
+@pytest.mark.django_db
+class TestSearchCustomCases(BaseRestFrameworkTestCase):
+    """Test search."""
+
+    pytestmark = pytest.mark.django_db
+
+    def _reindex(self):
+        call_command('search_index', '--rebuild', '-f')
+
+    def _test_search_any_word_in_indexed_fields(self,
+                                                search_term,
+                                                url,
+                                                expected_num_results,
+                                                title_match=None,
+                                                create_factory=False):
+        if create_factory:
+            book = factories.BookWithUniqueTitleFactory(
+                title='This is a short indexed description'
+            )
+            other_books = factories.BookWithUniqueTitleFactory.create_batch(100)
+            self._reindex()
+
+        self.authenticate()
+        filtered_url = url + '?search={}'.format(search_term)
+        filtered_response = self.client.get(filtered_url)
+        self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(filtered_response.data['results']),
+            expected_num_results
+        )
+        if title_match:
+            self.assertEqual(
+                filtered_response.data['results'][0]['title'],
+                title_match
+            )
+
+    def test_search_any_word_in_indexed_fields(self):
+        """Test search any word in indexed fields.
+
+        :return:
+        """
+        # Create some data to test
+        book = factories.BookWithUniqueTitleFactory(
+            title='This is a short indexed description'
+        )
+        factories.BookWithUniqueTitleFactory.create_batch(100)
+        self._reindex()
+        sleep(3)  # Wait until indexed
+        url = reverse('bookdocument-list', kwargs={})
+
+        self._test_search_any_word_in_indexed_fields(
+            search_term='short indexed description',
+            url=url,
+            expected_num_results=1,
+            title_match=book.title,
+            create_factory=False
+        )
+        self._test_search_any_word_in_indexed_fields(
+            search_term='a description',
+            url=url,
+            expected_num_results=1,
+            title_match=book.title,
+            create_factory=False
+        )
+
+        self._test_search_any_word_in_indexed_fields(
+            search_term='short description',
+            url=url,
+            expected_num_results=1,
+            title_match=book.title,
+            create_factory=False
+        )
 
 
 if __name__ == '__main__':

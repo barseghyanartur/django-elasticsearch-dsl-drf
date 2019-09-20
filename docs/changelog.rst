@@ -17,6 +17,12 @@ are used for versioning (schema follows below):
 
 0.20.2
 ------
+2019-09-20
+
+- Testing the auxiliary versions module.
+
+0.20.2
+------
 2019-08-30
 
 - Minor improvements in test coverage.

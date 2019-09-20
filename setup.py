@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = '0.20.2'
+version = '0.20.3'
 
 DOCS_TRANSFORMATIONS = (
     (
@@ -173,6 +173,7 @@ tests_require = [
     'pytest-django',
     'pytest-cov',
     'tox',
+    'mock',
 ]
 
 setup(

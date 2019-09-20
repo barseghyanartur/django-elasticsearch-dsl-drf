@@ -370,10 +370,10 @@ class TestSearchCustomCases(BaseRestFrameworkTestCase):
                                                 title_match=None,
                                                 create_factory=False):
         if create_factory:
-            book = factories.BookWithUniqueTitleFactory(
+            factories.BookWithUniqueTitleFactory(
                 title='This is a short indexed description'
             )
-            other_books = factories.BookWithUniqueTitleFactory.create_batch(100)
+            factories.BookWithUniqueTitleFactory.create_batch(100)
             self._reindex()
 
         self.authenticate()

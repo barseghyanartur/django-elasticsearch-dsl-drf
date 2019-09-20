@@ -5,16 +5,32 @@ including (LTE and GTE).
 
 from distutils.version import LooseVersion
 
-from .compat import get_elasticsearch_version
-
 __title__ = 'django_elasticsearch_dsl_drf.versions'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2019 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = [
+    'get_elasticsearch_version',
     'LOOSE_ELASTICSEARCH_VERSION',
     'LOOSE_ELASTICSEARCH_MINOR_VERSION',
 ]
+
+
+def get_elasticsearch_version(default=(2, 0, 0)):
+    """Get Elasticsearch version.
+
+    :param default: Default value. Mainly added for building the docs
+        when Elasticsearch is not running.
+    :type default: tuple
+    :return:
+    :rtype: list
+    """
+    try:
+        from elasticsearch_dsl import __version__
+        return __version__
+    except ImportError:
+        return default
+
 
 LOOSE_ELASTICSEARCH_VERSION = LooseVersion(
     '.'.join([str(__n) for __n in get_elasticsearch_version()])
@@ -36,8 +52,14 @@ LOOSE_VERSIONS = (
     '6.0',
     '6.1',
     '6.2',
+    '6.3',
     '7.0',
+    '7.1',
+    '7.2',
+    '7.3',
+    '7.4',
     '8.0',
+    '9.0',
 )
 
 for __v in LOOSE_VERSIONS:
@@ -92,4 +114,3 @@ except NameError:
     pass
 
 del LooseVersion
-del get_elasticsearch_version

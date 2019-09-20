@@ -7,6 +7,9 @@ Elastic 5.x as soon as possible.
 
 from django_elasticsearch_dsl import fields
 
+# For compatibility reasons
+from .versions import get_elasticsearch_version
+
 try:
     import coreapi
 except ImportError:
@@ -30,7 +33,6 @@ __all__ = (
     'coreapi',
     'coreschema',
     # 'get_count',
-    'get_elasticsearch_version',
     'KeywordField',
     'StringField',
 )
@@ -47,22 +49,6 @@ __all__ = (
 #         return self.get_count(queryset)
 #     else:
 #         return _get_count(queryset)
-
-
-def get_elasticsearch_version(default=(2, 0, 0)):
-    """Get Elasticsearch version.
-
-    :param default: Default value. Mainly added for building the docs
-        when Elasticsearch is not running.
-    :type default: tuple
-    :return:
-    :rtype: list
-    """
-    try:
-        from elasticsearch_dsl import __version__
-        return __version__
-    except ImportError:
-        return default
 
 
 def keyword_field(**kwargs):

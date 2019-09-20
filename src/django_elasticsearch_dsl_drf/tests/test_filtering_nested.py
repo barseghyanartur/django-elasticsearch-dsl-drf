@@ -42,6 +42,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
     @classmethod
     def setUpClass(cls):
         """Set up."""
+        super(TestFilteringNested, cls).setUpClass()
         # Testing nested objects: Addresses, cities and countries, continents
         cls.created_addresses()
 

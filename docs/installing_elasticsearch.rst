@@ -15,20 +15,11 @@ Elasticsearch).
 
 Docker
 ------
-2.x
-~~~
+Using ``docker-compose`` (persistent):
 
 .. code-block:: sh
 
-    docker pull elasticsearch:2.4.6
-    docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" elasticsearch:2.4.6
-
-5.x
-~~~
-.. code-block:: sh
-
-    docker pull docker.elastic.co/elasticsearch/elasticsearch:5.5.3
-    docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:5.5.3
+    docker-compose up elasticsearch
 
 6.x
 ~~~
@@ -54,12 +45,3 @@ Docker
 
     docker pull docker.elastic.co/elasticsearch/elasticsearch:7.3.0
     docker run -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:7.3.0
-
-Vagrant
--------
-2.x
-~~~
-
-.. code-block:: sh
-
-    ./scripts/vagrant_start.sh

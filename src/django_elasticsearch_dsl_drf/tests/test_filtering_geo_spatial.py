@@ -47,6 +47,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
     @classmethod
     def setUpClass(cls):
         """Set up."""
+        super(TestFilteringGeoSpatial, cls).setUpClass()
         cls.base_publisher_url = reverse('publisherdocument-list', kwargs={})
 
     def _test_field_filter_geo_distance(self, distance_type=None):

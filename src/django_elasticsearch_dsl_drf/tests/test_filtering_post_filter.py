@@ -51,6 +51,7 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
     @classmethod
     def setUpClass(cls):
         """Set up."""
+        super(TestFilteringPostFilter, cls).setUpClass()
         # Testing simple documents: Publisher index.
         cls.create_books()
 

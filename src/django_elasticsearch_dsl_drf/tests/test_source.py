@@ -39,7 +39,9 @@ class TestSource(BaseRestFrameworkTestCase):
     pytestmark = pytest.mark.django_db
 
     @classmethod
-    def setUp(cls):
+    def setUpClass(cls):
+        super(TestSource, cls).setUpClass()
+
         cls.books_count = 10
         cls.books = factories.BookFactory.create_batch(
             cls.books_count,

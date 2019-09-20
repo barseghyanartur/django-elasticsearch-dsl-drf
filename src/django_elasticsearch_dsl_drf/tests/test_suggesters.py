@@ -50,6 +50,8 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
     @classmethod
     def setUpClass(cls):
         """Set up class."""
+        super(TestSuggesters, cls).setUpClass()
+
         cls.publishers = []
         cls.publishers.append(
             factories.PublisherFactory(

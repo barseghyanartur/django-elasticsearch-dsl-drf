@@ -45,6 +45,7 @@ class TestFilteringGlobalAggregations(BaseRestFrameworkTestCase,
     @classmethod
     def setUpClass(cls):
         """Set up."""
+        super(TestFilteringGlobalAggregations, cls).setUpClass()
         # Testing simple documents: Publisher index.
         cls.create_books()
 

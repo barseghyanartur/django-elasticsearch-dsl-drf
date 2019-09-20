@@ -41,6 +41,7 @@ class TestPagination(BaseRestFrameworkTestCase):
     @classmethod
     def setUpClass(cls):
         """Set up class."""
+        super(TestPagination, cls).setUpClass()
         cls.publishers = factories.PublisherFactory.create_batch(40)
         cls.books = factories.BookFactory.create_batch(40)
 

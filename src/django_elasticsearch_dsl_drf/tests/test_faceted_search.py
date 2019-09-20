@@ -40,7 +40,8 @@ class TestFacetedSearch(BaseRestFrameworkTestCase):
     pytestmark = pytest.mark.django_db
 
     @classmethod
-    def setUp(cls):
+    def setUpClass(cls):
+        super(TestFacetedSearch, cls).setUpClass()
         cls.published_count = 11
         cls.published = factories.BookFactory.create_batch(
             cls.published_count,

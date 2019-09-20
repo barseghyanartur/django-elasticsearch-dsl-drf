@@ -67,6 +67,8 @@ class TestOrdering(BaseRestFrameworkTestCase):
     @classmethod
     def setUpClass(cls):
         """Set up class."""
+        super(TestOrdering, cls).setUpClass()
+
         cls.address_in_sydney = factories.AddressFactory.create(
             **{
                 'city__name': 'Sydney',

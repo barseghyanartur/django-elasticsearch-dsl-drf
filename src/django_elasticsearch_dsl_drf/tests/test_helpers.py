@@ -34,6 +34,7 @@ class TestHelpers(BaseTestCase):
 
     @classmethod
     def setUpClass(cls):
+        super(TestHelpers, cls).setUpClass()
         cls.books_count = 30
         cls.books = []
         cls.books.append(

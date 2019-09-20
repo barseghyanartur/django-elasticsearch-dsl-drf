@@ -41,6 +41,8 @@ class TestViews(BaseRestFrameworkTestCase):
     @classmethod
     def setUpClass(cls):
         """Set up class."""
+        super(TestViews, cls).setUpClass()
+
         cls.books = factories.BookWithoutTagsAndOrdersFactory.create_batch(20)
         cls.tags = factories.TagGenreFactory.create_batch(20)
 

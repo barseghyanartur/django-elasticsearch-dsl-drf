@@ -49,7 +49,9 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
     pytestmark = pytest.mark.django_db
 
     @classmethod
-    def setUp(cls):
+    def setUpClass(cls):
+        super(TestSimpleQueryStringSearch, cls).setUpClass()
+
         # Book factories with unique title
         cls.special_count = 10
         cls.special = factories.BookWithUniqueTitleFactory.create_batch(

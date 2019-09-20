@@ -45,6 +45,8 @@ class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
     @classmethod
     def setUpClass(cls):
         """Set up."""
+        super(TestOrderingGeoSpatial, cls).setUpClass()
+
         cls.geo_origin = factories.PublisherFactory.create(
             **{
                 'latitude': 48.8549,

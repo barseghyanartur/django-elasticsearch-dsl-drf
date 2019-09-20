@@ -45,6 +45,8 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
     @classmethod
     def setUpClass(cls):
         """Set up class."""
+        super(TestMoreLikeThis, cls).setUpClass()
+
         cls.lorem_books = factories.BookFactory.create_batch(200)
 
         cls.books = []

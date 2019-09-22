@@ -19,6 +19,7 @@ are used for versioning (schema follows below):
 ------
 2019-09-20 (not yet released)
 
+- Minor fixes.
 - Test optimisations.
 
 0.20.3

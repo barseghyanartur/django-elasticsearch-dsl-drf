@@ -1,7 +1,7 @@
 """
 Faceted search backend.
 """
-
+import copy
 from elasticsearch_dsl import TermsFacet
 from elasticsearch_dsl.query import Q
 
@@ -97,7 +97,7 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
         :return: Faceted search fields options.
         :rtype: dict
         """
-        faceted_search_fields = view.faceted_search_fields
+        faceted_search_fields = copy.deepcopy(view.faceted_search_fields)
 
         for field, options in faceted_search_fields.items():
             if options is None or isinstance(options, string_types):

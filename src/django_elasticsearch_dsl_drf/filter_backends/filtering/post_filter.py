@@ -99,6 +99,10 @@ class PostFilterFilteringFilterBackend(FilteringFilterBackend):
         :param kwargs:
         :return:
         """
+        if args is None:
+            args = []
+        if kwargs is None:
+            kwargs = {}
         return queryset.post_filter(*args, **kwargs)
 
     @classmethod
@@ -111,6 +115,10 @@ class PostFilterFilteringFilterBackend(FilteringFilterBackend):
         :param kwargs:
         :return:
         """
+        if args is None:
+            args = []
+        if kwargs is None:
+            kwargs = {}
         return queryset.post_filter(*args, **kwargs)
 
     def get_coreschema_field(self, field):

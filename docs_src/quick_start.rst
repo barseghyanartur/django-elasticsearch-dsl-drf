@@ -554,8 +554,8 @@ Document definition
             multi=True
         )
 
-        class Meta(object):
-            """Meta options."""
+        class Django(object):
+            """Inner nested class Django."""
 
             model = Book  # The model associate with this Document
 

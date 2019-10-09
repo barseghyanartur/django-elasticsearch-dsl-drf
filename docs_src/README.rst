@@ -1,3 +1,0 @@
-Docs sources
-============
-Docs sources.

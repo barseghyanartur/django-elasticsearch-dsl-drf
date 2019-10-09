@@ -222,7 +222,12 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                 self.assertEqual(
                     len(_unique_options),
                     len(_expected_results),
-                    (_url, _test_case, _expected_results)
+                    (
+                        _url,
+                        _test_case,
+                        _expected_results,
+                        _unique_options
+                    )
                 )
 
     def test_suggesters_completion(self):
@@ -523,7 +528,12 @@ class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                 self.assertEqual(
                     len(_unique_options),
                     len(_test_data['expected_results']),
-                    (_url, _test_case, _test_data['expected_results'])
+                    (
+                        _url,
+                        _test_case,
+                        _test_data['expected_results'],
+                        _unique_options
+                    )
                 )
 
     def test_suggesters_completion_context(self):

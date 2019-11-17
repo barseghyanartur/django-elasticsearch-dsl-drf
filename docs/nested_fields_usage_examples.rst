@@ -1026,7 +1026,6 @@ Suggest completion for field ``country``.
 
     http://127.0.0.1:8000/search/addresses/suggest/?country_suggest__completion=Ar
 
-
 Suggest completion for field ``city``.
 
 .. code-block:: text

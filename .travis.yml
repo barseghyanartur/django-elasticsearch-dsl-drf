@@ -51,10 +51,10 @@ before_install:
   - echo "deb $ES_APT_URL stable main" | sudo tee -a /etc/apt/sources.list.d/elk.list
   - sudo apt-get remove --purge elasticsearch -y
   - sudo apt-get update && sudo apt-get install elasticsearch -y
-  - 'sudo echo "xpack.security.enabled: false" > /etc/elasticsearch/elasticsearch.yml'
-  - 'sudo echo "http.host: 0.0.0.0" >> /etc/elasticsearch/elasticsearch.yml'
-  - 'sudo echo "transport.host: 127.0.0.1" >> /etc/elasticsearch/elasticsearch.yml'
-  - 'sudo echo "discovery.type: single-node" >> /etc/elasticsearch/elasticsearch.yml'
+  - "sudo echo 'xpack.security.enabled: false' > /etc/elasticsearch/elasticsearch.yml"
+  - "sudo echo 'http.host: 0.0.0.0' >> /etc/elasticsearch/elasticsearch.yml"
+  - "sudo echo 'transport.host: 127.0.0.1' >> /etc/elasticsearch/elasticsearch.yml"
+  - "sudo echo discovery.type: single-node' >> /etc/elasticsearch/elasticsearch.yml"
   - sudo -i service elasticsearch restart
 
 install: pip install -r examples/requirements/test.txt

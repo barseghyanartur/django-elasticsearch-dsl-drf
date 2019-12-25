@@ -1,4 +1,4 @@
-FROM node:latest
+FROM docker.io/node:8-alpine3.9
 
 RUN apt-get update
 RUN apt-get install -y mc

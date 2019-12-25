@@ -1,4 +1,4 @@
-FROM python:3.6.7-slim-jessie
+FROM docker.io/python:3.6.7-slim-jessie
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update

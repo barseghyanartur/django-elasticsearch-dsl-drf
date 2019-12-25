@@ -46,8 +46,8 @@ Make sure to read `FAQ <https://github.com/barseghyanartur/django-elasticsearch-
 
 Prerequisites
 =============
-- Django 1.11, 2.0, 2.1 and 2.2.
-- Python 2.7, 3.5, 3.6, 3.7.
+- Django 1.11, 2.0, 2.1, 2.2 and 3.0.
+- Python 2.7, 3.5, 3.6, 3.7, 3.8.
 - Elasticsearch 6.x, 7.x. For older versions use
   ``django-elasticsearch-dsl-drf`` version 0.18.
 
@@ -162,7 +162,7 @@ To test against specific environment, type:
 
 .. code-block:: sh
 
-    tox -e py37-django21
+    tox -e py38-django30
 
 To test just your working environment type:
 

@@ -2,17 +2,13 @@
 
 from __future__ import unicode_literals
 
-from django.core.files.base import File
-
 from factory import Faker as OriginalFaker
 
 from faker import Faker as FakerFaker
 from faker.providers import BaseProvider
 
-from .files import get_temporary_file
-
 __all__ = (
-    'DjangoFileProvider',
+    'DjangoUserProvider',
     'EnGbFaker',
     'Faker',
     'NlNlFaker',
@@ -34,36 +30,58 @@ class EnGbFaker(OriginalFaker):
     _DEFAULT_LOCALE = 'en_GB'
 
 
-class DjangoFileProvider(BaseProvider):
-    """Django file provider."""
+class DjangoUserProvider(BaseProvider):
+    """Django user provider."""
 
     @classmethod
-    def django_file(cls, extension=None):
-        """Generates a random file.
+    def first_name_django(cls, max_length=30):
+        """Generates first name compatible with django.
 
         Example:
 
         >>> from factory import DjangoModelFactory
         >>>
-        >>> class ProductFactory(DjangoModelFactory):
-        >>>     "Product factory."
+        >>> class UserFactory(DjangoModelFactory):
+        >>>     "User factory."
         >>>
         >>>     # ...
         >>>
-        >>>     image_file = Faker('django_file', extension='image')
-        >>>     video_file = Faker('django_file', extension='video')
-        >>>     text_file = Faker('django_file', extension='text')
+        >>>     image_file = Faker('first_name_django')
         >>>
         >>>     # ...
 
-        :param extension: File extension.
-        :type extension: str
-        :return: File object.
+        :param max_length: Max length.
+        :type max_length: int
+        :return: str.
         """
 
         fake = FakerFaker()
-        django_file = get_temporary_file(fake.file_name(extension=extension))
-        return File(django_file)
+        return fake.first_name()[:max_length]
+
+    @classmethod
+    def last_name_django(cls, max_length=30):
+        """Generates last name compatible with django.
+
+        Example:
+
+        >>> from factory import DjangoModelFactory
+        >>>
+        >>> class UserFactory(DjangoModelFactory):
+        >>>     "User factory."
+        >>>
+        >>>     # ...
+        >>>
+        >>>     image_file = Faker('last_name_django')
+        >>>
+        >>>     # ...
+
+        :param max_length: Max length.
+        :type max_length: int
+        :return: str.
+        """
+
+        fake = FakerFaker()
+        return fake.last_name()[:max_length]
 
 
-Faker.add_provider(DjangoFileProvider)
+Faker.add_provider(DjangoUserProvider)

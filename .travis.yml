@@ -41,8 +41,21 @@ matrix:
   - env: TOX_ENV=py38-django30
     python: 3.8
 
+env:
+  global:
+    - ES_APT_URL=https://artifacts.elastic.co/packages/7.x/apt
+
 before_install:
-  - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.5.4.deb && sudo dpkg -i --force-confnew elasticsearch-6.5.4.deb && sudo service elasticsearch restart
+#  - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.5.4.deb && sudo dpkg -i --force-confnew elasticsearch-6.5.4.deb && sudo service elasticsearch restart
+  - wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+  - echo "deb $ES_APT_URL stable main" | sudo tee -a /etc/apt/sources.list.d/elk.list
+  - sudo apt-get remove --purge elasticsearch -y
+  - sudo apt-get update && sudo apt-get install elasticsearch -y
+  - 'sudo echo "xpack.security.enabled: false" > /etc/elasticsearch/elasticsearch.yml'
+  - 'sudo echo "http.host: 0.0.0.0" >> /etc/elasticsearch/elasticsearch.yml'
+  - 'sudo echo "transport.host: 127.0.0.1" >> /etc/elasticsearch/elasticsearch.yml'
+  - 'sudo echo "discovery.type: single-node" >> /etc/elasticsearch/elasticsearch.yml'
+  - sudo -i service elasticsearch restart
 
 install: pip install -r examples/requirements/test.txt
 

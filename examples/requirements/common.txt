@@ -1,4 +1,4 @@
--r elastic.txt
+#-r elastic.txt
 
 python-memcached==1.58
 pytz

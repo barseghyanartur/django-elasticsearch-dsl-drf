@@ -5,6 +5,12 @@ services:
 
 language: python
 
+# Almost full matrix is presented here, except for Django 3.0 in combination
+# with Elasticsearch 6.x. This limitation is due to limitation of the
+# django-elasticsearch-dsl library to support multiple versions of
+# Elasticsearch (and as a result, Django 3.0 support which is added in
+# recent versions is only available for Elasticsearch 7.x).
+
 matrix:
   fast_finish: true
   include:
@@ -39,8 +45,8 @@ matrix:
     python: 3.6
   - env: TOX_ENV=py36-django22-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
     python: 3.6
-  - env: TOX_ENV=py36-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
-    python: 3.6
+#  - env: TOX_ENV=py36-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+#    python: 3.6
 
   - env: TOX_ENV=py37-django20-elasticsearch7
     python: 3.7
@@ -57,8 +63,8 @@ matrix:
     python: 3.7
   - env: TOX_ENV=py37-django22-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
     python: 3.7
-  - env: TOX_ENV=py37-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
-    python: 3.7
+#  - env: TOX_ENV=py37-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+#    python: 3.7
 
   - env: TOX_ENV=py38-django111-elasticsearch7
     python: 3.8
@@ -71,8 +77,8 @@ matrix:
     python: 3.8
   - env: TOX_ENV=py38-django22-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
     python: 3.8
-  - env: TOX_ENV=py38-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
-    python: 3.8
+#  - env: TOX_ENV=py38-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+#    python: 3.8
 
 env:
   global:

@@ -1,5 +1,3 @@
 elasticsearch==7.0.2
 elasticsearch-dsl==7.0.0
-#django-elasticsearch-dsl==7.1.1
-https://github.com/sabricot/django-elasticsearch-dsl/archive/3f6cf53d9a2a5da5c7fca7e444b772d3c72f2594.zip
-#https://github.com/sabricot/django-elasticsearch-dsl/archive/f24ba3a86152f13e7181f0afa01ab6dee0d70400.zip
+django-elasticsearch-dsl==7.1.1

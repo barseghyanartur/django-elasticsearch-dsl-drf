@@ -51,22 +51,7 @@ __all__ = (
 #         return _get_count(queryset)
 
 
-def keyword_field(**kwargs):
-    """Keyword field.
-
-    :param kwargs:
-    :return:
-    """
-    major = get_elasticsearch_version()[0]
-    if major > 2:
-        return fields.KeywordField(**kwargs)
-    else:
-        if 'analyzer' not in kwargs:
-            kwargs['analyzer'] = 'keyword'
-        return fields.StringField(**kwargs)
-
-
-KeywordField = keyword_field
+KeywordField = fields.KeywordField
 
 
 def string_field(**kwargs):
@@ -75,13 +60,8 @@ def string_field(**kwargs):
     :param kwargs:
     :return:
     """
-    major = get_elasticsearch_version()[0]
-    if major > 2:
-        if 'fielddata' not in kwargs:
-            kwargs['fielddata'] = True
-        return fields.StringField(**kwargs)
-    else:
-        return fields.StringField(**kwargs)
+    kwargs.setdefault('fielddata', True)
+    return fields.TextField(**kwargs)
 
 
 StringField = string_field

@@ -109,7 +109,6 @@ class DocumentSerializer(
     _abstract = True
 
     _field_mapping = {
-        fields.AttachmentField: CharField,  # Removed from Elasticsearch 6.x
         fields.BooleanField: BooleanField,
         fields.ByteField: CharField,  # TODO
         fields.CompletionField: CharField,  # TODO
@@ -125,21 +124,10 @@ class DocumentSerializer(
         fields.ListField: ListField,
         fields.ObjectField: ObjectField,
         fields.ShortField: IntegerField,
-        fields.StringField: CharField,  # Removed in Elasticsearch 6.x
         fields.FileField: CharField,  # TODO
-    }
-
-    # Elasticsearch 5.x specific fields
-    try:
-        _field_mapping.update(
-            {
-                fields.KeywordField: CharField,
-                fields.TextField: CharField
-            }
-        )
-
-    except AttributeError:
-        pass
+        fields.KeywordField: CharField,
+        fields.TextField: CharField,
+        }
 
     def __init__(self, instance=None, data=empty, **kwargs):
         super(DocumentSerializer, self).__init__(instance, data, **kwargs)

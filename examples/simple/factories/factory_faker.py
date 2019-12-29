@@ -32,6 +32,7 @@ class EnGbFaker(OriginalFaker):
 
 class DjangoUserProvider(BaseProvider):
     """Django user provider."""
+    _fake = FakerFaker()
 
     @classmethod
     def first_name_django(cls, max_length=30):
@@ -55,8 +56,7 @@ class DjangoUserProvider(BaseProvider):
         :return: str.
         """
 
-        fake = FakerFaker()
-        return fake.first_name()[:max_length]
+        return cls._fake.first_name()[:max_length]
 
     @classmethod
     def last_name_django(cls, max_length=30):
@@ -80,8 +80,7 @@ class DjangoUserProvider(BaseProvider):
         :return: str.
         """
 
-        fake = FakerFaker()
-        return fake.last_name()[:max_length]
+        return cls._fake.last_name()[:max_length]
 
 
 Faker.add_provider(DjangoUserProvider)

@@ -196,6 +196,15 @@ setup(
         "Operating System :: OS Independent",
         "Development Status :: 4 - Beta",
     ],
+    project_urls={
+        "Bug Tracker": "https://github.com/barseghyanartur/"
+                       "django-elasticsearch-dsl-drf/issues",
+        "Documentation": "https://django-elasticsearch-dsl-drf.readthedocs.io/",
+        "Source Code": "https://github.com/barseghyanartur/"
+                       "django-elasticsearch-dsl-drf",
+        "Changelog": "https://django-elasticsearch-dsl-drf.readthedocs.io/"
+                     "en/latest/changelog.html",
+    },
     keywords="django, elasticsearch, elasticsearch-dsl, django rest framework",
     author='Artur Barseghyan',
     author_email='artur.barseghyan@gmail.com',

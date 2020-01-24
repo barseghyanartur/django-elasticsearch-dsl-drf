@@ -18,6 +18,6 @@ RUN mkdir /backend
 WORKDIR /backend
 ADD examples/requirements/ /backend/requirements/
 RUN pip install -r /backend/requirements/dev.txt
-RUN pip install -r /backend/requirements/elastic_6x.txt
+RUN pip install -r /backend/requirements/elastic_docker.txt
 COPY . /backend/
 RUN python /backend/setup.py develop

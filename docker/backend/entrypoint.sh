@@ -22,4 +22,4 @@ echo "Create search index"
 
 # Start server
 echo "Starting server"
-python ./examples/simple/manage.py runserver 0.0.0.0:8000 --settings=settings.docker
+python ./examples/simple/manage.py runserver 0.0.0.0:8000 --settings=settings.docker --traceback -v 3

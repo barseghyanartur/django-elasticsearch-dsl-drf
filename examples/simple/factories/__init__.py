@@ -1,4 +1,5 @@
 from .auth_user import *
+from .blog_post import *
 from .books_address import *
 from .books_author import *
 from .books_book import *
@@ -10,3 +11,5 @@ from .books_order import *
 from .books_orderline import *
 from .books_publisher import *
 from .books_tag import *
+from .farm_animal import *
+from .site_user import *

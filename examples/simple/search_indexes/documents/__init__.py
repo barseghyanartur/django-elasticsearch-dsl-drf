@@ -1,4 +1,5 @@
 from .address import AddressDocument
+from .animal import Animal, ReadOnlyAnimal
 from .author import AuthorDocument
 from .book import BookDocument
 from .city import CityDocument

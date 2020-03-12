@@ -69,11 +69,11 @@ StringField = string_field
 
 def nested_sort_entry(path):
     """String field.
-        :param path: Full path to nested container, separated by period
-        :type: str
-        :return: Dictionary of full nested path
-        :rtype: dict
-        """
+    :param path: Full path to nested container, separated by period
+    :type: str
+    :return: Dictionary of full nested path
+    :rtype: dict
+    """
     version = get_elasticsearch_version()
     if version[0] < 6 or (version[0] == 6 and version[1] < 1):
         return {'nested_path': path}

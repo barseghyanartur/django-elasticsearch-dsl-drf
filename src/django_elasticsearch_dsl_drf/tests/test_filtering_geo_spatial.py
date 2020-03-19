@@ -4,7 +4,6 @@ Test geo-spatial filtering backend.
 
 from __future__ import absolute_import
 
-from time import sleep
 import unittest
 
 from django.core.management import call_command
@@ -34,8 +33,6 @@ __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestFilteringGeoSpatial',
 )
-
-WAIT_FOR_INDEX = 2
 
 
 @pytest.mark.django_db
@@ -83,7 +80,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         )
 
         call_command('search_index', '--rebuild', '-f')
-        sleep(WAIT_FOR_INDEX)
+        self.sleep()
 
         __params = '{distance}{separator}{lat}{separator}{lon}{d_type}'.format(
             distance=_geo_distance,
@@ -159,7 +156,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         )
 
         call_command('search_index', '--rebuild', '-f')
-        sleep(WAIT_FOR_INDEX)
+        self.sleep()
 
         __params = '{distance}{separator}{lat}'.format(
             distance=_geo_distance,
@@ -219,7 +216,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             )
 
         call_command('search_index', '--rebuild', '-f')
-        sleep(WAIT_FOR_INDEX)
+        self.sleep()
 
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -349,7 +346,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             )
 
         call_command('search_index', '--rebuild', '-f')
-        sleep(WAIT_FOR_INDEX)
+        self.sleep()
 
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

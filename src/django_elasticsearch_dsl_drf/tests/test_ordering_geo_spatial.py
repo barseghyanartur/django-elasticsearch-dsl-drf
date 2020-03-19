@@ -68,6 +68,8 @@ class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
             cls.geo_in.append(__publisher)
 
         cls.base_publisher_url = reverse('publisherdocument-list', kwargs={})
+
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
     @pytest.mark.webtest

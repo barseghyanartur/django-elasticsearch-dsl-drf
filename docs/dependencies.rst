@@ -37,7 +37,7 @@ The following versions have been tested and work well together:
 | 6.3.0         | 6.4.0             | 6.4.2                    |
 +---------------+-------------------+---------------------------
 | 7.0.2         | 7.0.0             | 7.0.0                    |
-+---------------+-------------------+---------------------------
++---------------+-------------------+--------------------------+
 
 As of ``django-elasticsearch-dsl-drf`` 0.19, support for Elasticsearch versions
 prior 6.x has been dropped.

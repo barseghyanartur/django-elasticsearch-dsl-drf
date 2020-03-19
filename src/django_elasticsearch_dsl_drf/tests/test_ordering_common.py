@@ -105,6 +105,7 @@ class TestOrdering(BaseRestFrameworkTestCase):
         cls.authors = factories.AuthorWithUniqueNameFactory.create_batch(20)
         cls.authors_url = reverse('authordocument-list', kwargs={})
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema

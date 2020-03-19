@@ -46,6 +46,7 @@ class TestViews(BaseRestFrameworkTestCase):
         cls.books = factories.BookWithoutTagsAndOrdersFactory.create_batch(20)
         cls.tags = factories.TagGenreFactory.create_batch(20)
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
     def test_listing_view(self):

@@ -98,6 +98,7 @@ class TestHelpers(BaseTestCase):
             )
         )
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
     def _more_like_this(self, obj, fields):

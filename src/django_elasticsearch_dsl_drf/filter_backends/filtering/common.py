@@ -17,6 +17,7 @@ from ...constants import (
     ALL_LOOKUP_FILTERS_AND_QUERIES,
     LOOKUP_FILTER_PREFIX,
     LOOKUP_FILTER_RANGE,
+    LOOKUP_FILTER_REGEXP,
     LOOKUP_FILTER_TERMS,
     LOOKUP_FILTER_EXISTS,
     LOOKUP_FILTER_WILDCARD,
@@ -291,6 +292,35 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
             options=options,
             args=['range'],
             kwargs={options['field']: cls.get_range_params(value)}
+        )
+
+    @classmethod
+    def apply_filter_regexp(cls, queryset, options, value):
+        """Apply `reexp` filter.
+
+         Syntax:
+
+            /endpoint/?field_name__regexp={regexp}
+
+        Example:
+
+            http://localhost:8000/api/users/?age__regexp=1[6-9]
+            http://localhost:8000/api/users/?age__regexp=2.*
+
+        :param queryset: Original queryset.
+        :param options: Filter options.
+        :param value: value to filter on.
+        :type queryset: elasticsearch_dsl.search.Search
+        :type options: dict
+        :type value: str
+        :return: Modified queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        return cls.apply_filter(
+            queryset=queryset,
+            options=options,
+            args=['regexp'],
+            kwargs={options['field']: value}
         )
 
     @classmethod
@@ -786,6 +816,12 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 # `range` filter lookup
                 elif options['lookup'] == LOOKUP_FILTER_RANGE:
                     queryset = self.apply_filter_range(queryset,
+                                                       options,
+                                                       value)
+
+                # `regexp` filter lookup
+                elif options['lookup'] == LOOKUP_FILTER_REGEXP:
+                    queryset = self.apply_filter_regexp(queryset,
                                                        options,
                                                        value)
 

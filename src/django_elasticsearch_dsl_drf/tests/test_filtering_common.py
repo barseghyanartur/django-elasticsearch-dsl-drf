@@ -193,6 +193,19 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
             self.published_count
         )
 
+    def test_field_filter_regexp(self):
+        """Field filter regexp.
+
+        Example:
+
+            http://localhost:8000/api/users/?title__regexp=De.{8}Ins.*
+        """
+        return self._field_filter_value(
+            'title__regexp',
+            '{}.{{8}}{}.*'.format(self.prefix[0:2], self.prefix[10:13]),
+            self.prefix_count
+        )
+
     def test_field_filter_range_with_boost(self):
         """Field filter range.
 
@@ -322,19 +335,6 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         return self._field_filter_value(
             'title__wildcard',
             '*{}*'.format(self.prefix[1:6]),
-            self.prefix_count
-        )
-
-    def test_field_filter_regexp(self):
-        """Test filter regexp.
-
-        Example:
-
-            http://localhost:8000/api/articles/?title__wildcard=*elusional*
-        """
-        return self._field_filter_value(
-            'title__regexp',
-            '.{2}lusional.{2}sanity\s.*',
             self.prefix_count
         )
 

@@ -296,18 +296,16 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     @classmethod
     def apply_filter_regexp(cls, queryset, options, value):
-        """Apply `regexp` filter.
+        """Apply `reexp` filter.
 
          Syntax:
 
-            /endpoint/?field_name__regexp={lower}__{upper}__{boost}
-            /endpoint/?field_name__regexp={lower}__{upper}
+            /endpoint/?field_name__regexp={regexp}
 
         Example:
 
-            http://localhost:8000/api/users/?age__regexp=16__67__2.0
-            http://localhost:8000/api/users/?age__regexp=16__67
-            http://localhost:8000/api/users/?age__regexp=16
+            http://localhost:8000/api/users/?age__regexp=1[6-9]
+            http://localhost:8000/api/users/?age__regexp=2.*
 
         :param queryset: Original queryset.
         :param options: Filter options.

@@ -1,5 +1,5 @@
-from django.views.generic import ListView, TemplateView
 from django.db.models import Avg, Count, DecimalField, F, Max, Min, Sum
+from django.views.generic import ListView, TemplateView
 
 from ormex.aggregations import GroupConcat
 

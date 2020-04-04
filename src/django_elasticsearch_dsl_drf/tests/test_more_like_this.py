@@ -99,6 +99,7 @@ class TestMoreLikeThis(BaseRestFrameworkTestCase):
             kwargs={'id': cls.books[-1].id}
         )
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
     def _test_more_like_this(self, test_data_ids, url, strict=True):

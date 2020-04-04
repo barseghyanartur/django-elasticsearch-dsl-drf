@@ -29,8 +29,8 @@ class AbstractUserFactory(DjangoModelFactory):
 
     password = PostGenerationMethodCall('set_password', TEST_PASSWORD)
     username = Sequence(lambda n: 'user%d' % n)
-    first_name = Faker('first_name')
-    last_name = Faker('last_name')
+    first_name = Faker('first_name_django')
+    last_name = Faker('last_name_django')
     email = Faker('email')
 
     is_active = False

@@ -64,6 +64,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         # Testing nested objects: Addresses, cities and countries
         cls.created_addresses()
 
+        cls.sleep()
         # Update the Elasticsearch index
         call_command('search_index', '--rebuild', '-f')
 

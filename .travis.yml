@@ -5,30 +5,92 @@ services:
 
 language: python
 
+# Almost full matrix is presented here, except for Django 3.0 in combination
+# with Elasticsearch 6.x. This limitation is due to limitation of the
+# django-elasticsearch-dsl library to support multiple versions of
+# Elasticsearch (and as a result, Django 3.0 support which is added in
+# recent versions is only available for Elasticsearch 7.x).
+
 matrix:
   fast_finish: true
   include:
-  - env: TOX_ENV=py27-django111
+  - env: TOX_ENV=py27-django111-elasticsearch7
     python: 2.7
-  - env: TOX_ENV=py35-django20
+
+  - env: TOX_ENV=py27-django111-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+    python: 2.7
+
+  - env: TOX_ENV=py35-django20-elasticsearch7
     python: 3.5
-  - env: TOX_ENV=py36-django111
+
+  - env: TOX_ENV=py35-django20-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+    python: 3.5
+
+  - env: TOX_ENV=py36-django111-elasticsearch7
     python: 3.6
-  - env: TOX_ENV=py36-django20
+  - env: TOX_ENV=py36-django20-elasticsearch7
     python: 3.6
-  - env: TOX_ENV=py36-django21
+  - env: TOX_ENV=py36-django21-elasticsearch7
     python: 3.6
-  - env: TOX_ENV=py36-django22
+  - env: TOX_ENV=py36-django22-elasticsearch7
     python: 3.6
-  - env: TOX_ENV=py37-django20
+  - env: TOX_ENV=py36-django30-elasticsearch7
+    python: 3.6
+
+  - env: TOX_ENV=py36-django111-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+    python: 3.6
+  - env: TOX_ENV=py36-django20-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+    python: 3.6
+  - env: TOX_ENV=py36-django21-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+    python: 3.6
+  - env: TOX_ENV=py36-django22-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+    python: 3.6
+#  - env: TOX_ENV=py36-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+#    python: 3.6
+
+  - env: TOX_ENV=py37-django20-elasticsearch7
     python: 3.7
-  - env: TOX_ENV=py37-django21
+  - env: TOX_ENV=py37-django21-elasticsearch7
     python: 3.7
-  - env: TOX_ENV=py37-django22
+  - env: TOX_ENV=py37-django22-elasticsearch7
+    python: 3.7
+  - env: TOX_ENV=py37-django30-elasticsearch7
     python: 3.7
 
+  - env: TOX_ENV=py37-django20-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+    python: 3.7
+  - env: TOX_ENV=py37-django21-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+    python: 3.7
+  - env: TOX_ENV=py37-django22-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+    python: 3.7
+#  - env: TOX_ENV=py37-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+#    python: 3.7
+
+  - env: TOX_ENV=py38-django111-elasticsearch7
+    python: 3.8
+  - env: TOX_ENV=py38-django22-elasticsearch7
+    python: 3.8
+  - env: TOX_ENV=py38-django30-elasticsearch7
+    python: 3.8
+
+  - env: TOX_ENV=py38-django111-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+    python: 3.8
+  - env: TOX_ENV=py38-django22-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+    python: 3.8
+#  - env: TOX_ENV=py38-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+#    python: 3.8
+
+env:
+  global:
+    - ES_APT_URL=https://artifacts.elastic.co/packages/7.x/apt
+
 before_install:
-  - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.5.4.deb && sudo dpkg -i --force-confnew elasticsearch-6.5.4.deb && sudo service elasticsearch restart
+#  - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.5.4.deb && sudo dpkg -i --force-confnew elasticsearch-6.5.4.deb && sudo service elasticsearch restart
+  - wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+  - echo "deb $ES_APT_URL stable main" | sudo tee -a /etc/apt/sources.list.d/elk.list
+  - sudo apt-get remove --purge elasticsearch -y
+  - sudo apt-get update && sudo apt-get install elasticsearch -y
+  - sudo -i service elasticsearch restart
 
 install: pip install -r examples/requirements/test.txt
 

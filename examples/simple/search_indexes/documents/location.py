@@ -7,6 +7,8 @@ from elasticsearch_dsl import analyzer
 
 from books.models import Location
 
+from .analyzers import html_strip
+
 # Name of the Elasticsearch index
 INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 
@@ -15,13 +17,6 @@ INDEX.settings(
     number_of_shards=1,
     number_of_replicas=1,
     blocks={'read_only_allow_delete': False},
-)
-
-html_strip = analyzer(
-    "html_strip",
-    tokenizer="standard",
-    filter=["standard", "lowercase", "stop", "snowball"],
-    char_filter=["html_strip"]
 )
 
 

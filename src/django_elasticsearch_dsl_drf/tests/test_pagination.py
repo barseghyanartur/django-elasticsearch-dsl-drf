@@ -45,6 +45,7 @@ class TestPagination(BaseRestFrameworkTestCase):
         cls.publishers = factories.PublisherFactory.create_batch(40)
         cls.books = factories.BookFactory.create_batch(40)
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
     def _test_pagination(self):

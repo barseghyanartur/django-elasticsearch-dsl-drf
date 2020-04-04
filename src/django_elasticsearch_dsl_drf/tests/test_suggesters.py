@@ -195,6 +195,7 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
 
         cls.created_addresses()
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
     def _test_suggesters(self, test_data, url):
@@ -342,6 +343,8 @@ class TestSuggestersEmptyIndex(BaseRestFrameworkTestCase, AddressesMixin):
             'authordocument-suggest',
             kwargs={}
         )
+
+        cls.sleep()
         # Suggest on empty index
         call_command('search_index', '--delete', '-f')
         call_command('search_index', '--create', '-f')
@@ -499,6 +502,7 @@ class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
             kwargs={}
         )
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
     def _test_suggesters_completion_context(self, test_data, url):

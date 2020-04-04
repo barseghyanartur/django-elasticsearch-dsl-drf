@@ -148,6 +148,12 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         if __len_values == 3:
             params['lte'] = __values[1]
             params['boost'] = __values[2]
+            params.update(
+                {
+                    'lte': __values[1],
+                    'boost': __values[2],
+                }
+            )
         elif __len_values == 2:
             params['lte'] = __values[1]
 

@@ -228,6 +228,8 @@ startswith
 ^^^^^^^^^^
 Case-sensitive starts-with.
 
+.. code-block:: text
+
     http://localhost:8000/api/articles/?tags__startswith=bio
 
 Should match: `biography`, `bio mechanics`

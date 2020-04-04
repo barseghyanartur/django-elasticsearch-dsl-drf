@@ -120,6 +120,7 @@ class TestMultiMatchSearch(BaseRestFrameworkTestCase):
         # )
         cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema

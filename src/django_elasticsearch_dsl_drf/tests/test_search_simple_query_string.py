@@ -121,6 +121,7 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
         # )
         cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
+        cls.sleep(4)
         call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema

@@ -63,6 +63,7 @@ class TestSource(BaseRestFrameworkTestCase):
         )
         cls.all_books_count = cls.special_books_count + cls.books_count
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
     def _list_results(self):

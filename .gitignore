@@ -42,3 +42,4 @@ codebin.py
 #/examples/simple/settings/__init__.py
 /examples/simple/settings/local_settings.py
 yarn.lock
+matyan.log*

@@ -324,6 +324,19 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
             self.prefix_count
         )
 
+    def test_field_filter_regexp(self):
+        """Test filter regexp.
+
+        Example:
+
+            http://localhost:8000/api/articles/?title__wildcard=*elusional*
+        """
+        return self._field_filter_value(
+            'title__regexp',
+            '.{2}lusional.{2}sanity\s.*',
+            self.prefix_count
+        )
+
     def test_field_filter_exclude(self):
         """Test filter exclude.
 

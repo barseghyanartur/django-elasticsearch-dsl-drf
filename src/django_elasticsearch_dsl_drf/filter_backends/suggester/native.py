@@ -435,6 +435,8 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
             completion_kwargs['size'] = options['size']
         if 'contexts' in options:
             completion_kwargs['contexts'] = options['contexts']
+        if 'skip_duplicates' in options:
+            completion_kwargs['skip_duplicates'] = options['skip_duplicates']
         return queryset.suggest(
             suggester_name,
             value,

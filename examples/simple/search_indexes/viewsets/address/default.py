@@ -141,6 +141,7 @@ class AddressDocumentViewSet(DocumentViewSet):
                     'title_suggest_loc': 'loc',
                 },
                 'size': 10,
+                'skip_duplicates': True,
             }
         },
         'city_suggest': {

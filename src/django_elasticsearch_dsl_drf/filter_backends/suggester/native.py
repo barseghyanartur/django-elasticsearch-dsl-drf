@@ -67,6 +67,7 @@ Example:
     >>>
     >>>         model = Publisher  # The model associate with this Document
 """
+from collections import defaultdict
 
 from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_TERM,
@@ -270,7 +271,6 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         :return:
         """
-        from collections import defaultdict
         contexts = {}
         query_params = request.query_params.copy()
 
@@ -506,12 +506,16 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                             'type': view.mapping,
                         }
 
-                        if 'options' in _sf and 'size' in _sf['options']:
-                            suggester_query_params[query_param].update(
-                                {
+                        if 'options' in _sf:
+                            if 'size' in _sf['options']:
+                                suggester_query_params[query_param].update({
                                     'size': _sf['options']['size']
-                                }
-                            )
+                                })
+                            if 'skip_duplicates' in _sf['options']:
+                                suggester_query_params[query_param].update({
+                                    'skip_duplicates':
+                                        _sf['options']['skip_duplicates']
+                                })
 
                         if (
                             suggester_param == SUGGESTER_COMPLETION

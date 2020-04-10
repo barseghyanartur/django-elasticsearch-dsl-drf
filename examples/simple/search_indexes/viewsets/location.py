@@ -115,7 +115,7 @@ class LocationDocumentViewSet(DocumentViewSet):
     }
 
     # Specify default ordering
-    ordering = ("_score",) # "full", "postcode",)
+    ordering = ("_score",)  # "full", "postcode",)
     suggester_fields = {
         "full": {
             "field": "full.suggest",

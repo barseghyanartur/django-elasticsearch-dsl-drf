@@ -34,8 +34,7 @@ from ...constants import (
 )
 from ..mixins import FilterBackendMixin
 
-from ...compat import coreapi
-from ...compat import coreschema
+from ...compat import coreapi, coreschema
 
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering.common'
@@ -822,8 +821,8 @@ class FilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 # `regexp` filter lookup
                 elif options['lookup'] == LOOKUP_FILTER_REGEXP:
                     queryset = self.apply_filter_regexp(queryset,
-                                                       options,
-                                                       value)
+                                                        options,
+                                                        value)
 
                 # `exists` filter lookup
                 elif options['lookup'] == LOOKUP_FILTER_EXISTS:

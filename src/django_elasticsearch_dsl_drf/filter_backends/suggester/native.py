@@ -67,6 +67,7 @@ Example:
     >>>
     >>>         model = Publisher  # The model associate with this Document
 """
+from collections import defaultdict
 
 from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_TERM,
@@ -83,7 +84,7 @@ from ..mixins import FilterBackendMixin
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.suggester'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2019 Artur Barseghyan'
+__copyright__ = '2017-2020 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = ('SuggesterFilterBackend',)
 
@@ -270,7 +271,6 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         :return:
         """
-        from collections import defaultdict
         contexts = {}
         query_params = request.query_params.copy()
 
@@ -435,6 +435,8 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
             completion_kwargs['size'] = options['size']
         if 'contexts' in options:
             completion_kwargs['contexts'] = options['contexts']
+        if 'skip_duplicates' in options:
+            completion_kwargs['skip_duplicates'] = options['skip_duplicates']
         return queryset.suggest(
             suggester_name,
             value,
@@ -504,12 +506,16 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                             'type': view.mapping,
                         }
 
-                        if 'options' in _sf and 'size' in _sf['options']:
-                            suggester_query_params[query_param].update(
-                                {
+                        if 'options' in _sf:
+                            if 'size' in _sf['options']:
+                                suggester_query_params[query_param].update({
                                     'size': _sf['options']['size']
-                                }
-                            )
+                                })
+                            if 'skip_duplicates' in _sf['options']:
+                                suggester_query_params[query_param].update({
+                                    'skip_duplicates':
+                                        _sf['options']['skip_duplicates']
+                                })
 
                         if (
                             suggester_param == SUGGESTER_COMPLETION

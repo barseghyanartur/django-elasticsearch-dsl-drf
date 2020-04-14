@@ -27,7 +27,7 @@ else:
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering_post'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2019 Artur Barseghyan'
+__copyright__ = '2017-2020 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestFilteringGlobalAggregations',
@@ -52,6 +52,7 @@ class TestFilteringGlobalAggregations(BaseRestFrameworkTestCase,
         # Testing nested objects: Addresses, cities and countries
         cls.created_addresses()
 
+        cls.sleep()
         # Update the Elasticsearch index
         call_command('search_index', '--rebuild', '-f')
 

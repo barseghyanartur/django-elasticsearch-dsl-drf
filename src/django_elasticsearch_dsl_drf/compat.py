@@ -27,7 +27,7 @@ except ImportError:
 
 __title__ = 'django_elasticsearch_dsl_drf.compat'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2019 Artur Barseghyan'
+__copyright__ = '2017-2020 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'coreapi',
@@ -69,11 +69,11 @@ StringField = string_field
 
 def nested_sort_entry(path):
     """String field.
-        :param path: Full path to nested container, separated by period
-        :type: str
-        :return: Dictionary of full nested path
-        :rtype: dict
-        """
+    :param path: Full path to nested container, separated by period
+    :type: str
+    :return: Dictionary of full nested path
+    :rtype: dict
+    """
     version = get_elasticsearch_version()
     if version[0] < 6 or (version[0] == 6 and version[1] < 1):
         return {'nested_path': path}

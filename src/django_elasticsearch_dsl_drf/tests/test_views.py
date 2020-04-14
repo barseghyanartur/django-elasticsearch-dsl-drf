@@ -25,7 +25,7 @@ else:
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_views'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2019 Artur Barseghyan'
+__copyright__ = '2017-2020 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestViews',
@@ -46,6 +46,7 @@ class TestViews(BaseRestFrameworkTestCase):
         cls.books = factories.BookWithoutTagsAndOrdersFactory.create_batch(20)
         cls.tags = factories.TagGenreFactory.create_batch(20)
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
     def test_listing_view(self):

@@ -1110,6 +1110,7 @@ the following way:
                 ],
                 'options': {
                     'size': 20,  # Override default number of suggestions
+                    'skip_duplicates':True, # Whether duplicate suggestions should be filtered out.
                 },
             },
             'city_suggest': {
@@ -1390,6 +1391,7 @@ ViewSet should altered as follows:
                 },
                 'options': {
                     'size': 10,  # By default, number of results is 5.
+                    'skip_duplicates':True, # Whether duplicate suggestions should be filtered out.
                 },
             },
         }
@@ -1476,6 +1478,7 @@ ViewSet should altered as follows:
                 },
                 'options': {
                     'size': 10,  # By default, number of results is 5.
+                    'skip_duplicates':True, # Whether duplicate suggestions should be filtered out.
                 },
             },
         }
@@ -1794,6 +1797,7 @@ Example for ``phrase`` suggester:
                 'default_suggester': SUGGESTER_COMPLETION,
                 'options': {
                     'size': 10,  # Number of suggestions to retrieve.
+                    'skip_duplicates':True, # Whether duplicate suggestions should be filtered out.
                 },
             },
             'publisher_suggest': 'publisher.suggest',

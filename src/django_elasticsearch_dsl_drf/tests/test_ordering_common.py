@@ -34,7 +34,7 @@ else:
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_ordering'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2019 Artur Barseghyan'
+__copyright__ = '2017-2020 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestOrdering',
@@ -105,6 +105,7 @@ class TestOrdering(BaseRestFrameworkTestCase):
         cls.authors = factories.AuthorWithUniqueNameFactory.create_batch(20)
         cls.authors_url = reverse('authordocument-list', kwargs={})
 
+        cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema

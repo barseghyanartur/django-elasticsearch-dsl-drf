@@ -15,6 +15,24 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.20.8
+------
+2020-04-10
+
+- Fixes in ``skip_duplicates`` option support for native suggester.
+
+0.20.7
+------
+2020-04-10
+
+- Make ``skip_duplicates`` available for native suggester.
+
+0.20.6
+------
+2020-04-04
+
+- Basic implementation of RegExp field lookup.
+
 0.20.5
 ------
 2019-12-30

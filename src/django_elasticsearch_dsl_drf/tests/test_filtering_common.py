@@ -39,7 +39,7 @@ else:
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering_common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2019 Artur Barseghyan'
+__copyright__ = '2017-2020 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestFilteringCommon',
@@ -64,6 +64,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         # Testing nested objects: Addresses, cities and countries
         cls.created_addresses()
 
+        cls.sleep()
         # Update the Elasticsearch index
         call_command('search_index', '--rebuild', '-f')
 
@@ -190,6 +191,19 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
             'id__range',
             value,
             self.published_count
+        )
+
+    def test_field_filter_regexp(self):
+        """Field filter regexp.
+
+        Example:
+
+            http://localhost:8000/api/users/?title__regexp=De.{8}Ins.*
+        """
+        return self._field_filter_value(
+            'title__regexp',
+            '{}.{{8}}{}.*'.format(self.prefix[0:2], self.prefix[10:13]),
+            self.prefix_count
         )
 
     def test_field_filter_range_with_boost(self):

@@ -2,6 +2,7 @@
 Base tests.
 """
 
+from time import sleep
 import logging
 
 from django.test import TransactionTestCase
@@ -14,16 +15,17 @@ from ..pip_helpers import get_installed_packages
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.base'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2019 Artur Barseghyan'
+__copyright__ = '2017-2020 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'BaseRestFrameworkTestCase',
     'BaseTestCase',
-    'INSTALLED_PACKAGES',
-    'CORE_API_IS_INSTALLED',
-    'CORE_SCHEMA_IS_INSTALLED',
     'CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED',
     'CORE_API_AND_CORE_SCHEMA_MISSING_MSG',
+    'CORE_API_IS_INSTALLED',
+    'CORE_SCHEMA_IS_INSTALLED',
+    'INSTALLED_PACKAGES',
+    'SleepMixin',
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -37,8 +39,24 @@ CORE_API_AND_CORE_SCHEMA_MISSING_MSG = "Skipped because coreapi or " \
                                        "coreschema are not installed!"
 
 
+WAIT_FOR_INDEX = 2
+
+
+class SleepMixin(object):
+    """Sleep mix-in."""
+
+    @classmethod
+    def sleep(cls, wait_for_index=WAIT_FOR_INDEX):
+        """Sleep for N seconds.
+
+        :param wait_for_index:
+        :return:
+        """
+        sleep(wait_for_index)
+
+
 @pytest.mark.django_db
-class BaseRestFrameworkTestCase(TransactionTestCase):
+class BaseRestFrameworkTestCase(TransactionTestCase, SleepMixin):
     """Base REST framework test case."""
 
     pytestmark = pytest.mark.django_db
@@ -64,7 +82,7 @@ class BaseRestFrameworkTestCase(TransactionTestCase):
 
 
 @pytest.mark.django_db
-class BaseTestCase(TransactionTestCase):
+class BaseTestCase(TransactionTestCase, SleepMixin):
     """Base test case."""
 
     pytestmark = pytest.mark.django_db

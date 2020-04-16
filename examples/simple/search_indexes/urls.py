@@ -25,6 +25,7 @@ from .viewsets import (
     CityDocumentViewSet,
     LocationDocumentViewSet,
     PublisherDocumentViewSet,
+    PostDocumentViewSet,
     FrontAddressDocumentViewSet,
     TagDocumentViewSet,
 )
@@ -202,6 +203,16 @@ router.register(
     r'publishers',
     PublisherDocumentViewSet,
     basename='publisherdocument'
+)
+
+# **********************************************************
+# *********************** Publishers ***********************
+# **********************************************************
+
+router.register(
+    r'post',
+    PostDocumentViewSet,
+    basename='postdocument'
 )
 
 # *********************************************************

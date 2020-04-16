@@ -2,7 +2,7 @@ from faker import Faker as OriginalFaker
 from factory.base import Factory
 from factory import Faker, LazyAttribute
 
-from search_indexes.documents import Animal
+from search_indexes.documents import AnimalDocument
 
 FAKER = OriginalFaker()
 
@@ -15,7 +15,7 @@ class AnimalFactory(Factory):
     """Animal factory."""
 
     class Meta(object):
-        model = Animal
+        model = AnimalDocument
 
     scope = LazyAttribute(lambda x: {
         'farm_id': FAKER.uuid4(),

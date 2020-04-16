@@ -22,6 +22,7 @@ from .book import (
 )
 from .city import CityDocumentViewSet, CityCompoundSearchBackendDocumentViewSet
 from .location import LocationDocumentViewSet
+from .post import PostDocumentViewSet
 from .publisher import PublisherDocumentViewSet
 from .tag import TagDocumentViewSet
 
@@ -50,6 +51,7 @@ __all__ = (
     'CityDocumentViewSet',
     'LocationDocumentViewSet',
     'PublisherDocumentViewSet',
+    'PostDocumentViewSet',
     'FrontAddressDocumentViewSet',
     'TagDocumentViewSet',
 )

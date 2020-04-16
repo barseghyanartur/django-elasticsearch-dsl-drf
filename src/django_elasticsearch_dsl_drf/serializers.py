@@ -12,6 +12,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 from django_elasticsearch_dsl import fields, Document
 
+from elasticsearch_dsl import Document as DSLDocument
 from rest_framework import serializers
 from rest_framework.fields import empty
 from rest_framework.utils.field_mapping import get_field_kwargs
@@ -138,7 +139,7 @@ class DocumentSerializer(
                 "Meta class."
             )
 
-        if not issubclass(self.Meta.document, (Document,)):
+        if not issubclass(self.Meta.document, (Document, DSLDocument)):
             raise ImproperlyConfigured(
                 "You must subclass the serializer 'document' from the Document"
                 "class."
@@ -191,8 +192,15 @@ class DocumentSerializer(
         exclude = self.Meta.exclude
         ignore_fields = self.Meta.ignore_fields
         document = self.Meta.document
-        model = document.Django.model
-        document_fields = document._fields
+        try:
+            model = document.Django.model
+        except:  # TODO: Find a better way
+            model = None
+
+        # Find a better way to dynamically inspect the fields for
+        # non django-elasticsearch-dsl document (native ElasticsearchDSL
+        # documents).
+        document_fields = getattr(document, '_fields', {})
 
         declared_fields = copy.deepcopy(self._declared_fields)
         field_mapping = OrderedDict()

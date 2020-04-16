@@ -10,6 +10,7 @@ from .publisher import (
     PublisherDocumentSerializer,
     PublisherDocumentSimpleSerializer,
 )
+from .post import PostDocumentSerializer
 from .tag import TagDocumentSerializer
 
 __all__ = (
@@ -22,5 +23,6 @@ __all__ = (
     'LocationDocumentSerializer',
     'PublisherDocumentSerializer',
     'PublisherDocumentSimpleSerializer',
+    'PostDocumentSerializer',
     'TagDocumentSerializer',
 )

@@ -13,6 +13,7 @@ from elasticsearch_dsl import (
     Object,
     Text,
 )
+from .analyzers import html_strip, html_strip_preserve_case
 from .read_only import ReadOnlyDocument
 from .settings import FARM_ANIMAL_DOCUMENT_NAME, ELASTICSEARCH_CONNECTION
 
@@ -23,27 +24,14 @@ except ImportError:
     logger = logging.getLogger(__name__)
 
 __all__ = (
-    'Animal',
-    'ReadOnlyAnimal',
+    'AnimalDocument',
+    'ReadOnlyAnimalDocument',
 )
 
 connections.create_connection(**ELASTICSEARCH_CONNECTION)
 
 
-html_strip = analyzer('html_strip',
-    tokenizer="standard",
-    filter=["lowercase", "stop", "snowball"],
-    char_filter=["html_strip"]
-)
-
-html_strip_preserve_case = analyzer('html_strip',
-    tokenizer="standard",
-    filter=["stop", "snowball"],
-    char_filter=["html_strip"]
-)
-
-
-class Animal(Document):
+class AnimalDocument(Document):
 
     scope = Object(
         properties={
@@ -92,7 +80,7 @@ class Animal(Document):
         }
 
 
-class ReadOnlyAnimal(ReadOnlyDocument):
+class ReadOnlyAnimalDocument(ReadOnlyDocument):
 
     scope = Object(
         properties={
@@ -143,6 +131,6 @@ class ReadOnlyAnimal(ReadOnlyDocument):
 
 try:
     # Create the mappings in Elasticsearch
-    Animal.init()
+    AnimalDocument.init()
 except Exception as err:
     logger.error(err)

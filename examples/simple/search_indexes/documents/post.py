@@ -14,6 +14,7 @@ from elasticsearch_dsl import (
     Integer,
     Float,
 )
+from .analyzers import html_strip
 from .settings import BLOG_POST_DOCUMENT_NAME, ELASTICSEARCH_CONNECTION
 
 try:
@@ -28,13 +29,6 @@ __all__ = (
 )
 
 connections.create_connection(**ELASTICSEARCH_CONNECTION)
-
-
-html_strip = analyzer('html_strip',
-    tokenizer="standard",
-    filter=["lowercase", "stop", "snowball"],
-    char_filter=["html_strip"]
-)
 
 
 class Comment(InnerDoc):
@@ -74,6 +68,10 @@ class PostDocument(Document):
             'number_of_replicas': 1,
             'blocks': {'read_only_allow_delete': None},
         }
+
+    # This is a hack, at the moment
+    class Django:
+        model = None
 
     def add_comment(self, author, content):
         self.comments.append(

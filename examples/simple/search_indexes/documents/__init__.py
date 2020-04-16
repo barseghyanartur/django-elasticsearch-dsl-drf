@@ -1,5 +1,5 @@
 from .address import AddressDocument
-from .animal import Animal, ReadOnlyAnimal
+from .animal import AnimalDocument, ReadOnlyAnimalDocument
 from .author import AuthorDocument
 from .book import BookDocument
 from .city import CityDocument
@@ -12,6 +12,8 @@ from .user import SiteUserDocument
 __all___ = (
     'AddressDocument',
     'AuthorDocument',
+    'AnimalDocument',
+    'ReadOnlyAnimalDocument',
     'BookDocument',
     'CityDocument',
     'PostDocument',

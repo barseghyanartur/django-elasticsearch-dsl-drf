@@ -20,7 +20,7 @@ except ImportError:
     logger = logging.getLogger(__name__)
 
 __all__ = (
-    'SiteUser',
+    'SiteUserDocument',
 )
 
 connections.create_connection(**ELASTICSEARCH_CONNECTION)
@@ -33,7 +33,7 @@ html_strip = analyzer('html_strip',
 )
 
 
-class SiteUser(Document):
+class SiteUserDocument(Document):
     first_name = Text(fields={'raw': Keyword()})
     last_name = Text(fields={'raw': Keyword()})
     email = Text(fields={'raw': Keyword()})
@@ -55,6 +55,6 @@ class SiteUser(Document):
 
 try:
     # Create the mappings in Elasticsearch
-    SiteUser.init()
+    SiteUserDocument.init()
 except Exception as err:
     logger.error(err)

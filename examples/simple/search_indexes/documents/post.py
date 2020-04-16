@@ -24,7 +24,7 @@ except ImportError:
 
 __all__ = (
     'Comment',
-    'Post',
+    'PostDocument',
 )
 
 connections.create_connection(**ELASTICSEARCH_CONNECTION)
@@ -46,7 +46,7 @@ class Comment(InnerDoc):
         return datetime.datetime.now() - self.created_at
 
 
-class Post(Document):
+class PostDocument(Document):
     title = Text(
         analyzer=html_strip,
         fields={'raw': Keyword()}
@@ -95,6 +95,6 @@ class Post(Document):
 
 try:
     # Create the mappings in Elasticsearch
-    Post.init()
+    PostDocument.init()
 except Exception as err:
     logger.error(err)

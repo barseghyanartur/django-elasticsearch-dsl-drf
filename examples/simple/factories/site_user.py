@@ -1,7 +1,7 @@
 from factory import Faker
 from factory.base import Factory
 
-from search_indexes.documents import SiteUser
+from search_indexes.documents import SiteUserDocument
 
 
 __all__ = (
@@ -13,7 +13,7 @@ class SiteUserFactory(Factory):
     """User factory."""
 
     class Meta(object):
-        model = SiteUser
+        model = SiteUserDocument
 
     first_name = Faker('first_name')
     last_name = Faker('last_name')

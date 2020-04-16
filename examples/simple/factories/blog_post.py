@@ -4,7 +4,7 @@ from factory import Faker, LazyAttribute
 from factory.base import Factory
 from factory.fuzzy import FuzzyChoice
 
-from search_indexes.documents import Post
+from search_indexes.documents import PostDocument
 
 
 __all__ = (
@@ -66,7 +66,7 @@ class PostFactory(Factory):
     """Post factory."""
 
     class Meta(object):
-        model = Post
+        model = PostDocument
 
     title = Faker('text', max_nb_chars=10)
     content = Faker('text')

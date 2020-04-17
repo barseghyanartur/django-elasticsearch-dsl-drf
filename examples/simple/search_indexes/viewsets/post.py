@@ -109,9 +109,12 @@ class PostDocumentViewSet(DocumentViewSet):
 
     # For `SearchFilterBackend` backend
     search_fields = {
-        'title': {'field': 'title', 'boost': 4},
-        'content': {'boost': 2},
-        'category': None,
+        # 'title': {'field': 'title', 'boost': 4},
+        # 'content': {'boost': 2},
+        # 'category': None,
+        'title',
+        'content',
+        'category',
     }
 
     # For `OrderingFilterBackend` backend
@@ -157,6 +160,9 @@ class PostDocumentViewSet(DocumentViewSet):
             }
         },
         'category': {},
+        'tags': {
+            'enabled': True,
+        }
     }
 
     # For `FacetedSearchFilterBackend` backend
@@ -204,7 +210,7 @@ class PostDocumentViewSet(DocumentViewSet):
         # (`PostDocument`). Since `lookups` key is provided, number
         # of lookups is limited to the given set, while term is the
         # default lookup (as specified in `default_lookup`).
-        'title': {
+        'title_pf': {
             'field': 'title.raw',  # Field name in the Elastic doc
             # Available lookups
             'lookups': [
@@ -226,7 +232,7 @@ class PostDocumentViewSet(DocumentViewSet):
         # available, term is the default lookup). The dictionary value
         # (in this case `category.raw`) is the field name in the
         # Elasticsearch document (`PostDocument`).
-        'category': 'category.raw',
+        'category_pf': 'category.raw',
 
         # The dictionary key (in this case `tags`) is the name of
         # the corresponding GraphQL query argument. Since no lookups
@@ -234,7 +240,7 @@ class PostDocumentViewSet(DocumentViewSet):
         # available, term is the default lookup). The dictionary value
         # (in this case `tags.raw`) is the field name in the
         # Elasticsearch document (`PostDocument`).
-        'tags': 'tags.raw',
+        'tags_pf': 'tags.raw',
 
         # The dictionary key (in this case `num_views`) is the name of
         # the corresponding GraphQL query argument. Since no lookups
@@ -242,7 +248,7 @@ class PostDocumentViewSet(DocumentViewSet):
         # available, term is the default lookup). The dictionary value
         # (in this case `num_views`) is the field name in the
         # Elasticsearch document (`PostDocument`).
-        'num_views': 'num_views',
+        'num_views_pf': 'num_views',
 
         # The dictionary key (in this case `created_at`) is the name of
         # the corresponding GraphQL query argument. Since no lookups
@@ -250,7 +256,7 @@ class PostDocumentViewSet(DocumentViewSet):
         # available, term is the default lookup). The dictionary value
         # (in this case `created_at`) is the field name in the
         # Elasticsearch document (`PostDocument`).
-        'created_at': 'created_at',
+        'created_at_pf': 'created_at',
 
         'i_do_not_exist': 'i_do_not_exist',
     }

@@ -1073,6 +1073,8 @@ ViewSet definition
 In order to add suggestions support, we would have to extend our view set in
 the following way:
 
+.. note:: You should inherit from `DocumentViewSet` instead of `BaseDocumentViewSet`.
+
 *search_indexes/viewsets/publisher.py*
 
 .. code-block:: python

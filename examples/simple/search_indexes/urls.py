@@ -3,29 +3,30 @@ from rest_framework.routers import DefaultRouter
 from .viewsets import (
     AddressDocumentViewSet,
     AuthorDocumentViewSet,
+    BookCompoundFuzzySearchBackendDocumentViewSet,
     BookCompoundSearchBackendDocumentViewSet,
     BookCompoundSearchBoostSearchBackendDocumentViewSet,
+    BookCustomDocumentViewSet,
     BookDefaultFilterLookupDocumentViewSet,
     BookDocumentViewSet,
     BookFrontendDocumentViewSet,
-    BookCustomDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
     BookIgnoreIndexErrorsDocumentViewSet,
     BookMoreLikeThisDocumentViewSet,
     BookMoreLikeThisNoOptionsDocumentViewSet,
     BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
     BookMultiMatchSearchFilterBackendDocumentViewSet,
-    BookPermissionsDocumentViewSet,
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
+    BookPermissionsDocumentViewSet,
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
     BookSourceSearchBackendDocumentViewSet,
     CityCompoundSearchBackendDocumentViewSet,
     CityDocumentViewSet,
+    FrontAddressDocumentViewSet,
     LocationDocumentViewSet,
     PublisherDocumentViewSet,
-    FrontAddressDocumentViewSet,
     TagDocumentViewSet,
 )
 
@@ -124,6 +125,12 @@ router.register(
     r'books-compound-search-backend',
     BookCompoundSearchBackendDocumentViewSet,
     basename='bookdocument_compound_search_backend'
+)
+
+router.register(
+    r'books-compound-fuzzy-search-backend',
+    BookCompoundFuzzySearchBackendDocumentViewSet,
+    basename='bookdocument_compound_fuzzy_search_backend'
 )
 
 router.register(

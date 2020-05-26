@@ -1,11 +1,12 @@
 from .address import AddressDocumentViewSet, FrontAddressDocumentViewSet
 from .author import AuthorDocumentViewSet
 from .book import (
+    BookCompoundFuzzySearchBackendDocumentViewSet,
     BookCompoundSearchBackendDocumentViewSet,
     BookCompoundSearchBoostSearchBackendDocumentViewSet,
+    BookCustomDocumentViewSet,
     BookDefaultFilterLookupDocumentViewSet,
     BookDocumentViewSet,
-    BookCustomDocumentViewSet,
     BookFrontendDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
     BookIgnoreIndexErrorsDocumentViewSet,
@@ -28,11 +29,12 @@ from .tag import TagDocumentViewSet
 __all__ = (
     'AddressDocumentViewSet',
     'AuthorDocumentViewSet',
+    'BookCompoundFuzzySearchBackendDocumentViewSet',
     'BookCompoundSearchBackendDocumentViewSet',
     'BookCompoundSearchBoostSearchBackendDocumentViewSet',
+    'BookCustomDocumentViewSet',
     'BookDefaultFilterLookupDocumentViewSet',
     'BookDocumentViewSet',
-    'BookCustomDocumentViewSet',
     'BookFrontendDocumentViewSet',
     'BookFunctionalSuggesterDocumentViewSet',
     'BookIgnoreIndexErrorsDocumentViewSet',
@@ -48,8 +50,8 @@ __all__ = (
     'BookSourceSearchBackendDocumentViewSet',
     'CityCompoundSearchBackendDocumentViewSet',
     'CityDocumentViewSet',
+    'FrontAddressDocumentViewSet',
     'LocationDocumentViewSet',
     'PublisherDocumentViewSet',
-    'FrontAddressDocumentViewSet',
     'TagDocumentViewSet',
 )

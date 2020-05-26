@@ -1,30 +1,17 @@
 from .base import *
-from .compound_search import BookCompoundSearchBackendDocumentViewSet
-from .compound_search_boost import (
-    BookCompoundSearchBoostSearchBackendDocumentViewSet,
-)
-from .default import BookDocumentViewSet
-from .default_filter_lookup import BookDefaultFilterLookupDocumentViewSet
-from .functional_suggester import BookFunctionalSuggesterDocumentViewSet
-from .ignore_index_errors import BookIgnoreIndexErrorsDocumentViewSet
-from .frontend import BookFrontendDocumentViewSet, BookCustomDocumentViewSet
-from .more_like_this import (
-    BookMoreLikeThisDocumentViewSet,
-    BookMoreLikeThisNoOptionsDocumentViewSet,
-)
-from .multi_match import BookMultiMatchSearchFilterBackendDocumentViewSet
-from .multi_match_options_phrase_prefix import (
-    BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
-)
-from .ordering_by_score import BookOrderingByScoreDocumentViewSet
-from .ordering_by_score_compound_search import (
-    BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
-)
-from .permissions import BookPermissionsDocumentViewSet
-from .simple_query_string import (
-    BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
-)
-from .simple_query_string_boost import (
-    BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
-)
-from .source import BookSourceSearchBackendDocumentViewSet
+from .compound_search import *
+from .compound_search_boost import *
+from .default import *
+from .default_filter_lookup import *
+from .functional_suggester import *
+from .ignore_index_errors import *
+from .frontend import *
+from .more_like_this import *
+from .multi_match import *
+from .multi_match_options_phrase_prefix import *
+from .ordering_by_score import *
+from .ordering_by_score_compound_search import *
+from .permissions import *
+from .simple_query_string import *
+from .simple_query_string_boost import *
+from .source import *

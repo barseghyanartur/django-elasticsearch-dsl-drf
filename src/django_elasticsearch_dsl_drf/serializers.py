@@ -197,6 +197,11 @@ class DocumentSerializer(
         declared_fields = copy.deepcopy(self._declared_fields)
         field_mapping = OrderedDict()
 
+        # Match drf convention of specifying "__all__" for all available fields
+        # This is the existing behavior so we can ignore this value.
+        if __fields == "__all__":
+            __fields = None
+
         for field_name, field_type in six.iteritems(document_fields):
             orig_name = field_name[:]
 

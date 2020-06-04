@@ -200,7 +200,7 @@ class DocumentSerializer(
         # Match drf convention of specifying "__all__" for all available fields
         # This is the existing behavior so we can ignore this value.
         if __fields == "__all__":
-            __fields = None
+            __fields = ()
 
         for field_name, field_type in six.iteritems(document_fields):
             orig_name = field_name[:]

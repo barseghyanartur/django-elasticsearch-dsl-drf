@@ -177,12 +177,10 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
         :param kwargs:
         :return:
         """
-        if options is None:
+        if options is None or 'path' not in options:
             raise ImproperlyConfigured(
                 "You should provide an `path` argument in the field options."
             )
-
-        path = options.pop('path')
 
         if args is None:
             args = []
@@ -191,7 +189,7 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
 
         return queryset.query(
             'nested',
-            path=path,
+            path=options.get('path'),
             query=Q(*args, **kwargs)
         )
 

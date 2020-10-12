@@ -49,3 +49,14 @@ class Publisher(models.Model):
             'lat': self.latitude,
             'lon': self.longitude,
         }
+
+    @property
+    def location_shape_indexing(self):
+        """Location for indexing.
+
+        Used in Elasticsearch indexing/tests of `geo_shape` native filter.
+        """
+        return {
+            'type': 'point',
+            'coordinates': [self.latitude, self.longitude],
+        }

@@ -25,6 +25,7 @@ __all__ = (
     'LOOKUP_FILTER_GEO_BOUNDING_BOX',
     'LOOKUP_FILTER_GEO_DISTANCE',
     'LOOKUP_FILTER_GEO_POLYGON',
+    'LOOKUP_FILTER_GEO_SHAPE',
     'LOOKUP_FILTER_PREFIX',
     'LOOKUP_FILTER_RANGE',
     'LOOKUP_FILTER_REGEXP',
@@ -320,6 +321,44 @@ LOOKUP_FILTER_GEO_POLYGON = 'geo_polygon'
 # Example: http://localhost:8000
 # /api/articles/?location__geo_bounding_box=40.73,-74.1__40.01,-71.12
 LOOKUP_FILTER_GEO_BOUNDING_BOX = 'geo_bounding_box'
+
+# Geo Shape Query
+# Finds documents with:
+#   - geo-shapes which either intersect, are contained by, or do not intersect with the specified geo-shape
+#   - geo-points which intersect the specified geo-shape
+#
+# Example:
+# {
+#     "query": {
+#         "bool" : {
+#             "must" : {
+#                 "match_all" : {}
+#             },
+#             "filter": {
+#                 "geo_shape": {
+#                     "location": {
+#                         "shape": {
+#                             "type": "circle",
+#                             "coordinates": [48.9864453, 6.37977],
+#                             "radius": "20km"
+#                         },
+#                         "relation": "intersects"
+#                     }
+#                 }
+#             }
+#         }
+#     }
+# }
+#
+# Query options:
+#
+# - type: Shape type (envelope, circle, polygon, ...)
+# - relation: Spatial relation operator (intersects, disjoint, within, ...)
+# - radius: in case of circle type, represents circle radius
+#
+# Example: http://localhost:8000
+# /api/articles/?location__geo_shape=48.9864453,6.37977__relation,intersects__type,circle__radius,20km
+LOOKUP_FILTER_GEO_SHAPE = 'geo_shape'
 
 # ****************************************************************************
 # ************************ Functional filters/queries ************************

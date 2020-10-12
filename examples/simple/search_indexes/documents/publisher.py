@@ -78,6 +78,9 @@ class PublisherDocument(Document):
     # Location
     location = fields.GeoPointField(attr='location_field_indexing')
 
+    location_shape = fields.GeoShapeField(strategy='recursive',
+                                          attr='location_shape_indexing')
+
     class Django(object):
         model = Publisher  # The model associate with this Document
 

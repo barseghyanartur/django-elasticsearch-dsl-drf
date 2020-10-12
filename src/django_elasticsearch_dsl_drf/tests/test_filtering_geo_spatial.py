@@ -392,6 +392,164 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             count=0
         )
 
+    @pytest.mark.webtest
+    def _test_field_filter_geo_shape_envelope(self, points, count):
+        """Private helper test field filter geo-shape.
+
+        For testing use
+        http://bboxfinder.com/#48.643798,5.630493,49.344809,6.643982
+
+        Example:
+
+            http://localhost:8000/api/articles/
+            ?location__geo_shape=49.344809,6.643982
+                __48.643798,5.630493
+                __relation,within
+                __type,envelope
+
+        :param points:
+        :param count:
+        :type points:
+        :type count:
+        :return:
+        :rtype:
+        """
+        self.authenticate()
+
+        __params = '{val1},{val2}{sep}{val3},{val4}{sep}relation,{val5}{sep}type,{val6}'.format(
+            val1=49.344809,
+            val2=6.643982,
+            val3=48.643798,
+            val4=5.630493,
+            val5='within',
+            val6='envelope',
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
+        )
+
+        publishers = []
+
+        url = self.base_publisher_url[:] + '?{}={}'.format(
+            'location_shape__geo_shape',
+            __params
+        )
+
+        data = {}
+
+        for __lat, __lon in points:
+            publishers.append(
+                factories.PublisherFactory(
+                    latitude=__lat,
+                    longitude=__lon,
+                )
+            )
+
+        call_command('search_index', '--rebuild', '-f')
+        self.sleep()
+
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        print(response.data)
+        self.assertEqual(len(response.data['results']), count)
+
+        return publishers
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_shape_envelope(self):
+        """Test field filter geo-shape.
+
+        :return:
+        """
+        points = [
+            # inside the envelope
+            (48.954523, 6.395931),
+            (48.6937223, 6.1834097),
+            # outside the envelope
+            (48.420087, 7.657471),
+            (48.727546, 7.068596),
+        ]
+
+        return self._test_field_filter_geo_shape_envelope(
+            points=points,
+            count=2
+        )
+
+    @pytest.mark.webtest
+    def _test_field_filter_geo_shape_circle(self, points, count):
+        """Private helper test field filter geo-shape.
+
+        For testing use
+        https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B10000%2C49.1196964%2C6.1763552%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%5D
+
+        Example:
+
+            http://localhost:8000/api/articles/
+            ?location__geo_shape=49.119696,6.176355
+                __radius,10km
+                __relation,within
+                __type,circle
+
+        :param points:
+        :param count:
+        :type points:
+        :type count:
+        :return:
+        :rtype:
+        """
+        self.authenticate()
+
+        __params = '{val1},{val2}{sep}relation,{val3}{sep}type,{val4}{sep}radius,{val5}'.format(
+            val1=49.119696,
+            val2=6.176355,
+            val3='within',
+            val4='circle',
+            val5='10km',
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
+        )
+
+        publishers = []
+
+        url = self.base_publisher_url[:] + '?{}={}'.format(
+            'location_shape__geo_shape',
+            __params
+        )
+
+        data = {}
+
+        for __lat, __lon in points:
+            publishers.append(
+                factories.PublisherFactory(
+                    latitude=__lat,
+                    longitude=__lon,
+                )
+            )
+
+        call_command('search_index', '--rebuild', '-f')
+        self.sleep()
+
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']), count)
+
+        return publishers
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_shape_circle(self):
+        """Test field filter geo-shape.
+
+        :return:
+        """
+        valid_points = [
+            (49.0999832, 6.153041),
+            (49.061012, 6.1529298),
+            # outside circle
+            (48.6937223, 6.1834097),
+        ]
+
+        return self._test_field_filter_geo_shape_circle(
+            points=valid_points,
+            count=2
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

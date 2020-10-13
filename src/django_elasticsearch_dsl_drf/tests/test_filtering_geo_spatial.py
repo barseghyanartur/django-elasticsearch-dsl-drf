@@ -444,6 +444,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             __params
         )
 
+        print(url)
         publishers = []
         for __lat, __lon in points:
             publishers.append(
@@ -491,7 +492,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
 
         :return:
         """
-        valid_points = [
+        points = [
             (49.0999832, 6.153041),
             (49.061012, 6.1529298),
             # outside circle
@@ -499,10 +500,32 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         ]
 
         return self._test_field_filter_geo_shape(
-            points=valid_points,
+            points=points,
             count=2,
             gs_coordinates=[['49.119696', '6.176355']],
             gs_relation='within',
+            gs_type='circle',
+            gs_extra='radius,10km',
+        )
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_shape_circle_intersects(self):
+        """Test field filter geo-shape.
+
+        :return:
+        """
+        points = [
+            # intersects with query's circle
+            (48.584614, 7.7507127),
+            # do not intersects with query's circle
+            (48.5419351, 7.4924679),
+        ]
+
+        return self._test_field_filter_geo_shape(
+            points=points,
+            count=1,
+            gs_coordinates=[['48.5728929', '7.8109768']],
+            gs_relation='intersects',
             gs_type='circle',
             gs_extra='radius,10km',
         )

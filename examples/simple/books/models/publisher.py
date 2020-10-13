@@ -52,11 +52,23 @@ class Publisher(models.Model):
 
     @property
     def location_shape_indexing(self):
-        """Location for indexing.
-
+        """
+        Indexing point geo_shape.
         Used in Elasticsearch indexing/tests of `geo_shape` native filter.
         """
         return {
             'type': 'point',
             'coordinates': [self.latitude, self.longitude],
+        }
+
+    @property
+    def location_circle_indexing(self):
+        """
+        Indexing circle geo_shape with 10km radius.
+        Used in Elasticsearch indexing/tests of `geo_shape` native filter.
+        """
+        return {
+            'type': 'circle',
+            'coordinates': [self.latitude, self.longitude],
+            'radius': '10km',
         }

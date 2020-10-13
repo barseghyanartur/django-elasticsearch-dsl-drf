@@ -410,7 +410,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                         float(__lat_lon[0]),
                         float(__lat_lon[1]),
                     ]
-                    __coordinates.append(__point.copy())
+                    __coordinates.append(list(__point))
                 except ValueError:
                     if SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE in value:
                         __opt_name_val = value.split(

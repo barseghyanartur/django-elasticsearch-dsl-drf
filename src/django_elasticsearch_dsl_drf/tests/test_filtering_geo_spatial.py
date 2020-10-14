@@ -392,6 +392,163 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             count=0
         )
 
+    @pytest.mark.webtest
+    def _test_field_filter_geo_shape(self, points, count, gs_data):
+        """Private helper test field filter geo-shape.
+
+        For testing use
+          Box:
+            http://bboxfinder.com/#48.643798,5.630493,49.344809,6.643982
+          Circle:
+            https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B10000%2C49.1196964%2C6.1763552%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%5D
+
+        Examples:
+
+            http://localhost:8000/search/publishers/
+            ?location_point__geo_shape=49.344809,6.643982
+                __48.643798,5.630493
+                __relation,within
+                __type,envelope
+
+            http://localhost:8000/search/publishers/
+            ?location_point__geo_shape=49.119696,6.176355
+                __radius,10km
+                __relation,within
+                __type,circle
+
+            http://localhost:8000/search/publishers/
+            ?location_circle__geo_shape=49.119696,6.176355
+                __radius,15km
+                __relation,intersects
+                __type,circle
+
+        :param points:
+        :param count:
+        :param gs_data: contains geo_shape query data (type, relation, radius etc)
+        :type points: list
+        :type count: int
+        :type gs_data: dict
+        :return:
+        :rtype:
+        """
+        self.authenticate()
+
+        gs_coordinates = gs_data.get('coordinates')
+        __params = ','.join(gs_coordinates[0])
+        for coord in gs_coordinates[1:]:
+            __params = '{}{}{}'.format(__params, SEPARATOR_LOOKUP_COMPLEX_VALUE, ','.join(coord))
+
+        __params = '{}{sep}relation,{}{sep}type,{}'.format(
+            __params,
+            gs_data.get('relation'),
+            gs_data.get('type'),
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
+        )
+
+        gs_extra = gs_data.get('extra')
+        if gs_extra:
+            __params = '{}{}{}'.format(__params, SEPARATOR_LOOKUP_COMPLEX_VALUE, gs_extra)
+
+        url = self.base_publisher_url[:] + '?{field}{}={}'.format(
+            '__geo_shape',
+            __params,
+            field=gs_data.get('field')
+        )
+
+        publishers = []
+        for __lat, __lon in points:
+            publishers.append(
+                factories.PublisherFactory(
+                    latitude=__lat,
+                    longitude=__lon,
+                )
+            )
+
+        call_command('search_index', '--rebuild', '-f')
+        self.sleep()
+
+        response = self.client.get(url, {})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']), count)
+
+        return publishers
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_shape_envelope(self):
+        """Test field filter geo-shape.
+
+        :return:
+        """
+        points = [
+            # inside the envelope
+            (48.954523, 6.395931),
+            (48.6937223, 6.1834097),
+            # outside the envelope
+            (48.420087, 7.657471),
+            (48.727546, 7.068596),
+        ]
+
+        return self._test_field_filter_geo_shape(
+            points=points,
+            count=2,
+            gs_data={
+                'field': 'location_point',
+                'coordinates': [['49.344809', '6.643982'], ['48.643798', '5.630493']],
+                'relation': 'within',
+                'type': 'envelope',
+            }
+        )
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_shape_circle(self):
+        """Test field filter geo-shape.
+
+        :return:
+        """
+        points = [
+            (49.0999832, 6.153041),
+            (49.061012, 6.1529298),
+            # outside circle
+            (48.6937223, 6.1834097),
+        ]
+
+        return self._test_field_filter_geo_shape(
+            points=points,
+            count=2,
+            gs_data={
+                'field': 'location_point',
+                'coordinates': [['49.119696', '6.176355']],
+                'relation': 'within',
+                'type': 'circle',
+                'extra': 'radius,10km',
+            }
+        )
+
+    @pytest.mark.webtest
+    def test_field_filter_geo_shape_circle_intersects(self):
+        """Test field filter geo-shape.
+
+        :return:
+        """
+        points = [
+            # intersects with query's circle
+            (48.584614, 7.7507127),
+            # do not intersects with query's circle
+            (48.5419351, 7.4924679),
+        ]
+
+        return self._test_field_filter_geo_shape(
+            points=points,
+            count=1,
+            gs_data={
+                'field': 'location_circle',
+                'coordinates':  [['48.5728929', '7.8109768']],
+                'relation':  'intersects',
+                'type': 'circle',
+                'extra': 'radius,10km',
+            }
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1290,7 +1290,7 @@ view set.
             "successful": 1,
             "total": 1
         },
-        "country_suggest__completion": [
+        "tag_suggest__completion": [
             {
                 "options": [
                     {

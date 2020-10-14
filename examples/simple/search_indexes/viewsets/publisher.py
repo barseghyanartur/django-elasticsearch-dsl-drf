@@ -74,7 +74,12 @@ class PublisherDocumentViewSet(DocumentViewSet):
             ],
         },
         'location_2': 'location',
-        'location_shape': {
+        'location_point': {
+            'lookups': [
+                LOOKUP_FILTER_GEO_SHAPE,
+            ]
+        },
+        'location_circle': {
             'lookups': [
                 LOOKUP_FILTER_GEO_SHAPE,
             ]

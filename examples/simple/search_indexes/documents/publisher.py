@@ -78,8 +78,9 @@ class PublisherDocument(Document):
     # Location
     location = fields.GeoPointField(attr='location_field_indexing')
 
-    location_shape = fields.GeoShapeField(strategy='recursive',
-                                          attr='location_shape_indexing')
+    # Geo-shape fields
+    location_point = fields.GeoShapeField(strategy='recursive',
+                                          attr='location_point_indexing')
     location_circle = fields.GeoShapeField(strategy='recursive',
                                            attr='location_circle_indexing')
 

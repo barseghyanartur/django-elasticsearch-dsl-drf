@@ -927,6 +927,91 @@ Ordering
 
     http://localhost:8000/search/publishers/?ordering=location__48.85__2.30__km__plane
 
+Geo-shape
+~~~~~~~~
+
+**Setup**
+
+In order to be able to do all geo-shape queries, you need a GeoShapeField with 'recursive' strategy.
+Details about spatial strategies here : https://www.elastic.co/guide/en/elasticsearch/reference/master/geo-shape.html#spatial-strategy
+
+.. code-block:: python
+
+        # ...
+
+        @INDEX.doc_type
+        class PublisherDocument(Document):
+
+        # ...
+
+            location_circle = fields.GeoShapeField(strategy='recursive',
+                                                   attr='location_circle_indexing')
+
+        # ...
+
+        class Publisher(models.Model):
+
+        # ...
+
+            @property
+            def location_circle_indexing(self):
+                """
+                Indexing circle geo_shape with 10km radius.
+                Used in Elasticsearch indexing/tests of `geo_shape` native filter.
+                """
+                return {
+                    'type': 'circle',
+                    'coordinates': [self.latitude, self.longitude],
+                    'radius': '10km',
+                }
+
+
+You need to use GeoSpatialFilteringFilterBackend and set the LOOKUP_FILTER_GEO_SHAPE to the geo_spatial_filter_field. (This takes place in ViewSet)
+
+.. code-block:: python
+
+        # ...
+        class PublisherDocumentViewSet(DocumentViewSet):
+        # ...
+            filter_backends = [
+                # ...
+                GeoSpatialFilteringFilterBackend,
+                # ...
+            ]
+        # ...
+            geo_spatial_filter_fields = {
+                # ...
+                'location_circle': {
+                    'lookups': [
+                        LOOKUP_FILTER_GEO_SHAPE,
+                    ]
+                },
+                # ...
+            }
+        # ...
+
+
+**Supported shapes & queries**
+
+With this setup, we can do several types of Geo-shape queries.
+
+Supported and tested shapes types are : point, circle, envelope
+
+Pottentially supported but untested shapes are : multipoint and linestring
+
+Supported and tested queries are : INTERSECTS, DISJOINT, WITHIN, CONTAINS
+
+**Shape intersects**
+
+Interesting queries are shape intersects : this gives you all documents whose shape intersects with the shape given in query. (Should be 2 with the actual test dataset)
+
+.. code-block:: text
+
+    http://localhost:8000/search/publishers/?location_circle__geo_shape=49.119696,6.176355__radius,15km__relation,intersects__type,circle
+
+This request give you all publishers having a location_circle intersecting with the one in the query.
+
+
 Suggestions
 -----------
 

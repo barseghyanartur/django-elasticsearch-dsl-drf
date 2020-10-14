@@ -51,7 +51,7 @@ class Publisher(models.Model):
         }
 
     @property
-    def location_shape_indexing(self):
+    def location_point_indexing(self):
         """
         Indexing point geo_shape.
         Used in Elasticsearch indexing/tests of `geo_shape` native filter.

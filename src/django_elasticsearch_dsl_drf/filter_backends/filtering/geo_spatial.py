@@ -426,16 +426,18 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                     }
                                 )
 
-        if not __coordinates:
+        __type = __options.pop('type', None)
+        __relation = __options.pop('relation', None)
+        if not __coordinates or not __type or not __relation:
             return {}
 
         params = {
             field: {
                 'shape': {
-                    'type': __options.pop('type'),
+                    'type': __type,
                     'coordinates': __coordinates if len(__coordinates) > 1 else __coordinates[0],
                 },
-                'relation': __options.pop('relation'),
+                'relation': __relation,
             }
         }
         radius = __options.pop('radius', None)

@@ -347,14 +347,14 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         Example:
 
-            /api/articles/?location__geo_shape=48.9864453,6.37977
+            /search/publishers/?location__geo_shape=48.9864453,6.37977
                 __relation,intersects
                 __type,circle
                 __radius,20km
 
         Example:
 
-            /api/articles/?location__geo_shape=48.906254,6.378593
+            /search/publishers/?location__geo_shape=48.906254,6.378593
                 __48.985850,6.479359
                 __relation,within
                 __type,envelope

@@ -1001,7 +1001,7 @@ Pottentially supported but untested shapes are : multipoint and linestring
 
 Supported and tested queries are : INTERSECTS, DISJOINT, WITHIN, CONTAINS
 
-**Shape intersects**
+**Shapes intersects**
 
 Interesting queries are shape intersects : this gives you all documents whose shape intersects with the shape given in query. (Should be 2 with the actual test dataset)
 

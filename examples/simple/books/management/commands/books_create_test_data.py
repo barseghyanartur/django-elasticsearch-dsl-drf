@@ -4,7 +4,6 @@ from django.core.management.base import BaseCommand, CommandError
 
 import factories
 
-
 DEFAULT_NUMBER_OF_ITEMS_TO_CREATE = 100
 
 
@@ -52,5 +51,18 @@ class Command(BaseCommand):
         try:
             addresses = factories.AddressFactory.create_batch(number)
             print("{} address objects created.".format(number))
+        except Exception as err:
+            raise CommandError(str(err))
+
+        try:
+            points = [[50.691589, 3.174173], [49.076088, 6.222905], [48.983755, 6.019749]]
+            for point in points:
+                factories.PublisherFactory.create(
+                    **{
+                        'latitude': point[0],
+                        'longitude': point[1],
+                    }
+                )
+            print("{} publishers objects created.".format(len(points)))
         except Exception as err:
             raise CommandError(str(err))

@@ -15,6 +15,18 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.20.9
+------
+2020-10-16
+
+.. note::
+
+    Help to rebuild the Armenian homeland. Please, `make a donation
+    <https://www.himnadram.org/en>`__. All donations received are solely for
+    humanitarian purposes.
+
+- Implemented ``geo_shape`` filter.
+
 0.20.8
 ------
 2020-04-10

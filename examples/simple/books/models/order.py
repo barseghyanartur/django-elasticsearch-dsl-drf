@@ -26,3 +26,11 @@ class Order(models.Model):
 
     def __str__(self):
         return _('Order')
+
+    @property
+    def created_indexing(self):
+        return self.created.strftime(settings.ELASTICSEARCH_DATETIME_FORMAT)
+
+    @property
+    def updated_indexing(self):
+        return self.updated.strftime(settings.ELASTICSEARCH_DATETIME_FORMAT)

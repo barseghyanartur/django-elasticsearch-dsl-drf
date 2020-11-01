@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 from six import python_2_unicode_compatible
 
@@ -72,3 +73,7 @@ class Book(models.Model):
         Used in Elasticsearch indexing/tests of `isnull` functional filter.
         """
         return None
+
+    @property
+    def created_indexing(self):
+        return self.created.strftime(settings.ELASTICSEARCH_DATETIME_FORMAT)

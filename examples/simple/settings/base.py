@@ -285,6 +285,8 @@ ELASTICSEARCH_INDEX_NAMES = {
     'search_indexes.documents.location': 'location',
 }
 
+ELASTICSEARCH_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
+
 LOGIN_URL = '/en/accounts/login/'
 LOGIN_ERROR_URL = '/en/accounts/login/'
 LOGOUT_URL = '/en/accounts/logout/'

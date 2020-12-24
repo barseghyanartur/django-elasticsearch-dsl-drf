@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Autosuggest from 'react-autosuggest'
 import { debounce } from 'throttle-debounce'
+import { DefaultButton, initializeIcons } from "office-ui-fabric-react";
 
 import './Search.css';
 import api from '../../api';
@@ -12,6 +13,7 @@ import Result from '../../components/Result/Result';
 import Filter from '../../components/Filter/Filter';
 import Pagination from '../../components/Pagination/Pagination';
 
+initializeIcons();
 
 class Search extends React.Component {
 

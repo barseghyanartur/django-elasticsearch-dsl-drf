@@ -75,15 +75,21 @@ class NestedQueryBackend(BaseSearchQueryBackend):
                     for _field in options.get('fields', []):
                         # In case if we deal with structure 2
                         if isinstance(_field, dict):
-                            # TODO: take options (ex: boost) into consideration
+                            # take options (ex: boost) into consideration
+                            field_options = {key: value for key, value in _field.items() if key != 'name'}
+                            field_options.update({
+                                "query": search_term,
+                            })
                             field = "{}.{}".format(path, _field['name'])
+                            field_kwargs = {
+                                field: field_options,
+                            }
                         # In case if we deal with structure 1
                         else:
                             field = "{}.{}".format(path, _field)
-
-                        field_kwargs = {
-                            field: value
-                        }
+                            field_kwargs = {
+                                field: value
+                            }
 
                         queries = [
                             Q("match", **field_kwargs)
@@ -104,15 +110,21 @@ class NestedQueryBackend(BaseSearchQueryBackend):
                     for _field in options.get('fields', []):
                         # In case if we deal with structure 2
                         if isinstance(_field, dict):
-                            # TODO: take options (ex: boost) into consideration
+                            # take options (ex: boost) into consideration
+                            field_options = {key: value for key, value in _field.items() if key != 'name'}
+                            field_options.update({
+                                "query": search_term,
+                            })
                             field = "{}.{}".format(path, _field['name'])
+                            field_kwargs = {
+                                field: field_options,
+                            }
                         # In case if we deal with structure 1
                         else:
                             field = "{}.{}".format(path, _field)
-
-                        field_kwargs = {
-                            field: search_term
-                        }
+                            field_kwargs = {
+                                field: search_term
+                            }
 
                         queries.append(
                             Q("match", **field_kwargs)

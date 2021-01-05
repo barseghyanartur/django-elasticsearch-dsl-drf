@@ -221,7 +221,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
         else:
             queryset = queryset.filter(
                 'term',
-                **{self.document_uid_field: self.kwargs[lookup_url_kwarg]}
+                **{lookup_url_kwarg: self.kwargs[lookup_url_kwarg]}
             )
 
             hits = queryset.execute().hits.hits

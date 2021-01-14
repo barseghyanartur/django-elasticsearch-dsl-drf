@@ -233,6 +233,5 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
             'options': {
                 'metric': A('max', field='price'),
             },
-            'enabled': True,
         },
     }

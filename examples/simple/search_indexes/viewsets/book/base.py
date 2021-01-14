@@ -25,7 +25,7 @@ from django_elasticsearch_dsl_drf.viewsets import (
     BaseDocumentViewSet,
 )
 
-from elasticsearch_dsl import DateHistogramFacet, RangeFacet
+from elasticsearch_dsl import DateHistogramFacet, RangeFacet, A
 
 from ...documents import BookDocument
 from ...serializers import BookDocumentSimpleSerializer
@@ -227,5 +227,12 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
                     (">50", (50, None)),
                 ]
             }
+        },
+        'price_metric_max': {
+            "field": "price",
+            'options': {
+                'metric': A('max', field='price'),
+            },
+            'enabled': True,
         },
     }

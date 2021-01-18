@@ -17,7 +17,6 @@ from rest_framework.response import Response
 
 import six
 
-# from .compat import get_count
 from .versions import ELASTICSEARCH_GTE_6_0
 
 __title__ = 'django_elasticsearch_dsl_drf.pagination'
@@ -32,15 +31,20 @@ __all__ = (
 )
 
 
-class Page(django_paginator.Page):
+class GetCountMixin:
+
+    def get_count(self, es_response):
+        if isinstance(es_response.hits.total, AttrDict):
+            return es_response.hits.total.value
+        return es_response.hits.total
+
+
+class Page(django_paginator.Page, GetCountMixin):
     """Page for Elasticsearch."""
 
     def __init__(self, object_list, number, paginator, facets):
         self.facets = facets
-        if isinstance(object_list.hits.total, AttrDict):
-            self.count = object_list.hits.total.value
-        else:
-            self.count = object_list.hits.total
+        self.count = self.get_count(object_list)
         super(Page, self).__init__(object_list, number, paginator)
 
 
@@ -73,7 +77,7 @@ class Paginator(django_paginator.Paginator):
         return Page(*args, **kwargs)
 
 
-class PageNumberPagination(pagination.PageNumberPagination):
+class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
     """Page number pagination.
 
     A simple page number based style that supports page numbers as
@@ -203,13 +207,8 @@ class PageNumberPagination(pagination.PageNumberPagination):
         """
         return Response(OrderedDict(self.get_paginated_response_context(data)))
 
-    def get_count(self, es_response):
-        if isinstance(es_response.hits.total, AttrDict):
-            return es_response.hits.total.value
-        return es_response.hits.total
 
-
-class LimitOffsetPagination(pagination.LimitOffsetPagination):
+class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
     """A limit/offset pagination.
 
     Example:
@@ -321,8 +320,3 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination):
         :return:
         """
         return Response(OrderedDict(self.get_paginated_response_context(data)))
-
-    def get_count(self, es_response):
-        if isinstance(es_response.hits.total, AttrDict):
-            return es_response.hits.total.value
-        return es_response.hits.total

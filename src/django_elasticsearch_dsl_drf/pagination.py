@@ -57,12 +57,11 @@ class Paginator(django_paginator.Paginator):
         :param number:
         :return:
         """
-        number = self.validate_number(number)
         bottom = (number - 1) * self.per_page
         top = bottom + self.per_page
-        if top + self.orphans >= self.count:
-            top = self.count
         object_list = self.object_list[bottom:top].execute()
+        self.count = int(object_list.hits.total)
+        number = self.validate_number(number)
         __facets = getattr(object_list, 'aggregations', None)
         return self._get_page(object_list, number, self, facets=__facets)
 

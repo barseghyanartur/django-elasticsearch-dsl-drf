@@ -48,7 +48,7 @@ class Page(django_paginator.Page, GetCountMixin):
         super(Page, self).__init__(object_list, number, paginator)
 
 
-class Paginator(django_paginator.Paginator):
+class Paginator(django_paginator.Paginator, GetCountMixin):
     """Paginator for Elasticsearch."""
 
     def page(self, number):
@@ -60,7 +60,7 @@ class Paginator(django_paginator.Paginator):
         bottom = (number - 1) * self.per_page
         top = bottom + self.per_page
         object_list = self.object_list[bottom:top].execute()
-        self.count = int(object_list.hits.total)
+        self.count = int(self.get_count(object_list))
         number = self.validate_number(number)
         __facets = getattr(object_list, 'aggregations', None)
         return self._get_page(object_list, number, self, facets=__facets)

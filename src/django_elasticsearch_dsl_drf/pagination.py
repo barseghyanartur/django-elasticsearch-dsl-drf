@@ -94,6 +94,7 @@ class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
     """
 
     django_paginator_class = Paginator
+    page_size_query_param = 'page_size'
 
     def __init__(self, *args, **kwargs):
         """Constructor.

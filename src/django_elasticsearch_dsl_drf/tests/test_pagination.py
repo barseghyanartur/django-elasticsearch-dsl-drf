@@ -42,32 +42,56 @@ class TestPagination(BaseRestFrameworkTestCase):
     def setUpClass(cls):
         """Set up class."""
         super(TestPagination, cls).setUpClass()
-        cls.publishers = factories.PublisherFactory.create_batch(40)
-        cls.books = factories.BookFactory.create_batch(40)
+        cls.publishers = factories.PublisherFactory.create_batch(43)
+        cls.books = factories.BookFactory.create_batch(43)
 
         cls.sleep()
         call_command('search_index', '--rebuild', '-f')
 
     def _test_pagination(self):
         """Test pagination."""
-        self.authenticate()
+        invalid_page_url = self.books_url + '?page=3&page_size=30'
 
-        publishers_url = reverse('publisherdocument-list', kwargs={})
-        books_url = reverse('bookdocument-list', kwargs={})
-        data = {}
-
-        invalid_page_url = books_url + '?page=3&page_size=30'
-
-        invalid_response = self.client.get(invalid_page_url, data)
+        invalid_response = self.client.get(invalid_page_url, self.data)
         self.assertEqual(
             invalid_response.status_code,
             status.HTTP_404_NOT_FOUND
         )
 
-        valid_page_url = publishers_url + '?limit=5&offset=8'
+    def _test_pagination_orphans(self):
+        """Test pagination returning orphaned nodes"""
+        valid_page_url = self.books_url + '?page=1&page_size=40&orphans=3'
 
         # Check if response now is valid
-        valid_response = self.client.get(valid_page_url, data)
+        valid_response = self.client.get(valid_page_url, self.data)
+        self.assertEqual(valid_response.status_code, status.HTTP_200_OK)
+
+        # Check totals
+        self.assertEqual(len(valid_response.data['results']), 43)
+
+    def _test_pagination_orphans_over(self):
+        """Test pagination when orphaned nodes fall into next page"""
+        valid_page_url = self.books_url + '?page=1&page_size=40&orphans=2'
+
+        # Check if response now is valid
+        valid_response = self.client.get(valid_page_url, self.data)
+        self.assertEqual(valid_response.status_code, status.HTTP_200_OK)
+
+        # Check totals
+        self.assertEqual(len(valid_response.data['results']), 40)
+
+        valid_page_url = self.books_url + '?page=2&page_size=40&orphans=2'
+
+        valid_response = self.client.get(valid_page_url, self.data)
+        self.assertEqual(valid_response.status_code, status.HTTP_200_OK)
+
+        # Check totals
+        self.assertEqual(len(valid_response.data['results']), 3)
+
+    def _test_pagination_offset(self):
+        """Test pagination defined by offset and limit"""
+        valid_page_url = self.publishers_url + '?limit=5&offset=8'
+        valid_response = self.client.get(valid_page_url, self.data)
         self.assertEqual(valid_response.status_code, status.HTTP_200_OK)
 
         # Check totals
@@ -75,7 +99,15 @@ class TestPagination(BaseRestFrameworkTestCase):
 
     def test_pagination(self):
         """Test pagination."""
-        return self._test_pagination()
+        self.authenticate()
+        self.publishers_url = reverse('publisherdocument-list', kwargs={})
+        self.books_url = reverse('bookdocument-list', kwargs={})
+        self.data = {}
+
+        self._test_pagination()
+        self._test_pagination_orphans()
+        self._test_pagination_orphans_over()
+        return self._test_pagination_offset()
 
 
 if __name__ == '__main__':

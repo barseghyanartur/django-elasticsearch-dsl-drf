@@ -33,7 +33,7 @@ __all__ = (
 
 class GetCountMixin:
 
-    def get_count(self, es_response):
+    def get_es_count(self, es_response):
         if isinstance(es_response, list):
             return len(es_response)
         if isinstance(es_response.hits.total, AttrDict):
@@ -46,7 +46,7 @@ class Page(django_paginator.Page, GetCountMixin):
 
     def __init__(self, object_list, number, paginator, facets):
         self.facets = facets
-        self.count = self.get_count(object_list)
+        self.count = self.get_es_count(object_list)
         super(Page, self).__init__(object_list, number, paginator)
 
 
@@ -62,7 +62,7 @@ class Paginator(django_paginator.Paginator, GetCountMixin):
         bottom = (number - 1) * self.per_page
         top = bottom + self.per_page
         object_list = self.object_list[bottom:top].execute()
-        self.count = int(self.get_count(object_list))
+        self.count = int(self.get_es_count(object_list))
         if self.count > top and self.count - top <= self.orphans:
             # Fetch the additional orphaned nodes
             object_list = list(object_list) + list(self.object_list[top:self.count].execute())
@@ -257,13 +257,13 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
         # If we got to this point, it means it's not a suggest or functional
         # suggest case.
 
-        # if hasattr(self, 'get_count'):
-        #     self.count = self.get_count(queryset)
+        # if hasattr(self, 'get_es_count'):
+        #     self.count = self.get_es_count(queryset)
         # else:
         #     from rest_framework.pagination import _get_count
         #     self.count = _get_count(queryset)
 
-        # self.count = get_count(self, queryset)
+        # self.count = get_es_count(self, queryset)
 
         self.limit = self.get_limit(request)
         if self.limit is None:
@@ -275,7 +275,7 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
         resp = queryset[self.offset:self.offset + self.limit].execute()
         self.facets = getattr(resp, 'aggregations', None)
 
-        self.count = self.get_count(resp)
+        self.count = self.get_es_count(resp)
 
         if self.count > self.limit and self.template is not None:
             self.display_page_controls = True

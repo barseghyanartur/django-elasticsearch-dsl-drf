@@ -34,6 +34,8 @@ __all__ = (
 class GetCountMixin:
 
     def get_count(self, es_response):
+        if isinstance(es_response, list):
+            return len(es_response)
         if isinstance(es_response.hits.total, AttrDict):
             return es_response.hits.total.value
         return es_response.hits.total
@@ -61,6 +63,9 @@ class Paginator(django_paginator.Paginator, GetCountMixin):
         top = bottom + self.per_page
         object_list = self.object_list[bottom:top].execute()
         self.count = int(self.get_count(object_list))
+        if self.count > top and self.count - top <= self.orphans:
+            # Fetch the additional orphaned nodes
+            object_list = list(object_list) + list(self.object_list[top:self.count].execute())
         number = self.validate_number(number)
         __facets = getattr(object_list, 'aggregations', None)
         return self._get_page(object_list, number, self, facets=__facets)

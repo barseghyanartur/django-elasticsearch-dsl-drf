@@ -95,6 +95,7 @@ class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
 
     django_paginator_class = Paginator
     page_size_query_param = 'page_size'
+    orphans_query_param = 'orphans'
 
     def __init__(self, *args, **kwargs):
         """Constructor.
@@ -156,7 +157,8 @@ class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
         if not page_size:
             return None
 
-        paginator = self.django_paginator_class(queryset, page_size)
+        orphans = min(int(request.query_params.get(self.orphans_query_param, 0)), page_size)
+        paginator = self.django_paginator_class(queryset, page_size, orphans=orphans)
         page_number = request.query_params.get(self.page_query_param, 1)
         if page_number in self.last_page_strings:
             page_number = paginator.num_pages

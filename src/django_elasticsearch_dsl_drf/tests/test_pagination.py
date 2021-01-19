@@ -8,6 +8,8 @@ import unittest
 
 from django.core.management import call_command
 
+from elasticsearch.connection.base import Connection
+
 from nine.versions import DJANGO_GTE_1_10
 
 import pytest
@@ -30,6 +32,18 @@ __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestPagination',
 )
+
+old_log_request_success = Connection.log_request_success
+es_call_count = 0
+
+
+def patched_log_request_success(self, *args, **kwargs):
+    global es_call_count
+    es_call_count += 1
+    old_log_request_success(self, *args, **kwargs)
+
+
+Connection.log_request_success = patched_log_request_success
 
 
 @pytest.mark.django_db
@@ -104,10 +118,24 @@ class TestPagination(BaseRestFrameworkTestCase):
         self.books_url = reverse('bookdocument-list', kwargs={})
         self.data = {}
 
+        last_es_call_count = es_call_count
         self._test_pagination()
+        # Ensure number of ES calls is only 1
+        self.assertEqual(es_call_count - last_es_call_count, 1)
+
+        last_es_call_count = es_call_count
         self._test_pagination_orphans()
+        # Only in case of orphaned nodes, we need 1 more fallback ES call
+        self.assertEqual(es_call_count - last_es_call_count, 2)
+
+        last_es_call_count = es_call_count
         self._test_pagination_orphans_over()
-        return self._test_pagination_offset()
+        # Here are two requests
+        self.assertEqual(es_call_count - last_es_call_count, 2)
+
+        last_es_call_count = es_call_count
+        self._test_pagination_offset()
+        self.assertEqual(es_call_count - last_es_call_count, 1)
 
 
 if __name__ == '__main__':

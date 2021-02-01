@@ -15,6 +15,17 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.21
+----
+2021-02-01
+
+- Drop support for Python 2.7 and 3.5.
+- Drop support for Django 1.11, 2.0 and 2.1.
+- Tested against Django 3.1 and Python 3.9.
+- Take options (ex: boost, fuzziness) into consideration
+  in `NestedQueryBackend`.
+- Added an example of a proper date formatting.
+
 0.20.9
 ------
 2020-10-16

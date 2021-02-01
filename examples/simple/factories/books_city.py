@@ -1,4 +1,5 @@
-from factory import DjangoModelFactory, SubFactory
+from factory import SubFactory
+from factory.django import DjangoModelFactory
 from factory.fuzzy import FuzzyChoice
 
 from books.models import City

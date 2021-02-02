@@ -34,6 +34,8 @@ __all__ = (
 class GetCountMixin:
 
     def get_es_count(self, es_response):
+        if isinstance(es_response, list):
+            return len(es_response)
         if isinstance(es_response.hits.total, AttrDict):
             return es_response.hits.total.value
         return es_response.hits.total
@@ -48,7 +50,7 @@ class Page(django_paginator.Page, GetCountMixin):
         super(Page, self).__init__(object_list, number, paginator)
 
 
-class Paginator(django_paginator.Paginator):
+class Paginator(django_paginator.Paginator, GetCountMixin):
     """Paginator for Elasticsearch."""
 
     def page(self, number):
@@ -57,12 +59,14 @@ class Paginator(django_paginator.Paginator):
         :param number:
         :return:
         """
-        number = self.validate_number(number)
         bottom = (number - 1) * self.per_page
         top = bottom + self.per_page
-        if top + self.orphans >= self.count:
-            top = self.count
         object_list = self.object_list[bottom:top].execute()
+        self.count = int(self.get_es_count(object_list))
+        if self.count > top and self.count - top <= self.orphans:
+            # Fetch the additional orphaned nodes
+            object_list = list(object_list) + list(self.object_list[top:self.count].execute())
+        number = self.validate_number(number)
         __facets = getattr(object_list, 'aggregations', None)
         return self._get_page(object_list, number, self, facets=__facets)
 
@@ -90,6 +94,8 @@ class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
     """
 
     django_paginator_class = Paginator
+    page_size_query_param = 'page_size'
+    orphans_query_param = 'orphans'
 
     def __init__(self, *args, **kwargs):
         """Constructor.
@@ -151,8 +157,9 @@ class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
         if not page_size:
             return None
 
-        paginator = self.django_paginator_class(queryset, page_size)
-        page_number = request.query_params.get(self.page_query_param, 1)
+        orphans = min(int(request.query_params.get(self.orphans_query_param, 0)), page_size)
+        paginator = self.django_paginator_class(queryset, page_size, orphans=orphans)
+        page_number = int(request.query_params.get(self.page_query_param, 1))
         if page_number in self.last_page_strings:
             page_number = paginator.num_pages
 
@@ -250,13 +257,13 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
         # If we got to this point, it means it's not a suggest or functional
         # suggest case.
 
-        # if hasattr(self, 'get_count'):
-        #     self.count = self.get_count(queryset)
+        # if hasattr(self, 'get_es_count'):
+        #     self.count = self.get_es_count(queryset)
         # else:
         #     from rest_framework.pagination import _get_count
         #     self.count = _get_count(queryset)
 
-        # self.count = get_count(self, queryset)
+        # self.count = get_es_count(self, queryset)
 
         self.limit = self.get_limit(request)
         if self.limit is None:

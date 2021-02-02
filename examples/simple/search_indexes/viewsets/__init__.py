@@ -20,6 +20,7 @@ from .book import (
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
     BookSourceSearchBackendDocumentViewSet,
+    QueryFriendlyPaginationBookDocumentViewSet,
 )
 from .city import CityDocumentViewSet, CityCompoundSearchBackendDocumentViewSet
 from .location import LocationDocumentViewSet
@@ -53,5 +54,6 @@ __all__ = (
     'FrontAddressDocumentViewSet',
     'LocationDocumentViewSet',
     'PublisherDocumentViewSet',
+    'QueryFriendlyPaginationBookDocumentViewSet',
     'TagDocumentViewSet',
 )

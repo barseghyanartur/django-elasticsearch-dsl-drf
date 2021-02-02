@@ -28,16 +28,12 @@ __all__ = (
     'Page',
     'PageNumberPagination',
     'Paginator',
-    'QueryFriendlyPageNumberPagination',
-    'QueryFriendlyPaginator',
 )
 
 
 class GetCountMixin:
 
     def get_es_count(self, es_response):
-        if isinstance(es_response, list):
-            return len(es_response)
         if isinstance(es_response.hits.total, AttrDict):
             return es_response.hits.total.value
         return es_response.hits.total
@@ -79,30 +75,6 @@ class Paginator(django_paginator.Paginator):
         standard :cls:`Page` object.
         """
         return Page(*args, **kwargs)
-
-
-class QueryFriendlyPaginator(Paginator, GetCountMixin):
-    """Paginator for Elasticsearch."""
-
-    def page(self, number):
-        """Returns a Page object for the given 1-based page number.
-
-        :param number:
-        :return:
-        """
-        bottom = (number - 1) * self.per_page
-        top = bottom + self.per_page
-        object_list = self.object_list[bottom:top].execute()
-        self.count = int(self.get_es_count(object_list))
-        if self.count > top and self.count - top <= self.orphans:
-            # Fetch the additional orphaned nodes
-            object_list = (
-                list(object_list) +
-                list(self.object_list[top:self.count].execute())
-            )
-        number = self.validate_number(number)
-        __facets = getattr(object_list, 'aggregations', None)
-        return self._get_page(object_list, number, self, facets=__facets)
 
 
 class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
@@ -236,91 +208,6 @@ class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
         return Response(OrderedDict(self.get_paginated_response_context(data)))
 
 
-class QueryFriendlyPageNumberPagination(PageNumberPagination):
-    """Page number pagination.
-
-    A simple page number based style that supports page numbers as
-    query parameters.
-
-    Example:
-
-        http://api.example.org/accounts/?page=4
-        http://api.example.org/accounts/?page=4&page_size=100
-    """
-
-    django_paginator_class = QueryFriendlyPaginator
-    page_size_query_param = 'page_size'
-    orphans_query_param = 'orphans'
-
-    def paginate_queryset(self, queryset, request, view=None):
-        """Paginate a queryset.
-
-        Paginate a queryset if required, either returning a page object,
-        or `None` if pagination is not configured for this view.
-
-        :param queryset:
-        :param request:
-        :param view:
-        :return:
-        """
-        # TODO: It seems that paginator breaks things. If take out, queries
-        # doo work.
-        # Check if there are suggest queries in the queryset,
-        # ``execute_suggest`` method shall be called, instead of the
-        # ``execute`` method and results shall be returned back immediately.
-        # Placing this code at the very start of ``paginate_queryset`` method
-        # saves us unnecessary queries.
-        is_suggest = getattr(queryset, '_suggest', False)
-        if is_suggest:
-            if ELASTICSEARCH_GTE_6_0:
-                return queryset.execute().to_dict().get('suggest')
-            return queryset.execute_suggest().to_dict()
-
-        # Check if we're using paginate queryset from `functional_suggest`
-        # backend.
-        if view.action == 'functional_suggest':
-            return queryset
-
-        # If we got to this point, it means it's not a suggest or functional
-        # suggest case.
-
-        page_size = self.get_page_size(request)
-        if not page_size:
-            return None
-
-        orphans = min(
-            int(request.query_params.get(self.orphans_query_param, 0)),
-            page_size
-        )
-        paginator = self.django_paginator_class(
-            queryset, page_size, orphans=orphans
-        )
-        page_number = int(request.query_params.get(self.page_query_param, 1))
-        if page_number in self.last_page_strings:
-            page_number = paginator.num_pages
-
-        # Something weird is happening here. If None returned before the
-        # following code, post_filter works. If None returned after this code
-        # post_filter does not work. Obviously, something strange happens in
-        # the paginator.page(page_number) and thus affects the lazy
-        # queryset in such a way, that we get TransportError(400,
-        # 'parsing_exception', 'request does not support [post_filter]')
-        try:
-            self.page = paginator.page(page_number)
-        except django_paginator.InvalidPage as exc:
-            msg = self.invalid_page_message.format(
-                page_number=page_number, message=six.text_type(exc)
-            )
-            raise NotFound(msg)
-
-        if paginator.num_pages > 1 and self.template is not None:
-            # The browsable API should display pagination controls.
-            self.display_page_controls = True
-
-        self.request = request
-        return list(self.page)
-
-
 class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
     """A limit/offset pagination.
 
@@ -363,11 +250,13 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
         # If we got to this point, it means it's not a suggest or functional
         # suggest case.
 
-        # if hasattr(self, 'get_es_count'):
-        #     self.count = self.get_es_count(queryset)
+        # if hasattr(self, 'get_count'):
+        #     self.count = self.get_count(queryset)
         # else:
         #     from rest_framework.pagination import _get_count
         #     self.count = _get_count(queryset)
+
+        # self.count = get_count(self, queryset)
 
         self.limit = self.get_limit(request)
         if self.limit is None:

@@ -33,7 +33,7 @@ __all__ = (
 
 class GetCountMixin:
 
-    def get_count(self, es_response):
+    def get_es_count(self, es_response):
         if isinstance(es_response.hits.total, AttrDict):
             return es_response.hits.total.value
         return es_response.hits.total
@@ -44,7 +44,7 @@ class Page(django_paginator.Page, GetCountMixin):
 
     def __init__(self, object_list, number, paginator, facets):
         self.facets = facets
-        self.count = self.get_count(object_list)
+        self.count = self.get_es_count(object_list)
         super(Page, self).__init__(object_list, number, paginator)
 
 
@@ -268,7 +268,7 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
         resp = queryset[self.offset:self.offset + self.limit].execute()
         self.facets = getattr(resp, 'aggregations', None)
 
-        self.count = self.get_count(resp)
+        self.count = self.get_es_count(resp)
 
         if self.count > self.limit and self.template is not None:
             self.display_page_controls = True

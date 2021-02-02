@@ -1,10 +1,10 @@
 from django.conf import settings
 
 from factory import (
-    DjangoModelFactory,
     PostGenerationMethodCall,
-    Sequence
+    Sequence,
 )
+from factory.django import DjangoModelFactory
 
 from .factory_faker import Faker
 

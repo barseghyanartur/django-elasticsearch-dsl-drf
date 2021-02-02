@@ -1,6 +1,7 @@
 import random
 
-from factory import DjangoModelFactory, LazyAttribute
+from factory import LazyAttribute
+from factory.django import DjangoModelFactory
 from factory.fuzzy import FuzzyChoice
 
 from books.models import Tag

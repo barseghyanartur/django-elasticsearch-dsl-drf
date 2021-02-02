@@ -1,4 +1,5 @@
-from factory import DjangoModelFactory, SubFactory  # , post_generation
+from factory import SubFactory  # , post_generation
+from factory.django import DjangoModelFactory
 
 from books.models import Order
 

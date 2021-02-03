@@ -27,6 +27,12 @@ class Command(BaseCommand):
                             default=True,
                             help="No books.")
 
+        parser.add_argument('--no-journals',
+                            action='store_false',
+                            dest='with_journals',
+                            default=True,
+                            help="No journals.")
+
     def handle(self, *args, **options):
         if options.get('number'):
             number = options['number']
@@ -34,6 +40,7 @@ class Command(BaseCommand):
             number = DEFAULT_NUMBER_OF_ITEMS_TO_CREATE
 
         with_books = bool(options.get('with_books'))
+        with_journals = bool(options.get('with_journals'))
 
         if with_books:
             try:
@@ -45,6 +52,13 @@ class Command(BaseCommand):
             try:
                 book = factories.SingleBookFactory()
                 print("A single book object is created.")
+            except Exception as err:
+                raise CommandError(str(err))
+
+        if with_journals:
+            try:
+                journals = factories.JournalFactory.create_batch(number)
+                print("{} journal objects created.".format(number))
             except Exception as err:
                 raise CommandError(str(err))
 

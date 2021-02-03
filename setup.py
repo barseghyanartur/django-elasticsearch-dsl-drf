@@ -168,7 +168,7 @@ extras_require = []
 
 tests_require = [
     'factory_boy',
-    'fake-factory',
+    'Faker',
     'pytest',
     'pytest-django',
     'pytest-cov',

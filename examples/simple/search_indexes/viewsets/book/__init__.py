@@ -12,6 +12,7 @@ from .multi_match_options_phrase_prefix import *
 from .ordering_by_score import *
 from .ordering_by_score_compound_search import *
 from .permissions import *
+from .query_friendly_pagination import *
 from .simple_query_string import *
 from .simple_query_string_boost import *
 from .source import *

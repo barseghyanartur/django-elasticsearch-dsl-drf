@@ -19,6 +19,11 @@ are used for versioning (schema follows below):
 ----
 2021-02-04
 
+.. note::
+
+    Release dedicated to defenders of Armenia and Artsakh (Nagorno Karabakh)
+    and all the victims of Turkish and Azerbaijani aggression.
+
 - Drop support for Python 2.7 and 3.5.
 - Drop support for Django 1.11, 2.0 and 2.1.
 - Tested against Django 3.1 and Python 3.9.

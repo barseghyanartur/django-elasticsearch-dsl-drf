@@ -17,7 +17,7 @@ are used for versioning (schema follows below):
 
 0.21
 ----
-2021-02-01
+2021-02-04
 
 - Drop support for Python 2.7 and 3.5.
 - Drop support for Django 1.11, 2.0 and 2.1.
@@ -25,6 +25,9 @@ are used for versioning (schema follows below):
 - Take options (ex: boost, fuzziness) into consideration
   in `NestedQueryBackend`.
 - Added an example of a proper date formatting.
+- Added an example of alternative document ID.
+- Added experimental `QueryFriendlyPageNumberPagination` which fires just a single
+  query instead of used two used by `PageNumberPagination`.
 
 0.20.9
 ------

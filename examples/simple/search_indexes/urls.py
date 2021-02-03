@@ -27,6 +27,7 @@ from .viewsets import (
     FrontAddressDocumentViewSet,
     LocationDocumentViewSet,
     PublisherDocumentViewSet,
+    QueryFriendlyPaginationBookDocumentViewSet,
     TagDocumentViewSet,
 )
 
@@ -65,6 +66,12 @@ router.register(
     r'books',
     BookDocumentViewSet,
     basename='bookdocument'
+)
+
+router.register(
+    r'books-query-friendly-pagination',
+    QueryFriendlyPaginationBookDocumentViewSet,
+    basename='bookdocument_query_friendly_pagination'
 )
 
 router.register(

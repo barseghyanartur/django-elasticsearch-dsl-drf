@@ -5,6 +5,7 @@ from .address import (
 from .author import AuthorDocumentSimpleSerializer
 from .book import BookDocumentSerializer, BookDocumentSimpleSerializer
 from .city import CityDocumentSerializer
+from .journal import JournalDocumentSerializer
 from .location import LocationDocumentSerializer
 from .publisher import (
     PublisherDocumentSerializer,
@@ -18,6 +19,7 @@ __all__ = (
     'BookDocumentSerializer',
     'BookDocumentSimpleSerializer',
     'CityDocumentSerializer',
+    'JournalDocumentSerializer',
     'FrontendAddressDocumentSerializer',
     'LocationDocumentSerializer',
     'PublisherDocumentSerializer',

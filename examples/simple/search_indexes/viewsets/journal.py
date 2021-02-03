@@ -38,7 +38,6 @@ class JournalDocumentViewSet(BaseDocumentViewSet):
     """JournalDocument ViewSet."""
 
     document = JournalDocument
-    # serializer_class = BookDocumentSerializer
     serializer_class = JournalDocumentSerializer
     lookup_field = 'isbn'
     document_uid_field = 'isbn.raw'

@@ -1,11 +1,12 @@
 from .address import AddressDocumentViewSet, FrontAddressDocumentViewSet
 from .author import AuthorDocumentViewSet
 from .book import (
+    BookCompoundFuzzySearchBackendDocumentViewSet,
     BookCompoundSearchBackendDocumentViewSet,
     BookCompoundSearchBoostSearchBackendDocumentViewSet,
+    BookCustomDocumentViewSet,
     BookDefaultFilterLookupDocumentViewSet,
     BookDocumentViewSet,
-    BookCustomDocumentViewSet,
     BookFrontendDocumentViewSet,
     BookFunctionalSuggesterDocumentViewSet,
     BookIgnoreIndexErrorsDocumentViewSet,
@@ -19,8 +20,10 @@ from .book import (
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
     BookSourceSearchBackendDocumentViewSet,
+    QueryFriendlyPaginationBookDocumentViewSet,
 )
 from .city import CityDocumentViewSet, CityCompoundSearchBackendDocumentViewSet
+from .journal import JournalDocumentViewSet
 from .location import LocationDocumentViewSet
 from .publisher import PublisherDocumentViewSet
 from .tag import TagDocumentViewSet
@@ -28,11 +31,12 @@ from .tag import TagDocumentViewSet
 __all__ = (
     'AddressDocumentViewSet',
     'AuthorDocumentViewSet',
+    'BookCompoundFuzzySearchBackendDocumentViewSet',
     'BookCompoundSearchBackendDocumentViewSet',
     'BookCompoundSearchBoostSearchBackendDocumentViewSet',
+    'BookCustomDocumentViewSet',
     'BookDefaultFilterLookupDocumentViewSet',
     'BookDocumentViewSet',
-    'BookCustomDocumentViewSet',
     'BookFrontendDocumentViewSet',
     'BookFunctionalSuggesterDocumentViewSet',
     'BookIgnoreIndexErrorsDocumentViewSet',
@@ -48,8 +52,10 @@ __all__ = (
     'BookSourceSearchBackendDocumentViewSet',
     'CityCompoundSearchBackendDocumentViewSet',
     'CityDocumentViewSet',
+    'JournalDocumentViewSet',
+    'FrontAddressDocumentViewSet',
     'LocationDocumentViewSet',
     'PublisherDocumentViewSet',
-    'FrontAddressDocumentViewSet',
+    'QueryFriendlyPaginationBookDocumentViewSet',
     'TagDocumentViewSet',
 )

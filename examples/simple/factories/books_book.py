@@ -1,11 +1,11 @@
 import random
 
 from factory import (
-    DjangoModelFactory,
     SubFactory,
     post_generation,
     LazyAttribute,
 )
+from factory.django import DjangoModelFactory
 from factory.fuzzy import FuzzyChoice
 
 from books.constants import BOOK_PUBLISHING_STATUS_CHOICES

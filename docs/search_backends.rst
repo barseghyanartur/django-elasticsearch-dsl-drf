@@ -6,8 +6,10 @@ Compound search filter backend
 ==============================
 Compound search filter backend aims to replace old style `SearchFilterBackend`.
 
-Sample view
+Multi-match
 -----------
+Sample view
+~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -44,14 +46,14 @@ Sample view
         ordering = ('_score', 'id', 'title', 'price',)
 
 Sample request
---------------
+~~~~~~~~~~~~~~
 
 .. code-block:: text
 
     http://localhost:8000/search/books-compound-search-backend/?search=enim
 
 Generated query
----------------
+~~~~~~~~~~~~~~~
 
 .. code-block:: javascript
 
@@ -84,6 +86,74 @@ Generated query
               "match": {
                 "summary": {
                   "query": "enim"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+
+Fuzzy search
+------------
+
+Sample view
+~~~~~~~~~~~
+
+.. code-block:: python
+
+    class BookCompoundFuzzySearchBackendDocumentViewSet(DocumentViewSet):
+       # ...
+        filter_backends = [
+            # ...
+            CompoundSearchFilterBackend,
+            # ...
+        ]
+
+        search_fields = {
+            'title': {'fuzziness': 'AUTO'},
+            'description': None,
+            'summary': None,
+        }
+
+
+Sample request
+~~~~~~~~~~~~~~
+
+.. code-block:: text
+
+    http://localhost:8000/search/books-compound-fuzzy-search-backend/?search=Performance
+
+Generated query
+~~~~~~~~~~~~~~~
+
+.. code-block:: javascript
+
+    {
+      "from": 0,
+      "size": 1,
+      "query": {
+        "bool": {
+          "should": [
+            {
+              "match": {
+                "title": {
+                  "fuzziness": "AUTO",
+                  "query": "Performance"
+                }
+              }
+            },
+            {
+              "match": {
+                "description": {
+                  "query": "Performance"
+                }
+              }
+            },
+            {
+              "match": {
+                "summary": {
+                  "query": "Performance"
                 }
               }
             }

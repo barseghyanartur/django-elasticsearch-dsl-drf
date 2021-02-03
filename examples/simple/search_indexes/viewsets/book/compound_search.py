@@ -14,6 +14,7 @@ from .default import BookDocumentViewSet
 
 __all__ = (
     'BookCompoundSearchBackendDocumentViewSet',
+    'BookCompoundFuzzySearchBackendDocumentViewSet',
 )
 
 
@@ -31,3 +32,25 @@ class BookCompoundSearchBackendDocumentViewSet(BookDocumentViewSet):
         HighlightBackend,
         SuggesterFilterBackend,
     ]
+
+
+class BookCompoundFuzzySearchBackendDocumentViewSet(BookDocumentViewSet):
+    """Book document view set based on compound search backend."""
+
+    filter_backends = [
+        FilteringFilterBackend,
+        PostFilterFilteringFilterBackend,
+        IdsFilterBackend,
+        OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
+        CompoundSearchFilterBackend,
+        FacetedSearchFilterBackend,
+        HighlightBackend,
+        SuggesterFilterBackend,
+    ]
+
+    search_fields = {
+        'title': {'fuzziness': 'AUTO'},
+        'description': None,
+        'summary': None,
+    }

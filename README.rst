@@ -84,8 +84,16 @@ Main features and highlights
 Do you need a similar tool for GraphQL? Check `graphene-elastic
 <https://github.com/barseghyanartur/graphene-elastic>`__.
 
-Demo
-====
+Demos
+=====
+Online demo
+-----------
+Check the `live demo app <https://django-elasticsearch-dsl-drf.herokuapp.com>`__
+(Django 3.1 + Django REST Framework 3.12 + Elasticsearch 7.5) hosted on Heroku
+and bonsai.io.
+
+Local demo
+----------
 A frontend demo (React based) is available. See the `dedicated docs
 <https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/blob/master/examples/frontend/README.rst>`_
 for more information.

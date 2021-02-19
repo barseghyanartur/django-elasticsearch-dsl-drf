@@ -1,5 +1,4 @@
 from factory import DjangoModelFactory, SubFactory
-from factory.fuzzy import FuzzyChoice
 
 from books.models import Galaxy
 

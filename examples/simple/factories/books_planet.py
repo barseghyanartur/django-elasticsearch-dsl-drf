@@ -1,5 +1,4 @@
 from factory import DjangoModelFactory, SubFactory
-from factory.fuzzy import FuzzyChoice
 
 from books.models import Planet
 
@@ -14,6 +13,7 @@ class BasePlanetFactory(DjangoModelFactory):
     """Base planet factory."""
 
     name = Faker('name')
+    galaxy = SubFactory('factories.books_galaxy.GalaxyFactory')
 
     class Meta(object):
         """Meta class."""

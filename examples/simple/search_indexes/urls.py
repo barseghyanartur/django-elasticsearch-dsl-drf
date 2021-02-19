@@ -22,11 +22,13 @@ from .viewsets import (
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
     BookSourceSearchBackendDocumentViewSet,
+    JournalDocumentViewSet,
     CityCompoundSearchBackendDocumentViewSet,
     CityDocumentViewSet,
     FrontAddressDocumentViewSet,
     LocationDocumentViewSet,
     PublisherDocumentViewSet,
+    QueryFriendlyPaginationBookDocumentViewSet,
     TagDocumentViewSet,
 )
 
@@ -59,12 +61,27 @@ router.register(
 )
 
 # **********************************************************
+# ************************* Authors ************************
+# **********************************************************
+router.register(
+    r'journals',
+    JournalDocumentViewSet,
+    basename='journaldocument'
+)
+
+# **********************************************************
 # ************************** Books *************************
 # **********************************************************
 router.register(
     r'books',
     BookDocumentViewSet,
     basename='bookdocument'
+)
+
+router.register(
+    r'books-query-friendly-pagination',
+    QueryFriendlyPaginationBookDocumentViewSet,
+    basename='bookdocument_query_friendly_pagination'
 )
 
 router.register(

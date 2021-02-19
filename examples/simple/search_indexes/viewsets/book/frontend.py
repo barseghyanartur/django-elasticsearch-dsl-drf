@@ -271,7 +271,7 @@ class BookFrontendDocumentViewSet(DocumentViewSet):
             'default_suggester': SUGGESTER_COMPLETION,
             'options': {
                 'size': 20,
-                'skip_duplicates': True,
+                # 'd': True,
             },
         },
         'title_suggest_context': {

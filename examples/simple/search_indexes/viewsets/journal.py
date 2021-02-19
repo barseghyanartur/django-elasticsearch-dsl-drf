@@ -1,25 +1,24 @@
 from django_elasticsearch_dsl_drf.constants import (
-    LOOKUP_FILTER_PREFIX,
     LOOKUP_FILTER_RANGE,
     LOOKUP_FILTER_TERMS,
-    LOOKUP_FILTER_WILDCARD,
-    LOOKUP_QUERY_EXCLUDE,
     LOOKUP_QUERY_GT,
     LOOKUP_QUERY_GTE,
     LOOKUP_QUERY_IN,
-    LOOKUP_QUERY_ISNULL,
     LOOKUP_QUERY_LT,
     LOOKUP_QUERY_LTE,
+    SUGGESTER_COMPLETION,
+    SUGGESTER_PHRASE,
+    SUGGESTER_TERM,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
     DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
-    HighlightBackend,
     IdsFilterBackend,
     OrderingFilterBackend,
     PostFilterFilteringFilterBackend,
     SearchFilterBackend,
+    SuggesterFilterBackend,
 )
 from django_elasticsearch_dsl_drf.viewsets import (
     BaseDocumentViewSet,
@@ -27,32 +26,29 @@ from django_elasticsearch_dsl_drf.viewsets import (
 
 from elasticsearch_dsl import DateHistogramFacet, RangeFacet, A
 
-from ...documents import BookDocument
-from ...serializers import BookDocumentSimpleSerializer
+from ..documents import JournalDocument
+from ..serializers import JournalDocumentSerializer
 
 __all__ = (
-    'BaseBookDocumentViewSet',
+    'JournalDocumentViewSet',
 )
 
 
-class BaseBookDocumentViewSet(BaseDocumentViewSet):
-    """Base BookDocument ViewSet."""
+class JournalDocumentViewSet(BaseDocumentViewSet):
+    """JournalDocument ViewSet."""
 
-    document = BookDocument
-    # serializer_class = BookDocumentSerializer
-    serializer_class = BookDocumentSimpleSerializer
-    lookup_field = 'id'
+    document = JournalDocument
+    serializer_class = JournalDocumentSerializer
+    lookup_field = 'isbn'
+    document_uid_field = 'isbn.raw'
     filter_backends = [
         FilteringFilterBackend,
-        PostFilterFilteringFilterBackend,
         IdsFilterBackend,
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,
         SearchFilterBackend,
         FacetedSearchFilterBackend,
-        # SuggesterFilterBackend,
-        # FunctionalSuggesterFilterBackend,
-        HighlightBackend,
+        SuggesterFilterBackend,
     ]
     # Define search fields
     search_fields = (
@@ -79,15 +75,10 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
     }
     # Define filter fields
     filter_fields = {
-        'id': {
-            'field': 'id',
+        'isbn': {
+            'field': 'isbn',
             'lookups': [
-                LOOKUP_FILTER_RANGE,
                 LOOKUP_QUERY_IN,
-                LOOKUP_QUERY_GT,
-                LOOKUP_QUERY_GTE,
-                LOOKUP_QUERY_LT,
-                LOOKUP_QUERY_LTE,
                 LOOKUP_FILTER_TERMS,
             ],
         },
@@ -96,7 +87,7 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
         'publisher': 'publisher.raw',
         'publication_date': 'publication_date',
         'state': 'state.raw',
-        'isbn': 'isbn.raw',
+        'isbn_raw': 'isbn.raw',
         'price': {
             'field': 'price.raw',
             'lookups': [
@@ -123,87 +114,17 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
                 LOOKUP_QUERY_LTE,
             ],
         },
-        'tags': {
-            'field': 'tags',
-            'lookups': [
-                LOOKUP_FILTER_TERMS,
-                LOOKUP_FILTER_PREFIX,
-                LOOKUP_FILTER_WILDCARD,
-                LOOKUP_QUERY_IN,
-                LOOKUP_QUERY_EXCLUDE,
-                LOOKUP_QUERY_ISNULL,
-            ],
-        },
-        'tags.raw': {
-            'field': 'tags.raw',
-            'lookups': [
-                LOOKUP_FILTER_TERMS,
-                LOOKUP_FILTER_PREFIX,
-                LOOKUP_FILTER_WILDCARD,
-                LOOKUP_QUERY_IN,
-                LOOKUP_QUERY_EXCLUDE,
-            ],
-        },
-        # This has been added to test `exists` filter.
-        'non_existent_field': 'non_existent_field',
-        # This has been added to test `isnull` filter.
-        'null_field': 'null_field',
-    }
-    # Post filter fields, copy filters as they are valid
-    post_filter_fields = {
-        'publisher_pf': 'publisher.raw',
-        'state_pf': 'state.raw',
-        'tags_pf': {
-            'field': 'tags',
-            'lookups': [
-                LOOKUP_FILTER_TERMS,
-                LOOKUP_FILTER_PREFIX,
-                LOOKUP_FILTER_WILDCARD,
-                LOOKUP_QUERY_IN,
-                LOOKUP_QUERY_EXCLUDE,
-                LOOKUP_QUERY_ISNULL,
-            ],
-        },
-        'tags_raw_pf': {
-            'field': 'tags.raw',
-            'lookups': [
-                LOOKUP_FILTER_TERMS,
-                LOOKUP_FILTER_PREFIX,
-                LOOKUP_FILTER_WILDCARD,
-                LOOKUP_QUERY_IN,
-                LOOKUP_QUERY_EXCLUDE,
-            ],
-        },
     }
     # Define ordering fields
     ordering_fields = {
-        'id': 'id',
+        'isbn': 'isbn.raw',
         'title': 'title.raw',
         'price': 'price',
-        'state': 'state.raw',
         'publication_date': 'publication_date',
     }
     # Specify default ordering
-    ordering = ('id', 'title', 'price',)
+    ordering = ('isbn.raw', 'title', 'price',)
     faceted_search_fields = {
-        'state': 'state.raw',
-        'state_global': {
-            'field': 'state.raw',
-            # 'enabled': True,
-            'global': True,
-        },
-        'publisher': {
-            'field': 'publisher.raw',
-            'enabled': True,
-            'global': True,
-        },
-        'publication_date': {
-            'field': 'publication_date',
-            'facet': DateHistogramFacet,
-            'options': {
-                'interval': 'year',
-            }
-        },
         'pages_count': {
             'field': 'pages',
             'facet': RangeFacet,
@@ -234,4 +155,28 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
                 'metric': A('max', field='price'),
             },
         },
+    }
+    # Suggester fields
+    suggester_fields = {
+        'title_suggest': {
+            'field': 'title.suggest',
+            'default_suggester': SUGGESTER_COMPLETION,
+        },
+        'title_suggest_edge_ngram': {
+            'field': 'title.edge_ngram_completion',
+            'default_suggester': SUGGESTER_TERM,
+            'suggesters': [
+                SUGGESTER_PHRASE,
+                SUGGESTER_TERM,
+            ],
+        },
+        'title_suggest_mlt': {
+            'field': 'title.mlt',
+            'default_suggester': SUGGESTER_TERM,
+            'suggesters': [
+                SUGGESTER_PHRASE,
+                SUGGESTER_TERM,
+            ],
+        },
+        'summary_suggest': 'summary',
     }

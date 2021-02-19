@@ -4,6 +4,7 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_GEO_BOUNDING_BOX,
     LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_FILTER_GEO_POLYGON,
+    LOOKUP_FILTER_GEO_SHAPE,
     SUGGESTER_COMPLETION,
     SUGGESTER_PHRASE,
     SUGGESTER_TERM,
@@ -73,6 +74,16 @@ class PublisherDocumentViewSet(DocumentViewSet):
             ],
         },
         'location_2': 'location',
+        'location_point': {
+            'lookups': [
+                LOOKUP_FILTER_GEO_SHAPE,
+            ]
+        },
+        'location_circle': {
+            'lookups': [
+                LOOKUP_FILTER_GEO_SHAPE,
+            ]
+        },
     }
     # Define ordering fields
     ordering_fields = {

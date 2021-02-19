@@ -156,7 +156,7 @@ class BookDocument(Document):
     )
 
     # Date created
-    created = fields.DateField()
+    created = fields.DateField(attr='created_indexing')
 
     null_field = StringField(attr='null_field_indexing')
 
@@ -175,4 +175,3 @@ class BookDocument(Document):
     def prepare_authors(self, instance):
         """Prepare authors."""
         return [author.name for author in instance.authors.all()]
-

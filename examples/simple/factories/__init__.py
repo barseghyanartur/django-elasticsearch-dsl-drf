@@ -6,6 +6,7 @@ from .books_city import *
 from .books_continent import *
 from .books_country import *
 from .books_galaxy import *
+from .books_journal import *
 from .books_location import *
 from .books_order import *
 from .books_orderline import *

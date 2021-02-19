@@ -15,6 +15,37 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.21
+----
+2021-02-04
+
+.. note::
+
+    Release dedicated to defenders of Armenia and Artsakh (Nagorno Karabakh)
+    and all the victims of Turkish and Azerbaijani aggression.
+
+- Drop support for Python 2.7 and 3.5.
+- Drop support for Django 1.11, 2.0 and 2.1.
+- Tested against Django 3.1 and Python 3.9.
+- Take options (ex: boost, fuzziness) into consideration
+  in `NestedQueryBackend`.
+- Added an example of a proper date formatting.
+- Added an example of alternative document ID.
+- Added experimental `QueryFriendlyPageNumberPagination` which fires just a single
+  query instead of used two used by `PageNumberPagination`.
+
+0.20.9
+------
+2020-10-16
+
+.. note::
+
+    Help to rebuild the Armenian homeland. Please, `make a donation
+    <https://www.himnadram.org/en>`__. All donations received are solely for
+    humanitarian purposes.
+
+- Implemented ``geo_shape`` filter.
+
 0.20.8
 ------
 2020-04-10

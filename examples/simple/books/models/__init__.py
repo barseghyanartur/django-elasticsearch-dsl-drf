@@ -5,6 +5,7 @@ from .city import City
 from .continent import Continent
 from .country import Country
 from .galaxy import Galaxy
+from .journal import Journal
 from .location import Location
 from .order import Order
 from .order_line import OrderLine
@@ -20,6 +21,7 @@ __all__ = (
     'Continent',
     'Country',
     'Galaxy',
+    'Journal',
     'Location',
     'Order',
     'OrderLine',

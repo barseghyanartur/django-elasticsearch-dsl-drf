@@ -32,6 +32,7 @@ from ...constants import (
     LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_FILTER_GEO_POLYGON,
     LOOKUP_FILTER_GEO_BOUNDING_BOX,
+    LOOKUP_FILTER_GEO_SHAPE,
     SEPARATOR_LOOKUP_COMPLEX_VALUE,
     SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE,
 )
@@ -341,6 +342,112 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         return params
 
     @classmethod
+    def get_geo_shape_params(cls, value, field):
+        """Get params for `geo_shape` query.
+
+        Example:
+
+            /search/publishers/?location__geo_shape=48.9864453,6.37977
+                __relation,intersects
+                __type,circle
+                __radius,20km
+
+        Example:
+
+            /search/publishers/?location__geo_shape=48.906254,6.378593
+                __48.985850,6.479359
+                __relation,within
+                __type,envelope
+
+        Elasticsearch:
+
+            {
+                "query": {
+                    "bool" : {
+                        "must" : {
+                            "match_all" : {}
+                        },
+                        "filter" : {
+                            "geo_shape" : {
+                                "location" : {
+                                    "shape": {
+                                        "type": "circle",
+                                        "coordinates": [48.9864453, 6.37977],
+                                        "radius": "20km"
+                                    },
+                                    "relation": "intersects"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        :param value:
+        :param field:
+        :type value: str
+        :type field:
+        :return: Params to be used in `geo_shape` query.
+        :rtype: dict
+        """
+        __values = cls.split_lookup_complex_value(value)
+        __len_values = len(__values)
+
+        if not __len_values:
+            return {}
+
+        __coordinates = []
+        __options = {}
+
+        # Parse coordinates (can be x points)
+        for value in __values:
+            __lat_lon = value.split(
+                SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
+            )
+            if len(__lat_lon) >= 2:
+                try:
+                    __point = [
+                        float(__lat_lon[0]),
+                        float(__lat_lon[1]),
+                    ]
+                    __coordinates.append(list(__point))
+                except ValueError:
+                    if SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE in value:
+                        __opt_name_val = value.split(
+                            SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
+                        )
+                        if len(__opt_name_val) >= 2:
+                            if __opt_name_val[0] in ('relation',
+                                                     'type',
+                                                     'radius'):
+                                __options.update(
+                                    {
+                                        __opt_name_val[0]: __opt_name_val[1]
+                                    }
+                                )
+
+        __type = __options.pop('type', None)
+        __relation = __options.pop('relation', None)
+        if not __coordinates or not __type or not __relation:
+            return {}
+
+        params = {
+            field: {
+                'shape': {
+                    'type': __type,
+                    'coordinates': __coordinates if len(__coordinates) > 1 else __coordinates[0],
+                },
+                'relation': __relation,
+            }
+        }
+        radius = __options.pop('radius', None)
+        if radius:
+            params[field]['shape'].update({'radius': radius})
+        params.update(__options)
+
+        return params
+
+    @classmethod
     def apply_query_geo_distance(cls, queryset, options, value):
         """Apply `geo_distance` query.
 
@@ -397,6 +504,26 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
             Q(
                 'geo_bounding_box',
                 **cls.get_geo_bounding_box_params(value, options['field'])
+            )
+        )
+
+    @classmethod
+    def apply_query_geo_shape(cls, queryset, options, value):
+        """Apply `geo_shape` query.
+
+        :param queryset: Original queryset.
+        :param options: Filter options.
+        :param value: value to filter on.
+        :type queryset: elasticsearch_dsl.search.Search
+        :type options: dict
+        :type value: str
+        :return: Modified queryset.
+        :rtype: elasticsearch_dsl.search.Search
+        """
+        return queryset.query(
+            Q(
+                'geo_shape',
+                **cls.get_geo_shape_params(value, options['field'])
             )
         )
 
@@ -486,6 +613,14 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 # `geo_bounding_box` query lookup
                 elif options['lookup'] == LOOKUP_FILTER_GEO_BOUNDING_BOX:
                     queryset = self.apply_query_geo_bounding_box(
+                        queryset,
+                        options,
+                        value
+                    )
+
+                # `geo_shape` query lookup
+                elif options['lookup'] == LOOKUP_FILTER_GEO_SHAPE:
+                    queryset = self.apply_query_geo_shape(
                         queryset,
                         options,
                         value

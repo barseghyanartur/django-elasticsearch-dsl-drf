@@ -281,9 +281,12 @@ ELASTICSEARCH_INDEX_NAMES = {
     'search_indexes.documents.book': 'book',
     'search_indexes.documents.tag': 'tag',
     'search_indexes.documents.city': 'city',
+    'search_indexes.documents.journal': 'journal',
     'search_indexes.documents.publisher': 'publisher',
     'search_indexes.documents.location': 'location',
 }
+
+ELASTICSEARCH_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 
 LOGIN_URL = '/en/accounts/login/'
 LOGIN_ERROR_URL = '/en/accounts/login/'

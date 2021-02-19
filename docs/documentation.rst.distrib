@@ -21,6 +21,7 @@ Contents:
    global_aggregations
    configuration_tweaks
    source_backend
+   pagination
    indexing_troubleshooting
    faq
    demo

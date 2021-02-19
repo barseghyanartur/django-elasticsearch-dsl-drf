@@ -28,6 +28,7 @@ codebin.py
 /deploy/
 /examples/db/
 /var/
+/forks/
 /examples/tmp/
 /examples/logs/
 /examples/media/

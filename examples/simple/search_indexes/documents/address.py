@@ -170,6 +170,32 @@ class AddressDocument(Document):
         }
     )
 
+    # Galaxy object
+    galaxy = fields.ObjectField(
+        attr='galaxy_indexing',
+        properties={
+            'id': fields.IntegerField(),
+            'name': StringField(
+                analyzer=html_strip,
+                fields={
+                    'raw': KeywordField(),
+                    'suggest': fields.CompletionField(),
+                }
+            ),
+            'planet': fields.NestedField(
+                properties={
+                    'id': fields.IntegerField(),
+                    'name': StringField(
+                        analyzer=html_strip,
+                        fields={
+                            'raw': KeywordField(),
+                        }
+                    )
+                }
+            )
+        }
+    )
+
     location = fields.GeoPointField(
         attr='location_field_indexing',
     )

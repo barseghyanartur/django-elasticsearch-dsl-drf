@@ -101,6 +101,7 @@ class FrontAddressDocumentViewSet(DocumentViewSet):
         'street': None,
         'city': 'city.name.raw',
         'country': 'city.country.name.raw',
+        'planet': {'path': 'galaxy.planet.name.raw', 'split_path': False},
         'zip_code': None,
     }
     # Define ordering fields

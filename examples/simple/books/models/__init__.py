@@ -4,10 +4,12 @@ from .book import Book
 from .city import City
 from .continent import Continent
 from .country import Country
+from .galaxy import Galaxy
 from .journal import Journal
 from .location import Location
 from .order import Order
 from .order_line import OrderLine
+from .planet import Planet
 from .publisher import Publisher
 from .tag import Tag
 
@@ -18,10 +20,12 @@ __all__ = (
     'City',
     'Continent',
     'Country',
+    'Galaxy',
     'Journal',
     'Location',
     'Order',
     'OrderLine',
+    'Planet',
     'Publisher',
     'Tag',
 )

@@ -67,10 +67,12 @@ def string_field(**kwargs):
 StringField = string_field
 
 
-def nested_sort_entry(path):
+def nested_sort_entry(path, split_path=True):
     """String field.
     :param path: Full path to nested container, separated by period
-    :type: str
+    :param split_path: Indicates if each section of a path should have a nested query created
+    :type path: str
+    :type split_path: bool
     :return: Dictionary of full nested path
     :rtype: dict
     """
@@ -78,7 +80,7 @@ def nested_sort_entry(path):
     if version[0] < 6 or (version[0] == 6 and version[1] < 1):
         return {'nested_path': path}
     nested_path = {}
-    path_list = path.split('.')
+    path_list = path.split('.') if split_path else [path]
     for _ in reversed(path_list):
         if nested_path:
             nested_path = {'path': '.'.join(path_list), 'nested': nested_path}

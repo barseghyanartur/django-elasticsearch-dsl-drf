@@ -66,7 +66,7 @@ class OrderingMixin(object):
                 }
                 if 'path' in field:
                     entry[field['field']].update(
-                        nested_sort_entry(field['path']))
+                        nested_sort_entry(field['path'], field.get('split_path', True)))
                 _ordering_params.append(entry)
         return _ordering_params
 

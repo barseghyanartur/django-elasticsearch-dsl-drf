@@ -31,6 +31,7 @@ class Address(models.Model):
         max_digits=19,
         default=0
     )
+    planet = models.ForeignKey('books.Planet', null=True, blank=True, on_delete=models.CASCADE)
 
     class Meta(object):
         """Meta options."""
@@ -115,6 +116,36 @@ class Address(models.Model):
                     'id': self.city.id,
                     'name': self.city.name,
                 }
+            }
+        })
+
+        return wrapper
+
+    @property
+    def galaxy_indexing(self):
+        """Galaxy data (nested) for indexing.
+
+        Example:
+
+        >>> mapping = {
+        >>>     'galaxy': {
+        >>>         'id': 2,
+        >>>         'name': 'Milky Way',
+        >>>         'planet': {
+        >>>             'id': 3,
+        >>>             'name': 'Earth',
+        >>>         }
+        >>>     }
+        >>> }
+
+        :return:
+        """
+        wrapper = dict_to_obj({
+            'id': self.planet.galaxy.id,
+            'name': self.planet.galaxy.name,
+            'planet': {
+                'id': self.planet.id,
+                'name': self.planet.name,
             }
         })
 

@@ -1105,7 +1105,7 @@ documents using ``fields.CompletionField``.
         # Location
         location = fields.GeoPointField(attr='location_field_indexing')
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             model = Publisher  # The model associate with this Document
@@ -1129,7 +1129,7 @@ This is how publisher serializer would look like.
     class PublisherDocumentSerializer(DocumentSerializer):
         """Serializer for Publisher document."""
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             # Note, that since we're using a dynamic serializer,
@@ -1690,7 +1690,7 @@ Document definition
 
         null_field = fields.StringField(attr='null_field_indexing')
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             model = Book  # The model associate with this Document
@@ -2166,7 +2166,7 @@ The following example indicates Ngram analyzer/filter usage.
 
         # ...
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             model = Book  # The model associate with this Document

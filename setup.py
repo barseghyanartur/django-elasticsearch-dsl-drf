@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = '0.21'
+version = '0.21.1'
 
 DOCS_TRANSFORMATIONS = (
     (

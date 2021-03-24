@@ -30,6 +30,9 @@ class EmptySearch(object):
     def __iter__(self):
         return iter([])
 
+    def __getitem__(self, *args, **kwargs):
+        return []
+
     def highlight(self, *args, **kwargs):
         return self
 

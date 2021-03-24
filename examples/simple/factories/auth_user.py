@@ -37,7 +37,7 @@ class AbstractUserFactory(DjangoModelFactory):
     is_staff = False
     is_superuser = False
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         model = settings.AUTH_USER_MODEL

@@ -22,7 +22,7 @@ class PublisherDocumentSerializer(serializers.Serializer):
     location = serializers.SerializerMethodField()
     sort_value = serializers.SerializerMethodField()
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         fields = (
@@ -72,7 +72,7 @@ class PublisherDocumentSerializer(serializers.Serializer):
 class PublisherDocumentSimpleSerializer(DocumentSerializer):
     """Serializer for Publisher document."""
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         document = PublisherDocument

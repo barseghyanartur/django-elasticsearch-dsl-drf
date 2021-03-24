@@ -8,7 +8,7 @@ __all__ = ('CityDocumentSerializer',)
 class CityDocumentSerializer(DocumentSerializer):
     """Serializer for city document."""
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         document = CityDocument

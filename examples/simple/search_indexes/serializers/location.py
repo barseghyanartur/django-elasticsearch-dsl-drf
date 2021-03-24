@@ -6,7 +6,7 @@ from ..documents import LocationDocument
 class LocationDocumentSerializer(DocumentSerializer):
     """Serializer for Location document."""
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         # Specify the correspondent document class

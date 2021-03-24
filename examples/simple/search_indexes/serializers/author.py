@@ -11,7 +11,7 @@ class AuthorDocumentSimpleSerializer(DocumentSerializer):
 
     source = serializers.SerializerMethodField()
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         document = AuthorDocument

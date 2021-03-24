@@ -33,9 +33,6 @@ Sample models
 
     from django.db import models
 
-    from six import python_2_unicode_compatible
-
-    @python_2_unicode_compatible
     class Continent(models.Model):
         """Continent."""
 
@@ -56,7 +53,7 @@ Sample models
             default=0
         )
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             ordering = ["id"]
@@ -79,7 +76,6 @@ Sample models
 
 .. code-block:: python
 
-    @python_2_unicode_compatible
     class Country(models.Model):
         """Country."""
 
@@ -104,7 +100,7 @@ Sample models
             default=0
         )
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             ordering = ["id"]
@@ -129,7 +125,6 @@ Sample models
 
 .. code-block:: python
 
-    @python_2_unicode_compatible
     class City(models.Model):
         """City."""
 
@@ -151,7 +146,7 @@ Sample models
             default=0
         )
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             ordering = ["id"]
@@ -178,9 +173,6 @@ Sample models
     from django.db import models
     from django_elasticsearch_dsl_drf.wrappers import dict_to_obj
 
-    from six import python_2_unicode_compatible
-
-    @python_2_unicode_compatible
     class Address(models.Model):
         """Address."""
 
@@ -204,7 +196,7 @@ Sample models
             default=0
         )
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             ordering = ["id"]
@@ -341,7 +333,6 @@ Document index
     from books.models import Address
 
     from .analyzers import html_strip
-
 
     INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 
@@ -481,7 +472,7 @@ Document index
 
         location = fields.GeoPointField(attr='location_field_indexing')
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             model = Address  # The model associate with this Document
@@ -497,11 +488,10 @@ Sample serializer
 
     from ..documents import AddressDocument
 
-
     class AddressDocumentSerializer(DocumentSerializer):
         """Serializer for address document."""
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             document = AddressDocument
@@ -712,9 +702,7 @@ Sample models
 .. code-block:: python
 
     from django.db import models
-    from six import python_2_unicode_compatible
 
-    @python_2_unicode_compatible
     class City(models.Model):
         """City."""
 
@@ -737,9 +725,7 @@ Sample models
 .. code-block:: python
 
     from django.db import models
-    from six import python_2_unicode_compatible
 
-    @python_2_unicode_compatible
     class Country(models.Model):
         """Country."""
 
@@ -844,7 +830,7 @@ Sample document
             StringField(attr='integer_list_indexing')
         )
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             model = City  # The model associate with this Document

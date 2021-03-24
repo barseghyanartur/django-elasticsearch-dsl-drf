@@ -203,7 +203,7 @@ class AddressDocument(Document):
     class Django(object):
         model = Address  # The model associate with this Document
 
-    class Meta(object):
+    class Meta:
         parallel_indexing = True
         # queryset_pagination = 500000  # This will split the queryset
         #                               # into parts while indexing

@@ -3,12 +3,9 @@ from __future__ import unicode_literals
 from django.db import models
 from django_elasticsearch_dsl_drf.wrappers import dict_to_obj
 
-from six import python_2_unicode_compatible
-
 __all__ = ('Address',)
 
 
-@python_2_unicode_compatible
 class Address(models.Model):
     """Address."""
 
@@ -33,7 +30,7 @@ class Address(models.Model):
     )
     planet = models.ForeignKey('books.Planet', null=True, blank=True, on_delete=models.CASCADE)
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         ordering = ["id"]

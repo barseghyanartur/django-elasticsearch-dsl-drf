@@ -11,7 +11,7 @@ __all__ = (
 class AddressDocumentSerializer(DocumentSerializer):
     """Serializer for address document."""
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         document = AddressDocument
@@ -31,7 +31,7 @@ class AddressDocumentSerializer(DocumentSerializer):
 class FrontendAddressDocumentSerializer(DocumentSerializer):
     """Serializer for address document."""
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         document = AddressDocument

@@ -24,7 +24,7 @@ __all__ = (
 #     stock_count = serializers.IntegerField(read_only=True)
 #     created = serializers.DateTimeField(read_only=True)
 #
-#     class Meta(object):
+#     class Meta:
 #         """Meta options."""
 #
 #         fields = (
@@ -66,7 +66,7 @@ class JournalDocumentSerializer(DocumentSerializer):
 
     score = serializers.SerializerMethodField()
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         document = JournalDocument

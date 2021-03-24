@@ -1,12 +1,9 @@
 from django.conf import settings
 from django.db import models
 
-from six import python_2_unicode_compatible
-
 __all__ = ('Journal',)
 
 
-@python_2_unicode_compatible
 class Journal(models.Model):
     """Journal."""
 
@@ -20,7 +17,7 @@ class Journal(models.Model):
     stock_count = models.PositiveIntegerField(default=30)
     created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         ordering = ["isbn"]

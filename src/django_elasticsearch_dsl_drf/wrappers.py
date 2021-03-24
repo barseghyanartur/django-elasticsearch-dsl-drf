@@ -1,5 +1,4 @@
 import json
-from six import python_2_unicode_compatible
 
 __title__ = 'django_elasticsearch_dsl_drf.wrappers'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
@@ -12,7 +11,6 @@ __all__ = (
 )
 
 
-@python_2_unicode_compatible
 class Wrapper(object):
     """Wrapper.
 

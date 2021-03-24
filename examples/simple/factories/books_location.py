@@ -28,7 +28,7 @@ class BaseLocationFactory(DjangoModelFactory):
     latitude = Faker('latitude')
     longitude = Faker('longitude')
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = Location

@@ -4,12 +4,9 @@ import datetime
 
 from django.db import models
 
-from six import python_2_unicode_compatible
-
 __all__ = ('City',)
 
 
-@python_2_unicode_compatible
 class City(models.Model):
     """City."""
 
@@ -31,7 +28,7 @@ class City(models.Model):
         default=0
     )
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         ordering = ["id"]

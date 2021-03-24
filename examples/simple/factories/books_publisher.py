@@ -27,7 +27,7 @@ class BasePublisherFactory(DjangoModelFactory):
     latitude = -32.23421
     longitude = 43.23411
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = Publisher
@@ -41,7 +41,7 @@ class PublisherFactory(BasePublisherFactory):
 class PublisherWithUniqueNameFactory(BasePublisherFactory):
     """Publisher factory with unique name attribute."""
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         django_get_or_create = ('name',)
@@ -54,7 +54,7 @@ class LimitedPublisherFactory(BasePublisherFactory):
         lambda __x: random.randint(1, 20)
     )
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         django_get_or_create = ('id',)
@@ -71,7 +71,7 @@ class SinglePublisherFactory(BasePublisherFactory):
     country = "NL"
     website = "https://gw20e.com"
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         django_get_or_create = ('id',)

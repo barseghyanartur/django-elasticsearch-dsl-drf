@@ -15,7 +15,7 @@ class BasePlanetFactory(DjangoModelFactory):
     name = Faker('name')
     galaxy = SubFactory('factories.books_galaxy.GalaxyFactory')
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = Planet

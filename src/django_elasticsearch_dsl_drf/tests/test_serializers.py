@@ -95,7 +95,7 @@ class TestSerializers(BaseRestFrameworkTestCase):
         class UserDocumentSerializer(DocumentSerializer):
             """For testing purposes."""
 
-            class Meta(object):
+            class Meta:
                 """Meta options."""
 
                 if with_document:

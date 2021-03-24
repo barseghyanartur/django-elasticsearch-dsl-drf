@@ -1,11 +1,8 @@
 from django.db import models
 
-from six import python_2_unicode_compatible
-
 __all__ = ('Publisher',)
 
 
-@python_2_unicode_compatible
 class Publisher(models.Model):
     """Publisher."""
 
@@ -31,7 +28,7 @@ class Publisher(models.Model):
         default=0
     )
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         ordering = ["id"]

@@ -23,7 +23,7 @@ class BaseTagFactory(DjangoModelFactory):
     # ``Tag`` model is set to 255, for usability we set this one to 20.
     title = Faker('catch_phrase')
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = Tag
@@ -40,7 +40,7 @@ class TagGenreFactory(BaseTagFactory):
 
     title = FuzzyChoice(BOOK_GENRES)
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         django_get_or_create = ('title',)
@@ -53,7 +53,7 @@ class LimitedTagFactory(BaseTagFactory):
         lambda __x: random.randint(1, 20)
     )
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         django_get_or_create = ('id',)

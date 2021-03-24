@@ -51,7 +51,7 @@ Sample models
                                         max_digits=19,
                                         default=0)
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             ordering = ["id"]
@@ -89,7 +89,6 @@ Sample document
         number_of_shards=1,
         number_of_replicas=1
     )
-
 
     @PUBLISHER_INDEX.doc_type
     class PublisherDocument(Document):
@@ -132,7 +131,7 @@ Sample document
         # Location
         location = fields.GeoPointField(attr='location_field_indexing')
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             model = Publisher  # The model associate with this Document
@@ -154,7 +153,7 @@ Sample serializer
 
         location = serializers.SerializerMethodField()
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             # Note, that since we're using a dynamic serializer,

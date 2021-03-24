@@ -1,8 +1,6 @@
 from django.db import models
 from django.conf import settings
 
-from six import python_2_unicode_compatible
-
 from ..constants import (
     BOOK_PUBLISHING_STATUS_CHOICES,
     BOOK_PUBLISHING_STATUS_DEFAULT,
@@ -11,7 +9,6 @@ from ..constants import (
 __all__ = ('Book',)
 
 
-@python_2_unicode_compatible
 class Book(models.Model):
     """Book."""
 
@@ -41,7 +38,7 @@ class Book(models.Model):
     )
     created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         ordering = ["isbn"]

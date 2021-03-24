@@ -36,7 +36,7 @@ class BaseJournalFactory(DjangoModelFactory):
     )
     created = Faker('date_time')
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = Journal
@@ -50,7 +50,7 @@ class JournalFactory(BaseJournalFactory):
 class JournalWithUniqueTitleFactory(BaseJournalFactory):
     """Journal factory with unique title attribute."""
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         django_get_or_create = ('title',)

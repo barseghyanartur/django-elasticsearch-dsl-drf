@@ -29,7 +29,7 @@ class TagDocument(Document):
 
         model = Tag
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         parellel_indexing = True

@@ -62,7 +62,7 @@ Example:
     >>>
     >>>     website = fields.StringField()
     >>>
-    >>>     class Meta(object):
+    >>>     class Meta:
     >>>         "Meta options."
     >>>
     >>>         model = Publisher  # The model associate with this Document

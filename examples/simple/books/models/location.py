@@ -1,7 +1,5 @@
 from django.db import models
 
-from six import python_2_unicode_compatible
-
 from ..constants import (
     YES,
     NO,
@@ -11,7 +9,6 @@ from ..constants import (
 __all__ = ('Location',)
 
 
-@python_2_unicode_compatible
 class Location(models.Model):
     """Location."""
 
@@ -43,7 +40,7 @@ class Location(models.Model):
         default=0
     )
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         ordering = ["id"]

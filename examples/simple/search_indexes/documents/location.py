@@ -202,7 +202,7 @@ class LocationDocument(Document):
     class Django(object):
         model = Location  # The model associate with this Document
 
-    class Meta(object):
+    class Meta:
         parallel_indexing = True
         queryset_pagination = 50  # This will split the queryset
                                   # into parts while indexing

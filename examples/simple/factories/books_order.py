@@ -16,7 +16,7 @@ class OrderFactory(DjangoModelFactory):
     # created = Faker('date')
     # updated = Faker('date')
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = Order

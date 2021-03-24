@@ -66,7 +66,7 @@ Sample document
 
         # ...
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             model = Book  # The model associate with this Document

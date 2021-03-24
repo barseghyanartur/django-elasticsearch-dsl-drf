@@ -1,11 +1,8 @@
 from django.db import models
 
-from six import python_2_unicode_compatible
-
 __all__ = ('Author',)
 
 
-@python_2_unicode_compatible
 class Author(models.Model):
     """Author."""
 
@@ -18,7 +15,7 @@ class Author(models.Model):
     phone_number = models.CharField(max_length=200, null=True, blank=True)
     website = models.URLField(null=True, blank=True)
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         ordering = ["id"]

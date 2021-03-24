@@ -64,6 +64,6 @@ class AuthorDocument(Document):
     class Django(object):
         model = Author  # The model associate with this Document
 
-    class Meta(object):
+    class Meta:
         parallel_indexing = True
         # queryset_pagination = 50  # This stands for `chunk_size`

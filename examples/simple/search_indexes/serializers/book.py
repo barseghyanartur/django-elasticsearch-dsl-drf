@@ -34,7 +34,7 @@ class BookDocumentSerializer(serializers.Serializer):
                                        required=False,
                                        allow_blank=True)
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         fields = (
@@ -91,7 +91,7 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
 
     highlight = serializers.SerializerMethodField()
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         document = BookDocument
@@ -128,7 +128,7 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
 class BookDocumentSourceSerializer(DocumentSerializer):
     """Serializer used for the Book document with BookSourceViewSet."""
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         document = BookDocument

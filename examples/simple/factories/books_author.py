@@ -22,7 +22,7 @@ class BaseAuthorFactory(DjangoModelFactory):
     name = Faker('name')
     email = Faker('email')
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = Author
@@ -36,7 +36,7 @@ class AuthorFactory(BaseAuthorFactory):
 class AuthorWithUniqueNameFactory(BaseAuthorFactory):
     """Author factory with unique name attribute."""
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         django_get_or_create = ('name',)
@@ -49,7 +49,7 @@ class LimitedAuthorFactory(BaseAuthorFactory):
         lambda __x: random.randint(1, 20)
     )
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         django_get_or_create = ('id',)
@@ -62,7 +62,7 @@ class SingleAuthorFactory(BaseAuthorFactory):
     name = "Artur Barseghyan"
     email = "barseghyan@gw20e.com"
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         django_get_or_create = ('id',)

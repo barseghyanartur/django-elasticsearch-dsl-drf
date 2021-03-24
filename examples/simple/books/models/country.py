@@ -2,12 +2,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-from six import python_2_unicode_compatible
-
 __all__ = ('Country',)
 
 
-@python_2_unicode_compatible
 class Country(models.Model):
     """Country."""
 
@@ -32,7 +29,7 @@ class Country(models.Model):
         default=0
     )
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         ordering = ["id"]

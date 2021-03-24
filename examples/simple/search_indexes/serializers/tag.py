@@ -9,7 +9,7 @@ __all__ = ('TagDocumentSerializer',)
 class TagDocumentSerializer(DocumentSerializer):
     """Serializer for a Tag document."""
 
-    class Meta(object):
+    class Meta:
         """Meta options."""
 
         document = TagDocument

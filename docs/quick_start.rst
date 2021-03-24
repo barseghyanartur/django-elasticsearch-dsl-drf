@@ -106,9 +106,7 @@ Imports required for model definition.
 
     from django.conf import settings
     from django.db import models
-    from django.utils.translation import ugettext, ugettext_lazy as _
-
-    from six import python_2_unicode_compatible
+    from django.utils.translation import gettext, gettext_lazy as _
 
 Book statuses
 ~~~~~~~~~~~~~
@@ -140,7 +138,6 @@ Publisher model
 
 .. code-block:: python
 
-    @python_2_unicode_compatible
     class Publisher(models.Model):
         """Publisher."""
 
@@ -161,7 +158,7 @@ Publisher model
                                         max_digits=19,
                                         default=0)
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             ordering = ["id"]
@@ -187,7 +184,6 @@ Author model
 
 .. code-block:: python
 
-    @python_2_unicode_compatible
     class Author(models.Model):
         """Author."""
 
@@ -196,7 +192,7 @@ Author model
         email = models.EmailField()
         headshot = models.ImageField(upload_to='authors', null=True, blank=True)
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             ordering = ["id"]
@@ -216,7 +212,7 @@ Tag model
 
         title = models.CharField(max_length=255, unique=True)
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             verbose_name = _("Tag")
@@ -232,7 +228,6 @@ Book model
 
 .. code-block:: python
 
-    @python_2_unicode_compatible
     class Book(models.Model):
         """Book."""
 
@@ -253,7 +248,7 @@ Book model
                                       related_name='books',
                                       blank=True)
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             ordering = ["isbn"]
@@ -726,7 +721,7 @@ needed to be serialized and leave it further to the dynamic serializer.
     class BookDocumentSerializer(DocumentSerializer):
         """Serializer for the Book document."""
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             # Specify the correspondent document class
@@ -775,7 +770,7 @@ Django REST framework.
         stock_count = serializers.IntegerField(read_only=True)
         tags = serializers.SerializerMethodField()
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             # List the serializer fields. Note, that the order of the fields
@@ -1021,13 +1016,13 @@ your project's global url patterns, make sure to do it now.
 
 .. code-block:: python
 
-    from django.conf.urls import include, url
+    from django.conf.urls import include, re_path
     from search_indexes import urls as search_index_urls
 
     urlpatterns = [
         # ...
         # Search URLs
-        url(r'^search/', include(search_index_urls)),
+        re_path(r'^search/', include(search_index_urls)),
         # ...
     ]
 

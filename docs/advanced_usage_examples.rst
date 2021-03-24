@@ -35,9 +35,7 @@ Sample models
 
     from django.conf import settings
     from django.db import models
-    from django.utils.translation import ugettext, ugettext_lazy as _
-
-    from six import python_2_unicode_compatible
+    from django.utils.translation import gettext, gettext_lazy as _
 
     BOOK_PUBLISHING_STATUS_PUBLISHED = 'published'
     BOOK_PUBLISHING_STATUS_NOT_PUBLISHED = 'not_published'
@@ -54,7 +52,6 @@ Sample models
     BOOK_PUBLISHING_STATUS_DEFAULT = BOOK_PUBLISHING_STATUS_PUBLISHED
 
 
-    @python_2_unicode_compatible
     class Publisher(models.Model):
         """Publisher."""
 
@@ -76,7 +73,7 @@ Sample models
                                         max_digits=19,
                                         default=0)
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             ordering = ["id"]
@@ -99,7 +96,6 @@ Sample models
 
 .. code-block:: python
 
-    @python_2_unicode_compatible
     class Author(models.Model):
         """Author."""
 
@@ -108,7 +104,7 @@ Sample models
         email = models.EmailField()
         headshot = models.ImageField(upload_to='authors', null=True, blank=True)
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             ordering = ["id"]
@@ -125,7 +121,7 @@ Sample models
 
         title = models.CharField(max_length=255, unique=True)
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             verbose_name = _("Tag")
@@ -138,7 +134,6 @@ Sample models
 
 .. code-block:: python
 
-    @python_2_unicode_compatible
     class Book(models.Model):
         """Book."""
 
@@ -159,7 +154,7 @@ Sample models
                                       related_name='books',
                                       blank=True)
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             ordering = ["isbn"]
@@ -323,7 +318,7 @@ Document index
             multi=True
         )
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             model = Book  # The model associate with this Document
@@ -344,7 +339,7 @@ Sample serializer
 
         title = serializers.CharField()
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             fields = ('title',)
@@ -372,7 +367,7 @@ Sample serializer
         stock_count = serializers.IntegerField(read_only=True)
         tags = serializers.SerializerMethodField()
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             fields = (

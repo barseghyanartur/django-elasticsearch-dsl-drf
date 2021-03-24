@@ -98,7 +98,7 @@ document meta.
 
         # ...
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             model = Location
@@ -120,7 +120,7 @@ wish to index them by chunks of 20 thousands at once, specify the
 
         # ...
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             model = Location
@@ -157,7 +157,7 @@ settings (as already has been mentioned above).
 
         # ...
 
-        class Meta(object):
+        class Meta:
             """Meta options."""
 
             model = Location

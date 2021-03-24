@@ -58,7 +58,7 @@ class BaseBookFactory(DjangoModelFactory):
     )
     created = Faker('date_time')
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = Book
@@ -107,7 +107,7 @@ class BookFactory(BaseBookFactory):
 class BookWithUniqueTitleFactory(BaseBookFactory):
     """Book factory with unique title attribute."""
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         django_get_or_create = ('title',)
@@ -120,7 +120,7 @@ class SingleBookFactory(BaseBookFactory):
     title = "Performance optimisation"
     publisher = SubFactory('factories.books_publisher.SinglePublisherFactory')
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         django_get_or_create = ('id',)

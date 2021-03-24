@@ -14,7 +14,7 @@ class BaseGalaxyFactory(DjangoModelFactory):
 
     name = Faker('name')
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = Galaxy

@@ -24,7 +24,7 @@ class BaseCityFactory(DjangoModelFactory):
     latitude = Faker('latitude')
     longitude = Faker('longitude')
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = City
@@ -72,7 +72,7 @@ class DutchCityFactory(BaseCityFactory):
 
     name = FuzzyChoice(DUTCH_CITIES)
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = City
@@ -103,7 +103,7 @@ class SwissCityFactory(BaseCityFactory):
 
     name = FuzzyChoice(SWISS_CITIES)
 
-    class Meta(object):
+    class Meta:
         """Meta class."""
 
         model = City

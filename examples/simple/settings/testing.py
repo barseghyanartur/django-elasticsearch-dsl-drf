@@ -17,11 +17,11 @@ ELASTICSEARCH_INDEX_NAMES = {
     'search_indexes.documents.address': 'test_address',
     'search_indexes.documents.author': 'test_author',
     'search_indexes.documents.book': 'test_book',
-    'search_indexes.documents.tag': 'test_tag',
     'search_indexes.documents.city': 'test_city',
     'search_indexes.documents.journal': 'test_journal',
-    'search_indexes.documents.publisher': 'test_publisher',
     'search_indexes.documents.location': 'test_location',
+    'search_indexes.documents.publisher': 'test_publisher',
+    'search_indexes.documents.tag': 'test_tag',
 }
 
 # A sample logging configuration. The only tangible logging

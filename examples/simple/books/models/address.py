@@ -28,7 +28,10 @@ class Address(models.Model):
         max_digits=19,
         default=0
     )
-    planet = models.ForeignKey('books.Planet', null=True, blank=True, on_delete=models.CASCADE)
+    planet = models.ForeignKey('books.Planet',
+                               null=True,
+                               blank=True,
+                               on_delete=models.CASCADE)
 
     class Meta:
         """Meta options."""

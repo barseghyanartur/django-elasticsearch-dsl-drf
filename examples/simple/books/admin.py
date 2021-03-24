@@ -91,6 +91,7 @@ class AddressAdmin(admin.ModelAdmin):
                     'longitude', 'city',)
     list_editable = ('latitude', 'longitude',)
     search_fields = ('street',)
+    list_filter = ('planet',)
 
 
 @admin.register(City)

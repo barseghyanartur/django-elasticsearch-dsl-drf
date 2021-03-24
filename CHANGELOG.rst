@@ -28,6 +28,7 @@ are used for versioning (schema follows below):
   scope of the `BaseDocumentViewSet`.
 - Add `tzinfo` check for better date vs datetime determination.
 - Broader `EmptySearch` compatibility with `elasticsearch_dsl.Search`.
+- Remove old Django code from docs.
 
 0.21
 ----

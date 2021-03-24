@@ -149,6 +149,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
     document_uid_field = 'id'
     document = None  # Re-define
     pagination_class = PageNumberPagination
+    dictionary_proxy = DictionaryProxy
     # permission_classes = (AllowAny,)
     ignore = []
 
@@ -216,7 +217,8 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
 
             if not obj and self.ignore:
                 raise Http404("No result matches the given query.")
-            return DictionaryProxy(obj.to_dict())
+            # TODO: Do we need obj on != ELASTICSEARCH_GTE_7_0 like below?
+            return self.dictionary_proxy(obj.to_dict())
         else:
             queryset = queryset.filter(
                 'term',
@@ -232,9 +234,9 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
                 # May raise a permission denied
                 self.check_object_permissions(self.request, obj)
                 if ELASTICSEARCH_GTE_7_0:
-                    dictionary_proxy = DictionaryProxy(obj.to_dict())
+                    dictionary_proxy = self.dictionary_proxy(obj.to_dict())
                 else:
-                    dictionary_proxy = DictionaryProxy(obj)
+                    dictionary_proxy = self.dictionary_proxy(obj)
 
                 return dictionary_proxy
 

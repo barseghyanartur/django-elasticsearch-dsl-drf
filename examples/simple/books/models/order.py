@@ -13,6 +13,7 @@ class Order(models.Model):
         on_delete=models.CASCADE
     )
     lines = models.ManyToManyField('books.OrderLine', blank=True)
+    finished = models.BooleanField(default=False)
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
 

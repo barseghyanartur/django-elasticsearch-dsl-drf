@@ -15,6 +15,23 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.22
+----
+2021-03-xx
+
+.. note::
+
+    Release dedicated to my dear son, Raffi, who turns 16 at the end of the
+    month. Happy birthday, dear Raffi.
+
+- Make it easier to override the `DictionaryProxy` by moving it to the
+  scope of the `BaseDocumentViewSet`.
+- Add `tzinfo` check for better date vs datetime determination.
+- Broader `EmptySearch` compatibility with `elasticsearch_dsl.Search`.
+- Remove old Django code from docs.
+- Allow more specific targeting for nested sort fields.
+- Add more tests.
+
 0.21
 ----
 2021-02-04

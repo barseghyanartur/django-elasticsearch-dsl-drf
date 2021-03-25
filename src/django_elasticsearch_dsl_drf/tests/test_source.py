@@ -1,5 +1,5 @@
 """
-Test highlight backend.
+Test source backend.
 """
 
 from __future__ import absolute_import

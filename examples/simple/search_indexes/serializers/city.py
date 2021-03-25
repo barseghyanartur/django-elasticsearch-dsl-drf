@@ -18,6 +18,7 @@ class CityDocumentSerializer(DocumentSerializer):
             'info',
             'country',
             'location',
+            'capital',
             'boolean_list',
             'datetime_list',
             'float_list',

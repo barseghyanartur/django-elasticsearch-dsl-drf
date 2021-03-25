@@ -27,6 +27,7 @@ class City(models.Model):
         max_digits=19,
         default=0
     )
+    capital = models.BooleanField(default=False)
 
     class Meta:
         """Meta options."""

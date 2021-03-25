@@ -15,8 +15,8 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
-0.21.1
-------
+0.22
+----
 2021-03-xx
 
 .. note::
@@ -29,6 +29,8 @@ are used for versioning (schema follows below):
 - Add `tzinfo` check for better date vs datetime determination.
 - Broader `EmptySearch` compatibility with `elasticsearch_dsl.Search`.
 - Remove old Django code from docs.
+- Allow more specific targeting for nested sort fields.
+- Add more tests.
 
 0.21
 ----

@@ -1,5 +1,5 @@
 """
-Test highlight backend.
+Test utils.
 """
 
 from __future__ import absolute_import
@@ -26,7 +26,7 @@ __all__ = (
 
 @pytest.mark.django_db
 class TestUtils(BaseRestFrameworkTestCase):
-    """Test source."""
+    """Test utils."""
 
     pytestmark = pytest.mark.django_db
 

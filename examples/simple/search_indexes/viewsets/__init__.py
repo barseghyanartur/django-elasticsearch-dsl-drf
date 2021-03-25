@@ -1,32 +1,11 @@
-from .address import AddressDocumentViewSet, FrontAddressDocumentViewSet
-from .author import AuthorDocumentViewSet
-from .book import (
-    BookCompoundFuzzySearchBackendDocumentViewSet,
-    BookCompoundSearchBackendDocumentViewSet,
-    BookCompoundSearchBoostSearchBackendDocumentViewSet,
-    BookCustomDocumentViewSet,
-    BookDefaultFilterLookupDocumentViewSet,
-    BookDocumentViewSet,
-    BookFrontendDocumentViewSet,
-    BookFunctionalSuggesterDocumentViewSet,
-    BookIgnoreIndexErrorsDocumentViewSet,
-    BookMoreLikeThisDocumentViewSet,
-    BookMoreLikeThisNoOptionsDocumentViewSet,
-    BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
-    BookMultiMatchSearchFilterBackendDocumentViewSet,
-    BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
-    BookOrderingByScoreDocumentViewSet,
-    BookPermissionsDocumentViewSet,
-    BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
-    BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
-    BookSourceSearchBackendDocumentViewSet,
-    QueryFriendlyPaginationBookDocumentViewSet,
-)
-from .city import CityDocumentViewSet, CityCompoundSearchBackendDocumentViewSet
-from .journal import JournalDocumentViewSet
-from .location import LocationDocumentViewSet
-from .publisher import PublisherDocumentViewSet
-from .tag import TagDocumentViewSet
+from .address import *
+from .author import *
+from .book import *
+from .city import *
+from .journal import *
+from .location import *
+from .publisher import *
+from .tag import *
 
 __all__ = (
     'AddressDocumentViewSet',
@@ -47,6 +26,8 @@ __all__ = (
     'BookOrderingByScoreCompoundSearchBackendDocumentViewSet',
     'BookOrderingByScoreDocumentViewSet',
     'BookPermissionsDocumentViewSet',
+    'BookNoPermissionsDocumentViewSet',
+    'BookNoRecordsDocumentViewSet',
     'BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet',
     'BookSimpleQueryStringSearchFilterBackendDocumentViewSet',
     'BookSourceSearchBackendDocumentViewSet',

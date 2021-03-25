@@ -19,6 +19,8 @@ from .viewsets import (
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
     BookPermissionsDocumentViewSet,
+    BookNoPermissionsDocumentViewSet,
+    BookNoRecordsDocumentViewSet,
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
     BookSourceSearchBackendDocumentViewSet,
@@ -106,6 +108,18 @@ router.register(
     r'books-permissions',
     BookPermissionsDocumentViewSet,
     basename='bookdocument_permissions'
+)
+
+router.register(
+    r'books-no-permissions',
+    BookNoPermissionsDocumentViewSet,
+    basename='bookdocument_no_permissions'
+)
+
+router.register(
+    r'books-no-records',
+    BookNoRecordsDocumentViewSet,
+    basename='bookdocument_no_records'
 )
 
 router.register(

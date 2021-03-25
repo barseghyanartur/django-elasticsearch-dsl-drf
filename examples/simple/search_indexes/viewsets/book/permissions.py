@@ -31,6 +31,7 @@ from django_elasticsearch_dsl_drf.viewsets import (
     DocumentViewSet,
 )
 from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
+from django_elasticsearch_dsl_drf.utils import EmptySearch
 
 from elasticsearch_dsl import DateHistogramFacet, RangeFacet
 
@@ -42,6 +43,8 @@ from ...serializers import BookDocumentSimpleSerializer
 
 __all__ = (
     'BookPermissionsDocumentViewSet',
+    'BookNoPermissionsDocumentViewSet',
+    'BookNoRecordsDocumentViewSet',
 )
 
 
@@ -52,6 +55,21 @@ class CustomPermission(BasePermission):
         Return `True` if permission is granted, `False` otherwise.
         """
         return True
+
+    def has_object_permission(self, request, view, obj):
+        """
+        Return `True` if permission is granted, `False` otherwise.
+        """
+        return False
+
+
+class CustomNoPermission(BasePermission):
+
+    def has_permission(self, request, view):
+        """
+        Return `True` if permission is granted, `False` otherwise.
+        """
+        return False
 
     def has_object_permission(self, request, view, obj):
         """
@@ -331,3 +349,14 @@ class BookPermissionsDocumentViewSet(DocumentViewSet):
         'tag_suggest': 'tags.suggest',
         'summary_suggest': 'summary',
     }
+
+
+class BookNoPermissionsDocumentViewSet(BookPermissionsDocumentViewSet):
+    permission_classes = (CustomNoPermission,)
+
+
+class BookNoRecordsDocumentViewSet(BookPermissionsDocumentViewSet):
+    def get_queryset(self):
+        queryset = EmptySearch()
+        queryset.model = self.document.Django.model
+        return queryset

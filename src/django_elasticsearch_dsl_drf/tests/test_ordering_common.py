@@ -9,8 +9,7 @@ from six.moves import reduce
 import unittest
 
 from django.core.management import call_command
-
-from nine.versions import DJANGO_GTE_1_10
+from django.urls import reverse
 
 import pytest
 
@@ -26,11 +25,6 @@ from .base import (
     CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
     CORE_API_AND_CORE_SCHEMA_MISSING_MSG,
 )
-
-if DJANGO_GTE_1_10:
-    from django.urls import reverse
-else:
-    from django.core.urlresolvers import reverse
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_ordering'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

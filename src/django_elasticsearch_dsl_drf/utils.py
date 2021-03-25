@@ -23,6 +23,7 @@ class EmptySearch(object):
         self.aggs = AggsProxy('')
         self._highlight = {}
         self._sort = []
+        self.total = None
 
     def __len__(self):
         return 0
@@ -31,12 +32,16 @@ class EmptySearch(object):
         return iter([])
 
     def __getitem__(self, *args, **kwargs):
-        return []
+        return self
 
     def highlight(self, *args, **kwargs):
         return self
 
     def sort(self, *args, **kwargs):
+        return self
+
+    @property
+    def hits(self):
         return self
 
     def execute(self, *args, **kwargs):

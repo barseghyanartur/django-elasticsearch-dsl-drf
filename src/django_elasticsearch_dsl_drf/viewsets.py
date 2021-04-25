@@ -50,6 +50,8 @@ class SuggestMixin(object):
             )
 
         page = self.paginate_queryset(queryset)
+
+        page[:] = [value.to_dict() for value in page]
         return Response(page)
 
 

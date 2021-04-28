@@ -59,6 +59,8 @@ class DictionaryProxy(object):
         self.meta = meta
 
     def __getattr__(self, item):
+        if item == "meta":
+            return self.meta
         val = self.__mapping.get(item, None)
         if isinstance(val, datetime.datetime) and not val.tzinfo:
             val = val.date()

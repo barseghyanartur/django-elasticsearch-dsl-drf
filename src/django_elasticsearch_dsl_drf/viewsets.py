@@ -240,13 +240,17 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
 
                 # May raise a permission denied
                 self.check_object_permissions(self.request, obj)
+
                 if ELASTICSEARCH_GTE_7_0:
                     dictionary_proxy = self.dictionary_proxy(
                         obj.to_dict(),
-                        obj.meta
+                        getattr(obj, 'meta', None)
                     )
                 else:
-                    dictionary_proxy = self.dictionary_proxy(obj, obj.meta)
+                    dictionary_proxy = self.dictionary_proxy(
+                        obj,
+                        getattr(obj, 'meta', None)
+                    )
 
                 return dictionary_proxy
 

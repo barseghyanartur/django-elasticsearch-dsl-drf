@@ -54,8 +54,9 @@ class EmptySearch(object):
 class DictionaryProxy(object):
     """Dictionary proxy."""
 
-    def __init__(self, mapping):
+    def __init__(self, mapping, meta=None):
         self.__mapping = mapping
+        self.meta = meta
 
     def __getattr__(self, item):
         val = self.__mapping.get(item, None)

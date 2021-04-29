@@ -81,7 +81,8 @@ class FunctionalSuggestMixin(object):
                 )
 
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
+        page = self.paginate_queryset(queryset[list(queryset.keys())[0]])
+
         return Response(page)
 
 

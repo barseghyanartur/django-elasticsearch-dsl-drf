@@ -15,9 +15,16 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.22.1
+----
+2021-04-29
+
+- `DictionaryProxy` gets an optional `meta` argument, which will hold meta
+  information of the hit.
+
 0.22
 ----
-2021-03-xx
+2021-03-26
 
 .. note::
 

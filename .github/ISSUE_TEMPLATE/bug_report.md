@@ -10,6 +10,14 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**Environment**
+
+Python environment:
+1. `pip list`
+2. `python --version`
+
+Which version of Elasticsearch are you using?
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'

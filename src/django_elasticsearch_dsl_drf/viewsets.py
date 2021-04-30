@@ -217,14 +217,12 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
 
             if not obj and self.ignore:
                 raise Http404("No result matches the given query.")
-            # TODO: Do we need obj on != ELASTICSEARCH_GTE_7_0 like below?
-            if ELASTICSEARCH_GTE_7_0:
-                dictionary_proxy = self.dictionary_proxy(
-                    obj.to_dict(),
-                    obj.meta
-                )
-            else:
-                dictionary_proxy = self.dictionary_proxy(obj, obj.meta)
+            # Remark 1: Code below works fine. Do not try to do the same as
+            # done in `Remark 2`.
+            dictionary_proxy = self.dictionary_proxy(
+                obj.to_dict(),
+                getattr(obj, 'meta', None)
+            )
             return dictionary_proxy
         else:
             queryset = queryset.filter(
@@ -241,6 +239,8 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
                 # May raise a permission denied
                 self.check_object_permissions(self.request, obj)
 
+                # Remark 2: Unlike code in `Remark 1`, here we do need the
+                # conditional treatment.
                 if ELASTICSEARCH_GTE_7_0:
                     dictionary_proxy = self.dictionary_proxy(
                         obj.to_dict(),

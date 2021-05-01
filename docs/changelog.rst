@@ -17,7 +17,7 @@ are used for versioning (schema follows below):
 
 0.22.1
 ----
-2021-04-29
+2021-05-01
 
 - `DictionaryProxy` gets an optional `meta` argument, which will hold meta
   information of the hit.

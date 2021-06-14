@@ -5,7 +5,7 @@ from .city import CityDocument
 from .journal import JournalDocument
 from .location import LocationDocument
 from .publisher import PublisherDocument
-from .tag import TagDocument
+from .tag import TagDocument, NoKeywordTagDocument
 
 __all___ = (
     'AddressDocument',
@@ -14,4 +14,5 @@ __all___ = (
     'CityDocument',
     'PublisherDocument',
     'TagDocument',
+    'NoKeywordTagDocument',
 )

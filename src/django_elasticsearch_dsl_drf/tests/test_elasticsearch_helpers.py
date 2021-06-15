@@ -47,6 +47,7 @@ class TestElasticsearchHelpers(BaseTestCase):
             'test_author',
             'test_book',
             'test_tag',
+            'test_no_keyword_tag',
         }
 
         self.assertSetEqual(res, expected)

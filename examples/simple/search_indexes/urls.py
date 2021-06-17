@@ -32,6 +32,7 @@ from .viewsets import (
     PublisherDocumentViewSet,
     QueryFriendlyPaginationBookDocumentViewSet,
     TagDocumentViewSet,
+    NoKeywordTagDocumentViewSet,
 )
 
 __all__ = ('urlpatterns',)
@@ -250,6 +251,12 @@ router.register(
     r'tags',
     TagDocumentViewSet,
     basename='tagdocument'
+)
+
+router.register(
+    r'nokeywordtags',
+    NoKeywordTagDocumentViewSet,
+    basename='nokeywordtagdocument'
 )
 
 # **********************************************************

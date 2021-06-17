@@ -78,6 +78,16 @@ class TestViews(BaseRestFrameworkTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['id'], __obj.title)
 
+    def test_detail_view_with_custom_lookup_no_keywords(self):
+        """Test detail view with a custom lookup field."""
+        __obj = self.tags[0]
+        url = reverse('nokeywordtagdocument-detail', kwargs={'title': __obj.title})
+        data = {}
+
+        response = self.client.get(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['title'], __obj.title)
+
 
 if __name__ == '__main__':
     unittest.main()

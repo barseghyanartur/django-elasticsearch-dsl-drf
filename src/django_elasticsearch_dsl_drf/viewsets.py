@@ -10,7 +10,7 @@ import copy
 from django.http import Http404
 from django.core.exceptions import ImproperlyConfigured
 
-from elasticsearch_dsl import Search
+from elasticsearch_dsl import Search, Q
 from elasticsearch_dsl.connections import connections
 from elasticsearch_dsl.query import MoreLikeThis
 
@@ -225,10 +225,11 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
             )
             return dictionary_proxy
         else:
-            queryset = queryset.filter(
-                'term',
-                **{self.document_uid_field: self.kwargs[lookup_url_kwarg]}
-            )
+            queryset.query = Q(
+                'bool', must=[
+                    Q('match',
+                      **{self.document_uid_field:
+                         self.kwargs[lookup_url_kwarg]})])
 
             hits = queryset.execute().hits.hits
             count = len(hits)

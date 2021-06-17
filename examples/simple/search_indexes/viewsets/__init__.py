@@ -39,4 +39,5 @@ __all__ = (
     'PublisherDocumentViewSet',
     'QueryFriendlyPaginationBookDocumentViewSet',
     'TagDocumentViewSet',
+    'NoKeywordTagDocumentViewSet',
 )

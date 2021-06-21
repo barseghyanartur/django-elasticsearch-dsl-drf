@@ -99,11 +99,3 @@ jobs:
       run: |
         pip install coveralls
         coveralls
-      
-    
-    
-    
-    
-    
-    
-    

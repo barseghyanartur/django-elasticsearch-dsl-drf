@@ -3,74 +3,97 @@ name: django-elasticsearch-dsl-drf CI
 on: [push, pull_request]
 
 jobs:
-  services:
-    - elasticsearch
   test:
-    runs_on: xenial
+    runs-on: ubuntu-latest
+    services:
+      elasticsearch:
+        image: elasticsearch:7.13.2
     strategy:
       matrix:
-        fast_finish: true
         include:
           - python-version: 3.6
-            tox_env: TOX_ENV=py36-django22-elasticsearch7
+            tox_env: py36-django22-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
           - python-version: 3.6
-            tox_env: TOX_ENV=py36-django30-elasticsearch7
+            tox_env: py36-django30-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
           - python-version: 3.6
-            tox_env: TOX_ENV=py36-django31-elasticsearch7
+            tox_env: py36-django31-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
             
           - python-version: 3.6
-            tox_env: TOX_ENV=py36-django22-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+            tox_env: py36-django22-elasticsearch6 
+            ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
           - python-version: 3.6
-            tox_env: TOX_ENV=py36-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+            tox_env: py36-django30-elasticsearch6 
+            ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
           - python-version: 3.6
-            tox_env: TOX_ENV=py36-django31-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+            tox_env: py36-django31-elasticsearch6 
+            ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
             
           - python-version: 3.7
-            tox_env: TOX_ENV=py36-django22-elasticsearch7
+            tox_env: py36-django22-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
           - python-version: 3.7
-            tox_env: TOX_ENV=py36-django30-elasticsearch7
+            tox_env: py36-django30-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
           - python-version: 3.7
-            tox_env: TOX_ENV=py36-django31-elasticsearch7
+            tox_env: py36-django31-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
             
           - python-version: 3.7
-            tox_env: TOX_ENV=py36-django22-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+            tox_env: py36-django22-elasticsearch6 
+            ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
           - python-version: 3.7
-            tox_env: TOX_ENV=py36-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+            tox_env: py36-django30-elasticsearch6 
+            ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
           - python-version: 3.7
-            tox_env: TOX_ENV=py36-django31-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt    
+            tox_env: py36-django31-elasticsearch6 
+            S_APT_URL: https://artifacts.elastic.co/packages/6.x/apt    
             
           - python-version: 3.8
-            tox_env: TOX_ENV=py36-django22-elasticsearch7
+            tox_env: py36-django22-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
           - python-version: 3.8
-            tox_env: TOX_ENV=py36-django30-elasticsearch7
+            tox_env: py36-django30-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
           - python-version: 3.8
-            tox_env: TOX_ENV=py36-django31-elasticsearch7
+            tox_env: py36-django31-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
             
           - python-version: 3.8
-            tox_env: TOX_ENV=py36-django22-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+            tox_env: py36-django22-elasticsearch6 
+            ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
           - python-version: 3.8
-            tox_env: TOX_ENV=py36-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+            tox_env: py36-django30-elasticsearch6 
+            ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
           - python-version: 3.8
-            tox_env: TOX_ENV=py36-django31-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+            tox_env: py36-django31-elasticsearch6 
+            ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
             
           - python-version: 3.9
-            tox_env: TOX_ENV=py36-django22-elasticsearch7
+            tox_env: py36-django22-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
           - python-version: 3.9
-            tox_env: TOX_ENV=py36-django30-elasticsearch7
+            tox_env: py36-django30-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
           - python-version: 3.9
-            tox_env: TOX_ENV=py36-django31-elasticsearch7
+            tox_env: py36-django31-elasticsearch7
+            ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
             
           - python-version: 3.9
-            tox_env: TOX_ENV=py36-django22-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+            tox_env: py36-django22-elasticsearch6 
+            ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
           - python-version: 3.9
-            tox_env: TOX_ENV=py36-django30-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
+            tox_env: py36-django30-elasticsearch6 
+            ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
           - python-version: 3.9
-            tox_env: TOX_ENV=py36-django31-elasticsearch6 ES_APT_URL=https://artifacts.elastic.co/packages/6.x/apt
-    env:
-      global:
-        - ES_APT_URL=https://artifacts.elastic.co/packages/7.x/apt
+            tox_env: Tpy36-django31-elasticsearch6 
+            ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
     steps:
     - name: Before install
+      env:
+        ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
       run: |
         wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
         echo "deb $ES_APT_URL stable main" | sudo tee -a /etc/apt/sources.list.d/elk.list

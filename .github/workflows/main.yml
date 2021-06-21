@@ -92,11 +92,9 @@ jobs:
             ES_APT_URL: https://artifacts.elastic.co/packages/6.x/apt
     steps:
     - name: Before install
-      env:
-        ES_APT_URL: https://artifacts.elastic.co/packages/7.x/apt
       run: |
         wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-        echo "deb $ES_APT_URL stable main" | sudo tee -a /etc/apt/sources.list.d/elk.list
+        echo "deb ${{ matrix.ES_APT_URL }} stable main" | sudo tee -a /etc/apt/sources.list.d/elk.list
         sudo apt-get remove --purge elasticsearch -y
         sudo apt-get update && sudo apt-get install elasticsearch -y
         sudo -i service elasticsearch restart

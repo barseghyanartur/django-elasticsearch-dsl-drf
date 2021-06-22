@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: xenial
     services:
       elasticsearch:
         image: elasticsearch:7.13.2
@@ -95,9 +95,9 @@ jobs:
       run: |
         wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
         echo "deb ${{ matrix.ES_APT_URL }} stable main" | sudo tee -a /etc/apt/sources.list.d/elk.list
-        sudo apt-get remove --purge elasticsearch:7.13.2 -y
-        sudo apt-get update && sudo apt-get install elasticsearch:7.13.2 -y
-        sudo -i service elasticsearch:7.13.2 restart
+        sudo apt-get remove --purge elasticsearch -y
+        sudo apt-get update && sudo apt-get install elasticsearch -y
+        sudo -i service elasticsearch restart
     - uses: actions/checkout@v2
     - name: Setup Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1

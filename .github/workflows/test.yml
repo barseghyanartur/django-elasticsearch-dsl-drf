@@ -99,3 +99,5 @@ jobs:
       uses: nick-invision/retry@v2
       with:
         command: tox -e ${{ matrix.tox_env }} -- --color yes
+        timeout_minutes: 15
+        max_attempts: 3

@@ -1,5 +1,5 @@
--r common.txt
--r test.txt
+-r common.in
+-r test.in
 
 Django>=1.11,<2.0
 django-cors-headers==2.4.0

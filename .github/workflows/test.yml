@@ -146,6 +146,8 @@ jobs:
         pip-compile examples/requirements/${{ matrix.requirements }}.in
         pip-compile examples/requirements/${{ matrix.es_requirements }}.in
         pip-compile examples/requirements/test.in
+        python -m pip install -r examples/requirements/${{ matrix.requirements }}.in
+        python -m pip install -r examples/requirements/${{ matrix.es_requirements }}.in
         python -m pip install -r examples/requirements/test.txt
     - name: Run tests
       uses: nick-invision/retry@v2

@@ -19,106 +19,82 @@ jobs:
         - python-version: 3.6
           tox_env: py36-django22-elasticsearch7
           requirements: django_2_2
-          es_requirements: elastic_7x
         - python-version: 3.6
           tox_env: py36-django31-elasticsearch7
           requirements: django_3_1
-          es_requirements: elastic_7x
         - python-version: 3.6
           tox_env: py36-django32-elasticsearch7
           requirements: django_3_2
-          es_requirements: elastic_7x
 
         - python-version: 3.6
           tox_env: py36-django22-elasticsearch6
           requirements: django_2_2
-          es_requirements: elastic_6x
         - python-version: 3.6
           tox_env: py36-django31-elasticsearch6
           requirements: django_3_1
-          es_requirements: elastic_6x
         - python-version: 3.6
           tox_env: py36-django32-elasticsearch6
           requirements: django_3_2
-          es_requirements: elastic_6x
 
         - python-version: 3.7
           tox_env: py37-django22-elasticsearch7
           requirements: django_2_2
-          es_requirements: elastic_7x
         - python-version: 3.7
           tox_env: py37-django31-elasticsearch7
           requirements: django_3_1
-          es_requirements: elastic_7x
         - python-version: 3.7
           tox_env: py37-django32-elasticsearch7
           requirements: django_3_2
-          es_requirements: elastic_7x
 
         - python-version: 3.7
           tox_env: py37-django22-elasticsearch6
           requirements: django_2_2
-          es_requirements: elastic_6x
         - python-version: 3.7
           tox_env: py37-django31-elasticsearch6
           requirements: django_3_1
-          es_requirements: elastic_6x
         - python-version: 3.7
           tox_env: py37-django32-elasticsearch6
           requirements: django_3_2
-          es_requirements: elastic_6x
 
         - python-version: 3.8
           tox_env: py38-django22-elasticsearch7
           requirements: django_2_2
-          es_requirements: elastic_7x
         - python-version: 3.8
           tox_env: py38-django31-elasticsearch7
           requirements: django_3_1
-          es_requirements: elastic_7x
         - python-version: 3.8
           tox_env: py38-django32-elasticsearch7
           requirements: django_3_2
-          es_requirements: elastic_7x
 
         - python-version: 3.8
           tox_env: py38-django22-elasticsearch6
           requirements: django_2_2
-          es_requirements: elastic_6x
         - python-version: 3.8
           tox_env: py38-django31-elasticsearch6
           requirements: django_3_1
-          es_requirements: elastic_6x
         - python-version: 3.8
           tox_env: py38-django32-elasticsearch6
           requirements: django_3_2
-          es_requirements: elastic_6x
 
         - python-version: 3.9
           tox_env: py39-django22-elasticsearch7
           requirements: django_2_2
-          es_requirements: elastic_7x
         - python-version: 3.9
           tox_env: py39-django31-elasticsearch7
           requirements: django_3_1
-          es_requirements: elastic_7x
         - python-version: 3.9
           tox_env: py39-django32-elasticsearch7
           requirements: django_3_2
-          es_requirements: elastic_7x
 
         - python-version: 3.9
           tox_env: py39-django22-elasticsearch6
           requirements: django_2_2
-          es_requirements: elastic_6x
         - python-version: 3.9
           tox_env: py39-django31-elasticsearch6
           requirements: django_3_1
-          es_requirements: elastic_6x
         - python-version: 3.9
           tox_env: py39-django32-elasticsearch6
           requirements: django_3_2
-          es_requirements: elastic_6x
 
     services:
       elasticsearch:

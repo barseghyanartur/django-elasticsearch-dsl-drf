@@ -1,0 +1,4 @@
+-r base.in
+-r debug.in
+-r docs.in
+-r code_style.in

@@ -21,8 +21,8 @@ Elasticsearch documents.
     :target: https://pypi.python.org/pypi/django-elasticsearch-dsl-drf/
     :alt: Supported Python versions
 
-.. image:: https://img.shields.io/travis/barseghyanartur/django-elasticsearch-dsl-drf/master.svg
-   :target: http://travis-ci.org/barseghyanartur/django-elasticsearch-dsl-drf
+.. image:: https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/workflows/test/badge.svg
+   :target: https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/actions
    :alt: Build Status
 
 .. image:: https://readthedocs.org/projects/django-elasticsearch-dsl-drf/badge/?version=latest
@@ -46,7 +46,7 @@ Make sure to read `FAQ <https://github.com/barseghyanartur/django-elasticsearch-
 
 Prerequisites
 =============
-- Django 2.2, 3.0 and 3.1.
+- Django 2.2, 3.1 and 3.2.
 - Python 3.6, 3.7, 3.8 and 3.9.
 - Elasticsearch 6.x, 7.x. For older versions use
   ``django-elasticsearch-dsl-drf`` version 0.18.

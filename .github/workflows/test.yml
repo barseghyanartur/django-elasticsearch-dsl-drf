@@ -127,8 +127,8 @@ jobs:
         command: tox -e ${{ matrix.tox_env }} -- --color yes
         timeout_minutes: 15
         max_attempts: 3
-    - name: Upload to Codecov
-      uses: codecov/codecov-action@v2
+#    - name: Upload to Codecov
+#      uses: codecov/codecov-action@v2
     - name: Coveralls
       uses: AndreMiras/coveralls-python-action@develop
       with:

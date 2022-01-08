@@ -15,6 +15,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.23
+----
+?
+
+- Add `FacetedFilterSearchFilterBackend` that performs faceting and filtering
+  together.
+
 0.22.2
 ----
 2021-08-29

@@ -754,6 +754,68 @@ In the example below, we show results with faceted ``state`` and
 
     http://127.0.0.1:8000/search/books/?facet=state&facet=pages_count
 
+Faceted and filtered search
+---------------------------
+
+It is sometimes useful to be able to facet and filter on the same field. For example, this would allow the user
+to apply a filter such as `size=medium` and a `size` facet, and get back a `size` facet that has all sizes, not
+just `medium`. This is similar to
+`elasticsearch-dsl's FacetedSearch class<https://elasticsearch-dsl.readthedocs.io/en/latest/faceted_search.html>`_.
+
+To do this, use `FacetedFilterSearchFilterBackend` instead of both `FacetedSearchFilterBackend` and
+`FilteringFilterBackend`. It will apply both the filters and the facets. It uses exactly the same configuration
+as the two backends it replaces.
+
+*search_indexes/viewsets/book.py*
+
+.. code-block:: python
+
+    # ...
+
+    from django_elasticsearch_dsl_drf.filter_backends import (
+        # ...
+        FacetedFilterSearchFilterBackend,
+    )
+
+    # ...
+
+    from elasticsearch_dsl import (
+        DateHistogramFacet,
+        RangeFacet,
+        TermsFacet,
+    )
+
+    # ...
+
+    class BookDocumentView(DocumentViewSet):
+        """The BookDocument view."""
+
+        # ...
+
+        filter_backends = [
+            # ...
+            FacetedFilterSearchFilterBackend,
+        ]
+
+        # ...
+
+        filter_fields = {
+            'state': 'state.raw',  # The filter and facet fields MUST both use the same elasticsearch field
+        }
+
+        faceted_search_fields = {
+            'state': 'state.raw',  # The filter and facet fields MUST both use the same elasticsearch field
+        }
+
+        # ...
+
+In the example below, we show results with faceted `state` and the
+filter `state=published`.
+
+.. code-block:: text
+
+    http://127.0.0.1:8000/search/books/?facet=state&state=published
+
 Post-filter
 -----------
 The `post_filter` is very similar to the common filter. The only difference

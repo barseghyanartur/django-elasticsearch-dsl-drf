@@ -3,6 +3,7 @@ from .compound_search import *
 from .compound_search_boost import *
 from .default import *
 from .default_filter_lookup import *
+from .faceted_filtered import *
 from .functional_suggester import *
 from .ignore_index_errors import *
 from .frontend import *

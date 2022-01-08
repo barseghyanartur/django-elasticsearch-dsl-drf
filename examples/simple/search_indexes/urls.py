@@ -24,6 +24,7 @@ from .viewsets import (
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet,
     BookSourceSearchBackendDocumentViewSet,
+    FacetedFilteredBookDocumentViewSet,
     JournalDocumentViewSet,
     CityCompoundSearchBackendDocumentViewSet,
     CityDocumentViewSet,
@@ -204,6 +205,12 @@ router.register(
     r'books-simple-query-string-boost-search-backend',
     BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet,
     basename='bookdocument_simple_query_string_boost_search_backend'
+)
+
+router.register(
+    r'books-faceted-filtered',
+    FacetedFilteredBookDocumentViewSet,
+    basename='bookdocument_faceted_filtered'
 )
 
 # **********************************************************

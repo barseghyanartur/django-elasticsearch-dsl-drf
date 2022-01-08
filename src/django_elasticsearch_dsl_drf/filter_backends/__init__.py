@@ -2,7 +2,10 @@
 All filter backends.
 """
 
-from .faceted_search import FacetedSearchFilterBackend
+from .faceted_search import (
+    FacetedSearchFilterBackend,
+    FacetedFilterSearchFilterBackend
+)
 from .filtering import (
     FilteringFilterBackend,
     GeoSpatialFilteringFilterBackend,

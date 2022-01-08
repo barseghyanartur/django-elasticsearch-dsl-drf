@@ -35,6 +35,7 @@ __all__ = (
     'CityDocumentViewSet',
     'JournalDocumentViewSet',
     'FrontAddressDocumentViewSet',
+    'FacetedFilteredBookDocumentViewSet',
     'LocationDocumentViewSet',
     'PublisherDocumentViewSet',
     'QueryFriendlyPaginationBookDocumentViewSet',

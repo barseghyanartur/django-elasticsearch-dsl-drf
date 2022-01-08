@@ -2,6 +2,8 @@
 Faceted search backend.
 """
 import copy
+from collections import defaultdict
+
 from elasticsearch_dsl import TermsFacet
 from elasticsearch_dsl.query import Q
 
@@ -13,7 +15,9 @@ __title__ = 'django_elasticsearch_dsl_drf.faceted_search'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2020 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('FacetedSearchFilterBackend',)
+__all__ = ('FacetedSearchFilterBackend', 'FacetedFilterSearchFilterBackend')
+
+from django_elasticsearch_dsl_drf.filter_backends.filtering import FilteringFilterBackend
 
 
 class FacetedSearchFilterBackend(BaseFilterBackend):
@@ -229,3 +233,91 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
         :rtype: elasticsearch_dsl.search.Search
         """
         return self.aggregate(request, queryset, view)
+
+
+class FacetedFilterSearchFilterBackend(FilteringFilterBackend, FacetedSearchFilterBackend):
+    """ Combined faceting and filtering backend similar to elasticsearch-dsl's FacetedSearch class.
+    It combines the functionality of FilteringFilterBackend and FacetedSearchFilterBackend to take filters into
+    account when creating facets.
+
+    This backend uses the same configuration fields as FilteringFilterBackend and FacetedSearchFilterBackend.
+    This backend replaces their functionality and should not be used together with either of those backends.
+
+    Note that to work correctly, the actual elasticsearch field must be the same for a facet and its matching filter.
+    For example, if a facet will aggregate on field `state.raw`, then the filter must also filter on `state.raw`,
+    and not just `state`.
+
+    When creating a facet, filters for faceted fields other than for the current facet are applied. Filters
+    for faceted fields are then applied as post_filters. Filters on non-faceted fields are applied as normal filters.
+    """
+    def filter_queryset(self, request, queryset, view):
+        # the fact that apply_filter is a classmethod means we can't store state on self,
+        # so we hitch it onto queryset
+        queryset._facets = self.construct_facets(request, view)
+        queryset._faceted_fields = set(f['facet']._params['field'] for f in queryset._facets.values())
+        queryset._filters = defaultdict(list)
+
+        # apply filters
+        queryset = FilteringFilterBackend.filter_queryset(self, request, queryset, view)
+
+        # apply aggregations
+        return self.aggregate(request, queryset, view)
+
+    @classmethod
+    def apply_filter(cls, queryset, options=None, args=None, kwargs=None):
+        if args is None:
+            args = []
+        if kwargs is None:
+            kwargs = {}
+
+        facets = queryset._facets
+        faceted_fields = queryset._faceted_fields
+        filters = queryset._filters
+
+        # if this field is faceted, then apply it as a post-filter
+        if options['field'] in faceted_fields:
+            queryset = queryset.post_filter(*args, **kwargs)
+        else:
+            queryset = queryset.filter(*args, **kwargs)
+
+        filters[options['field']].append(Q(*args, **kwargs))
+
+        # ensure the new queryset object retains the helper variables
+        queryset._facets = facets
+        queryset._faceted_fields = faceted_fields
+        queryset._filters = filters
+        return queryset
+
+    def aggregate(self, request, queryset, view):
+        facets = queryset._facets
+        faceted_fields = queryset._faceted_fields
+        filters = queryset._filters
+
+        for field, facet in facets.items():
+            agg = facet['facet'].get_aggregation()
+
+            if facet['global']:
+                queryset.aggs.bucket(
+                    '_filter_' + field,
+                    'global'
+                ).bucket(field, agg)
+                continue
+
+            agg_filter = Q('match_all')
+            for f, _filter in filters.items():
+                # apply filters for that are applicable for facets other than this one
+                if agg.field == f or f not in faceted_fields:
+                    continue
+                # combine with or
+                q = _filter[0]
+                for x in _filter[1:]:
+                    q = q | x
+                agg_filter &= q
+
+            queryset.aggs.bucket(
+                '_filter_' + field,
+                'filter',
+                filter=agg_filter
+            ).bucket(field, agg)
+
+        return queryset

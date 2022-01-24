@@ -154,7 +154,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
     ignore = []
 
     def __init__(self, *args, **kwargs):
-        assert self.document is not None
+        self.run_checks()
 
         self.client = connections.get_connection(
             self.document._get_using()
@@ -167,6 +167,9 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
             doc_type=self.document._doc_type.name
         )
         super(BaseDocumentViewSet, self).__init__(*args, **kwargs)
+
+    def run_checks(self):
+        assert self.document is not None
 
     def get_queryset(self):
         """Get queryset."""

@@ -3,7 +3,7 @@ Integrate Elasticsearch DSL with Django REST framework.
 """
 
 __title__ = 'django-elasticsearch-dsl-drf'
-__version__ = '0.22.2'
+__version__ = '0.22.3'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
 __copyright__ = '2017-2021 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'

@@ -19,6 +19,12 @@ are used for versioning (schema follows below):
 ------
 2022-01-24
 
+- Skip some parts of the ViewSet class definition on empty `document`.
+
+0.22.3
+------
+2022-01-24
+
 - Make running of ViewSet checks flexible (to allow dynamic document definition).
 
 0.22.2

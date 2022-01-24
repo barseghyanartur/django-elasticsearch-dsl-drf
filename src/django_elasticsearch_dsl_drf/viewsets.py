@@ -156,16 +156,18 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
     def __init__(self, *args, **kwargs):
         self.run_checks()
 
-        self.client = connections.get_connection(
-            self.document._get_using()
-        )
-        self.index = self.document._index._name
-        self.mapping = self.document._doc_type.mapping.properties.name
-        self.search = Search(
-            using=self.client,
-            index=self.index,
-            doc_type=self.document._doc_type.name
-        )
+        if self.document:
+            self.client = connections.get_connection(
+                self.document._get_using()
+            )
+            self.index = self.document._index._name
+            self.mapping = self.document._doc_type.mapping.properties.name
+            self.search = Search(
+                using=self.client,
+                index=self.index,
+                doc_type=self.document._doc_type.name
+            )
+
         super(BaseDocumentViewSet, self).__init__(*args, **kwargs)
 
     def run_checks(self):

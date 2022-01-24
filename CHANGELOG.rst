@@ -15,6 +15,12 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.22.4
+------
+2022-01-24
+
+- Skip some parts of the ViewSet class definition on empty `document`.
+
 0.22.3
 ------
 2022-01-24

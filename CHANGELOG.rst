@@ -26,6 +26,7 @@ are used for versioning (schema follows below):
 2022-01-24
 
 - Make running of ViewSet checks flexible (to allow dynamic document definition).
+- Added the `FacetedFilterSearchFilterBackend`.
 
 0.22.2
 ------

@@ -15,21 +15,27 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
-0.23
-----
-?
+0.22.4
+------
+2022-01-24
 
-- Add `FacetedFilterSearchFilterBackend` that performs faceting and filtering
-  together.
+- Skip some parts of the ViewSet class definition on empty `document`.
+
+0.22.3
+------
+2022-01-24
+
+- Make running of ViewSet checks flexible (to allow dynamic document definition).
+- Added the `FacetedFilterSearchFilterBackend`.
 
 0.22.2
-----
+------
 2021-08-29
 
 - Tested against Django 3.2.
 
 0.22.1
-----
+------
 2021-05-01
 
 - `DictionaryProxy` gets an optional `meta` argument, which will hold meta

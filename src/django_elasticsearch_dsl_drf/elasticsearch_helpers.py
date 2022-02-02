@@ -15,7 +15,7 @@ def get_all_indices(with_protected=False):
         list: List of indices.
     """
     es = Elasticsearch(**settings.ELASTICSEARCH_DSL["default"])
-    _indices = es.indices.get_alias(index="*").items()
+    _indices = es.indices.get_alias("*").items()
     if with_protected:
         return [_i for _i, _o in _indices]
     else:
@@ -35,7 +35,7 @@ def delete_all_indices(with_protected=False):
     _fail = []
     for _i in _indices:
         try:
-            _res = es.indices.delete(index=_i)
+            _res = es.indices.delete(_i)
         except Exception as err:
             _fail.append(_i)
         if _res and isinstance(_res, dict) and _res.get("acknowledged", False):

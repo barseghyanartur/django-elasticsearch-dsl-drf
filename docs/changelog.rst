@@ -19,7 +19,7 @@ are used for versioning (schema follows below):
 ------
 2022-07-04
 
-- Return null for count when using EmptySearch.
+- Return 0 for count when using EmptySearch.
 
 0.22.4
 ------

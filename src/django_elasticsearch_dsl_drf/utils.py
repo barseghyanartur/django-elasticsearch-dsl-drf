@@ -23,7 +23,7 @@ class EmptySearch(object):
         self.aggs = AggsProxy('')
         self._highlight = {}
         self._sort = []
-        self.total = None
+        self.total = 0
 
     def __len__(self):
         return 0

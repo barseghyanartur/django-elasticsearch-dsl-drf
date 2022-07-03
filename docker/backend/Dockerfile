@@ -1,13 +1,13 @@
-FROM docker.io/python:3.6.7-slim-jessie
+FROM docker.io/python:3.9-slim-bullseye
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update
 RUN apt-get install -y build-essential
 RUN apt-get install -y cmake
 RUN apt-get install -y libpq-dev
-RUN apt-get install -y python-dev
-RUN apt-get install -y python-pip
-RUN apt-get install -y python-imaging
+#RUN apt-get install -y python-dev
+#RUN apt-get install -y python-pip
+#RUN apt-get install -y python-imaging
 RUN apt-get install -y mc
 RUN apt-get install -y nano
 

@@ -136,7 +136,12 @@ class BaseSearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
                                     'use `get_schema_fields()`'
         assert coreschema is not None, 'coreschema must be installed to ' \
                                        'use `get_schema_fields()`'
-        search_fields = getattr(view, 'search_fields', None)
+
+        _search_fields = getattr(view, 'search_fields', None)
+        if isinstance(_search_fields, dict):
+            search_fields = list(_search_fields.keys())
+        else:
+            search_fields = _search_fields
 
         return [] if not search_fields else [
             coreapi.Field(

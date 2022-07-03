@@ -10,6 +10,7 @@ from .frontend import *
 from .more_like_this import *
 from .multi_match import *
 from .multi_match_options_phrase_prefix import *
+from .no_records import *
 from .ordering_by_score import *
 from .ordering_by_score_compound_search import *
 from .permissions import *

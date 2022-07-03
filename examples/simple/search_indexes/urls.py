@@ -16,6 +16,7 @@ from .viewsets import (
     BookMoreLikeThisNoOptionsDocumentViewSet,
     BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet,
     BookMultiMatchSearchFilterBackendDocumentViewSet,
+    BookNoRecordsDocumentViewSet,
     BookOrderingByScoreCompoundSearchBackendDocumentViewSet,
     BookOrderingByScoreDocumentViewSet,
     BookPermissionsDocumentViewSet,
@@ -80,7 +81,11 @@ router.register(
     BookDocumentViewSet,
     basename='bookdocument'
 )
-
+router.register(
+    r'books-no-records',
+    BookNoRecordsDocumentViewSet,
+    basename='bookdocument-no-records'
+)
 router.register(
     r'books-query-friendly-pagination',
     QueryFriendlyPaginationBookDocumentViewSet,

@@ -36,7 +36,7 @@ simplegeneric==0.8.1
     # via ipython
 six==1.16.0
     # via prompt-toolkit
-traitlets==5.0.5
+traitlets==4.3
     # via ipython
 wcwidth==0.2.5
     # via prompt-toolkit

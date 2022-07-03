@@ -162,7 +162,7 @@ sqlparse==0.4.1
     #   django-debug-toolbar
 toml==0.10.2
     # via pylint
-traitlets==5.0.5
+traitlets==4.3
     # via ipython
 urllib3==1.26.6
     # via requests

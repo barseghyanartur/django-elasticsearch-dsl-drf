@@ -52,7 +52,7 @@ class TestUtils(BaseRestFrameworkTestCase):
 
         # Should contain no results
         self.assertEqual(response.data['results'], [])
-        self.assertEqual(response.data['count'], None)
+        self.assertEqual(response.data['count'], 0)
         self.assertEqual(response.data['next'], None)
         self.assertEqual(response.data['previous'], None)
 

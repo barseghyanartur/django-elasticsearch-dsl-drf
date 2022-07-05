@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from elasticsearch_dsl.query import Q
 
 from .base import BaseSearchQueryBackend
@@ -32,13 +34,21 @@ class MatchPhraseQueryBackend(BaseSearchQueryBackend):
             if __len_values > 1:
                 field, value = __values
                 if field in view.search_fields:
-                    # Initial kwargs for the match query
-                    field_kwargs = {field: {'query': value}}
+                    field_kwargs = {}
                     # In case if we deal with structure 2
                     if isinstance(view.search_fields, dict):
-                        extra_field_kwargs = view.search_fields[field]
+                        field_name = deepcopy(field)
+                        extra_field_kwargs = deepcopy(view.search_fields[field])
                         if extra_field_kwargs:
-                            field_kwargs[field].update(extra_field_kwargs)
+                            if "field" in extra_field_kwargs:
+                                field_name = extra_field_kwargs.pop("field")
+                            # Initial kwargs for the match query
+                            field_kwargs = {field_name: {"query": value}}
+                            field_kwargs[field_name].update(extra_field_kwargs)
+
+                    if not field_kwargs:
+                        field_kwargs = {field: {"query": value}}
+
                     # The match query
                     __queries.append(
                         Q(cls.query_type, **field_kwargs)
@@ -46,13 +56,21 @@ class MatchPhraseQueryBackend(BaseSearchQueryBackend):
             else:
                 for field in view.search_fields:
                     # Initial kwargs for the match query
-                    field_kwargs = {field: {'query': search_term}}
+                    field_kwargs = {}
 
                     # In case if we deal with structure 2
                     if isinstance(view.search_fields, dict):
-                        extra_field_kwargs = view.search_fields[field]
+                        field_name = deepcopy(field)
+                        extra_field_kwargs = deepcopy(view.search_fields[field])
                         if extra_field_kwargs:
-                            field_kwargs[field].update(extra_field_kwargs)
+                            if "field" in extra_field_kwargs:
+                                field_name = extra_field_kwargs.pop("field")
+                            # Initial kwargs for the match query
+                            field_kwargs = {field_name: {"query": search_term}}
+                            field_kwargs[field_name].update(extra_field_kwargs)
+
+                    if not field_kwargs:
+                        field_kwargs = {field: {"query": search_term}}
 
                     # The match query
                     __queries.append(

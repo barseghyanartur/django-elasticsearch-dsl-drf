@@ -283,6 +283,14 @@ class TestSearch(BaseRestFrameworkTestCase):
             url=url,
             search_field=search_field
         )
+        self._search_by_field(
+            search_term='summary_alternative{}photography'.format(
+                SEPARATOR_LOOKUP_NAME
+            ),
+            num_results=self.special_count,
+            url=url,
+            search_field=search_field
+        )
 
     def test_search_by_field_multi_terms(self,
                                          url=None,

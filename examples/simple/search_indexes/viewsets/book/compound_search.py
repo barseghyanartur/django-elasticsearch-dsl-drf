@@ -53,4 +53,5 @@ class BookCompoundFuzzySearchBackendDocumentViewSet(BookDocumentViewSet):
         'title': {'fuzziness': 'AUTO'},
         'description': None,
         'summary': None,
+        'summary_alternative': {'field': 'summary'},
     }

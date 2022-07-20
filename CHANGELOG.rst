@@ -15,6 +15,12 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.22.6
+------
+2022-07-06
+
+- Make it possible to specify search on a sub-field (not only on a main field).
+
 0.22.5
 ------
 2022-07-04

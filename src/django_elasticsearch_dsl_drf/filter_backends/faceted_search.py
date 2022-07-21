@@ -4,8 +4,8 @@ Faceted search backend.
 import copy
 from collections import defaultdict
 
-from elasticsearch_dsl import TermsFacet
-from elasticsearch_dsl.query import Q
+from anysearch.search_dsl import TermsFacet
+from anysearch.search_dsl.query import Q
 
 from rest_framework.filters import BaseFilterBackend
 

@@ -3,11 +3,11 @@ Helpers.
 """
 from collections import OrderedDict
 
-from django_elasticsearch_dsl.registries import registry
+from anysearch.django_search_dsl.registries import registry
 
-from elasticsearch_dsl import Search
-from elasticsearch_dsl.connections import connections
-from elasticsearch_dsl.query import MoreLikeThis
+from anysearch.search_dsl import Search
+from anysearch.search_dsl.connections import connections
+from anysearch.search_dsl.query import MoreLikeThis
 
 from six import PY3
 

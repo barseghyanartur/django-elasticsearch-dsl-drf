@@ -3,7 +3,7 @@ Utils.
 """
 
 import datetime
-from elasticsearch_dsl.search import AggsProxy
+from anysearch.search_dsl.search import AggsProxy
 
 
 __title__ = 'django_elasticsearch_dsl_drf.utils'

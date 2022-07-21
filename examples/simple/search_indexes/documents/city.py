@@ -1,6 +1,7 @@
 from django.conf import settings
 
-from django_elasticsearch_dsl import Document, Index, fields
+from anysearch.django_search_dsl import Document, fields
+from anysearch.django_search_dsl import registries
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
 from books.models import City
@@ -10,18 +11,7 @@ from .analyzers import html_strip
 
 __all__ = ('CityDocument',)
 
-INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
-
-# See Elasticsearch Indices API reference for available settings
-INDEX.settings(
-    number_of_shards=1,
-    number_of_replicas=1,
-    blocks={'read_only_allow_delete': False},
-    # read_only_allow_delete=False
-)
-
-
-@INDEX.doc_type
+@registries.registry.register_document
 class CityDocument(Document):
     """City Elasticsearch document.
 
@@ -96,6 +86,15 @@ class CityDocument(Document):
         StringField(attr='integer_list_indexing')
     )
     # integer_dict_indexing
+
+    # See Elasticsearch Indices API reference for available settings
+    class Index:
+        name = settings.ELASTICSEARCH_INDEX_NAMES[__name__]
+        settings = {
+            "number_of_shards": 1,
+            "number_of_replicas": 1,
+            "blocks": {"read_only_allow_delete": False},
+        }
 
     class Django(object):
         model = City  # The model associate with this Document

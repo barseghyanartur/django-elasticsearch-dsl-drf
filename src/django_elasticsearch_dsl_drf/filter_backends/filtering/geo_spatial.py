@@ -22,7 +22,7 @@ The queries in this group are:
   polygon.
 """
 import logging
-from elasticsearch_dsl.query import Q
+from anysearch.search_dsl.query import Q
 from rest_framework.filters import BaseFilterBackend
 
 from six import string_types

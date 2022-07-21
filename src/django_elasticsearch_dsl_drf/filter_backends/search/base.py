@@ -2,7 +2,7 @@
 
 from django.core.exceptions import ImproperlyConfigured
 
-from django_elasticsearch_dsl import fields
+from anysearch.django_search_dsl import fields
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.settings import api_settings
 

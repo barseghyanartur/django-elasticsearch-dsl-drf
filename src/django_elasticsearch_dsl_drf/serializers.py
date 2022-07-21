@@ -10,7 +10,7 @@ from collections import OrderedDict
 
 from django.core.exceptions import ImproperlyConfigured
 
-from django_elasticsearch_dsl import fields, Document
+from anysearch.django_search_dsl import fields, Document
 
 from rest_framework import serializers
 from rest_framework.fields import empty

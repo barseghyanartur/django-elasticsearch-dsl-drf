@@ -15,6 +15,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.23
+----
+2022-07-21
+
+- Make it compatible with both Elasticsearch and OpenSearch.
+- Drop support for Elasticsearch 6.x.
+
 0.22.5
 ------
 2022-07-04

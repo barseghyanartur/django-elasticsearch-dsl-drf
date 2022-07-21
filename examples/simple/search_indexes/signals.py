@@ -10,7 +10,7 @@ updated as well.
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
-from django_elasticsearch_dsl.registries import registry
+from anysearch.django_search_dsl import registries
 
 __all__ = (
     'update_document',
@@ -35,19 +35,19 @@ def update_document(sender, **kwargs):
         if model_name == 'publisher':
             instances = instance.books.all()
             for _instance in instances:
-                registry.update(_instance)
+                registries.registry.update(_instance)
 
         # If it is `books.Author` that is being updated.
         if model_name == 'author':
             instances = instance.books.all()
             for _instance in instances:
-                registry.update(_instance)
+                registries.registry.update(_instance)
 
         # If it is `books.Tag` that is being updated.
         if model_name == 'tag':
             instances = instance.books.all()
             for _instance in instances:
-                registry.update(_instance)
+                registries.registry.update(_instance)
 
 
 @receiver(post_delete)
@@ -67,19 +67,19 @@ def delete_document(sender, **kwargs):
         if model_name == 'publisher':
             instances = instance.books.all()
             for _instance in instances:
-                registry.update(_instance)
-                # registry.delete(_instance, raise_on_error=False)
+                registries.registry.update(_instance)
+                # registries.registry.delete(_instance, raise_on_error=False)
 
         # If it is `books.Author` that is being updated.
         if model_name == 'author':
             instances = instance.books.all()
             for _instance in instances:
-                registry.update(_instance)
-                # registry.delete(_instance, raise_on_error=False)
+                registries.registry.update(_instance)
+                # registries.registry.delete(_instance, raise_on_error=False)
 
         # If it is `books.Tag` that is being updated.
         if model_name == 'tag':
             instances = instance.books.all()
             for _instance in instances:
-                registry.update(_instance)
-                # registry.delete(_instance, raise_on_error=False)
+                registries.registry.update(_instance)
+                # registries.registry.delete(_instance, raise_on_error=False)

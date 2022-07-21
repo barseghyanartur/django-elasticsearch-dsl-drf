@@ -33,7 +33,7 @@ from django_elasticsearch_dsl_drf.viewsets import (
 from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
 from django_elasticsearch_dsl_drf.utils import EmptySearch
 
-from elasticsearch_dsl import DateHistogramFacet, RangeFacet
+from anysearch.search_dsl import DateHistogramFacet, RangeFacet
 
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated

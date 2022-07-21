@@ -5,7 +5,7 @@ module is not supposed to solve all transition issues for you. Better move to
 Elastic 5.x as soon as possible.
 """
 
-from django_elasticsearch_dsl import fields
+from anysearch.django_search_dsl import fields
 
 # For compatibility reasons
 from .versions import get_elasticsearch_version

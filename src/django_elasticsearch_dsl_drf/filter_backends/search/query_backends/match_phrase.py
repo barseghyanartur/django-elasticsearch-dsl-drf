@@ -1,4 +1,4 @@
-from elasticsearch_dsl.query import Q
+from anysearch.search_dsl.query import Q
 
 from .base import BaseSearchQueryBackend
 

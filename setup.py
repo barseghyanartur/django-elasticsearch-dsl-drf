@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = '0.22.5'
+version = '0.23'
 
 DOCS_TRANSFORMATIONS = (
     (
@@ -158,10 +158,8 @@ except:
 install_requires = [
     'six>=1.9',
     'django-nine>=0.2',
-    'django-elasticsearch-dsl>=6.4.1',
-    'elasticsearch-dsl',
-    'elasticsearch',
     'djangorestframework',
+    'anysearch',
 ]
 
 extras_require = []
@@ -204,15 +202,29 @@ setup(
         "Changelog": "https://django-elasticsearch-dsl-drf.readthedocs.io/"
                      "en/latest/changelog.html",
     },
-    keywords="django, elasticsearch, elasticsearch-dsl, django rest framework",
+    keywords="django, elasticsearch, elasticsearch-dsl, "
+             "django-elasticsearch-dsl, opensearch, opensearch-dsl, "
+             "django-opensearch-dsl, django-rest-framework",
     author='Artur Barseghyan',
     author_email='artur.barseghyan@gmail.com',
     url='https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/',
     package_dir={'': 'src'},
     packages=find_packages(where='./src'),
     license='GPL-2.0-only OR LGPL-2.1-or-later',
-    python_requires=">=2.7",
+    python_requires=">=3.6",
     install_requires=(install_requires + extras_require),
+    extras_require={
+        "elasticsearch": [
+            "elasticsearch",
+            "elasticsearch-dsl",
+            "django-elasticsearch-dsl>=6.4.1",
+        ],
+        "opensearch": [
+            "opensearch",
+            "opensearch-dsl",
+            "django-opensearch-dsl",
+        ],
+    },
     tests_require=tests_require,
     include_package_data=True,
 )

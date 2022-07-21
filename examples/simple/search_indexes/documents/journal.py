@@ -1,6 +1,7 @@
 from django.conf import settings
 
-from django_elasticsearch_dsl import Document, Index, fields
+from anysearch.django_search_dsl import Document, fields
+from anysearch.django_search_dsl import registries
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
 from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
@@ -12,18 +13,8 @@ from .analyzers import html_strip
 
 __all__ = ('JournalDocument',)
 
-INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 
-# See Elasticsearch Indices API reference for available settings
-INDEX.settings(
-    number_of_shards=1,
-    number_of_replicas=1,
-    blocks={'read_only_allow_delete': None},
-    # read_only_allow_delete=False
-)
-
-
-@INDEX.doc_type
+@registries.registry.register_document
 class JournalDocument(Document):
     """Journal Elasticsearch document."""
 
@@ -90,6 +81,15 @@ class JournalDocument(Document):
 
     # Date created
     created = fields.DateField(attr='created_indexing')
+
+    # See Elasticsearch Indices API reference for available settings
+    class Index:
+        name = settings.ELASTICSEARCH_INDEX_NAMES[__name__]
+        settings = {
+            "number_of_shards": 1,
+            "number_of_replicas": 1,
+            "blocks": {"read_only_allow_delete": False},
+        }
 
     class Django(object):
         model = Journal  # The model associate with this Document

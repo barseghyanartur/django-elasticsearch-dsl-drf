@@ -27,7 +27,7 @@ except ImportError:
 
 __title__ = 'django_elasticsearch_dsl_drf.compat'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'coreapi',
@@ -35,6 +35,7 @@ __all__ = (
     # 'get_count',
     'KeywordField',
     'StringField',
+    'nested_sort_entry',
 )
 
 

@@ -1,7 +1,6 @@
 from django.conf import settings
 
-from anysearch.django_search_dsl import Document, fields
-from anysearch.django_search_dsl import registries
+from anysearch.django_search_dsl import Document, fields, registry
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
 from books.models import City
@@ -11,7 +10,7 @@ from .analyzers import html_strip
 
 __all__ = ('CityDocument',)
 
-@registries.registry.register_document
+@registry.register_document
 class CityDocument(Document):
     """City Elasticsearch document.
 

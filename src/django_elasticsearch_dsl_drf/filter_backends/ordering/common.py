@@ -1,15 +1,11 @@
 """
 Ordering backend.
 """
-
-from six import string_types
-
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.settings import api_settings
+from six import string_types
 
-from ...compat import coreapi
-from ...compat import coreschema
-from ...compat import nested_sort_entry
+from ...compat import coreapi, coreschema, nested_sort_entry
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.ordering.common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'

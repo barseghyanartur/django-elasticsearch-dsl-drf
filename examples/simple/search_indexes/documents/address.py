@@ -1,7 +1,6 @@
 from django.conf import settings
 
-from anysearch.django_search_dsl import Document, fields
-from anysearch.django_search_dsl import registries
+from anysearch.django_search_dsl import Document, fields, registry
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
 
@@ -13,7 +12,7 @@ from .analyzers import html_strip
 __all__ = ('AddressDocument',)
 
 
-@registries.registry.register_document
+@registry.register_document
 class AddressDocument(Document):
     """Address Elasticsearch document."""
 

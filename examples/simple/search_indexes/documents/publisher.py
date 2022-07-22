@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from anysearch.django_search_dsl import Document, fields
+from anysearch.django_search_dsl import Document, fields, registry
 from anysearch.django_search_dsl import registries
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
@@ -10,7 +10,7 @@ from books.models import Publisher
 __all__ = ('PublisherDocument',)
 
 
-@registries.registry.register_document
+@registry.register_document
 class PublisherDocument(Document):
     """Publisher Elasticsearch document."""
 

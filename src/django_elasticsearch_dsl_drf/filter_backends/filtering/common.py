@@ -5,8 +5,8 @@ Common filtering backend.
 import operator
 
 from anysearch.search_dsl.query import Q
-from rest_framework.filters import BaseFilterBackend
 from anysearch.django_search_dsl import fields
+from rest_framework.filters import BaseFilterBackend
 
 import six
 from six import string_types

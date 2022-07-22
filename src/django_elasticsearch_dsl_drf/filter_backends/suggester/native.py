@@ -77,7 +77,6 @@ from django_elasticsearch_dsl_drf.constants import (
 )
 
 from rest_framework.filters import BaseFilterBackend
-
 from six import string_types
 
 from ..mixins import FilterBackendMixin

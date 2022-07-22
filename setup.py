@@ -159,7 +159,7 @@ install_requires = [
     'six>=1.9',
     'django-nine>=0.2',
     'djangorestframework',
-    'anysearch',
+    'anysearch>=0.1.3',
 ]
 
 extras_require = []

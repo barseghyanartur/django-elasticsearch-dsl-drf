@@ -3,11 +3,10 @@ Helpers.
 """
 from collections import OrderedDict
 
-from anysearch.django_search_dsl.registries import registry
+from anysearch.django_search_dsl import registry
 
-from anysearch.search_dsl import Search
+from anysearch.search_dsl import Search, MoreLikeThis
 from anysearch.search_dsl.connections import connections
-from anysearch.search_dsl.query import MoreLikeThis
 
 from six import PY3
 

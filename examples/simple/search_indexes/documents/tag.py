@@ -1,6 +1,5 @@
 from django.conf import settings
-from anysearch.django_search_dsl import Document, fields
-from anysearch.django_search_dsl import registries
+from anysearch.django_search_dsl import Document, fields, registry
 
 from books.models import Tag
 
@@ -8,7 +7,7 @@ from books.models import Tag
 __all__ = ('TagDocument',)
 
 
-@registries.registry.register_document
+@registry.register_document
 class TagDocument(Document):
     """Elasticsearch document for a Tag."""
 

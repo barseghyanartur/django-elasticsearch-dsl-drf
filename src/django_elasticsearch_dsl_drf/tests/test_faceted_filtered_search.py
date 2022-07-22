@@ -1,16 +1,12 @@
 """
 Test faceted search backend.
 """
-
-from __future__ import absolute_import
-
 import unittest
-
-from django.core.management import call_command
-from django.urls import reverse
 
 import pytest
 
+from django.core.management import call_command
+from django.urls import reverse
 from rest_framework import status
 
 from books import constants

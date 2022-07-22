@@ -3,9 +3,7 @@ import logging
 
 from ...constants import MATCHING_OPTION_MUST
 from .base import BaseSearchFilterBackend
-from .query_backends import (
-    SimpleQueryStringQueryBackend,
-)
+from .query_backends import SimpleQueryStringQueryBackend
 
 LOGGER = logging.getLogger(__name__)
 

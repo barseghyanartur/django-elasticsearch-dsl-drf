@@ -3,23 +3,22 @@
 Test helpers.
 """
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import unicode_literals
 
 import unittest
 
-from django.core.management import call_command
-
 import pytest
+
+from django.core.management import call_command
 
 import factories
 
 from ..helpers import more_like_this
-
 from .base import BaseTestCase
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_helpers'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestHelpers',

@@ -1,12 +1,12 @@
 """
 Base tests.
 """
-
-from time import sleep
 import logging
 
-from django.test import TransactionTestCase
+from time import sleep
+
 import pytest
+from django.test import TransactionTestCase
 from rest_framework.test import APIClient
 
 import factories

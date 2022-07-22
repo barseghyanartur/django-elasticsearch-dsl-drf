@@ -1,18 +1,13 @@
 """
 Test geo-spatial filtering backend.
 """
-
-from __future__ import absolute_import
-
 import unittest
-
-from django.core.management import call_command
-from django.urls import reverse
-
-from elasticsearch.connection.base import TransportError
 
 import pytest
 
+from django.core.management import call_command
+from django.urls import reverse
+from elasticsearch.connection.base import TransportError
 from rest_framework import status
 
 import factories

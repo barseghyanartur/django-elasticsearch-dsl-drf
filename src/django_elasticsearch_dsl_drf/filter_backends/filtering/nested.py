@@ -3,23 +3,17 @@ Nested filtering backend.
 """
 
 from anysearch.search_dsl.query import Q
-from django.core.exceptions import ImproperlyConfigured
 from anysearch.django_search_dsl import fields
-
+from django.core.exceptions import ImproperlyConfigured
 from six import string_types
 
-from ...constants import (
-    ALL_LOOKUP_FILTERS_AND_QUERIES,
-    LOOKUP_FILTER_TERMS,
-)
-
-from ...compat import coreapi
-from ...compat import coreschema
+from ...constants import ALL_LOOKUP_FILTERS_AND_QUERIES, LOOKUP_FILTER_TERMS
+from ...compat import coreapi, coreschema
 from .common import FilteringFilterBackend
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering.nested'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = ('NestedFilteringFilterBackend',)
 

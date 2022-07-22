@@ -1,4 +1,5 @@
 import operator
+
 import six
 
 from anysearch.search_dsl.query import Q

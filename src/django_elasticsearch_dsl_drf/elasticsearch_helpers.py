@@ -1,5 +1,5 @@
+from anysearch.search import AnySearch
 from django.conf import settings
-from elasticsearch import Elasticsearch
 
 __all__ = (
     "get_all_indices",
@@ -14,7 +14,7 @@ def get_all_indices(with_protected=False):
     Returns:
         list: List of indices.
     """
-    es = Elasticsearch(**settings.ELASTICSEARCH_DSL["default"])
+    es = AnySearch(**settings.ELASTICSEARCH_DSL["default"])
     _indices = es.indices.get_alias("*").items()
     if with_protected:
         return [_i for _i, _o in _indices]
@@ -29,7 +29,7 @@ def delete_all_indices(with_protected=False):
     Returns:
         tuple: Tuple of two lists with removed and errored indices.
     """
-    es = Elasticsearch(**settings.ELASTICSEARCH_DSL["default"])
+    es = AnySearch(**settings.ELASTICSEARCH_DSL["default"])
     _indices = get_all_indices(with_protected=with_protected)
     _ok = []
     _fail = []

@@ -1,5 +1,5 @@
--r common.in
--r test.in
+#-r common.in
+#-r test.in
 
 Django>=2.2,<2.3
 django-cors-headers==2.5.2

@@ -9,6 +9,7 @@ import unittest
 
 import pytest
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
 from django.core.management import call_command
 
 import factories
@@ -98,7 +99,10 @@ class TestHelpers(BaseTestCase):
         )
 
         cls.sleep()
-        call_command('search_index', '--rebuild', '-f')
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
     def _more_like_this(self, obj, fields):
         """Filter by field."""

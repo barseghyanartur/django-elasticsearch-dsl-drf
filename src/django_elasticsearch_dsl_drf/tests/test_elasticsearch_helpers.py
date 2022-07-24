@@ -9,6 +9,7 @@ import unittest
 
 import pytest
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
 from django.core.management import call_command
 
 from ..elasticsearch_helpers import delete_all_indices, get_all_indices
@@ -35,7 +36,10 @@ class TestElasticsearchHelpers(BaseTestCase):
         delete_all_indices(with_protected=True)
 
         self.sleep()
-        call_command('search_index', '--rebuild', '-f')
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
         res = set(get_all_indices())
         expected = {

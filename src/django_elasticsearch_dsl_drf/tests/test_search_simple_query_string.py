@@ -1,16 +1,13 @@
 """
 Test multi match search filter backend.
 """
-
-from __future__ import absolute_import
-
 import unittest
-
-from django.core.management import call_command
-from django.urls import reverse
 
 import pytest
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
+from django.core.management import call_command
+from django.urls import reverse
 from rest_framework import status
 
 from books import constants
@@ -116,7 +113,11 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
         cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
         cls.sleep(4)
-        call_command('search_index', '--rebuild', '-f')
+
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
         cls.backend = SimpleQueryStringSearchFilterBackend()
@@ -239,7 +240,10 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-    @unittest.skipIf(condition=ELASTICSEARCH_GTE_6_0, reason="")
+    @unittest.skipIf(
+        condition=(ELASTICSEARCH_GTE_6_0 or SEARCH_BACKEND == OPENSEARCH),
+        reason="",
+    )
     def test_search_without_quotes(self, url=None):
         """Test search without quotes. This does not work on Elasticsearch 6.x.
 
@@ -317,7 +321,10 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-    @unittest.skipIf(condition=ELASTICSEARCH_GTE_6_0, reason="")
+    @unittest.skipIf(
+        condition=ELASTICSEARCH_GTE_6_0 or SEARCH_BACKEND == OPENSEARCH,
+        reason="",
+    )
     def test_search_without_quotes_boost(self, url=None):
         """Search boost without quotes. Does not work on Elasticsearch 6.x.
 

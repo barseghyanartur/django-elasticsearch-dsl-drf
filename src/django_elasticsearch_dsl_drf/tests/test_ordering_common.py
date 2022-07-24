@@ -5,6 +5,7 @@ import unittest
 
 import pytest
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
 from django.core.management import call_command
 from django.urls import reverse
 from django_elasticsearch_dsl_drf.filter_backends import OrderingFilterBackend
@@ -94,7 +95,11 @@ class TestOrdering(BaseRestFrameworkTestCase):
         cls.authors_url = reverse('authordocument-list', kwargs={})
 
         cls.sleep()
-        call_command('search_index', '--rebuild', '-f')
+
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
         cls.backend = OrderingFilterBackend()

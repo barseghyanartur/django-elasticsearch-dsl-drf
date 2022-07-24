@@ -5,6 +5,7 @@ import unittest
 
 import pytest
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
 from django.core.management import call_command
 from django.urls import reverse
 from rest_framework import status
@@ -60,7 +61,11 @@ class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
         cls.base_publisher_url = reverse('publisherdocument-list', kwargs={})
 
         cls.sleep()
-        call_command('search_index', '--rebuild', '-f')
+
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
     @pytest.mark.webtest
     def test_field_filter_geo_distance(self):

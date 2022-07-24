@@ -1,11 +1,9 @@
 """
 Test source backend.
 """
-
-from __future__ import absolute_import
-
 import unittest
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
 from django.core.management import call_command
 from django.urls import reverse
 
@@ -19,7 +17,7 @@ from .base import BaseRestFrameworkTestCase
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_source'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestSource',
@@ -58,7 +56,11 @@ class TestSource(BaseRestFrameworkTestCase):
         cls.all_books_count = cls.special_books_count + cls.books_count
 
         cls.sleep()
-        call_command('search_index', '--rebuild', '-f')
+
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
     def _list_results(self):
         """List results."""

@@ -1,5 +1,6 @@
-from django.conf import settings
+from anysearch import SEARCH_BACKEND, OPENSEARCH
 from anysearch.django_search_dsl import Document, fields, registry
+from django.conf import settings
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
 from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
@@ -23,7 +24,7 @@ class LocationDocument(Document):
             ),
         }
 
-    if ELASTICSEARCH_GTE_5_0:
+    if ELASTICSEARCH_GTE_5_0 or SEARCH_BACKEND == OPENSEARCH:
         __full_fields.update(
             {
                 "suggest": fields.CompletionField(),
@@ -58,7 +59,7 @@ class LocationDocument(Document):
             analyzer=edge_ngram_completion
             ),
     }
-    if ELASTICSEARCH_GTE_5_0:
+    if ELASTICSEARCH_GTE_5_0 or SEARCH_BACKEND == OPENSEARCH:
         __partial_fields.update(
             {
                 "suggest": fields.CompletionField(),
@@ -87,7 +88,7 @@ class LocationDocument(Document):
     __postcode_fields = {
         "raw": KeywordField(),
     }
-    if ELASTICSEARCH_GTE_5_0:
+    if ELASTICSEARCH_GTE_5_0 or SEARCH_BACKEND == OPENSEARCH:
         __postcode_fields.update(
             {
                 "suggest": fields.CompletionField(),

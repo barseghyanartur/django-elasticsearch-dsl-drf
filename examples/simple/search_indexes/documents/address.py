@@ -1,6 +1,6 @@
-from django.conf import settings
-
+from anysearch import OPENSEARCH, SEARCH_BACKEND
 from anysearch.django_search_dsl import Document, fields, registry
+from django.conf import settings
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
 
@@ -33,7 +33,7 @@ class AddressDocument(Document):
 
     }
 
-    if ELASTICSEARCH_GTE_5_0:
+    if ELASTICSEARCH_GTE_5_0 or SEARCH_BACKEND == OPENSEARCH:
         __street_fields.update(
             {
                 'suggest_context': fields.CompletionField(

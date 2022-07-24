@@ -5,6 +5,7 @@ import unittest
 
 import pytest
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
 from anysearch.search import Connection
 from django.core.management import call_command
 from django.urls import reverse
@@ -49,7 +50,10 @@ class TestQueryFriendlyPagination(BaseRestFrameworkTestCase):
         cls.books = factories.BookFactory.create_batch(43)
 
         cls.sleep()
-        call_command('search_index', '--rebuild', '-f')
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
     def _test_pagination(self):
         """Test pagination."""

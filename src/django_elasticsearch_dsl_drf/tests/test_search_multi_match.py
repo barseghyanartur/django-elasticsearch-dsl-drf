@@ -1,16 +1,13 @@
 """
 Test multi match search filter backend.
 """
-
-from __future__ import absolute_import
-
 import unittest
-
-from django.core.management import call_command
-from django.urls import reverse
 
 import pytest
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
+from django.core.management import call_command
+from django.urls import reverse
 from rest_framework import status
 
 from books import constants
@@ -28,7 +25,7 @@ from .base import (
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_search_multi_match'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestMultiMatchSearch',
@@ -115,7 +112,11 @@ class TestMultiMatchSearch(BaseRestFrameworkTestCase):
         cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
         cls.sleep()
-        call_command('search_index', '--rebuild', '-f')
+
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
         cls.backend = MultiMatchSearchFilterBackend()

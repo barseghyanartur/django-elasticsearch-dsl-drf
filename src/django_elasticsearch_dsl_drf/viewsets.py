@@ -3,13 +3,14 @@
 """
 Base ViewSets.
 """
-from __future__ import absolute_import, unicode_literals
+from __future__ import unicode_literals
 
 import copy
 
 from django.http import Http404
 from django.core.exceptions import ImproperlyConfigured
 
+from anysearch import SEARCH_BACKEND, OPENSEARCH
 from anysearch.search_dsl import MoreLikeThis, Search
 from anysearch.search_dsl.connections import connections
 
@@ -245,7 +246,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
 
                 # Remark 2: Unlike code in `Remark 1`, here we do need the
                 # conditional treatment.
-                if ELASTICSEARCH_GTE_7_0:
+                if ELASTICSEARCH_GTE_7_0 or SEARCH_BACKEND == OPENSEARCH:
                     dictionary_proxy = self.dictionary_proxy(
                         obj.to_dict(),
                         getattr(obj, 'meta', None)

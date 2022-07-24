@@ -7,21 +7,20 @@ from __future__ import unicode_literals
 
 from collections import OrderedDict
 
-from django.core import paginator as django_paginator
+import six
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
 from anysearch.search_dsl.utils import AttrDict
-
+from django.core import paginator as django_paginator
 from rest_framework import pagination
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
-
-import six
 
 from .versions import ELASTICSEARCH_GTE_6_0
 
 __title__ = 'django_elasticsearch_dsl_drf.pagination'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'LimitOffsetPagination',
@@ -163,7 +162,7 @@ class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
         # saves us unnecessary queries.
         is_suggest = getattr(queryset, '_suggest', False)
         if is_suggest:
-            if ELASTICSEARCH_GTE_6_0:
+            if ELASTICSEARCH_GTE_6_0 or SEARCH_BACKEND == OPENSEARCH:
                 return queryset.execute().to_dict().get('suggest')
             return queryset.execute_suggest().to_dict()
 
@@ -272,7 +271,7 @@ class QueryFriendlyPageNumberPagination(PageNumberPagination):
         # saves us unnecessary queries.
         is_suggest = getattr(queryset, '_suggest', False)
         if is_suggest:
-            if ELASTICSEARCH_GTE_6_0:
+            if ELASTICSEARCH_GTE_6_0 or SEARCH_BACKEND == OPENSEARCH:
                 return queryset.execute().to_dict().get('suggest')
             return queryset.execute_suggest().to_dict()
 
@@ -351,7 +350,7 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
         # saves us unnecessary queries.
         is_suggest = getattr(queryset, '_suggest', False)
         if is_suggest:
-            if ELASTICSEARCH_GTE_6_0:
+            if ELASTICSEARCH_GTE_6_0 or SEARCH_BACKEND == OPENSEARCH:
                 return queryset.execute().to_dict().get('suggest')
             return queryset.execute_suggest().to_dict()
 

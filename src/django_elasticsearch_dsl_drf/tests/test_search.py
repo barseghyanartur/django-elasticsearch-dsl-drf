@@ -1,16 +1,14 @@
 """
 Test search backend.
 """
-
-from __future__ import absolute_import
-
-from time import sleep
 import unittest
-
-from django.core.management import call_command
-from django.urls import reverse
+from time import sleep
 
 import pytest
+
+from anysearch import OPENSEARCH, SEARCH_BACKEND
+from django.core.management import call_command
+from django.urls import reverse
 
 from rest_framework import status
 
@@ -28,7 +26,7 @@ from .base import (
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_search'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestSearch',
@@ -109,7 +107,11 @@ class TestSearch(BaseRestFrameworkTestCase):
         cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
         cls.sleep()
-        call_command('search_index', '--rebuild', '-f')
+
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
         cls.backend = SearchFilterBackend()
@@ -358,7 +360,10 @@ class TestSearchCustomCases(BaseRestFrameworkTestCase):
     pytestmark = pytest.mark.django_db
 
     def _reindex(self):
-        call_command('search_index', '--rebuild', '-f')
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
     def _test_search_any_word_in_indexed_fields(self,
                                                 search_term,

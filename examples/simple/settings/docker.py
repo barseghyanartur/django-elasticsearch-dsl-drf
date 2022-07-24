@@ -36,3 +36,4 @@ ELASTICSEARCH_DSL = {
         'timeout': 30,
     },
 }
+OPENSEARCH_DSL = ELASTICSEARCH_DSL

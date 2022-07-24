@@ -3,15 +3,15 @@
 Test suggestions backend.
 """
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import unicode_literals
 
 import unittest
 
-from django.core.management import call_command
-from django.urls import reverse
-
 import pytest
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
+from django.core.management import call_command
+from django.urls import reverse
 from rest_framework import status
 
 import factories
@@ -190,7 +190,10 @@ class TestSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
         cls.created_addresses()
 
         cls.sleep()
-        call_command('search_index', '--rebuild', '-f')
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
     def _test_suggesters(self, test_data, url):
         """Test suggesters."""
@@ -340,8 +343,12 @@ class TestSuggestersEmptyIndex(BaseRestFrameworkTestCase, AddressesMixin):
 
         cls.sleep()
         # Suggest on empty index
-        call_command('search_index', '--delete', '-f')
-        call_command('search_index', '--create', '-f')
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'delete', '--force')
+            call_command('opensearch', 'index', 'create', '--force')
+        else:
+            call_command('search_index', '--delete', '-f')
+            call_command('search_index', '--create', '-f')
 
     def test_suggesters_on_empty_index(self):
         """Test suggesters phrase."""
@@ -350,7 +357,7 @@ class TestSuggestersEmptyIndex(BaseRestFrameworkTestCase, AddressesMixin):
             {}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        if ELASTICSEARCH_GTE_7_0:
+        if ELASTICSEARCH_GTE_7_0 or SEARCH_BACKEND == OPENSEARCH:
             self.assertTrue(
                 bool(response.data.get('name_suggest__completion'))
             )
@@ -362,7 +369,10 @@ class TestSuggestersEmptyIndex(BaseRestFrameworkTestCase, AddressesMixin):
             )
 
 
-@unittest.skipIf(not ELASTICSEARCH_GTE_5_0, 'ES >=5.x only')
+@unittest.skipIf(
+    not (ELASTICSEARCH_GTE_5_0 or SEARCH_BACKEND == OPENSEARCH),
+    'ES >=5.x only'
+)
 @pytest.mark.django_db
 class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
     """Test context suggesters."""
@@ -570,7 +580,10 @@ class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                     'filters': {
                         'title_suggest_loc': (
                             '40__44__1000km'
-                            if ELASTICSEARCH_GTE_6_0
+                            if (
+                                ELASTICSEARCH_GTE_6_0
+                                or SEARCH_BACKEND == OPENSEARCH
+                            )
                             else '40__44'
                         ),
                     }

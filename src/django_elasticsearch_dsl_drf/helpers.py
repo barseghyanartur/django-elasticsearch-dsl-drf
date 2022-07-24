@@ -3,10 +3,10 @@ Helpers.
 """
 from collections import OrderedDict
 
-from anysearch.django_search_dsl import registry
-
+from anysearch import OPENSEARCH, SEARCH_BACKEND
 from anysearch.search_dsl import Search, MoreLikeThis
 from anysearch.search_dsl.connections import connections
+from anysearch.django_search_dsl import registry
 
 from six import PY3
 
@@ -150,7 +150,7 @@ def more_like_this(obj,
         '_id': "{}".format(obj.pk),
         '_index': "{}".format(_index),
     }
-    if not ELASTICSEARCH_GTE_7_0:
+    if not (ELASTICSEARCH_GTE_7_0 or SEARCH_BACKEND == OPENSEARCH):
         _like_options.update({'_type': "{}".format(_mapping)})
 
     return _search.query(

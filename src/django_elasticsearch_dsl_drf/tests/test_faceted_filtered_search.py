@@ -5,6 +5,7 @@ import unittest
 
 import pytest
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
 from django.core.management import call_command
 from django.urls import reverse
 from rest_framework import status
@@ -60,7 +61,10 @@ class TestFacetedFilteredSearch(BaseRestFrameworkTestCase):
         cls.all_count = cls.published_count + cls.not_published_count
 
         cls.sleep()
-        call_command('search_index', '--rebuild', '-f')
+        if SEARCH_BACKEND == OPENSEARCH:
+            call_command('opensearch', 'index', 'rebuild', '--force')
+        else:
+            call_command('search_index', '--rebuild', '-f')
 
     def test_list_results_no_facets(self):
         """List results without facets."""

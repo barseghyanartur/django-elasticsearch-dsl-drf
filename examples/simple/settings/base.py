@@ -245,6 +245,7 @@ INSTALLED_APPS = [
     'corsheaders',  # For React demo
 
     # This app
+    'anysearch.django_search_dsl.DjangoAnySearchConfig',
     'django_elasticsearch_dsl_drf',
 
     # Other project specific apps
@@ -253,10 +254,10 @@ INSTALLED_APPS = [
     'search_indexes',  # Search app
 ]
 
-if SEARCH_BACKEND == OPENSEARCH:
-    INSTALLED_APPS.append('django_opensearch_dsl')  # OpenSearch integration
-else:
-    INSTALLED_APPS.append('django_elasticsearch_dsl')  # Elasticsearch integration
+# if SEARCH_BACKEND == OPENSEARCH:
+#     INSTALLED_APPS.append('django_opensearch_dsl')  # OpenSearch integration
+# else:
+#     INSTALLED_APPS.append('django_elasticsearch_dsl')  # Elasticsearch integration
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -277,6 +278,9 @@ ELASTICSEARCH_DSL = {
     },
 }
 OPENSEARCH_DSL = ELASTICSEARCH_DSL
+
+ELASTICSEARCH_DSL_SIGNAL_PROCESSOR = "anysearch.django_search_dsl.RealTimeSignalProcessor"
+OPENSEARCH_DSL_SIGNAL_PROCESSOR = ELASTICSEARCH_DSL_SIGNAL_PROCESSOR
 
 # CORS headers config
 CORS_ORIGIN_ALLOW_ALL = True

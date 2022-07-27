@@ -1,11 +1,9 @@
 """
 Test pagination.
 """
-import unittest
-
 import pytest
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from django.core.management import call_command
 from django.urls import reverse
 
@@ -38,10 +36,7 @@ class TestPagination(BaseRestFrameworkTestCase):
         cls.books = factories.BookFactory.create_batch(40)
 
         cls.sleep()
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
     def _test_pagination(self):
         """Test pagination."""
@@ -71,7 +66,3 @@ class TestPagination(BaseRestFrameworkTestCase):
     def test_pagination(self):
         """Test pagination."""
         return self._test_pagination()
-
-
-if __name__ == '__main__':
-    unittest.main()

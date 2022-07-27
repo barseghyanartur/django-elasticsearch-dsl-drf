@@ -5,10 +5,11 @@ module is not supposed to solve all transition issues for you. Better move to
 Elastic 5.x as soon as possible.
 """
 
-from anysearch.django_search_dsl import fields
+from anysearch import IS_OPENSEARCH
+from django_elasticsearch_dsl import fields
 
 # For compatibility reasons
-from .versions import get_elasticsearch_version
+from .versions import ELASTICSEARCH_LTE_6_0  #, get_elasticsearch_version
 
 try:
     import coreapi
@@ -77,8 +78,9 @@ def nested_sort_entry(path, split_path=True):
     :return: Dictionary of full nested path
     :rtype: dict
     """
-    version = get_elasticsearch_version()
-    if version[0] < 6 or (version[0] == 6 and version[1] < 1):
+    # version = get_elasticsearch_version()
+    # if version[0] < 6 or (version[0] == 6 and version[1] < 1):
+    if ELASTICSEARCH_LTE_6_0 and not IS_OPENSEARCH:
         return {'nested_path': path}
     nested_path = {}
     path_list = path.split('.') if split_path else [path]

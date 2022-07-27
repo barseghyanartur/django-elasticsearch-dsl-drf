@@ -1,11 +1,9 @@
 """
 Test geo-spatial ordering filter backend.
 """
-import unittest
-
 import pytest
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from django.core.management import call_command
 from django.urls import reverse
 from rest_framework import status
@@ -62,10 +60,7 @@ class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
 
         cls.sleep()
 
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
     @pytest.mark.webtest
     def test_field_filter_geo_distance(self):
@@ -104,7 +99,3 @@ class TestOrderingGeoSpatial(BaseRestFrameworkTestCase):
                     response.data['results'][counter-1]['location']['lat'],
                     response.data['results'][counter]['location']['lat']
                 )
-
-
-if __name__ == '__main__':
-    unittest.main()

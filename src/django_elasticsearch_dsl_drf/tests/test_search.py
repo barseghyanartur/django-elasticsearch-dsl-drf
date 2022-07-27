@@ -6,18 +6,18 @@ from time import sleep
 
 import pytest
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from django.core.management import call_command
 from django.urls import reverse
 
 from rest_framework import status
 
-from books import constants
 import factories
+from books import constants
 from search_indexes.viewsets import BookDocumentViewSet
+
 from ..constants import SEPARATOR_LOOKUP_NAME
 from ..filter_backends import SearchFilterBackend
-
 from .base import (
     BaseRestFrameworkTestCase,
     CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
@@ -108,10 +108,7 @@ class TestSearch(BaseRestFrameworkTestCase):
 
         cls.sleep()
 
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
         cls.backend = SearchFilterBackend()
@@ -360,10 +357,7 @@ class TestSearchCustomCases(BaseRestFrameworkTestCase):
     pytestmark = pytest.mark.django_db
 
     def _reindex(self):
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
     def _test_search_any_word_in_indexed_fields(self,
                                                 search_term,
@@ -428,7 +422,3 @@ class TestSearchCustomCases(BaseRestFrameworkTestCase):
             title_match=book.title,
             create_factory=False
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

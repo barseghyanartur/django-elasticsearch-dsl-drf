@@ -5,7 +5,7 @@ import unittest
 
 import pytest
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from django.core.management import call_command
 from django.urls import reverse
 from rest_framework import status
@@ -15,9 +15,9 @@ import factories
 from search_indexes.viewsets import (
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet
 )
+
 from ..filter_backends import SimpleQueryStringSearchFilterBackend
 from ..versions import ELASTICSEARCH_GTE_6_0
-
 from .base import (
     BaseRestFrameworkTestCase,
     CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
@@ -114,10 +114,7 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
 
         cls.sleep(4)
 
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
         cls.backend = SimpleQueryStringSearchFilterBackend()
@@ -241,7 +238,7 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
         )
 
     @unittest.skipIf(
-        condition=(ELASTICSEARCH_GTE_6_0 or SEARCH_BACKEND == OPENSEARCH),
+        condition=(ELASTICSEARCH_GTE_6_0 or IS_OPENSEARCH),
         reason="",
     )
     def test_search_without_quotes(self, url=None):
@@ -322,7 +319,7 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
         )
 
     @unittest.skipIf(
-        condition=ELASTICSEARCH_GTE_6_0 or SEARCH_BACKEND == OPENSEARCH,
+        condition=ELASTICSEARCH_GTE_6_0 or IS_OPENSEARCH,
         reason="",
     )
     def test_search_without_quotes_boost(self, url=None):
@@ -407,7 +404,3 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
         fields = [f.required for f in fields]
         for field in fields:
             self.assertFalse(field)
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -5,16 +5,16 @@ import unittest
 
 import pytest
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from django.core.management import call_command
 from django.urls import reverse
-from django_elasticsearch_dsl_drf.filter_backends import OrderingFilterBackend
 from rest_framework import status
 from six.moves import reduce
 
 import factories
 from search_indexes.viewsets import BookDocumentViewSet
 
+from ..filter_backends import OrderingFilterBackend
 from .base import (
     BaseRestFrameworkTestCase,
     CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
@@ -96,10 +96,7 @@ class TestOrdering(BaseRestFrameworkTestCase):
 
         cls.sleep()
 
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
         cls.backend = OrderingFilterBackend()
@@ -314,7 +311,3 @@ class TestOrdering(BaseRestFrameworkTestCase):
         fields = [f.required for f in fields]
         for field in fields:
             self.assertFalse(field)
-
-
-if __name__ == '__main__':
-    unittest.main()

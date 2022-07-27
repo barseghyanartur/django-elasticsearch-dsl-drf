@@ -5,11 +5,9 @@ Test helpers.
 
 from __future__ import unicode_literals
 
-import unittest
-
 import pytest
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from django.core.management import call_command
 
 import factories
@@ -99,10 +97,7 @@ class TestHelpers(BaseTestCase):
         )
 
         cls.sleep()
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
     def _more_like_this(self, obj, fields):
         """Filter by field."""
@@ -113,7 +108,3 @@ class TestHelpers(BaseTestCase):
         """Filter by field."""
         obj = self.books[0]
         return self._more_like_this(obj, ['title', 'description'])
-
-
-if __name__ == '__main__':
-    unittest.main()

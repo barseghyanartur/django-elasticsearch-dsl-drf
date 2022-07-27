@@ -1,14 +1,11 @@
 """
 Test source backend.
 """
-import unittest
-
-from anysearch import OPENSEARCH, SEARCH_BACKEND
-from django.core.management import call_command
-from django.urls import reverse
-
 import pytest
 
+from anysearch import IS_OPENSEARCH
+from django.core.management import call_command
+from django.urls import reverse
 from rest_framework import status
 
 import factories
@@ -57,10 +54,7 @@ class TestSource(BaseRestFrameworkTestCase):
 
         cls.sleep()
 
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
     def _list_results(self):
         """List results."""
@@ -92,7 +86,3 @@ class TestSource(BaseRestFrameworkTestCase):
     def test_list_results(self):
         """Test list results."""
         return self._list_results()
-
-
-if __name__ == '__main__':
-    unittest.main()

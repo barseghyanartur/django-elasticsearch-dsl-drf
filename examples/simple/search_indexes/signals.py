@@ -10,7 +10,7 @@ updated as well.
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
-from anysearch.django_search_dsl import registry
+from django_elasticsearch_dsl.registries import registry
 
 __all__ = (
     'update_document',

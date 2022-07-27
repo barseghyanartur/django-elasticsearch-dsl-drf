@@ -26,6 +26,7 @@ Official Elastic docs:
   query-dsl-ids-query.html
 """
 
+from anysearch import IS_OPENSEARCH
 from rest_framework.filters import BaseFilterBackend
 
 from ...versions import ELASTICSEARCH_LTE_6_0
@@ -114,7 +115,7 @@ class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
             # Prior 7.x ``type`` argument was accepted. Starting from 7.x
             # it has been deprecated. As long as 6.x is supported, this
             # should stay.
-            if ELASTICSEARCH_LTE_6_0:
+            if ELASTICSEARCH_LTE_6_0 and not IS_OPENSEARCH:
                 _qs_kwargs.update({'type': view.mapping})
 
             queryset = queryset.query(

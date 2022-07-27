@@ -3,7 +3,7 @@ Nested filtering backend.
 """
 
 from anysearch.search_dsl.query import Q
-from anysearch.django_search_dsl import fields
+from django_elasticsearch_dsl import fields
 from django.core.exceptions import ImproperlyConfigured
 from six import string_types
 

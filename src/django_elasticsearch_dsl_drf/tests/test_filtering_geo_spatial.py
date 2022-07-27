@@ -1,11 +1,9 @@
 """
 Test geo-spatial filtering backend.
 """
-import unittest
-
 import pytest
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from anysearch.search import TransportError
 from django.core.management import call_command
 from django.urls import reverse
@@ -69,10 +67,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             }
         )
 
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
         self.sleep()
 
@@ -149,10 +144,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             }
         )
 
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
         self.sleep()
 
@@ -213,10 +205,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
                 )
             )
 
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
         self.sleep()
 
@@ -347,10 +336,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
                 )
             )
 
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
         self.sleep()
 
@@ -470,10 +456,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
                 )
             )
 
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
         self.sleep()
 
@@ -558,7 +541,3 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
                 'extra': 'radius,10km',
             }
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

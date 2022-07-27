@@ -9,7 +9,7 @@ from collections import OrderedDict
 
 import six
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from anysearch.search_dsl.utils import AttrDict
 from django.core import paginator as django_paginator
 from rest_framework import pagination
@@ -162,7 +162,7 @@ class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
         # saves us unnecessary queries.
         is_suggest = getattr(queryset, '_suggest', False)
         if is_suggest:
-            if ELASTICSEARCH_GTE_6_0 or SEARCH_BACKEND == OPENSEARCH:
+            if ELASTICSEARCH_GTE_6_0 or IS_OPENSEARCH:
                 return queryset.execute().to_dict().get('suggest')
             return queryset.execute_suggest().to_dict()
 
@@ -271,7 +271,7 @@ class QueryFriendlyPageNumberPagination(PageNumberPagination):
         # saves us unnecessary queries.
         is_suggest = getattr(queryset, '_suggest', False)
         if is_suggest:
-            if ELASTICSEARCH_GTE_6_0 or SEARCH_BACKEND == OPENSEARCH:
+            if ELASTICSEARCH_GTE_6_0 or IS_OPENSEARCH:
                 return queryset.execute().to_dict().get('suggest')
             return queryset.execute_suggest().to_dict()
 
@@ -350,7 +350,7 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
         # saves us unnecessary queries.
         is_suggest = getattr(queryset, '_suggest', False)
         if is_suggest:
-            if ELASTICSEARCH_GTE_6_0 or SEARCH_BACKEND == OPENSEARCH:
+            if ELASTICSEARCH_GTE_6_0 or IS_OPENSEARCH:
                 return queryset.execute().to_dict().get('suggest')
             return queryset.execute_suggest().to_dict()
 

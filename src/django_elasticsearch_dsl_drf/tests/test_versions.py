@@ -12,7 +12,7 @@ except ImportError as err:
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_versions'
 __author__ = 'Artur Barseghyan'
-__copyright__ = 'Copyright (c) 2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL-2.0-only OR LGPL-2.1-or-later'
 __all__ = ('VersionsTest',)
 
@@ -95,7 +95,3 @@ class VersionsTest(unittest.TestCase):
         self.assertTrue(versions.ELASTICSEARCH_GTE_6_3)
         self.assertTrue(versions.ELASTICSEARCH_GTE_7_0)
         self.assertFalse(versions.ELASTICSEARCH_GTE_8_0)
-
-
-if __name__ == "__main__":
-    unittest.main()

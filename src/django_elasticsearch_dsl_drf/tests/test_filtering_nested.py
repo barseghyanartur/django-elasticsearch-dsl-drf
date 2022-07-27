@@ -5,7 +5,7 @@ import unittest
 
 import pytest
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from django.core.management import call_command
 from rest_framework import status
 
@@ -81,10 +81,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         cls.sleep()
 
         # Update the Elasticsearch index
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
         cls.backend = NestedFilteringFilterBackend()
@@ -580,7 +577,3 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         fields = [f.required for f in fields]
         for field in fields:
             self.assertFalse(field)
-
-
-if __name__ == '__main__':
-    unittest.main()

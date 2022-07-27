@@ -1,4 +1,5 @@
-from anysearch.django_search_dsl import Document, fields, registry
+from django_elasticsearch_dsl import Document, fields
+from django_elasticsearch_dsl.registries import registry
 from django.conf import settings
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion

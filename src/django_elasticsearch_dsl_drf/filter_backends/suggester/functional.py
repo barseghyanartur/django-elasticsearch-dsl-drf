@@ -68,26 +68,25 @@ Example:
     >>>         model = Publisher  # The model associate with this Document
 """
 from anysearch.search_dsl import AggsProxy
+from rest_framework.exceptions import ValidationError
+from rest_framework.filters import BaseFilterBackend
+from six import string_types
 
-from django_elasticsearch_dsl_drf.constants import (
+from ...constants import (
     FUNCTIONAL_SUGGESTER_TERM_MATCH,
     FUNCTIONAL_SUGGESTER_PHRASE_MATCH,
     FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
     FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
     ALL_FUNCTIONAL_SUGGESTERS,
 )
-from django_elasticsearch_dsl_drf.utils import EmptySearch
-
-from rest_framework.exceptions import ValidationError
-from rest_framework.filters import BaseFilterBackend
-from six import string_types
-
 from ..mixins import FilterBackendMixin
+# from ...utils import EmptySearch
+
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.suggester.' \
             'functional'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = ('FunctionalSuggesterFilterBackend',)
 

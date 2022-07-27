@@ -245,7 +245,8 @@ INSTALLED_APPS = [
     'corsheaders',  # For React demo
 
     # This app
-    'anysearch.django_search_dsl.DjangoAnySearchConfig',
+    # 'anysearch.django_search_dsl.DjangoAnySearchConfig',
+    'django_elasticsearch_dsl',
     'django_elasticsearch_dsl_drf',
 
     # Other project specific apps
@@ -279,8 +280,8 @@ ELASTICSEARCH_DSL = {
 }
 OPENSEARCH_DSL = ELASTICSEARCH_DSL
 
-ELASTICSEARCH_DSL_SIGNAL_PROCESSOR = "anysearch.django_search_dsl.RealTimeSignalProcessor"
-OPENSEARCH_DSL_SIGNAL_PROCESSOR = ELASTICSEARCH_DSL_SIGNAL_PROCESSOR
+# ELASTICSEARCH_DSL_SIGNAL_PROCESSOR = "anysearch.django_search_dsl.RealTimeSignalProcessor"
+# OPENSEARCH_DSL_SIGNAL_PROCESSOR = ELASTICSEARCH_DSL_SIGNAL_PROCESSOR
 
 # CORS headers config
 CORS_ORIGIN_ALLOW_ALL = True

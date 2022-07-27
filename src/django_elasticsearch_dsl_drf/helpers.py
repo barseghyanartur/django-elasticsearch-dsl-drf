@@ -3,10 +3,10 @@ Helpers.
 """
 from collections import OrderedDict
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from anysearch.search_dsl import Search, MoreLikeThis
 from anysearch.search_dsl.connections import connections
-from anysearch.django_search_dsl import registry
+from django_elasticsearch_dsl.registries import registry
 
 from six import PY3
 
@@ -14,7 +14,7 @@ from .versions import ELASTICSEARCH_GTE_7_0
 
 __title__ = 'django_elasticsearch_dsl_drf.helpers'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'get_document_for_model',
@@ -150,7 +150,7 @@ def more_like_this(obj,
         '_id': "{}".format(obj.pk),
         '_index': "{}".format(_index),
     }
-    if not (ELASTICSEARCH_GTE_7_0 or SEARCH_BACKEND == OPENSEARCH):
+    if not (ELASTICSEARCH_GTE_7_0 or IS_OPENSEARCH):
         _like_options.update({'_type': "{}".format(_mapping)})
 
     return _search.query(

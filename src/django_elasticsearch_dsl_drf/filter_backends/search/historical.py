@@ -5,7 +5,7 @@ Search backend. Most likely to be deprecated soon.
 import operator
 import warnings
 
-from anysearch.django_search_dsl import fields
+from django_elasticsearch_dsl import fields
 from anysearch.search_dsl.query import Q
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.settings import api_settings
@@ -16,7 +16,7 @@ from ...compat import coreapi, coreschema
 
 __title__ = 'django_elasticsearch_dsl_drf.filter_backends.search.historical'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = ('SearchFilterBackend',)
 

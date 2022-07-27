@@ -1,12 +1,9 @@
 """
 Test views.
 """
-
-import unittest
-
 import pytest
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from django.core.management import call_command
 from django.urls import reverse
 from rest_framework import status
@@ -40,10 +37,7 @@ class TestViews(BaseRestFrameworkTestCase):
 
         cls.sleep()
 
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
     def test_listing_view(self):
         """Test listing view."""
@@ -79,7 +73,3 @@ class TestViews(BaseRestFrameworkTestCase):
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['id'], __obj.title)
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -1,11 +1,9 @@
 """
 Test highlight backend.
 """
-import unittest
-
 import pytest
 
-from anysearch import OPENSEARCH, SEARCH_BACKEND
+from anysearch import IS_OPENSEARCH
 from django.core.management import call_command
 from django.urls import reverse
 from rest_framework import status
@@ -54,10 +52,7 @@ class TestHighlight(BaseRestFrameworkTestCase):
         cls.all_books_count = cls.special_books_count + cls.books_count
 
         cls.sleep()
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
     def _list_results_with_highlights(self):
         """List results with facets."""
@@ -94,7 +89,3 @@ class TestHighlight(BaseRestFrameworkTestCase):
     def test_list_results_with_highlights(self):
         """Test list results with facets."""
         return self._list_results_with_highlights()
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -1,6 +1,10 @@
 from anysearch.search import AnySearch
 from django.conf import settings
 
+__title__ = 'django_elasticsearch_dsl_drf.elasticsearch_helpers'
+__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
+__copyright__ = '2017-2022 Artur Barseghyan'
+__license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     "get_all_indices",
     "delete_all_indices",

@@ -57,10 +57,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
 
         cls.sleep()
         # Update the Elasticsearch index
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
         cls.backend = FilteringFilterBackend()
@@ -576,10 +573,7 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         self.published[2].authors.add(*authors)
 
         # Update the Elasticsearch index
-        if SEARCH_BACKEND == OPENSEARCH:
-            call_command('opensearch', 'index', 'rebuild', '--force')
-        else:
-            call_command('search_index', '--rebuild', '-f')
+        call_command('search_index', '--rebuild', '-f')
 
         # Test
         self._field_filter_multiple_values(
@@ -680,7 +674,3 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         fields = [f.required for f in fields]
         for field in fields:
             self.assertFalse(field)
-
-
-if __name__ == '__main__':
-    unittest.main()

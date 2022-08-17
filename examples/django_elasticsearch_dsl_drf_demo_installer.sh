@@ -1,11 +1,11 @@
-wget -O django_elasticsearch_dsl_drf_demo_installer.tar.gz https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/archive/stable.tar.gz
+wget -O django_elasticsearch_dsl_drf_demo_installer.tar.gz https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/archive/master.tar.gz
 virtualenv django-elasticsearch-dsl-drf-env
 source django-elasticsearch-dsl-drf-env/bin/activate
 mkdir django_elasticsearch_dsl_drf_demo_installer/
 tar -xvf django_elasticsearch_dsl_drf_demo_installer.tar.gz -C django_elasticsearch_dsl_drf_demo_installer
 cd django_elasticsearch_dsl_drf_demo_installer/django-elasticsearch-dsl-drf-stable/examples/simple/
 pip install -r ../../requirements.txt
-pip install https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/archive/stable.tar.gz
+pip install https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/archive/master.tar.gz
 mkdir ../media/
 mkdir ../media/static/
 mkdir ../static/

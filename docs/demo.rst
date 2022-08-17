@@ -23,7 +23,7 @@ Grab and run the latest ``django_elasticsearch_dsl_drf_demo_installer.sh``:
 
 .. code-block:: sh
 
-    wget -O - https://raw.github.com/barseghyanartur/django-elasticsearch-dsl-drf/stable/examples/django_elasticsearch_dsl_drf_demo_installer.sh | bash
+    wget -O - https://raw.github.com/barseghyanartur/django-elasticsearch-dsl-drf/master/examples/django_elasticsearch_dsl_drf_demo_installer.sh | bash
 
 Open your browser and test the app.
 

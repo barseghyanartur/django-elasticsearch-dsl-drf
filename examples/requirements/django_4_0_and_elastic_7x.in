@@ -1,0 +1,2 @@
+-r django_4_0.in
+-r elastic_7x.in

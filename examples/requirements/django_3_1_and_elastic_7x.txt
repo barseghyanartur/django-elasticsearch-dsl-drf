@@ -33,7 +33,7 @@ django-debug-toolbar-force==0.1.8
     # via -r django_3_1.in
 django-elasticsearch-debug-toolbar==2.0.0
     # via -r django_3_1.in
-django-elasticsearch-dsl==7.1.4
+django-elasticsearch-dsl==7.2.2
     # via -r elastic_7x.in
 django-nine==0.2.4
     # via

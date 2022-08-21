@@ -9,88 +9,48 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.6', '3.7', '3.8', '3.9']
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
         es-version: ['6', '7']
         include:
         - python-version: 3.6
-          tox_env: py36-django22-elasticsearch7
-          requirements: django_2_2
-        - python-version: 3.6
-          tox_env: py36-django31-elasticsearch7
-          requirements: django_3_1
-        - python-version: 3.6
-          tox_env: py36-django32-elasticsearch7
-          requirements: django_3_2
+          es-version: '7'
+          tox_env: py36-django{22,31,32}-elasticsearch7
 
         - python-version: 3.6
-          tox_env: py36-django22-elasticsearch6
-          requirements: django_2_2
-        - python-version: 3.6
-          tox_env: py36-django31-elasticsearch6
-          requirements: django_3_1
-        - python-version: 3.6
-          tox_env: py36-django32-elasticsearch6
-          requirements: django_3_2
+          es-version: '6'
+          tox_env: py36-django{22,31,32}-elasticsearch6
 
         - python-version: 3.7
-          tox_env: py37-django22-elasticsearch7
-          requirements: django_2_2
-        - python-version: 3.7
-          tox_env: py37-django31-elasticsearch7
-          requirements: django_3_1
-        - python-version: 3.7
-          tox_env: py37-django32-elasticsearch7
-          requirements: django_3_2
+          es-version: '7'
+          tox_env: py37-django{22,31,32}-elasticsearch7
 
         - python-version: 3.7
-          tox_env: py37-django22-elasticsearch6
-          requirements: django_2_2
-        - python-version: 3.7
-          tox_env: py37-django31-elasticsearch6
-          requirements: django_3_1
-        - python-version: 3.7
-          tox_env: py37-django32-elasticsearch6
-          requirements: django_3_2
+          es-version: '6'
+          tox_env: py37-django{22,31,32}-elasticsearch6
 
         - python-version: 3.8
-          tox_env: py38-django22-elasticsearch7
-          requirements: django_2_2
-        - python-version: 3.8
-          tox_env: py38-django31-elasticsearch7
-          requirements: django_3_1
-        - python-version: 3.8
-          tox_env: py38-django32-elasticsearch7
-          requirements: django_3_2
+          es-version: '7'
+          tox_env: py38-django{22,31,32,40}-elasticsearch7
 
         - python-version: 3.8
-          tox_env: py38-django22-elasticsearch6
-          requirements: django_2_2
-        - python-version: 3.8
-          tox_env: py38-django31-elasticsearch6
-          requirements: django_3_1
-        - python-version: 3.8
-          tox_env: py38-django32-elasticsearch6
-          requirements: django_3_2
+          es-version: '6'
+          tox_env: py38-django{22,31,32}-elasticsearch6
 
         - python-version: 3.9
-          tox_env: py39-django22-elasticsearch7
-          requirements: django_2_2
-        - python-version: 3.9
-          tox_env: py39-django31-elasticsearch7
-          requirements: django_3_1
-        - python-version: 3.9
-          tox_env: py39-django32-elasticsearch7
-          requirements: django_3_2
+          es-version: '7'
+          tox_env: py39-django{22,31,32,40}-elasticsearch7
 
         - python-version: 3.9
-          tox_env: py39-django22-elasticsearch6
-          requirements: django_2_2
-        - python-version: 3.9
-          tox_env: py39-django31-elasticsearch6
-          requirements: django_3_1
-        - python-version: 3.9
-          tox_env: py39-django32-elasticsearch6
-          requirements: django_3_2
+          es-version: '6'
+          tox_env: py39-django{22,31,32}-elasticsearch6
+
+        - python-version: 3.10
+          es-version: '7'
+          tox_env: py310-django{32,40}-elasticsearch7
+
+        - python-version: 3.10
+          es-version: '6'
+          tox_env: py310-django32-elasticsearch6
 
     services:
       elasticsearch:
@@ -115,16 +75,10 @@ jobs:
         python -m pip install --upgrade pip setuptools wheel
         pip install pip-tools
         python -m pip install tox
-        pip-compile examples/requirements/${{ matrix.requirements }}.in
-        pip-compile examples/requirements/elastic_${{ matrix.es-version }}x.in
-        pip-compile examples/requirements/test.in
-        python -m pip install -r examples/requirements/${{ matrix.requirements }}.txt
-        python -m pip install -r examples/requirements/elastic_${{ matrix.es-version }}x.txt
-        python -m pip install -r examples/requirements/test.txt
     - name: Run tests
       uses: nick-invision/retry@v2
       with:
-        command: tox -e ${{ matrix.tox_env }} -- --color yes
+        command: tox -r -e '${{ matrix.tox_env }}' -- --color yes
         timeout_minutes: 15
         max_attempts: 3
     - name: Upload to Codecov

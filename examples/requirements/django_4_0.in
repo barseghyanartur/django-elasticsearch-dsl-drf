@@ -1,0 +1,7 @@
+Django>=4.0,<4.1
+django-cors-headers==3.11
+django-debug-toolbar>=3.2
+django-debug-toolbar-force>=0.1.8
+django-elasticsearch-debug-toolbar>=2.0
+django-ormex>=0.2.1
+djangorestframework>=3.13,<3.14

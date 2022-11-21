@@ -124,7 +124,7 @@ class HighlightBackend(BaseFilterBackend):
         highlight_fields = self.prepare_highlight_fields(view)
         for __field, __options in highlight_fields.items():
             if __field in highlight_query_params or __options['enabled']:
-                __field_name = __options.get("field", __field_name)
+                __field_name = __options.get("field", __field)
                 queryset = queryset.highlight(__field_name, **__options['options'])
 
         return queryset

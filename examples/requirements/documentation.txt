@@ -119,6 +119,8 @@ sqlparse==0.4.1
     #   django-debug-toolbar
 urllib3==1.26.6
     # via requests
+elasticsearch<8.0.0
+django-elasticsearch-dsl-drf
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip

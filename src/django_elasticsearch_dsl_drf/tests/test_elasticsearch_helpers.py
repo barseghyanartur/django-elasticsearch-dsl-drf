@@ -3,13 +3,12 @@
 Test helpers.
 """
 
-from __future__ import absolute_import, unicode_literals
-
-import unittest
-
-from django.core.management import call_command
+from __future__ import unicode_literals
 
 import pytest
+
+from anysearch import IS_OPENSEARCH
+from django.core.management import call_command
 
 from ..elasticsearch_helpers import delete_all_indices, get_all_indices
 
@@ -17,7 +16,7 @@ from .base import BaseTestCase
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_elasticsearch_helpers'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestElasticsearchHelpers',
@@ -63,7 +62,3 @@ class TestElasticsearchHelpers(BaseTestCase):
         """Filter by field."""
         self._get_all_indices()
         self._delete_all_indices()
-
-
-if __name__ == '__main__':
-    unittest.main()

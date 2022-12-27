@@ -3,16 +3,16 @@
 """
 Base ViewSets.
 """
-from __future__ import absolute_import, unicode_literals
+from __future__ import unicode_literals
 
 import copy
 
 from django.http import Http404
 from django.core.exceptions import ImproperlyConfigured
 
-from elasticsearch_dsl import Search
-from elasticsearch_dsl.connections import connections
-from elasticsearch_dsl.query import MoreLikeThis
+from anysearch import IS_OPENSEARCH
+from anysearch.search_dsl import MoreLikeThis, Search
+from anysearch.search_dsl.connections import connections
 
 from rest_framework import status
 from rest_framework.decorators import action
@@ -86,6 +86,15 @@ class FunctionalSuggestMixin(object):
 class MoreLikeThisMixin(object):
     """More-like-this mixin."""
 
+    def _get_like_options(self, id_):
+        like_opts = {
+            '_id': "{}".format(id_),
+            '_index': "{}".format(self.index),
+        }
+        if not ELASTICSEARCH_GTE_7_0:
+            like_opts['_type'] = "{}".format(self.mapping)
+        return like_opts
+
     @action(detail=True)
     def more_like_this(self, request, pk=None, id=None):
         """More-like-this functionality detail view.
@@ -113,22 +122,14 @@ class MoreLikeThisMixin(object):
                 queryset = queryset.query(
                     MoreLikeThis(
                         fields=fields,
-                        like={
-                            '_id': "{}".format(id_),
-                            '_index': "{}".format(self.index),
-                            '_type': "{}".format(self.mapping)
-                        },
+                        like=self._get_like_options(id_),
                         **kwargs
                     )
                 ).sort('_score')
             else:
                 queryset = queryset.query(
                     MoreLikeThis(
-                        like={
-                            '_id': "{}".format(id_),
-                            '_index': "{}".format(self.index),
-                            '_type': "{}".format(self.mapping)
-                        },
+                        like=self._get_like_options(id_),
                         **kwargs
                     )
                 ).sort('_score')
@@ -246,7 +247,7 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
 
                 # Remark 2: Unlike code in `Remark 1`, here we do need the
                 # conditional treatment.
-                if ELASTICSEARCH_GTE_7_0:
+                if ELASTICSEARCH_GTE_7_0 or IS_OPENSEARCH:
                     dictionary_proxy = self.dictionary_proxy(
                         obj.to_dict(),
                         getattr(obj, 'meta', None)

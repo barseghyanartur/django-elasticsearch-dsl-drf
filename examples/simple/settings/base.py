@@ -2,6 +2,7 @@
 import os
 import sys
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
 from django_nine import versions
 
 from .core import PROJECT_DIR, gettext
@@ -240,10 +241,12 @@ INSTALLED_APPS = [
 
     # Third party apps
     'rest_framework',  # REST framework
-    'django_elasticsearch_dsl',  # Elasticsearch integration
+
     'corsheaders',  # For React demo
 
     # This app
+    # 'anysearch.django_search_dsl.DjangoAnySearchConfig',
+    'django_elasticsearch_dsl',
     'django_elasticsearch_dsl_drf',
 
     # Other project specific apps
@@ -251,6 +254,11 @@ INSTALLED_APPS = [
     'books',  # Test app
     'search_indexes',  # Search app
 ]
+
+# if SEARCH_BACKEND == OPENSEARCH:
+#     INSTALLED_APPS.append('django_opensearch_dsl')  # OpenSearch integration
+# else:
+#     INSTALLED_APPS.append('django_elasticsearch_dsl')  # Elasticsearch integration
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -270,6 +278,10 @@ ELASTICSEARCH_DSL = {
         'timeout': 30,
     },
 }
+OPENSEARCH_DSL = ELASTICSEARCH_DSL
+
+# ELASTICSEARCH_DSL_SIGNAL_PROCESSOR = "anysearch.django_search_dsl.RealTimeSignalProcessor"
+# OPENSEARCH_DSL_SIGNAL_PROCESSOR = ELASTICSEARCH_DSL_SIGNAL_PROCESSOR
 
 # CORS headers config
 CORS_ORIGIN_ALLOW_ALL = True

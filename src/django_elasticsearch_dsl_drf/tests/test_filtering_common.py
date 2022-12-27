@@ -1,16 +1,13 @@
 """
 Test filtering backend.
 """
-
-from __future__ import absolute_import
-
 import unittest
-
-from django.core.management import call_command
-from django.urls import reverse
 
 import pytest
 
+from anysearch import OPENSEARCH, SEARCH_BACKEND
+from django.core.management import call_command
+from django.urls import reverse
 from rest_framework import status
 
 from books import constants
@@ -33,7 +30,7 @@ from .data_mixins import AddressesMixin, BooksMixin
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering_common'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestFilteringCommon',
@@ -574,8 +571,10 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         self.published[0].authors.add(*authors)
         self.published[1].authors.add(*authors)
         self.published[2].authors.add(*authors)
+
         # Update the Elasticsearch index
         call_command('search_index', '--rebuild', '-f')
+
         # Test
         self._field_filter_multiple_values(
             self.books_default_filter_lookup_url,
@@ -675,7 +674,3 @@ class TestFilteringCommon(BaseRestFrameworkTestCase,
         fields = [f.required for f in fields]
         for field in fields:
             self.assertFalse(field)
-
-
-if __name__ == '__main__':
-    unittest.main()

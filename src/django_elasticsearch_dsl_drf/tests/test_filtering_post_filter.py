@@ -1,16 +1,13 @@
 """
 Test filtering `post_filter` backend.
 """
-
-from __future__ import absolute_import
-
 import unittest
-
-from django.core.management import call_command
-from django.urls import reverse
 
 import pytest
 
+from anysearch import IS_OPENSEARCH
+from django.core.management import call_command
+from django.urls import reverse
 from rest_framework import status
 
 from books import constants
@@ -27,7 +24,7 @@ from .data_mixins import AddressesMixin, BooksMixin
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering_post'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestFilteringPostFilter',
@@ -53,6 +50,7 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
         cls.created_addresses()
 
         cls.sleep()
+
         # Update the Elasticsearch index
         call_command('search_index', '--rebuild', '-f')
 
@@ -691,7 +689,3 @@ class TestFilteringPostFilter(BaseRestFrameworkTestCase,
         fields = [f.required for f in fields]
         for field in fields:
             self.assertFalse(field)
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -1,6 +1,7 @@
+from anysearch import OPENSEARCH, SEARCH_BACKEND
+from django_elasticsearch_dsl import Document, fields
+from django_elasticsearch_dsl.registries import registry
 from django.conf import settings
-
-from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
 
@@ -11,18 +12,8 @@ from .analyzers import html_strip
 
 __all__ = ('AddressDocument',)
 
-INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 
-# See Elasticsearch Indices API reference for available settings
-INDEX.settings(
-    number_of_shards=1,
-    number_of_replicas=1,
-    blocks={'read_only_allow_delete': False},
-    # read_only_allow_delete=False
-)
-
-
-@INDEX.doc_type
+@registry.register_document
 class AddressDocument(Document):
     """Address Elasticsearch document."""
 
@@ -43,7 +34,7 @@ class AddressDocument(Document):
 
     }
 
-    if ELASTICSEARCH_GTE_5_0:
+    if ELASTICSEARCH_GTE_5_0 or SEARCH_BACKEND == OPENSEARCH:
         __street_fields.update(
             {
                 'suggest_context': fields.CompletionField(
@@ -199,6 +190,15 @@ class AddressDocument(Document):
     location = fields.GeoPointField(
         attr='location_field_indexing',
     )
+
+    # See Elasticsearch Indices API reference for available settings
+    class Index:
+        name = settings.ELASTICSEARCH_INDEX_NAMES[__name__]
+        settings = {
+            "number_of_shards": 1,
+            "number_of_replicas": 1,
+            "blocks": {"read_only_allow_delete": False},
+        }
 
     class Django(object):
         model = Address  # The model associate with this Document

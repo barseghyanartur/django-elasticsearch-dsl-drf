@@ -1,18 +1,12 @@
 """
 Test pagination.
 """
-
-from __future__ import absolute_import
-
-import unittest
-
-from django.core.management import call_command
-from django.urls import reverse
-
-from elasticsearch.connection.base import Connection
-
 import pytest
 
+from anysearch import IS_OPENSEARCH
+from anysearch.search import Connection
+from django.core.management import call_command
+from django.urls import reverse
 from rest_framework import status
 
 import factories
@@ -21,7 +15,7 @@ from .base import BaseRestFrameworkTestCase
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_query_friendly_pagination'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestQueryFriendlyPagination',
@@ -132,7 +126,3 @@ class TestQueryFriendlyPagination(BaseRestFrameworkTestCase):
         last_es_call_count = es_call_count
         self._test_pagination_offset()
         self.assertEqual(es_call_count - last_es_call_count, 1)
-
-
-if __name__ == '__main__':
-    unittest.main()

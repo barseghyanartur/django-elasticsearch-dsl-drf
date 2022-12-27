@@ -1,26 +1,17 @@
+from anysearch import SEARCH_BACKEND, OPENSEARCH
+from django_elasticsearch_dsl import Document, fields
+from django_elasticsearch_dsl.registries import registry
 from django.conf import settings
-from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
 from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
-from elasticsearch_dsl import analyzer
 
 from books.models import Location
 
 from .analyzers import html_strip
 
-# Name of the Elasticsearch index
-INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 
-# See Elasticsearch Indices API reference for available settings
-INDEX.settings(
-    number_of_shards=1,
-    number_of_replicas=1,
-    blocks={'read_only_allow_delete': False},
-)
-
-
-@INDEX.doc_type
+@registry.register_document
 class LocationDocument(Document):
     """
     Location document.
@@ -34,7 +25,7 @@ class LocationDocument(Document):
             ),
         }
 
-    if ELASTICSEARCH_GTE_5_0:
+    if ELASTICSEARCH_GTE_5_0 or SEARCH_BACKEND == OPENSEARCH:
         __full_fields.update(
             {
                 "suggest": fields.CompletionField(),
@@ -69,7 +60,7 @@ class LocationDocument(Document):
             analyzer=edge_ngram_completion
             ),
     }
-    if ELASTICSEARCH_GTE_5_0:
+    if ELASTICSEARCH_GTE_5_0 or SEARCH_BACKEND == OPENSEARCH:
         __partial_fields.update(
             {
                 "suggest": fields.CompletionField(),
@@ -98,7 +89,7 @@ class LocationDocument(Document):
     __postcode_fields = {
         "raw": KeywordField(),
     }
-    if ELASTICSEARCH_GTE_5_0:
+    if ELASTICSEARCH_GTE_5_0 or SEARCH_BACKEND == OPENSEARCH:
         __postcode_fields.update(
             {
                 "suggest": fields.CompletionField(),
@@ -198,6 +189,15 @@ class LocationDocument(Document):
     rent = fields.FloatField(attr="rental_valuation")
     revenue = fields.FloatField(attr="revenue")
     coordinates = fields.GeoPointField(attr="location_field_indexing")
+
+    # See Elasticsearch Indices API reference for available settings
+    class Index:
+        name = settings.ELASTICSEARCH_INDEX_NAMES[__name__]
+        settings = {
+            "number_of_shards": 1,
+            "number_of_replicas": 1,
+            "blocks": {"read_only_allow_delete": False},
+        }
 
     class Django(object):
         model = Location  # The model associate with this Document

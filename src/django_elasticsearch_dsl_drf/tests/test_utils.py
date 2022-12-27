@@ -1,11 +1,7 @@
 """
 Test utils.
 """
-
-from __future__ import absolute_import
-
-import unittest
-
+from anysearch import IS_OPENSEARCH
 from django.urls import reverse
 from django.core.management import call_command
 
@@ -17,7 +13,7 @@ from .base import BaseRestFrameworkTestCase
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_utils'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestUtils',
@@ -35,6 +31,7 @@ class TestUtils(BaseRestFrameworkTestCase):
         super(TestUtils, cls).setUpClass()
 
         cls.sleep()
+
         call_command('search_index', '--rebuild', '-f')
 
     def _list_results(self):
@@ -59,7 +56,3 @@ class TestUtils(BaseRestFrameworkTestCase):
     def test_list_results(self):
         """Test list results."""
         return self._list_results()
-
-
-if __name__ == '__main__':
-    unittest.main()

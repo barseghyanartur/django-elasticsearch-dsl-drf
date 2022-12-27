@@ -1,25 +1,19 @@
 """
 Test serializers.
 """
-
-from __future__ import absolute_import
-
-import unittest
+import pytest
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
-
 from django_elasticsearch_dsl import Document, Index, fields
-from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
 
-import pytest
-
+from ..compat import KeywordField, StringField
 from ..serializers import DocumentSerializer
 from .base import BaseRestFrameworkTestCase
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_serializers'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestSerializers',
@@ -213,7 +207,3 @@ class TestSerializers(BaseRestFrameworkTestCase):
             AttributeError,
             self._test_serializer_meta_del_attr
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

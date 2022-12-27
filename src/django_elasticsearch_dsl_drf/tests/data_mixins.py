@@ -1,9 +1,6 @@
 """
 Data mixins.
 """
-
-from __future__ import absolute_import
-
 import uuid
 
 from django.urls import reverse
@@ -13,7 +10,7 @@ import factories
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.data_mixins'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'AddressesMixin',

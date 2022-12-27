@@ -1,25 +1,23 @@
 """
 Test search backend.
 """
-
-from __future__ import absolute_import
-
-from time import sleep
 import unittest
-
-from django.core.management import call_command
-from django.urls import reverse
+from time import sleep
 
 import pytest
 
+from anysearch import IS_OPENSEARCH
+from django.core.management import call_command
+from django.urls import reverse
+
 from rest_framework import status
 
-from books import constants
 import factories
+from books import constants
 from search_indexes.viewsets import BookDocumentViewSet
+
 from ..constants import SEPARATOR_LOOKUP_NAME
 from ..filter_backends import SearchFilterBackend
-
 from .base import (
     BaseRestFrameworkTestCase,
     CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
@@ -28,7 +26,7 @@ from .base import (
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_search'
 __author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
+__copyright__ = '2017-2022 Artur Barseghyan'
 __license__ = 'GPL 2.0/LGPL 2.1'
 __all__ = (
     'TestSearch',
@@ -109,6 +107,7 @@ class TestSearch(BaseRestFrameworkTestCase):
         cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
         cls.sleep()
+
         call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
@@ -423,7 +422,3 @@ class TestSearchCustomCases(BaseRestFrameworkTestCase):
             title_match=book.title,
             create_factory=False
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

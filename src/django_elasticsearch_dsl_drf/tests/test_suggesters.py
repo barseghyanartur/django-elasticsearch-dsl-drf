@@ -3,15 +3,15 @@
 Test suggestions backend.
 """
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import unicode_literals
 
 import unittest
 
-from django.core.management import call_command
-from django.urls import reverse
-
 import pytest
 
+from anysearch import IS_OPENSEARCH
+from django.core.management import call_command
+from django.urls import reverse
 from rest_framework import status
 
 import factories
@@ -350,11 +350,11 @@ class TestSuggestersEmptyIndex(BaseRestFrameworkTestCase, AddressesMixin):
             {}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        if ELASTICSEARCH_GTE_7_0:
+        if ELASTICSEARCH_GTE_7_0 or IS_OPENSEARCH:
             self.assertTrue(
                 bool(response.data.get('name_suggest__completion'))
             )
-        elif ELASTICSEARCH_GTE_6_0:
+        elif ELASTICSEARCH_GTE_6_0 or IS_OPENSEARCH:
             self.assertFalse(bool(response.data))
         else:
             self.assertFalse(
@@ -362,7 +362,10 @@ class TestSuggestersEmptyIndex(BaseRestFrameworkTestCase, AddressesMixin):
             )
 
 
-@unittest.skipIf(not ELASTICSEARCH_GTE_5_0, 'ES >=5.x only')
+@unittest.skipIf(
+    not (ELASTICSEARCH_GTE_5_0 or IS_OPENSEARCH),
+    'ES >=5.x or OpenSearch only'
+)
 @pytest.mark.django_db
 class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
     """Test context suggesters."""
@@ -570,7 +573,7 @@ class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
                     'filters': {
                         'title_suggest_loc': (
                             '40__44__1000km'
-                            if ELASTICSEARCH_GTE_6_0
+                            if ELASTICSEARCH_GTE_6_0 or IS_OPENSEARCH
                             else '40__44'
                         ),
                     }
@@ -581,7 +584,3 @@ class TestContextSuggesters(BaseRestFrameworkTestCase, AddressesMixin):
             test_data,
             self.addresses_suggest_context_url
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

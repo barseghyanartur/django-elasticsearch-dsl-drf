@@ -1,16 +1,13 @@
 """
 Test multi match search filter backend.
 """
-
-from __future__ import absolute_import
-
 import unittest
-
-from django.core.management import call_command
-from django.urls import reverse
 
 import pytest
 
+from anysearch import IS_OPENSEARCH
+from django.core.management import call_command
+from django.urls import reverse
 from rest_framework import status
 
 from books import constants
@@ -18,9 +15,9 @@ import factories
 from search_indexes.viewsets import (
     BookSimpleQueryStringSearchFilterBackendDocumentViewSet
 )
+
 from ..filter_backends import SimpleQueryStringSearchFilterBackend
 from ..versions import ELASTICSEARCH_GTE_6_0
-
 from .base import (
     BaseRestFrameworkTestCase,
     CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
@@ -116,6 +113,7 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
         cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
         cls.sleep(4)
+
         call_command('search_index', '--rebuild', '-f')
 
         # Testing coreapi and coreschema
@@ -239,7 +237,10 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-    @unittest.skipIf(condition=ELASTICSEARCH_GTE_6_0, reason="")
+    @unittest.skipIf(
+        condition=(ELASTICSEARCH_GTE_6_0 or IS_OPENSEARCH),
+        reason="",
+    )
     def test_search_without_quotes(self, url=None):
         """Test search without quotes. This does not work on Elasticsearch 6.x.
 
@@ -317,7 +318,10 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
             url=url
         )
 
-    @unittest.skipIf(condition=ELASTICSEARCH_GTE_6_0, reason="")
+    @unittest.skipIf(
+        condition=ELASTICSEARCH_GTE_6_0 or IS_OPENSEARCH,
+        reason="",
+    )
     def test_search_without_quotes_boost(self, url=None):
         """Search boost without quotes. Does not work on Elasticsearch 6.x.
 
@@ -400,7 +404,3 @@ class TestSimpleQueryStringSearch(BaseRestFrameworkTestCase):
         fields = [f.required for f in fields]
         for field in fields:
             self.assertFalse(field)
-
-
-if __name__ == '__main__':
-    unittest.main()

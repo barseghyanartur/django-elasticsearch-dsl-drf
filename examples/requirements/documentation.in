@@ -1,2 +1,4 @@
 -r base.in
 -r docs.in
+elasticsearch<8.0.0
+django-elasticsearch-dsl-drf

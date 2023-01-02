@@ -119,8 +119,11 @@ jobs:
         python -m pip install --upgrade pip setuptools wheel
         pip install pip-tools
         python -m pip install tox
+        echo "examples/requirements/${{ matrix.requirements }}.in"
         pip-compile examples/requirements/${{ matrix.requirements }}.in
+        echo "examples/requirements/opensearch_${{ matrix.es-version }}x.in"
         pip-compile examples/requirements/opensearch_${{ matrix.es-version }}x.in
+        echo "pip-compile examples/requirements/test.in"
         pip-compile examples/requirements/test.in
         python -m pip install -r examples/requirements/${{ matrix.requirements }}.txt
         python -m pip install -r examples/requirements/opensearch_${{ matrix.es-version }}x.txt

@@ -1,5 +1,7 @@
 import unittest
 import mock
+from unittest import skipIf
+from anysearch import IS_ELASTICSEARCH
 # For Python3 >= 3.4
 try:
     from importlib import reload
@@ -24,6 +26,7 @@ class VersionsTest(unittest.TestCase):
     def setUp(self):
         pass
 
+    @skipIf(not IS_ELASTICSEARCH, "Not elasticsearch, skipping")
     @mock.patch('elasticsearch_dsl.__version__', [6, 3, 0])
     def test_elasticsearch_dsl_6_3_0(self):
         """
@@ -60,6 +63,7 @@ class VersionsTest(unittest.TestCase):
         self.assertFalse(versions.ELASTICSEARCH_GTE_7_0)
         self.assertFalse(versions.ELASTICSEARCH_GTE_8_0)
 
+    @skipIf(not IS_ELASTICSEARCH, "Not elasticsearch, skipping")
     @mock.patch('elasticsearch_dsl.__version__', [7, 0, 0])
     def test_elasticsearch_dsl_7_0_0(self):
         """

@@ -10,6 +10,8 @@ import unittest
 import django
 import pytest
 
+from anysearch import IS_ELASTICSEARCH
+
 from ..pip_helpers import check_if_installed, get_installed_packages
 
 __title__ = 'django_elasticsearch_dsl_drf.tests.test_pip_helpers'
@@ -64,6 +66,10 @@ class TestPipHelpers(unittest.TestCase):
         :return:
         """
         self.assertTrue(check_if_installed('Django'))
-        self.assertTrue(check_if_installed('elasticsearch'))
-        self.assertTrue(check_if_installed('elasticsearch-dsl'))
+        if IS_ELASTICSEARCH:
+            self.assertTrue(check_if_installed('elasticsearch'))
+            self.assertTrue(check_if_installed('elasticsearch-dsl'))
+        else:
+            self.assertTrue(check_if_installed('opensearch-py'))
+            self.assertTrue(check_if_installed('opensearch-dsl'))
         self.assertFalse(check_if_installed('django-fobi'))

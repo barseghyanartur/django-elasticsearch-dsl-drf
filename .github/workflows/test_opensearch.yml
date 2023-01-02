@@ -120,10 +120,10 @@ jobs:
         pip install pip-tools
         python -m pip install tox
         pip-compile examples/requirements/${{ matrix.requirements }}.in
-        pip-compile examples/requirements/elastic_${{ matrix.es-version }}x.in
+        pip-compile examples/requirements/opensearch_${{ matrix.es-version }}x.in
         pip-compile examples/requirements/test.in
         python -m pip install -r examples/requirements/${{ matrix.requirements }}.txt
-        python -m pip install -r examples/requirements/elastic_${{ matrix.es-version }}x.txt
+        python -m pip install -r examples/requirements/opensearch_${{ matrix.es-version }}x.txt
         python -m pip install -r examples/requirements/test.txt
     - name: Run tests
       uses: nick-invision/retry@v2

@@ -1,3 +1,4 @@
 opensearch-py>=2.0.0,<3.0.0
 opensearch-dsl>=2.0.0,<3.0.0
 django-anysearch-dsl
+requests

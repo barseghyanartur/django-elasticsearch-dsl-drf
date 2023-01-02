@@ -48,8 +48,12 @@ class TestPipHelpers(unittest.TestCase):
         """
         installed_packages = get_installed_packages()
         self.assertIn('Django', installed_packages)
-        self.assertIn('elasticsearch', installed_packages)
-        self.assertIn('elasticsearch-dsl', installed_packages)
+        if IS_ELASTICSEARCH:
+            self.assertIn('elasticsearch', installed_packages)
+            self.assertIn('elasticsearch-dsl', installed_packages)
+        else:
+            self.assertIn('opensearch-py', installed_packages)
+            self.assertIn('opensearch-dsl', installed_packages)
 
     def test_get_installed_packages_with_versions(self):
         """Test `get_installed_packages`.

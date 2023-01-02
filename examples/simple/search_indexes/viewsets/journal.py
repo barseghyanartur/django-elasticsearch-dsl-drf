@@ -24,7 +24,7 @@ from django_elasticsearch_dsl_drf.viewsets import (
     BaseDocumentViewSet,
 )
 
-from elasticsearch_dsl import DateHistogramFacet, RangeFacet, A
+from anysearch.search_dsl import DateHistogramFacet, RangeFacet, A
 
 from ..documents import JournalDocument
 from ..serializers import JournalDocumentSerializer

@@ -1,4 +1,4 @@
-name: test
+name: test elasticsearch
 
 on: [push, pull_request]
 

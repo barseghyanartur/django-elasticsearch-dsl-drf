@@ -1,6 +1,6 @@
 elasticsearch==6.3.0
 elasticsearch-dsl==6.4.0
-#django-elasticsearch-dsl==6.4.2
+django-elasticsearch-dsl==6.5.0
 # Pinned to the latest commit (as of 2021-02-02) of the
 # branch https://github.com/django-es/django-elasticsearch-dsl/tree/6.x
-https://github.com/django-es/django-elasticsearch-dsl/archive/dbbbfac01e4ba85c5e991fb1c0522404f170bdc0.zip
+# https://github.com/django-es/django-elasticsearch-dsl/archive/dbbbfac01e4ba85c5e991fb1c0522404f170bdc0.zip

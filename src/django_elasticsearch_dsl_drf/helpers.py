@@ -3,7 +3,7 @@ Helpers.
 """
 from collections import OrderedDict
 
-from anysearch import IS_OPENSEARCH
+from anysearch import IS_ELASTICSEARCH
 from anysearch.search_dsl import Search, MoreLikeThis
 from anysearch.search_dsl.connections import connections
 from django_elasticsearch_dsl.registries import registry
@@ -150,7 +150,7 @@ def more_like_this(obj,
         '_id': "{}".format(obj.pk),
         '_index': "{}".format(_index),
     }
-    if not (ELASTICSEARCH_GTE_7_0 or IS_OPENSEARCH):
+    if IS_ELASTICSEARCH and not ELASTICSEARCH_GTE_7_0:
         _like_options.update({'_type': "{}".format(_mapping)})
 
     return _search.query(

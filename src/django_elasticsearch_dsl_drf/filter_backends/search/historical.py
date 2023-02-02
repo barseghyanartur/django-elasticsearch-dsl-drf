@@ -90,11 +90,11 @@ class SearchFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>> search_nested_fields = {
         >>>     'country': {
         >>>         'path': 'country',
-        >>>         'fields': [{'name': {'boost': 2}}]
+        >>>         'fields': [{'name': 'name', 'boost': 2}]
         >>>     },
         >>>     'city': {
         >>>         'path': 'country.city',
-        >>>         'fields': [{'name': {'boost': 2}}]
+        >>>         'fields': [{'name': 'name', 'boost': 2}]
         >>>     },
         >>> }
 

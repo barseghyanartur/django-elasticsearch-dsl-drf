@@ -43,11 +43,11 @@ class NestedQueryBackend(BaseSearchQueryBackend):
             search_nested_fields = {
                 'country': {
                     'path': 'country',
-                    'fields': [{'name': {'boost': 2}}]
+                    'fields': [{'name': 'name', 'boost': 2}]
                 },
                 'city': {
                     'path': 'country.city',
-                    'fields': [{'name': {'boost': 2}}]
+                    'fields': [{'name': 'name', 'boost': 2}]
                 },
             }
 
@@ -76,7 +76,8 @@ class NestedQueryBackend(BaseSearchQueryBackend):
                         # In case if we deal with structure 2
                         if isinstance(_field, dict):
                             # take options (ex: boost) into consideration
-                            field_options = {key: value for key, value in _field.items() if key != 'name'}
+                            field_options = {
+                                key: value for key, value in _field.items() if key != 'name'}
                             field_options.update({
                                 "query": search_term,
                             })
@@ -111,7 +112,8 @@ class NestedQueryBackend(BaseSearchQueryBackend):
                         # In case if we deal with structure 2
                         if isinstance(_field, dict):
                             # take options (ex: boost) into consideration
-                            field_options = {key: value for key, value in _field.items() if key != 'name'}
+                            field_options = {
+                                key: value for key, value in _field.items() if key != 'name'}
                             field_options.update({
                                 "query": search_term,
                             })

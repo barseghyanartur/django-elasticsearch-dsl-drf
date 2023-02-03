@@ -88,7 +88,7 @@ Demos
 =====
 Online demo
 -----------
-Check the `live demo app <https://django-elasticsearch-dsl-drf.herokuapp.com>`__
+Check the `live demo app <https://django-elasticsearch-dsl-drf.onrender.com/>`__
 (Django 3.1 + Django REST Framework 3.12 + Elasticsearch 7.5) hosted on Heroku
 and bonsai.io.
 

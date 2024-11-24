@@ -67,7 +67,15 @@ Example:
     >>>
     >>>         model = Publisher  # The model associate with this Document
 """
-from elasticsearch_dsl.search import AggsProxy
+try: # code for 8.13 (requires 8.13.1)
+    # This should not be imported in external projects, as it is a internal tool.
+    # See https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/pull/316/files#r1596499499
+    from elasticsearch_dsl.search_base import AggsProxy
+except ImportError:
+    # backward-compatible (older than 8.13)
+    from elasticsearch_dsl.search import AggsProxy
+
+from elasticsearch_dsl.search_base import AggsProxy
 
 from django_elasticsearch_dsl_drf.constants import (
     FUNCTIONAL_SUGGESTER_TERM_MATCH,

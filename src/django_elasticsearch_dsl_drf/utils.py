@@ -3,7 +3,6 @@ Utils.
 """
 
 import datetime
-from elasticsearch_dsl.search import AggsProxy
 
 
 __title__ = 'django_elasticsearch_dsl_drf.utils'
@@ -15,40 +14,45 @@ __all__ = (
     'EmptySearch',
 )
 
+try:
+    # code for 8.13 (requires 8.13.1)
+    from elasticsearch_dsl import EmptySearch
+except ImportError:
+    from elasticsearch_dsl.search import AggsProxy
 
-class EmptySearch(object):
-    """Empty Search."""
+    class EmptySearch(object):
+        """Empty Search."""
 
-    def __init__(self, *args, **kwargs):
-        self.aggs = AggsProxy('')
-        self._highlight = {}
-        self._sort = []
-        self.total = 0
+        def __init__(self, *args, **kwargs):
+            self.aggs = AggsProxy('')
+            self._highlight = {}
+            self._sort = []
+            self.total = 0
 
-    def __len__(self):
-        return 0
+        def __len__(self):
+            return 0
 
-    def __iter__(self):
-        return iter([])
+        def __iter__(self):
+            return iter([])
 
-    def __getitem__(self, *args, **kwargs):
-        return self
+        def __getitem__(self, *args, **kwargs):
+            return self
 
-    def highlight(self, *args, **kwargs):
-        return self
+        def highlight(self, *args, **kwargs):
+            return self
 
-    def sort(self, *args, **kwargs):
-        return self
+        def sort(self, *args, **kwargs):
+            return self
 
-    @property
-    def hits(self):
-        return self
+        @property
+        def hits(self):
+            return self
 
-    def execute(self, *args, **kwargs):
-        return self
+        def execute(self, *args, **kwargs):
+            return self
 
-    def to_dict(self, *args, **kwargs):
-        return {}
+        def to_dict(self, *args, **kwargs):
+            return {}
 
 
 class DictionaryProxy(object):

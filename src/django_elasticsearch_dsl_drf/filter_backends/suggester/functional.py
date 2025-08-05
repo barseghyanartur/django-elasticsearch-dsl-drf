@@ -67,7 +67,14 @@ Example:
     >>>
     >>>         model = Publisher  # The model associate with this Document
 """
-from elasticsearch_dsl.search import AggsProxy
+
+try:  # code for 8.13 (requires 8.13.1)
+    # This should not be imported in external projects, as it is a internal tool.
+    # See https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/pull/316/files#r1596499499
+    from elasticsearch_dsl.search_base import AggsProxy
+except ImportError:
+    # backward-compatible (older than 8.13)
+    from elasticsearch_dsl.search import AggsProxy
 
 from django_elasticsearch_dsl_drf.constants import (
     FUNCTIONAL_SUGGESTER_TERM_MATCH,
@@ -85,12 +92,11 @@ from six import string_types
 
 from ..mixins import FilterBackendMixin
 
-__title__ = 'django_elasticsearch_dsl_drf.filter_backends.suggester.' \
-            'functional'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('FunctionalSuggesterFilterBackend',)
+__title__ = "django_elasticsearch_dsl_drf.filter_backends.suggester." "functional"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("FunctionalSuggesterFilterBackend",)
 
 
 class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
@@ -172,16 +178,12 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         for field, options in filter_fields.items():
             if options is None or isinstance(options, string_types):
-                filter_fields[field] = {
-                    'field': options or field
-                }
-            elif 'field' not in filter_fields[field]:
-                filter_fields[field]['field'] = field
+                filter_fields[field] = {"field": options or field}
+            elif "field" not in filter_fields[field]:
+                filter_fields[field]["field"] = field
 
-            if 'suggesters' not in filter_fields[field]:
-                filter_fields[field]['suggesters'] = tuple(
-                    ALL_FUNCTIONAL_SUGGESTERS
-                )
+            if "suggesters" not in filter_fields[field]:
+                filter_fields[field]["suggesters"] = tuple(ALL_FUNCTIONAL_SUGGESTERS)
 
         return filter_fields
 
@@ -239,19 +241,16 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :param options:
         :return:
         """
-        if 'size' in options['options']:
+        if "size" in options["options"]:
             queryset = queryset.extra(
-                from_=options['options'].get('from', 0),
-                size=options['options']['size']
+                from_=options["options"].get("from", 0), size=options["options"]["size"]
             )
         return queryset
 
     @classmethod
-    def apply_suggester_completion_prefix(cls,
-                                          suggester_name,
-                                          queryset,
-                                          options,
-                                          value):
+    def apply_suggester_completion_prefix(
+        cls, suggester_name, queryset, options, value
+    ):
         """Apply `completion` suggester prefix.
 
         This is effective when used with Keyword fields.
@@ -267,19 +266,12 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Modified queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
-        queryset = queryset.query(
-            'prefix',
-            **{options['field']: value}
-        )
+        queryset = queryset.query("prefix", **{options["field"]: value})
         queryset = cls.apply_query_size(queryset, options)
         return queryset
 
     @classmethod
-    def apply_suggester_completion_match(cls,
-                                         suggester_name,
-                                         queryset,
-                                         options,
-                                         value):
+    def apply_suggester_completion_match(cls, suggester_name, queryset, options, value):
         """Apply `completion` suggester match.
 
         This is effective when used with Ngram fields.
@@ -295,10 +287,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Modified queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
-        queryset = queryset.query(
-            'match',
-            **{options['field']: value}
-        )
+        queryset = queryset.query("match", **{options["field"]: value})
         queryset = cls.apply_query_size(queryset, options)
         return queryset
 
@@ -317,10 +306,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         suggester_query_params = {}
         suggester_fields = self.prepare_suggester_fields(view)
         for query_param in query_params:
-            query_param_list = self.split_lookup_filter(
-                query_param,
-                maxsplit=1
-            )
+            query_param_list = self.split_lookup_filter(query_param, maxsplit=1)
             field_name = query_param_list[0]
 
             if field_name in suggester_fields:
@@ -328,61 +314,56 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 if len(query_param_list) > 1:
                     suggester_param = query_param_list[1]
 
-                valid_suggesters = suggester_fields[field_name]['suggesters']
+                valid_suggesters = suggester_fields[field_name]["suggesters"]
 
                 suggester_options = {}
 
                 # If we have default suggester given use it as a default and
                 # do not require further suffix specification.
                 default_suggester = None
-                if 'default_suggester' in suggester_fields[field_name]:
-                    default_suggester = \
-                        suggester_fields[field_name]['default_suggester']
+                if "default_suggester" in suggester_fields[field_name]:
+                    default_suggester = suggester_fields[field_name][
+                        "default_suggester"
+                    ]
 
-                if 'options' in suggester_fields[field_name]:
-                    suggester_options = suggester_fields[field_name]['options']
+                if "options" in suggester_fields[field_name]:
+                    suggester_options = suggester_fields[field_name]["options"]
 
-                if suggester_param is None \
-                        or suggester_param in valid_suggesters:
+                if suggester_param is None or suggester_param in valid_suggesters:
 
                     # If we have default suggester given use it as a default
                     # and do not require further suffix specification.
-                    if suggester_param is None \
-                            and default_suggester is not None:
+                    if suggester_param is None and default_suggester is not None:
                         suggester_param = str(default_suggester)
 
                     values = [
                         __value.strip()
-                        for __value
-                        in query_params.getlist(query_param)
-                        if __value.strip() != ''
+                        for __value in query_params.getlist(query_param)
+                        if __value.strip() != ""
                     ]
 
                     # If specific field given, use that. Otherwise,
                     # fall back to the top level field name.
-                    if 'serializer_field' in suggester_fields[field_name]:
-                        serializer_field = \
-                            suggester_fields[field_name]['serializer_field']
+                    if "serializer_field" in suggester_fields[field_name]:
+                        serializer_field = suggester_fields[field_name][
+                            "serializer_field"
+                        ]
                     else:
                         serializer_field = suggester_fields[field_name].get(
-                            'field',
-                            field_name
+                            "field", field_name
                         )
-                        serializer_field = self.extract_field_name(
-                            serializer_field
-                        )
+                        serializer_field = self.extract_field_name(serializer_field)
 
                     if values:
                         suggester_query_params[query_param] = {
-                            'suggester': suggester_param,
-                            'values': values,
-                            'field': suggester_fields[field_name].get(
-                                'field',
-                                field_name
+                            "suggester": suggester_param,
+                            "values": values,
+                            "field": suggester_fields[field_name].get(
+                                "field", field_name
                             ),
-                            'type': view.mapping,
-                            'serializer_field': serializer_field,
-                            'options': suggester_options,
+                            "type": view.mapping,
+                            "serializer_field": serializer_field,
+                            "options": suggester_options,
                         }
         return suggester_query_params
 
@@ -396,17 +377,13 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :param queryset:
         :return:
         """
-        queryset.aggs = AggsProxy('')
+        queryset.aggs = AggsProxy("")
         queryset._highlight = {}
-        queryset._sort = ['_score']
+        queryset._sort = ["_score"]
         queryset._functional_suggest = True
         return queryset
 
-    def serialize_queryset(self,
-                           queryset,
-                           suggester_name,
-                           value,
-                           serializer_field):
+    def serialize_queryset(self, queryset, suggester_name, value, serializer_field):
         """Serialize queryset.
 
         This shall be done here, since we don't want to delegate it to
@@ -420,18 +397,20 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         """
         result = queryset.execute().to_dict()
         hits = []
-        for hit in result['hits']['hits']:
-            hit.update({'text': hit['_source'].get(serializer_field)})
+        for hit in result["hits"]["hits"]:
+            hit.update({"text": hit["_source"].get(serializer_field)})
             hits.append(hit)
 
         data = {
-            suggester_name: [{
-                'text': value,
-                'options': hits,
-                'length': len(value),
-                'offset': 0,
-            }],
-            '_shards': result['_shards'],
+            suggester_name: [
+                {
+                    "text": value,
+                    "options": hits,
+                    "length": len(value),
+                    "offset": 0,
+                }
+            ],
+            "_shards": result["_shards"],
         }
         return data
 
@@ -445,7 +424,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return:
         :rtype: str
         """
-        return field_name.split('.')[0]
+        return field_name.split(".")[0]
 
     def filter_queryset(self, request, queryset, view):
         """Filter the queryset.
@@ -462,7 +441,7 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         # The ``SuggesterFilterBackend`` filter backend shall be used in
         # the ``suggest`` custom view action/route only. Usages outside of the
         # are ``suggest`` action/route are restricted.
-        if view.action != 'functional_suggest':
+        if view.action != "functional_suggest":
             return queryset
 
         # Clean the queryset.
@@ -477,33 +456,25 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         for suggester_name, options in suggester_query_params.items():
             # We don't have multiple values here.
-            for value in options['values']:
+            for value in options["values"]:
                 # `completion` suggester
-                if options['suggester'] == \
-                        FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX:
+                if options["suggester"] == FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX:
                     queryset = self.apply_suggester_completion_prefix(
-                        suggester_name,
-                        queryset,
-                        options,
-                        value
+                        suggester_name, queryset, options, value
                     )
                     applied = True
                     picked_suggester_name = suggester_name
                     picked_value = value
-                    picked_serializer_field = options['serializer_field']
+                    picked_serializer_field = options["serializer_field"]
 
-                elif options['suggester'] == \
-                        FUNCTIONAL_SUGGESTER_COMPLETION_MATCH:
+                elif options["suggester"] == FUNCTIONAL_SUGGESTER_COMPLETION_MATCH:
                     queryset = self.apply_suggester_completion_match(
-                        suggester_name,
-                        queryset,
-                        options,
-                        value
+                        suggester_name, queryset, options, value
                     )
                     applied = True
                     picked_suggester_name = suggester_name
                     picked_value = value
-                    picked_serializer_field = options['serializer_field']
+                    picked_serializer_field = options["serializer_field"]
 
                 # # `term` suggester
                 # elif options['suggester'] == SUGGESTER_TERM:
@@ -529,8 +500,5 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
             # return empty_queryset
 
         return self.serialize_queryset(
-            queryset,
-            picked_suggester_name,
-            picked_value,
-            picked_serializer_field
+            queryset, picked_suggester_name, picked_value, picked_serializer_field
         )

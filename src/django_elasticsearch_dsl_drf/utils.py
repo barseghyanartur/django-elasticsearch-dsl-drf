@@ -3,16 +3,23 @@ Utils.
 """
 
 import datetime
-from elasticsearch_dsl.search import AggsProxy
+
+try:  # code for 8.13 (requires 8.13.1)
+    # This should not be imported in external projects, as it is a internal tool.
+    # See https://github.com/barseghyanartur/django-elasticsearch-dsl-drf/pull/316/files#r1596499499
+    from elasticsearch_dsl.search_base import AggsProxy
+except ImportError:
+    # backward-compatible (older than 8.13)
+    from elasticsearch_dsl.search import AggsProxy
 
 
-__title__ = 'django_elasticsearch_dsl_drf.utils'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
+__title__ = "django_elasticsearch_dsl_drf.utils"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
 __all__ = (
-    'DictionaryProxy',
-    'EmptySearch',
+    "DictionaryProxy",
+    "EmptySearch",
 )
 
 
@@ -20,7 +27,7 @@ class EmptySearch(object):
     """Empty Search."""
 
     def __init__(self, *args, **kwargs):
-        self.aggs = AggsProxy('')
+        self.aggs = AggsProxy("")
         self._highlight = {}
         self._sort = []
         self.total = 0
